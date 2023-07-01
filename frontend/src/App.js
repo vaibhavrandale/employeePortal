@@ -20,6 +20,7 @@ import SiteList from './screens/SiteSurvey/SiteList';
 import SiteDetails from './screens/SiteSurvey/SiteDetails';
 import PannelDetails from './screens/SiteSurvey/PannelDetails';
 import AddNewSite from './screens/SiteSurvey/AddNewSite';
+import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function AppRouter() {
           element={<PannelDetails />}
         />
         <Route path="/addNewSite" element={<AddNewSite />} />
+        <Route path="/newSurvey/:projectCode" element={<AddNewSurvey />} />
       </Routes>
     </>
   );

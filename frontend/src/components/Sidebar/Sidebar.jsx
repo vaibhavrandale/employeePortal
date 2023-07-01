@@ -24,7 +24,15 @@ const Sidebar = () => {
     >
       <div className="logo">
         <h1 className="heading1">T</h1>
-        <h1 className="heading2">TAYPRO</h1>
+        <h1 className="heading2">
+          <img
+            src="/images/logo-ct.png"
+            alt="logo"
+            height={'26px'}
+            width={'100px'}
+            style={{ height: '28px', width: '120px', margin: 'auto' }}
+          />
+        </h1>
       </div>
       <ul>
         <li>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import './Table.css'; // Import the CSS file for custom styling
 import data from './data';
+import { toast } from 'react-hot-toast';
 
 const TableWithSearchAndPagination = () => {
   const [isLoading, setLoading] = useState(true);
@@ -10,9 +11,10 @@ const TableWithSearchAndPagination = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
   const itemsPerPage = 4;
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -48,14 +50,35 @@ const TableWithSearchAndPagination = () => {
     setHoveredRow(index);
   };
   const createHandler = async () => {
-    if (window.confirm('Are you sure to create new Employee?')) {
-      console.log('clicked');
-      window.location.href = '/addemployee';
-    }
+    popupHandle();
+    toast.success('Employee Added Successfully', {
+      position: 'bottom-right',
+    });
+    navigate('/addemployee');
+  };
+
+  const popupHandle = () => {
+    setPopupOpen(!isPopupOpen);
   };
 
   return (
     <div className="table-container">
+      {isPopupOpen && (
+        <div className="popup-container">
+          <div className="popup">
+            <p>Are you sure you want to add new Employee?</p>
+            <div className="popup-buttons">
+              <button className="popup-button verify" onClick={createHandler}>
+                ADD
+              </button>
+              <button className="popup-button cancel" onClick={popupHandle}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="heading d-flex justify-content-between">
         <nav
           style={{ '--bs-breadcrumb-divider': "'>'" }}
@@ -75,11 +98,7 @@ const TableWithSearchAndPagination = () => {
       </div>
       <h2 className="text-center">Employees Details</h2>
       <div className="form-group   mb-2 search-input">
-        <Link
-          id="AddBtn"
-          className="bg-dark text-white"
-          onClick={createHandler}
-        >
+        <Link id="AddBtn" className="bg-dark text-white" onClick={popupHandle}>
           ADD
         </Link>
         <input

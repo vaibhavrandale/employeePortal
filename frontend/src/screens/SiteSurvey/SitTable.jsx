@@ -111,7 +111,7 @@ function SiteTable({ projectCode }) {
     });
     createHandler();
 
-    navigate(`/newSurvey`);
+    navigate(`/newSurvey/${projectCode}`);
   };
 
   const popupHandle = () => {

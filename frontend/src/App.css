@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@300;400&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  font-family: 'Raleway', sans-serif;
+}
+
+.app {
+  position: relative;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+.dashboard {
+  position: absolute;
+  top: 0;
+  left: 10;
+  z-index: 2;
+}
+
+/* CSS */
+.progress-line {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background-color: #007bff; /* Replace with your desired color */
+  z-index: 9999;
+  transition: width 0.3s ease-in-out;
+}
+
+.container {
+  margin-left: 52px;
+  margin-top: 59px;
+  z-index: 1;
+  /* border: 1px solid red; */
+  /* padding: 10px; */
+}
+
+.container1 {
+  margin-left: 52px;
+  margin-top: 59px;
+  z-index: 1;
+  /* border: 1px solid red; */
+  /* padding: 10px; */
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #ccc; /* Optional: You can set a different border color if desired */
+}
+
+.submitBtn {
+  background: rgb(0, 0, 0);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 1px;
+
+  color: #ffffff;
+}
+.submitBtn:hover {
+  background: rgb(255, 255, 255);
+  color: black;
+  border: 1px solid black;
+}
+
+.underline {
+  display: inline-block;
+  width: 30%;
+  border-bottom: 2px solid #000000;
+  /* margin-top: 5px; */
+  margin: 5px auto 0px auto;
+}
+
+.historyBtn {
+  background: rgb(220, 239, 54);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 4px;
+  text-decoration: none;
+
+  color: #050505;
+}
+.historyBtn:hover {
+  color: #050505;
+}

@@ -1,0 +1,65 @@
+.amazon-card {
+  width: 350px;
+  min-height: 340px;
+  padding: 20px 26px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 70px auto 24px auto;
+}
+
+.amazon-card h1 {
+  font-weight: 500;
+  font-size: 28px;
+}
+
+.amazon-card label {
+  font-size: 13px;
+  padding-left: 2px;
+  padding-bottom: 2px;
+  font-weight: 700;
+}
+
+.amazon-card input {
+  width: 283px;
+  margin: 3px auto;
+  padding: 10px 10px;
+  height: 35px;
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  outline: none;
+}
+
+.amazon-card .amazon-button {
+  width: 283px;
+  margin-top: 20px;
+  font-weight: 500;
+  height: 35px;
+  background-color: #f0c14b;
+  border: 1px solid #a6a6a6;
+  border-top-color: #949494;
+  background-image: linear-gradient(#f7da90 #ffc000);
+  border-radius: 4px;
+}
+
+.amazon-card .amazon-button:hover {
+  color: #000000;
+}
+
+.amazon-card p,
+.amazon-card p a {
+  margin-top: 10px;
+
+  font-size: 15px;
+  width: 100%;
+  line-height: 1.5;
+}
+
+.break p {
+  font-weight: 700;
+}

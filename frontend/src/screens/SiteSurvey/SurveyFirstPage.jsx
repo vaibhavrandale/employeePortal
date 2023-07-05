@@ -3,41 +3,23 @@ import { Link } from 'react-router-dom';
 
 function SurveyFirstPage() {
   const [isLoading, setLoading] = useState(true);
-  //   const [selectedStructure, setSelectedStructure] = useState('');
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 2000);
-
-    setLoading(true);
   }, []);
 
-  //   const handleStructureChange = (event) => {
-  //     setSelectedStructure(event.target.value);
-  //   };
+  const handleNextSection = (e) => {
+    e.preventDefault();
+    setProgress(progress + 1);
+  };
 
-  //   const getImageForStructure = () => {
-  //     if (selectedStructure === 'onep') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'twop') {
-  //       return '/images/twopannel.png'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'fourl') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'threep') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'sixl') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'fourp') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     } else if (selectedStructure === 'eightl') {
-  //       return '/images/image.jpg'; // Replace with the actual image source for 1P structure
-  //     }
-  //     // Add more else if conditions for other structures
-
-  //     // If no structure is selected or matched, return a default image
-  //     return 'twopannel.png'; // Replace with the default image source
-  //   };
+  const handlePreviousSection = (e) => {
+    e.preventDefault();
+    setProgress(progress - 1);
+  };
 
   return (
     <div className="container1">
@@ -75,67 +57,176 @@ function SurveyFirstPage() {
             </Link>
           </div>
           <form action="">
-            <div className="form-group mt-4">
-              <div className="row d-flex flex-column justify-content-center align-items-center">
-                <div className="form-group col-md-2 m-1">
-                  <label htmlFor="structure">Structure:</label>
-                  <select
-                    id="structure"
-                    className="form-control"
-                    // onChange={handleStructureChange}
+            {progress === 0 && (
+              <div className="form-group mt-4">
+                <div className="row d-flex flex-column justify-content-center align-items-center">
+                  <div className="form-group col-md-2 m-1">
+                    <label htmlFor="structure">Structure:</label>
+                    <select id="structure" className="form-control">
+                      <option value="">Select Structure</option>
+                      <option value="onep">1P</option>
+                      <option value="twop">2P</option>
+                      <option value="fourl">4L</option>
+                      <option value="threep">3P</option>
+                      <option value="sixl">6L</option>
+                      <option value="fourp">4P</option>
+                      <option value="eightl">8L</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group col-md-2 m-1">
+                    <label htmlFor="lastName">Enter Block Name :</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastName"
+                      placeholder="Enter Block Name"
+                    />
+                  </div>
+
+                  <div className="form-group col-md-2 m-1">
+                    <label htmlFor="lastName">Enter Row Name :</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastName"
+                      placeholder="Enter Row Name"
+                    />
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-end align-items-center me-5 mt-3">
+                  <button
+                    className="submitBtn px-2 pt-1 pb-1 me-2"
+                    onClick={handleNextSection}
                   >
-                    <option value="">Select Structure</option>
-                    <option value="onep">1P</option>
-                    <option value="twop">2P</option>
-                    <option value="fourl">4L</option>
-                    <option value="threep">3P</option>
-                    <option value="sixl">6L</option>
-                    <option value="fourp">4P</option>
-                    <option value="eightl">8L</option>
-                  </select>
-                </div>
-                {/* {selectedStructure && (
-                  <img
-                    src={getImageForStructure()}
-                    alt={`Structure ${selectedStructure}`}
-                    style={{ width: '400px', height: '200px' }}
-                  />
-                )} */}
-
-                <div className="form-group col-md-2 m-1">
-                  <label htmlFor="lastName">Enter Block Name :</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lastName"
-                    placeholder="Enter Block Name"
-                  />
-                </div>
-
-                <div className="form-group col-md-2 m-1">
-                  <label htmlFor="lastName">Enter Row Name :</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="lastName"
-                    placeholder="Enter Row Name"
-                  />
+                    Next
+                  </button>
                 </div>
               </div>
+            )}
 
-              <div className="d-flex  justify-content-end align-items-center me-5 mt-3">
-                <button
-                  className="submitBtn px-2 pt-1 pb-1"
-                  style={{ marginRight: '50px' }}
-                >
-                  Next
-                </button>
+            {progress === 1 && (
+              <div className="m-2  p-1 pb-2">
+                <div className="form-group mt-4">
+                  <div className="row d-flex flex-column justify-content-center align-items-center">
+                    <div className="col-md-12 row d-flex justify-content-start align-items-center">
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> A :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter A"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> B :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter B"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> C :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter C"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> D :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter D"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> E :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter E"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> F :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter F"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> G :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter G"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> H :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter H"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName"> I :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter I"
+                        />
+                      </div>
+                      <div className="form-group col-md-1 mx-1">
+                        <label htmlFor="lastName "> J :</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="lastName"
+                          placeholder="Enter J"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-end align-items-center me-5 mt-3">
+                    <button
+                      className="submitBtn px-2 pt-1 pb-1 me-2"
+                      onClick={handlePreviousSection}
+                    >
+                      Previous
+                    </button>
+
+                    <button
+                      className="submitBtn px-2 pt-1 pb-1 me-2"
+                      style={{ marginRight: '50px' }}
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </form>
         </div>
       )}
     </div>
   );
 }
+
 export default SurveyFirstPage;

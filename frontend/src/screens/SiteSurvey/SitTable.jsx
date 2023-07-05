@@ -9,6 +9,7 @@ import { HiShieldCheck } from 'react-icons/hi';
 import * as XLSX from 'xlsx';
 import './Sitetable.css';
 import { toast } from 'react-hot-toast';
+import LoadingBox from '../../components/LoadingBox';
 
 function SiteTable({ projectCode }) {
   const [isLoading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ function SiteTable({ projectCode }) {
     const fetchData = () => {
       setTimeout(() => {
         setSite(
-          data.siteDetails.filter((item) => item.projectCode === projectCode)
+          data.SiteSurvey.filter((item) => item.projectCode === projectCode)
         );
 
         setLoading(false);
@@ -95,7 +96,7 @@ function SiteTable({ projectCode }) {
   };
 
   const handleDownloadButtonClick = () => {
-    const specificData = data.siteDetails.filter(
+    const specificData = data.SiteSurvey.filter(
       (item) => item.projectCode === projectCode
     );
     downloadDataAsExcel(specificData);
@@ -162,12 +163,7 @@ function SiteTable({ projectCode }) {
         </div>
       )}
       {isLoading ? (
-        <div
-          className="spinner-border d-flex justify-content-center align-items-center "
-          role="status"
-        >
-          <span className="visually-hidden">Loading...</span>
-        </div>
+        <LoadingBox />
       ) : (
         <>
           <div className="form-group   mb-2 search-input">
@@ -245,7 +241,7 @@ function SiteTable({ projectCode }) {
                   <td className="text-center">
                     <Link
                       className="fs-5"
-                      to={`/pannelDetails/${projectCode}/${item.surveyId}`}
+                      to={`/survey/${projectCode}/${item.surveyId}`}
                       style={{ color: 'blue' }}
                     >
                       <AiOutlineEye />

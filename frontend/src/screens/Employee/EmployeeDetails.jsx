@@ -2,28 +2,16 @@ import React, { useState, useEffect } from 'react';
 import data from './data';
 import './Employee.css';
 import { Link, useParams } from 'react-router-dom';
+import LoadingBox from '../../components/LoadingBox';
+import AlertBox from '../../components/MessageBox/AlertBox';
 
 const EmployeeDetails = () => {
   const { id: employee_id } = useParams();
 
-  const [isLoading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [employee, setEmployee] = useState(null);
 
   useEffect(() => {
-    const checkNetworkSpeed = () => {
-      const connection =
-        navigator.connection ||
-        navigator.mozConnection ||
-        navigator.webkitConnection;
-      const { effectiveType } = connection;
-
-      if (effectiveType === 'slow-3g' || effectiveType === 'g') {
-        return true;
-      }
-
-      return false;
-    };
-
     const fetchData = () => {
       const foundEmployee = data.employees.find(
         (emp) => emp.employee_id === employee_id
@@ -32,28 +20,22 @@ const EmployeeDetails = () => {
       setLoading(false);
     };
 
-    if (checkNetworkSpeed()) {
-      setLoading(true);
-      setTimeout(fetchData, 1);
-    } else {
-      fetchData();
-    }
+    setLoading(true);
+    setTimeout(fetchData, 1);
+
+    fetchData();
   }, [employee_id]);
 
-  if (isLoading) {
-    return (
-      <div className="container">
-        <div class="d-flex top-50 left-50">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // if (isLoading) {
+  //   return <LoadingBox />;
+  // }
 
   if (!employee) {
-    return <div className="container">Employee not found</div>;
+    return (
+      <AlertBox className="alert alert-danger">
+        Employee Not Found / Blocked
+      </AlertBox>
+    );
   }
 
   return (
@@ -78,40 +60,46 @@ const EmployeeDetails = () => {
           </li>
         </ol>
       </nav>{' '}
-      <h2>
-        <span className="fw-bolder">{employee.name}</span> -
-        <span>{employee.employee_id}</span>
-      </h2>
-      <div>
-        <div className="d-flex flex-column justify-content-end align-items-end">
-          <img
-            src={employee.image}
-            alt=""
-            className="rounded"
-            height={200}
-            width={200}
-          />
-          <div className="form-group col-2">
-            <label htmlFor="" className="ms-2 mt-1">
-              Update Image
-            </label>
-            <input
-              type="file"
-              placeholder="update image"
-              className="form-control border "
-            />
+      {loading ? (
+        <LoadingBox />
+      ) : (
+        <>
+          <h2>
+            <span className="fw-bolder">{employee.name}</span> -
+            <span>{employee.employee_id}</span>
+          </h2>
+          <div>
+            <div className="d-flex flex-column justify-content-end align-items-end">
+              <img
+                src={employee.image}
+                alt={employee.name}
+                className="rounded"
+                height={200}
+                width={200}
+              />
+              <div className="form-group col-2">
+                <label htmlFor="" className="ms-2 mt-1">
+                  Update Image
+                </label>
+                <input
+                  type="file"
+                  placeholder="update image"
+                  className="form-control border "
+                />
+              </div>
+            </div>
+            <p>
+              <strong>Name:</strong> {employee.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {employee.email}
+            </p>
+            <p>
+              <strong>Phone:</strong> {employee.mobile_no}
+            </p>
           </div>
-        </div>
-        <p>
-          <strong>Name:</strong> {employee.name}
-        </p>
-        <p>
-          <strong>Email:</strong> {employee.email}
-        </p>
-        <p>
-          <strong>Phone:</strong> {employee.mobile_no}
-        </p>
-      </div>
+        </>
+      )}
     </div>
   );
 };

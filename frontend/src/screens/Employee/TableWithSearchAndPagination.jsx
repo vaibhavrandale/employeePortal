@@ -1,33 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import './Table.css'; // Import the CSS file for custom styling
-import data from './data';
+// import data from './data';
 import { toast } from 'react-hot-toast';
+import axios from 'axios';
+import logger from 'use-reducer-logger';
+import LoadingBox from '../../components/LoadingBox';
+import AlertBox from '../../components/MessageBox/AlertBox';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, employees: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 const TableWithSearchAndPagination = () => {
-  const [isLoading, setLoading] = useState(true);
-  const [employees, setEmployees] = useState([]);
+  const [{ loading, error, employees }, dispatch] = useReducer(
+    logger(reducer),
+    {
+      employees: [],
+      loading: true,
+      error: '',
+    }
+  );
+
+  // const [loading, setLoading] = useState(true);
+  // const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [loadedImages, setLoadedImages] = useState([]);
+
+  // const [backEmployee, setBackEmployee] = useState([]);
 
   const itemsPerPage = 4;
   const navigate = useNavigate();
 
+  //old
+  // useEffect(() => {
+  //   // Simulate API call or data fetching
+  //   const fetchData = () => {
+  //     // Replace this with your actual data fetching logic
+  //     // For demonstration purposes, we'll use a timeout
+  //     setTimeout(() => {
+  //       setEmployees(data.employees);
+  //       setLoading(false);
+  //     }, 2000); // Simulating a 2-second delay
+  //   };
+
+  //   setLoading(true);
+  //   fetchData();
+  // }, []);
+
+  //new
   useEffect(() => {
     // Simulate API call or data fetching
-    const fetchData = () => {
-      // Replace this with your actual data fetching logic
-      // For demonstration purposes, we'll use a timeout
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get('/api/employees');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
       setTimeout(() => {
-        setEmployees(data.employees);
-        setLoading(false);
+        // setEmployees(result.data);
+        // setLoading(false);
       }, 2000); // Simulating a 2-second delay
     };
 
-    setLoading(true);
+    // setLoading(true);
     fetchData();
   }, []);
 
@@ -35,6 +91,7 @@ const TableWithSearchAndPagination = () => {
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.image.includes(searchTerm) ||
       item.joiningDate.includes(searchTerm)
   );
 
@@ -59,6 +116,14 @@ const TableWithSearchAndPagination = () => {
 
   const popupHandle = () => {
     setPopupOpen(!isPopupOpen);
+  };
+
+  const handleImageLoad = (index) => {
+    setLoadedImages((prevLoadedImages) => {
+      const newLoadedImages = [...prevLoadedImages];
+      newLoadedImages[index] = true;
+      return newLoadedImages;
+    });
   };
 
   return (
@@ -110,10 +175,10 @@ const TableWithSearchAndPagination = () => {
         />
       </div>
 
-      {isLoading ? (
-        <div className="spinner-border m-5" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      {loading ? (
+        <LoadingBox />
+      ) : error ? (
+        <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
         <table className="table table-bordered">
           <thead>
@@ -137,12 +202,11 @@ const TableWithSearchAndPagination = () => {
                 <td className="text-center">
                   <div className="table-image-container">
                     <Link to={`/employeedetails/${item.employee_id}`}>
-                      {' '}
                       <img
                         src={item.image}
-                        alt="Profile"
-                        key={item.employee_id}
+                        alt={item.name}
                         className="table-image"
+                        onLoad={() => handleImageLoad(index)}
                       />
                     </Link>
                   </div>
@@ -168,11 +232,11 @@ const TableWithSearchAndPagination = () => {
         </table>
       )}
 
-      {!isLoading && filteredData.length === 0 && (
+      {loading && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )}
 
-      {!isLoading && (
+      {loading && (
         <nav className="pagination-container">
           <ul className="pagination">
             {Array(Math.ceil(filteredData.length / itemsPerPage))

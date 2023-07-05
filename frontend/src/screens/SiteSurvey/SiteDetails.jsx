@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import SiteTable from './SitTable';
 
 function SiteDetails() {
-  const { id: projectCode } = useParams();
+  const { projectCode } = useParams();
 
   const [isLoading, setLoading] = useState(true);
   const [site, setSite] = useState(null);

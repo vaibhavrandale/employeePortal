@@ -1,42 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import '../../App.css';
-import data from '../Employee/data';
+import React, { useEffect, useReducer } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
+import LoadingBox from '../../components/LoadingBox';
+import AlertBox from '../../components/MessageBox/AlertBox';
 
-function PannelDetails() {
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, SiteSurvey: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+function Survey() {
+  const [{ loading, error, SiteSurvey }, dispatch] = useReducer(reducer, {
+    SiteSurvey: null,
+    loading: true,
+    error: '',
+  });
+
   const { id: surveyId, projectCode } = useParams();
 
-  const [isLoading, setLoading] = useState(true);
-  const [pannelDetails, setPannelDetails] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     const foundPannelDetails = data.siteDetails.find(
-  //       (site) => site.surveyId === surveyId
-  //     );
-  //     setPannelDetails(foundPannelDetails);
-  //     setLoading(false);
-  //   };
-  //   setLoading(true);
-  //   setTimeout(fetchData, 1);
-
-  //   fetchData();
-  // }, [surveyId]);
-
   useEffect(() => {
-    const fetchData = () => {
-      setTimeout(() => {
-        const foundPannelDetails = data.siteDetails.find(
-          (site) => site.surveyId === surveyId
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const response = await axios.get(
+          `/api/survey/${projectCode}/${surveyId}`
         );
-        setPannelDetails(foundPannelDetails);
-        setLoading(false);
-      }, 2000);
+        // console.log(response.data);
+        dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
+      } catch (error) {
+        dispatch({ type: 'FETCH_FAIL', payload: error.message });
+      }
     };
 
-    setLoading(true);
     fetchData();
-  }, [surveyId]);
+  }, [projectCode, surveyId]);
+
+  if (loading) {
+    return <LoadingBox />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="container1">
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
@@ -44,53 +62,49 @@ function PannelDetails() {
           <li className="breadcrumb-item">
             <Link to="/" className="text-decoration-none">
               Home
-            </Link>{' '}
+            </Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             <Link
               to={`/sitedetails/${projectCode}`}
               className="text-decoration-none"
             >
-              Site Survey
-            </Link>{' '}
+              Site Details
+            </Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Site Details
+            Site Survey
           </li>
         </ol>
-      </nav>{' '}
-      <h2 className="text-center">Survey Details </h2>
-      {isLoading ? (
-        <div style={{ minHeight: '100vh' }}>
-          <div
-            className="spinner-border me-5 d-flex justify-content-center align-items-center "
-            role="status"
-          >
-            <span className="visually-hidden">Loading...</span>
-          </div>
+      </nav>
+      <h2 className="text-center">Survey Details</h2>
+
+      {loading ? (
+        <div className="container1">
+          {' '}
+          <LoadingBox />
         </div>
       ) : (
+        // : error ? (
+        //   <AlertBox className="alert alert-danger">{error}</AlertBox>
+        // )
         <>
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
-              <div className="badge bg-danger">
-                Survey Id: {pannelDetails.surveyId}
-              </div>
+              <div className="badge bg-danger">Survey Id: {surveyId}</div>
             </div>
-
             <div className="flex-grow-1 d-flex flex-column justify-content-end align-items-end">
               <div className="d-flex m-1">
                 <span>Submitted By:</span>
                 <span className="badge bg-success p-1 ms-1">
-                  {pannelDetails.submittedBy}
+                  {SiteSurvey.submittedBy}
                 </span>
               </div>
               <div className="d-flex m-1">
                 <span>Verified By:</span>
-
-                {pannelDetails.status === true ? (
+                {SiteSurvey.status ? (
                   <span className="badge bg-success p-1 ms-1">
-                    {pannelDetails.verifiedBy}
+                    {SiteSurvey.verifiedBy}
                   </span>
                 ) : (
                   <span className="badge bg-danger p-1 ms-1">Pending</span>
@@ -98,95 +112,91 @@ function PannelDetails() {
               </div>
             </div>
           </div>
-          <div className="row   m-2">
+
+          <div className="row m-2">
             <div
-              className="col-md-3 fw-bolder badge bg-info m-2  p-2"
+              className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '110px' }}
             >
               Block:{' '}
-              <span className="text-dark fw-bolder">{pannelDetails.block}</span>
+              <span className="text-dark fw-bolder">{SiteSurvey.block}</span>
             </div>
             <div
-              className="col-md-3 fw-bolder badge bg-info m-2  p-2"
+              className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '95px' }}
             >
-              Table:
-              <span className="text-dark fw-bolder">
-                {' '}
-                {pannelDetails.table}
-              </span>
+              Table:{' '}
+              <span className="text-dark fw-bolder">{SiteSurvey.table}</span>
             </div>
             <div
-              className="col-md-3 fw-bolder badge bg-info m-2  p-2"
+              className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '90px' }}
             >
-              Row:
-              <span className="text-dark fw-bolder"> {pannelDetails.row}</span>
+              Row: <span className="text-dark fw-bolder">{SiteSurvey.row}</span>
             </div>
           </div>
+
           <div className="d-flex flex-wrap">
-            <div className="d-flex border  m-1" style={{ maxWidth: '52%' }}>
+            <div className="d-flex border m-1" style={{ maxWidth: '52%' }}>
               <img
                 src="/images/twopannel.png"
                 alt=""
                 style={{ maxWidth: '100%', height: 'auto' }}
               />
             </div>
-            <div className="d-flex flex-column justify-content-start align-items-start  p-1">
+            <div className="d-flex flex-column justify-content-start align-items-start p-1">
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th className="col-md-10 text-center">Name </th>
-                    <th className="col-md-2 text-center">Value </th>
+                    <th className="col-md-10 text-center">Name</th>
+                    <th className="col-md-2 text-center">Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>SOLAR MODULE DIMENSION - A</td>
-                    <td className="text-center">{pannelDetails.A}</td>
+                    <td className="text-center">{SiteSurvey.A}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE VIRTICAL GAP DIMENSION - B</td>
-                    <td className="text-center">{pannelDetails.B}</td>
+                    <td className="text-center">{SiteSurvey.B}</td>
                   </tr>
                   <tr>
                     <td>TABLE WIDTH DIMENSION - C</td>
-                    <td className="text-center">{pannelDetails.C}</td>
+                    <td className="text-center">{SiteSurvey.C}</td>
                   </tr>
-
                   <tr>
                     <td>BACK GROUND CLEARANCE DIMENSION - D</td>
-                    <td className="text-center">{pannelDetails.D}</td>
+                    <td className="text-center">{SiteSurvey.D}</td>
                   </tr>
                   <tr>
                     <td>FRONT GROUND CLEARANCE DIMENSION - E</td>
-                    <td className="text-center">{pannelDetails.E}</td>
+                    <td className="text-center">{SiteSurvey.E}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE HEIGHT DIMENSION - F</td>
-                    <td className="text-center">{pannelDetails.F}</td>
+                    <td className="text-center">{SiteSurvey.F}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE FRAME CROSS SECTION DIMENSION - G</td>
-                    <td className="text-center">{pannelDetails.G}</td>
+                    <td className="text-center">{SiteSurvey.G}</td>
                   </tr>
                   <tr>
                     <td>
-                      {' '}
                       INTER TABLE GAP DIMENSION - H{' '}
                       <span className="text-dark fw-bolder">
-                        ({pannelDetails.htablex} & {pannelDetails.htabley})
+                        ({SiteSurvey.htablex} &amp; {SiteSurvey.htabley})
                       </span>
                     </td>
-                    <td className="text-center">{pannelDetails.H}</td>
+                    <td className="text-center">{SiteSurvey.H}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE GAP HORIZONTAL DIMENSION - I</td>
-                    <td className="text-center">{pannelDetails.I}</td>
+                    <td className="text-center">{SiteSurvey.I}</td>
                   </tr>
                   <tr>
                     <td>TILT ANGLE - J</td>
-                    <td className="text-center">{pannelDetails.J}</td>
+                    <td className="text-center">{SiteSurvey.J}</td>
                   </tr>
                 </tbody>
               </table>
@@ -198,4 +208,4 @@ function PannelDetails() {
   );
 }
 
-export default PannelDetails;
+export default Survey;

@@ -1,13 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import './Sitetable.css';
-import data from '../Employee/data';
+// import data from '../Employee/data';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
+import logger from 'use-reducer-logger';
+import axios from 'axios';
+import AlertBox from '../../components/MessageBox/AlertBox';
+import LoadingBox from '../../components/LoadingBox';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, siteDetails: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 function SiteList() {
-  const [isLoading, setLoading] = useState(true);
-  const [site, setSite] = useState([]);
+  const [{ loading, error, siteDetails }, dispatch] = useReducer(
+    logger(reducer),
+    {
+      siteDetails: [],
+      loading: true,
+      error: '',
+    }
+  );
+
+  // const [loading, setLoading] = useState(true);
+  // const [site, setSite] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -16,25 +45,48 @@ function SiteList() {
   const itemsPerPage = 4;
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   // Simulate API call or data fetching
+  //   const fetchData = () => {
+  //     // Replace this with your actual data fetching logic
+  //     // For demonstration purposes, we'll use a timeout
+  //     setTimeout(() => {
+  //       setSite(data.siteDetails);
+  //       setLoading(false);
+  //     }, 2000); // Simulating a 2-second delay
+  //   };
+
+  //   setLoading(true);
+  //   fetchData();
+  // }, []);
+
   useEffect(() => {
     // Simulate API call or data fetching
-    const fetchData = () => {
-      // Replace this with your actual data fetching logic
-      // For demonstration purposes, we'll use a timeout
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get('/api/siteDetails');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
       setTimeout(() => {
-        setSite(data.SiteSurvey);
-        setLoading(false);
+        // setEmployees(result.data);
+        // setLoading(false);
       }, 2000); // Simulating a 2-second delay
     };
 
-    setLoading(true);
+    // setLoading(true);
     fetchData();
   }, []);
 
-  const filteredData = site.filter(
+  const filteredData = siteDetails.filter(
     (item) =>
       item.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.projectCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.siteLocation.includes(searchTerm) ||
       item.siteLocation.includes(searchTerm)
   );
 
@@ -96,12 +148,12 @@ function SiteList() {
                 </Link>{' '}
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                Site Survey
+                Site List
               </li>
             </ol>
           </nav>{' '}
         </div>
-        <h2 className="text-center">All Site Survey</h2>
+        <h2 className="text-center">All Site's</h2>
 
         <div className="form-group   mb-2 search-input">
           <Link
@@ -121,10 +173,8 @@ function SiteList() {
           />
         </div>
 
-        {isLoading ? (
-          <div className="spinner-border m-5" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
+        {loading ? (
+          <LoadingBox />
         ) : (
           <div className="d-flex flex-column justify-content-start align-items-start flex-wrap  p-1">
             <table className="table table-bordered">
@@ -148,12 +198,11 @@ function SiteList() {
                   >
                     <td className="text-center">
                       <div className="table-image-container1">
-                        <Link to={`/siteedetails/${item.siteId}`}>
+                        <Link to={`/siteDetails/${item.projectCode}`}>
                           {' '}
                           <img
                             src={item.customerLogo}
                             alt="Profile"
-                            key={item.siteId}
                             className="table-image1"
                           />
                         </Link>
@@ -167,7 +216,7 @@ function SiteList() {
                       <button className="edit-button">
                         <Link
                           className="link"
-                          to={`/sitedetails/${item.projectCode}`}
+                          to={`/siteDetails/${item.projectCode}`}
                         >
                           {' '}
                           <BiEdit />
@@ -181,11 +230,11 @@ function SiteList() {
           </div>
         )}
 
-        {!isLoading && filteredData.length === 0 && (
-          <p className="text-center">No results found.</p>
-        )}
+        {/* {loading && filteredData.length === 0 && (
+          <AlertBox className="alert alert-danger">{error}</AlertBox>
+        )} */}
 
-        {!isLoading && (
+        {loading && (
           <nav className="pagination-container">
             <ul className="pagination">
               {Array(Math.ceil(filteredData.length / itemsPerPage))

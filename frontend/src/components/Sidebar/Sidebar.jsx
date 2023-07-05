@@ -58,7 +58,7 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/leaves">
+          <Link to="/leaves-history">
             <FcLeave className="icon me-2" />
             {hovered && <span>Leaves</span>}
           </Link>

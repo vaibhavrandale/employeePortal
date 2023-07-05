@@ -18,9 +18,9 @@ import Leaves from './screens/Leaves/Leaves';
 import LeavesHistory from './screens/Leaves/LeavesHistory';
 import SiteList from './screens/SiteSurvey/SiteList';
 import SiteDetails from './screens/SiteSurvey/SiteDetails';
-import PannelDetails from './screens/SiteSurvey/PannelDetails';
+import Survey from './screens/SiteSurvey/Survey';
 import AddNewSite from './screens/SiteSurvey/AddNewSite';
-import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
+// import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
 function App() {
   return (
@@ -48,16 +48,15 @@ function AppRouter() {
         <Route path="/employeedetails/:id" element={<EmployeeDetails />} />
         <Route path="/addemployee" element={<AddEmployee />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/leaves" element={<Leaves />} />
+        <Route path="/leave" element={<Leaves />} />
         <Route path="/leaves-history" element={<LeavesHistory />} />
         <Route path="/sitelist" element={<SiteList />} />
-        <Route path="/sitedetails/:id" element={<SiteDetails />} />
-        <Route
-          path="/pannelDetails/:projectCode/:id"
-          element={<PannelDetails />}
-        />
+
+        <Route path="/sitedetails/:projectCode" element={<SiteDetails />} />
+
+        <Route path="/survey/:projectCode/:id" element={<Survey />} />
         <Route path="/addNewSite" element={<AddNewSite />} />
-        <Route path="/newSurvey/:projectCode" element={<AddNewSurvey />} />
+        {/* <Route path="/newSurvey/:projectCode" element={<AddNewSurvey />} /> */}
       </Routes>
     </>
   );

@@ -315,6 +315,7 @@ const data = {
       plantCapacity: '200MW',
     },
   ],
+
   SiteSurvey: [
     {
       surveyId: '1',

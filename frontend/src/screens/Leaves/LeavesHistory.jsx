@@ -1,33 +1,82 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import '../../App.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import LoadingBox from '../../components/LoadingBox';
+import logger from 'use-reducer-logger';
+import AlertBox from '../../components/MessageBox/AlertBox';
 // import { BiEdit } from 'react-icons/bi';
-import data from '../Employee/data';
+// import data from '../Employee/data';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, leaves: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 function LeavesHistory() {
-  const [isLoading, setLoading] = useState(true);
-  useEffect(() => {
-    // Simulate API call or data fetching
-    const fetchData = () => {
-      // Replace this with your actual data fetching logic
-      // For demonstration purposes, we'll use a timeout
-      setTimeout(() => {
-        setLeaves(data.Leaves);
-        setLoading(false);
-      }, 2000); // Simulating a 2-second delay
-    };
+  const [{ loading, error, leaves }, dispatch] = useReducer(logger(reducer), {
+    leaves: [],
+    loading: true,
+    error: '',
+  });
 
-    setLoading(true);
-    fetchData();
-  }, []);
+  // const [isLoading, setLoading] = useState(true);
 
-  const [leaves, setLeaves] = useState([]);
+  // useEffect(() => {
+  //   // Simulate API call or data fetching
+  //   const fetchData = () => {
+  //     // Replace this with your actual data fetching logic
+  //     // For demonstration purposes, we'll use a timeout
+  //     setTimeout(() => {
+  //       setLeaves(data.Leaves);
+  //       setLoading(false);
+  //     }, 2000); // Simulating a 2-second delay
+  //   };
+
+  //   setLoading(true);
+  //   fetchData();
+  // }, []);
+
+  // const [leaves, setLeaves] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   // const navigate = useNavigate();
+
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get('/api/leaves');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
+      setTimeout(() => {
+        // setEmployees(result.data);
+        // setLoading(false);
+      }, 2000); // Simulating a 2-second delay
+    };
+
+    // setLoading(true);
+    fetchData();
+  }, []);
 
   const filteredData = leaves.filter(
     (item) =>
@@ -68,14 +117,17 @@ function LeavesHistory() {
           </li>
         </ol>
       </nav>{' '}
-      {isLoading ? (
-        <div className="spinner-border m-5" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
+      {loading ? (
+        <LoadingBox />
+      ) : error ? (
+        <AlertBox>{error}</AlertBox>
       ) : (
         <>
           <h2 className="text-dark">Your Leave History</h2>
-          <div className="form-group   mb-2 search-input">
+          <div className="form-group  d-flex justify-content-end align-item-end mb-2 search-input m-1">
+            <Link className="submitBtn p-1  " to={'/leave'}>
+              Apply{' '}
+            </Link>
             <input
               type="text"
               className="form-control search"
@@ -110,13 +162,13 @@ function LeavesHistory() {
 
                   <td className="text-center">
                     {item.approvedAt !== '' ? (
-                      <span class="badge p-2 text-bg-light">
+                      <span className="badge p-2 text-bg-light">
                         {item.approvedAt}
                       </span>
                     ) : item.approvedAt === '' && item.remark !== '' ? (
                       <span className="badge text-bg-danger">Rejected</span>
                     ) : (
-                      <span class="badge text-bg-warning">Pending</span>
+                      <span className="badge text-bg-warning">Pending</span>
                     )}
                   </td>
                   <td className="text-center">
@@ -159,10 +211,10 @@ function LeavesHistory() {
           </table>
         </>
       )}
-      {!isLoading && filteredData.length === 0 && (
+      {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )}
-      {!isLoading && (
+      {<LoadingBox /> && (
         <nav className="pagination-container">
           <ul className="pagination">
             {Array(Math.ceil(filteredData.length / itemsPerPage))
@@ -175,7 +227,7 @@ function LeavesHistory() {
                   }`}
                 >
                   <button
-                    className="page-link bg-dark border border-dark"
+                    className="page-link bg-dark border border-white "
                     onClick={() => handlePageChange(index + 1)}
                   >
                     {index + 1}

@@ -20,6 +20,7 @@ import SiteList from './screens/SiteSurvey/SiteList';
 import SiteDetails from './screens/SiteSurvey/SiteDetails';
 import Survey from './screens/SiteSurvey/Survey';
 import AddNewSite from './screens/SiteSurvey/AddNewSite';
+import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
 function App() {
@@ -56,7 +57,7 @@ function AppRouter() {
 
         <Route path="/survey/:projectCode/:id" element={<Survey />} />
         <Route path="/addNewSite" element={<AddNewSite />} />
-        {/* <Route path="/newSurvey/:projectCode" element={<AddNewSurvey />} /> */}
+        <Route path="/newSurvey/:projectCode" element={<SurveyFirstPage />} />
       </Routes>
     </>
   );

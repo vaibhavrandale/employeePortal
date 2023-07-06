@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 const data = {
   employees: [
     {
@@ -16,6 +18,8 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+
+      leaves: 10,
     },
     {
       employee_id: '20192020',
@@ -33,6 +37,8 @@ const data = {
       age: '22',
       experience: '1',
       activate: false,
+
+      leaves: 10,
     },
     {
       employee_id: '20192021',
@@ -50,6 +56,8 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+
+      leaves: 10,
     },
     {
       employee_id: '20192022',
@@ -67,6 +75,8 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+
+      leaves: 10,
     },
     {
       employee_id: '20192023',
@@ -84,6 +94,8 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+
+      leaves: 10,
     },
   ],
   Leaves: [
@@ -191,111 +203,6 @@ const data = {
       remark: 'You Could not take leave at this moment',
       approvedAt: '23/06/2022',
       remarkBy: 'Yogesh kudale',
-    },
-    {
-      leaveId: 6,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
-      type: 'seack',
-      other: '',
-      noOfLeaves: '3',
-      expectedDateOfLeave: '8/06/2023',
-      expectedDateOfreturn: '11/06/2023',
-      submittedAt: '22/06/2022',
-      reasonInDetail:
-        'The urgency or emotional effects of a personal situation often' +
-        ' affect how people act because they manage stress differently. Make sure that,' +
-        ' despite the situation, you politely request leave from work rather than demand it',
-      mobileNo: '8007923255',
-      approved: true,
-      remark: 'You Could not take leave at this moment',
-      approvedBy: 'Yogesh Kudale',
-      remarkBy: 'Yogesh kudale',
-      approvedAt: '23/06/2022',
-    },
-    {
-      leaveId: 7,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
-      type: 'seack',
-      other: '',
-      noOfLeaves: '3',
-      expectedDateOfLeave: '8/06/2023',
-      expectedDateOfreturn: '11/06/2023',
-      submittedAt: '22/06/2022',
-      reasonInDetail:
-        'The urgency or emotional effects of a personal situation often' +
-        ' affect how people act because they manage stress differently. Make sure that,' +
-        ' despite the situation, you politely request leave from work rather than demand it',
-      mobileNo: '8007923255',
-      approved: true,
-      approvedBy: 'Yogesh Kudale',
-      remark: 'You Could not take leave at this moment',
-      approvedAt: '23/06/2022',
-      remarkBy: 'Yogesh kudale',
-    },
-    {
-      leaveId: 8,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
-      type: 'seack',
-      other: '',
-      noOfLeaves: '3',
-      expectedDateOfLeave: '8/06/2023',
-      expectedDateOfreturn: '11/06/2023',
-      submittedAt: '22/06/2022',
-      reasonInDetail:
-        'The urgency or emotional effects of a personal situation often' +
-        ' affect how people act because they manage stress differently. Make sure that,' +
-        ' despite the situation, you politely request leave from work rather than demand it',
-      mobileNo: '8007923255',
-      approved: false,
-      remark: '',
-      remarkBy: '',
-      approvedBy: '',
-      approvedAt: '',
-    },
-    {
-      leaveId: 9,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
-      type: 'seack',
-      other: '',
-      noOfLeaves: '3',
-      expectedDateOfLeave: '8/06/2023',
-      expectedDateOfreturn: '11/06/2023',
-      submittedAt: '22/06/2022',
-      reasonInDetail:
-        'The urgency or emotional effects of a personal situation often' +
-        ' affect how people act because they manage stress differently. Make sure that,' +
-        ' despite the situation, you politely request leave from work rather than demand it',
-      mobileNo: '8007923255',
-      approved: true,
-      approvedBy: 'Yogesh Kudale',
-      remark: 'You Could not take leave at this moment',
-      remarkBy: 'Yogesh kudale',
-      approvedAt: '23/06/2022',
-    },
-    {
-      leaveId: 10,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
-      type: 'seack',
-      other: '',
-      noOfLeaves: '3',
-      expectedDateOfLeave: '8/06/2023',
-      expectedDateOfreturn: '11/06/2023',
-      submittedAt: '22/06/2022',
-      reasonInDetail:
-        'The urgency or emotional effects of a personal situation often' +
-        ' affect how people act because they manage stress differently. Make sure that,' +
-        ' despite the situation, you politely request leave from work rather than demand it',
-      mobileNo: '8007923255',
-      approved: true,
-      approvedBy: 'Yogesh Kudale',
-      remark: 'You Could not take leave at this moment',
-      remarkBy: 'Yogesh kudale',
-      approvedAt: '23/06/2022',
     },
   ],
 

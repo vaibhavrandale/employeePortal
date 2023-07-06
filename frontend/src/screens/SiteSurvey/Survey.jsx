@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import { getError } from '../../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -15,6 +16,9 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    // case 'SURVEY_NOT_FOUND':
+    //   return { ...state, loading: false, surveyNotFound: true };
+
     default:
       return state;
   }
@@ -25,6 +29,7 @@ function Survey() {
     SiteSurvey: null,
     loading: true,
     error: '',
+    // surveyNotFound: false,
   });
 
   const { id: surveyId, projectCode } = useParams();
@@ -34,26 +39,35 @@ function Survey() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const response = await axios.get(
+        const result = await axios.get(
           `/api/survey/${projectCode}/${surveyId}`
         );
-        // console.log(response.data);
-        dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
-      } catch (error) {
-        dispatch({ type: 'FETCH_FAIL', payload: error.message });
+        if (result.data) {
+          dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        }
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
 
     fetchData();
   }, [projectCode, surveyId]);
 
-  if (loading) {
-    return <LoadingBox />;
-  }
+  // if (loading) {
+  //   return <LoadingBox />;
+  // }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  // if (surveyNotFound) {
+  //   return (
+  //     <div className="container1">
+  //       <AlertBox className="alert alert-danger">Survey not found.</AlertBox>
+  //     </div>
+  //   );
+  // }
+
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
 
   return (
     <div className="container1">
@@ -77,18 +91,17 @@ function Survey() {
           </li>
         </ol>
       </nav>
-      <h2 className="text-center">Survey Details</h2>
 
       {loading ? (
         <div className="container1">
           {' '}
           <LoadingBox />
         </div>
+      ) : error ? (
+        <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
-        // : error ? (
-        //   <AlertBox className="alert alert-danger">{error}</AlertBox>
-        // )
         <>
+          <h2 className="text-center">Survey Details</h2>
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
               <div className="badge bg-danger">Survey Id: {surveyId}</div>

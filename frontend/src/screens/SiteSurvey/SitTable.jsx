@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import '../../App.css';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BiEdit } from 'react-icons/bi';
@@ -10,10 +10,36 @@ import * as XLSX from 'xlsx';
 import './Sitetable.css';
 import { toast } from 'react-hot-toast';
 import LoadingBox from '../../components/LoadingBox';
+// import logger from 'use-reducer-logger';
+import axios from 'axios';
+import AlertBox from '../../components/MessageBox/AlertBox';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        site: action.payload,
+      };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 function SiteTable({ projectCode }) {
-  const [isLoading, setLoading] = useState(true);
-  const [site, setSite] = useState([]);
+  const [{ loading, error, site }, dispatch] = useReducer(reducer, {
+    site: [], // Update the initial state to an empty object
+    loading: true,
+    error: '',
+  });
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,29 +49,32 @@ function SiteTable({ projectCode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = () => {
-      setTimeout(() => {
-        setSite(
-          data.SiteSurvey.filter((item) => item.projectCode === projectCode)
-        );
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
 
-        setLoading(false);
-      }, 2000);
+      try {
+        const result = await axios.get(`/api/sitelist/${projectCode}`);
+        // console.log(result.data);
+
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: { site: result.data },
+        });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
     };
 
-    setLoading(true);
     fetchData();
   }, [projectCode]);
 
   const itemsPerPage = 10;
-
+  console.log(site);
   const filteredData = site.filter(
     (item) =>
-      (item.block &&
-        item.block.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (item.table &&
-        item.table.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (item.row && item.row.toLowerCase().includes(searchTerm.toLowerCase()))
+      item.block.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.table.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.row.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -162,8 +191,10 @@ function SiteTable({ projectCode }) {
           </div>
         </div>
       )}
-      {isLoading ? (
+      {loading ? (
         <LoadingBox />
+      ) : error ? (
+        <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
         <>
           <div className="form-group   mb-2 search-input">
@@ -276,10 +307,10 @@ function SiteTable({ projectCode }) {
           </table>
         </>
       )}
-      {!isLoading && filteredData.length === 0 && (
+      {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )}
-      {!isLoading && (
+      {<LoadingBox /> && (
         <nav className="pagination-container">
           <ul className="pagination">
             {Array(Math.ceil(filteredData.length / itemsPerPage))

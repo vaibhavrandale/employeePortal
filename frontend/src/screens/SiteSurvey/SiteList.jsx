@@ -175,6 +175,8 @@ function SiteList() {
 
         {loading ? (
           <LoadingBox />
+        ) : error ? (
+          <AlertBox className="alert alert-danger">{error}</AlertBox>
         ) : (
           <div className="d-flex flex-column justify-content-start align-items-start flex-wrap  p-1">
             <table className="table table-bordered">

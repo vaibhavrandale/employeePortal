@@ -5,7 +5,7 @@ import './Table.css'; // Import the CSS file for custom styling
 // import data from './data';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-import logger from 'use-reducer-logger';
+
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
 
@@ -26,14 +26,11 @@ const reducer = (state, action) => {
 };
 
 const TableWithSearchAndPagination = () => {
-  const [{ loading, error, employees }, dispatch] = useReducer(
-    logger(reducer),
-    {
-      employees: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
+    employees: [],
+    loading: true,
+    error: '',
+  });
 
   // const [loading, setLoading] = useState(true);
   // const [employees, setEmployees] = useState([]);

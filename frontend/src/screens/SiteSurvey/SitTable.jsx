@@ -2,7 +2,7 @@ import React, { useEffect, useState, useReducer } from 'react';
 import '../../App.css';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BiEdit } from 'react-icons/bi';
-import data from '../Employee/data'; // Assuming data.js is in the same directory
+// import data from '../Employee/data'; // Assuming data.js is in the same directory
 import { BiEdit } from 'react-icons/bi';
 import { AiOutlineEye } from 'react-icons/ai';
 import { HiShieldCheck } from 'react-icons/hi';

@@ -4,7 +4,6 @@ import './Sitetable.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import { toast } from 'react-hot-toast';
-import logger from 'use-reducer-logger';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import LoadingBox from '../../components/LoadingBox';
@@ -26,7 +25,7 @@ const reducer = (state, action) => {
 };
 
 function SiteList() {
-  const [{ loading, error, sitelist }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, sitelist }, dispatch] = useReducer(reducer, {
     sitelist: [],
     loading: true,
     error: '',

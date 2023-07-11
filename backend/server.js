@@ -3,7 +3,7 @@ import data from './data.js';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import seedRouter from './routes/seedRouter.js';
-
+import path from 'path';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
 
@@ -67,6 +67,14 @@ app.get('/api/leaves', (req, res) => {
 //     // console.log(survey);
 //   }
 // });
+
+// -----------------------------------------
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get('*', (req, res) =>
+  res.sendFile(path.join(__dirname, '/frontend/build/index.html'))
+);
+// -----------------------------------------
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

@@ -5,9 +5,9 @@ const data = {
     {
       employee_id: '20192019',
       name: 'Vaibhav Randale',
-      image: '/images/image.jpg',
+      image: '/images/Vaibhav_Randale.jpg',
       email: 'vaibhav.randale@taypro.in',
-      isAdmin: false,
+      isAdmin: true,
       joiningDate: '1/03/2023',
       birth_date: '24/06/1999',
       gender: 'male',
@@ -122,8 +122,8 @@ const data = {
     },
     {
       leaveId: 2,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
+      employee_id: '20192020',
+      name: 'chaitaynya andure',
       type: 'seack',
       other: '',
       noOfLeaves: '3',
@@ -185,8 +185,8 @@ const data = {
     },
     {
       leaveId: 5,
-      employee_id: '20192019',
-      name: 'Vaibhav Randale',
+      employee_id: '20192020',
+      name: 'chaitaynya andure',
       type: 'seack',
       other: '',
       noOfLeaves: '3',

@@ -23,7 +23,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        site: action.payload,
+        siteSurveys: action.payload,
       };
 
     case 'FETCH_FAIL':
@@ -35,8 +35,8 @@ const reducer = (state, action) => {
 };
 
 function SiteTable({ projectCode }) {
-  const [{ loading, error, site }, dispatch] = useReducer(reducer, {
-    site: [], // Update the initial state to an empty object
+  const [{ loading, error, siteSurveys }, dispatch] = useReducer(reducer, {
+    siteSurveys: [], // Update the initial state to an empty object
     loading: true,
     error: '',
   });
@@ -53,13 +53,13 @@ function SiteTable({ projectCode }) {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/sitelist/${projectCode}`);
-        // console.log(result.data);
+        const result = await axios.get(
+          `/api/survey/sitesurveys/${projectCode}`
+        );
 
-        dispatch({
-          type: 'FETCH_SUCCESS',
-          payload: { site: result.data },
-        });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurveys });
+
+        console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -69,8 +69,8 @@ function SiteTable({ projectCode }) {
   }, [projectCode]);
 
   const itemsPerPage = 10;
-  console.log(site);
-  const filteredData = site.filter(
+  // console.log(site);
+  const filteredData = siteSurveys.filter(
     (item) =>
       item.block.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.table.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,7 +89,7 @@ function SiteTable({ projectCode }) {
     setHoveredRow(index);
   };
 
-  const downloadDataAsExcel = (data) => {
+  const downloadDataAsExcel = (siteSurveys) => {
     // Create a new workbook
     const workbook = XLSX.utils.book_new();
 
@@ -102,7 +102,7 @@ function SiteTable({ projectCode }) {
       },
     };
 
-    const worksheet = XLSX.utils.json_to_sheet(data, { headerStyle });
+    const worksheet = XLSX.utils.json_to_sheet(siteSurveys, { headerStyle });
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
 
     const excelFile = XLSX.write(workbook, {
@@ -125,7 +125,7 @@ function SiteTable({ projectCode }) {
   };
 
   const handleDownloadButtonClick = () => {
-    const specificData = data.SiteSurvey.filter(
+    const specificData = siteSurveys.filter(
       (item) => item.projectCode === projectCode
     );
     downloadDataAsExcel(specificData);

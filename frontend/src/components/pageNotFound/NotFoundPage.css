@@ -1,0 +1,28 @@
+.notfound_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 52px;
+  margin-top: 59px;
+  z-index: 1;
+  height: 80vh;
+}
+
+.content {
+  text-align: center;
+}
+
+h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}

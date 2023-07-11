@@ -3,7 +3,7 @@ const data = {
     {
       employee_id: '20192019',
       name: 'Vaibhav Randale',
-      image: '/images/image.jpg',
+      image: '/images/Vaibhav_Randale.jpg',
       email: 'vaibhav.randale@taypro.in',
       isAdmin: false,
       joiningDate: '1/03/2023',

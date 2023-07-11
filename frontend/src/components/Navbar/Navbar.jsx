@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './Navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import { Store } from '../../Store';
 
 const Navbar = () => {
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
 
@@ -40,6 +44,9 @@ const Navbar = () => {
     toast.success('Sign out Successfully', {
       position: 'bottom-right',
     });
+
+    ctxDispatch({ type: 'EMP_SIGNOUT' });
+    localStorage.removeItem('userInfo');
     navigate('/signin');
   };
 
@@ -66,31 +73,35 @@ const Navbar = () => {
       </div>
       <ul className="navbar-nav">
         <li className="nav-item">
-          <div className="dropdown1" ref={dropdownRef}>
-            <span>
-              Welcome,{' '}
-              <span className="text-success pt-3">Vaibhav Randale</span>
-              &nbsp;
-            </span>
-            <img
-              src="/images/image.jpg"
-              alt="image1"
-              onClick={toggleDropdown}
-            />
-            {isDropdownOpen && (
-              <div className="dropdown-menu1">
-                <Link to="" className="dropdown-item1">
-                  vaibhav.randale@taypro.in
-                </Link>
-                <Link to="/profile" className="dropdown-item1">
-                  Profile
-                </Link>
-                <Link onClick={popupHandle} className="dropdown-item1">
-                  Logout
-                </Link>
-              </div>
-            )}
-          </div>
+          {userInfo ? (
+            <div className="dropdown1" ref={dropdownRef}>
+              <span>
+                Welcome,{' '}
+                <span className="text-success pt-3">{userInfo.name}</span>
+                &nbsp;
+              </span>
+              <img
+                src="/images/Vaibhav_Randale.jpg"
+                alt={userInfo.name}
+                onClick={toggleDropdown}
+              />
+              {isDropdownOpen && (
+                <div className="dropdown-menu1">
+                  <Link to="" className="dropdown-item1">
+                    {userInfo.email}
+                  </Link>
+                  <Link to="/profile" className="dropdown-item1">
+                    Profile
+                  </Link>
+                  <Link onClick={popupHandle} className="dropdown-item1">
+                    Logout
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to={'/signin'}>Sing in</Link>
+          )}
         </li>
       </ul>
     </nav>

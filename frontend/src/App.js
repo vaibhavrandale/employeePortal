@@ -21,6 +21,8 @@ import SiteDetails from './screens/SiteSurvey/SiteDetails';
 import Survey from './screens/SiteSurvey/Survey';
 import AddNewSite from './screens/SiteSurvey/AddNewSite';
 import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
+import ProtectedRoutes from './components/ProtectedRoutes';
+import NotFoundPage from './components/pageNotFound/NotFoundPage';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
 function App() {
@@ -44,20 +46,106 @@ function AppRouter() {
       {!isSigninPage && <Sidebar />}
 
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/employees" element={<Employee />} />
-        <Route path="/employeedetails/:id" element={<EmployeeDetails />} />
-        <Route path="/addemployee" element={<AddEmployee />} />
+        <Route
+          path="*"
+          element={
+            <ProtectedRoutes>
+              <NotFoundPage />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoutes>
+              <Dashboard />{' '}
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/employees"
+          element={
+            <ProtectedRoutes>
+              <Employee />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/employeedetails/:id"
+          element={
+            <ProtectedRoutes>
+              <EmployeeDetails />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/addemployee"
+          element={
+            <ProtectedRoutes>
+              <AddEmployee />
+            </ProtectedRoutes>
+          }
+        />
         <Route path="/signin" element={<Signin />} />
-        <Route path="/leave" element={<Leaves />} />
-        <Route path="/leaves-history" element={<LeavesHistory />} />
-        <Route path="/sitelist" element={<SiteList />} />
+        <Route
+          path="/leave"
+          element={
+            <ProtectedRoutes>
+              <Leaves />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/leaves-history"
+          element={
+            <ProtectedRoutes>
+              <LeavesHistory />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/sitelist"
+          element={
+            <ProtectedRoutes>
+              <SiteList />
+            </ProtectedRoutes>
+          }
+        />
 
-        <Route path="/sitedetails/:projectCode" element={<SiteDetails />} />
+        <Route
+          path="/sitedetails/:projectCode"
+          element={
+            <ProtectedRoutes>
+              <SiteDetails />
+            </ProtectedRoutes>
+          }
+        />
 
-        <Route path="/survey/:projectCode/:id" element={<Survey />} />
-        <Route path="/addNewSite" element={<AddNewSite />} />
-        <Route path="/newSurvey/:projectCode" element={<SurveyFirstPage />} />
+        <Route
+          path="/survey/:projectCode/:id"
+          element={
+            <ProtectedRoutes>
+              <Survey />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/addNewSite"
+          element={
+            <ProtectedRoutes>
+              <AddNewSite />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/newSurvey/:projectCode"
+          element={
+            <ProtectedRoutes>
+              <SurveyFirstPage />
+            </ProtectedRoutes>
+          }
+        />
       </Routes>
     </>
   );

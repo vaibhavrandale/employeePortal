@@ -15,7 +15,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, siteDetails: action.payload, loading: false };
+      return { ...state, sitelist: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -26,14 +26,11 @@ const reducer = (state, action) => {
 };
 
 function SiteList() {
-  const [{ loading, error, siteDetails }, dispatch] = useReducer(
-    logger(reducer),
-    {
-      siteDetails: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loading, error, sitelist }, dispatch] = useReducer(logger(reducer), {
+    sitelist: [],
+    loading: true,
+    error: '',
+  });
 
   // const [loading, setLoading] = useState(true);
   // const [site, setSite] = useState([]);
@@ -66,8 +63,9 @@ function SiteList() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/siteDetails');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        const result = await axios.get('/api/survey/sites');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.sitelist });
+        console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -82,7 +80,7 @@ function SiteList() {
     fetchData();
   }, []);
 
-  const filteredData = siteDetails.filter(
+  const filteredData = sitelist.filter(
     (item) =>
       item.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.projectCode.toLowerCase().includes(searchTerm.toLowerCase()) ||

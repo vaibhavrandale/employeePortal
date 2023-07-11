@@ -72,7 +72,8 @@ const TableWithSearchAndPagination = () => {
 
       try {
         const result = await axios.get('/api/employees');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
+        console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -232,11 +233,11 @@ const TableWithSearchAndPagination = () => {
         </table>
       )}
 
-      {loading && filteredData.length === 0 && (
+      {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )}
 
-      {loading && (
+      {<LoadingBox /> && (
         <nav className="pagination-container">
           <ul className="pagination">
             {Array(Math.ceil(filteredData.length / itemsPerPage))

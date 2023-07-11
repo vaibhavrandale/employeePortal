@@ -11,7 +11,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, SiteSurvey: action.payload, loading: false };
+      return { ...state, siteSurvey: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -25,8 +25,8 @@ const reducer = (state, action) => {
 };
 
 function Survey() {
-  const [{ loading, error, SiteSurvey }, dispatch] = useReducer(reducer, {
-    SiteSurvey: null,
+  const [{ loading, error, siteSurvey }, dispatch] = useReducer(reducer, {
+    siteSurvey: {},
     loading: true,
     error: '',
     // surveyNotFound: false,
@@ -40,11 +40,11 @@ function Survey() {
 
       try {
         const result = await axios.get(
-          `/api/survey/${projectCode}/${surveyId}`
+          `/api/survey/siteSurveys/${projectCode}/${surveyId}`
         );
-        if (result.data) {
-          dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
-        }
+
+        console.log(result);
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurvey });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -52,22 +52,6 @@ function Survey() {
 
     fetchData();
   }, [projectCode, surveyId]);
-
-  // if (loading) {
-  //   return <LoadingBox />;
-  // }
-
-  // if (surveyNotFound) {
-  //   return (
-  //     <div className="container1">
-  //       <AlertBox className="alert alert-danger">Survey not found.</AlertBox>
-  //     </div>
-  //   );
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error}</div>;
-  // }
 
   return (
     <div className="container1">
@@ -110,14 +94,14 @@ function Survey() {
               <div className="d-flex m-1">
                 <span>Submitted By:</span>
                 <span className="badge bg-success p-1 ms-1">
-                  {SiteSurvey.submittedBy}
+                  {siteSurvey.submittedBy}
                 </span>
               </div>
               <div className="d-flex m-1">
                 <span>Verified By:</span>
-                {SiteSurvey.status ? (
+                {siteSurvey.status ? (
                   <span className="badge bg-success p-1 ms-1">
-                    {SiteSurvey.verifiedBy}
+                    {siteSurvey.verifiedBy}
                   </span>
                 ) : (
                   <span className="badge bg-danger p-1 ms-1">Pending</span>
@@ -132,20 +116,20 @@ function Survey() {
               style={{ width: '110px' }}
             >
               Block:{' '}
-              <span className="text-dark fw-bolder">{SiteSurvey.block}</span>
+              <span className="text-dark fw-bolder">{siteSurvey.block}</span>
             </div>
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '95px' }}
             >
               Table:{' '}
-              <span className="text-dark fw-bolder">{SiteSurvey.table}</span>
+              <span className="text-dark fw-bolder">{siteSurvey.table}</span>
             </div>
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '90px' }}
             >
-              Row: <span className="text-dark fw-bolder">{SiteSurvey.row}</span>
+              Row: <span className="text-dark fw-bolder">{siteSurvey.row}</span>
             </div>
           </div>
 
@@ -168,48 +152,48 @@ function Survey() {
                 <tbody>
                   <tr>
                     <td>SOLAR MODULE DIMENSION - A</td>
-                    <td className="text-center">{SiteSurvey.A}</td>
+                    <td className="text-center">{siteSurvey.A}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE VIRTICAL GAP DIMENSION - B</td>
-                    <td className="text-center">{SiteSurvey.B}</td>
+                    <td className="text-center">{siteSurvey.B}</td>
                   </tr>
                   <tr>
                     <td>TABLE WIDTH DIMENSION - C</td>
-                    <td className="text-center">{SiteSurvey.C}</td>
+                    <td className="text-center">{siteSurvey.C}</td>
                   </tr>
                   <tr>
                     <td>BACK GROUND CLEARANCE DIMENSION - D</td>
-                    <td className="text-center">{SiteSurvey.D}</td>
+                    <td className="text-center">{siteSurvey.D}</td>
                   </tr>
                   <tr>
                     <td>FRONT GROUND CLEARANCE DIMENSION - E</td>
-                    <td className="text-center">{SiteSurvey.E}</td>
+                    <td className="text-center">{siteSurvey.E}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE HEIGHT DIMENSION - F</td>
-                    <td className="text-center">{SiteSurvey.F}</td>
+                    <td className="text-center">{siteSurvey.F}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE FRAME CROSS SECTION DIMENSION - G</td>
-                    <td className="text-center">{SiteSurvey.G}</td>
+                    <td className="text-center">{siteSurvey.G}</td>
                   </tr>
                   <tr>
                     <td>
                       INTER TABLE GAP DIMENSION - H{' '}
                       <span className="text-dark fw-bolder">
-                        ({SiteSurvey.htablex} &amp; {SiteSurvey.htabley})
+                        ({siteSurvey.htablex} &amp; {siteSurvey.htabley})
                       </span>
                     </td>
-                    <td className="text-center">{SiteSurvey.H}</td>
+                    <td className="text-center">{siteSurvey.H}</td>
                   </tr>
                   <tr>
                     <td>SOLAR MODULE GAP HORIZONTAL DIMENSION - I</td>
-                    <td className="text-center">{SiteSurvey.I}</td>
+                    <td className="text-center">{siteSurvey.I}</td>
                   </tr>
                   <tr>
                     <td>TILT ANGLE - J</td>
-                    <td className="text-center">{SiteSurvey.J}</td>
+                    <td className="text-center">{siteSurvey.J}</td>
                   </tr>
                 </tbody>
               </table>

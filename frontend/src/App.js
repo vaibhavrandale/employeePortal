@@ -130,14 +130,24 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+
         <Route
-          path="/addNewSite"
+          path="/editSite/:id"
           element={
             <ProtectedRoutes>
               <AddNewSite />
             </ProtectedRoutes>
           }
         />
+
+        {/* <Route
+          path="/addNewSite"
+          element={
+            <ProtectedRoutes>
+              <AddNewSite />
+            </ProtectedRoutes>
+          }
+        /> */}
         <Route
           path="/newSurvey/:projectCode"
           element={

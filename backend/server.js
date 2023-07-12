@@ -6,6 +6,14 @@ import seedRouter from './routes/seedRouter.js';
 import path from 'path';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
+// import { v2 as cloudinary } from 'cloudinary';
+import uploadRouter from './routes/uploadRoute.js';
+
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_NAME,
+//   api_key: process.env.CLOUDINARY_API,
+//   api_secret: process.env.CLOUDINARY_SECRET,
+// });
 
 dotenv.config();
 mongoose
@@ -27,6 +35,7 @@ app.use('/api/seed', seedRouter);
 app.use('/api/employees', emplyeeRouter);
 
 app.use('/api/survey', surveyRouter);
+app.use('/api/upload', uploadRouter);
 
 app.get('/api/leaves', (req, res) => {
   res.send(data.Leaves);

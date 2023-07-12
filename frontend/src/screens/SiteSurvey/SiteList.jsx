@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './Sitetable.css';
 // import data from '../Employee/data';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +7,9 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import LoadingBox from '../../components/LoadingBox';
+import { getError } from '../../utils';
+import { Store } from '../../Store';
+import { AiOutlineEye } from 'react-icons/ai';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,17 +22,27 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreate: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreate: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreate: false };
+
     default:
       return state;
   }
 };
 
 function SiteList() {
-  const [{ loading, error, sitelist }, dispatch] = useReducer(reducer, {
-    sitelist: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, sitelist, loadingCreate }, dispatch] = useReducer(
+    reducer,
+    {
+      sitelist: [],
+      loading: true,
+      error: '',
+    }
+  );
 
   // const [loading, setLoading] = useState(true);
   // const [site, setSite] = useState([]);
@@ -79,6 +92,36 @@ function SiteList() {
     fetchData();
   }, []);
 
+  // ------------------------------------
+
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
+  const createSitehandler = async () => {
+    // if (window.confirm('Are you sure to create?')) {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
+      const { data } = await axios.post(
+        '/api/survey/sites',
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('site created successfully');
+      dispatch({ type: 'CREATE_SUCCESS' });
+      navigate(`/editSite/${data.site._id}`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'CREATE_FAIL',
+      });
+    }
+    // }
+  };
+
+  // ---------------------------------------
+
   const filteredData = sitelist.filter(
     (item) =>
       item.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -103,13 +146,13 @@ function SiteList() {
     setPopupOpen(!isPopupOpen);
   };
 
-  const createSitehandler = () => {
-    popupHandle();
-    toast.success('New Site Added Successfully', {
-      position: 'bottom-right',
-    });
-    navigate(`/addNewSite`);
-  };
+  // const createSitehandler = () => {
+  //   popupHandle();
+  //   toast.success('New Site Added Successfully', {
+  //     position: 'bottom-right',
+  //   });
+  //   navigate(`/addNewSite`);
+  // };
 
   return (
     <div className="container">
@@ -169,7 +212,7 @@ function SiteList() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
+        {loadingCreate && <LoadingBox />}
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -180,11 +223,12 @@ function SiteList() {
               <thead>
                 <tr>
                   <th className="col-md-1 text-center">Customer Logo</th>
-                  <th className="col-md-1 text-center">Customer Name</th>
+                  <th className="col-md-2 text-center">Customer Name</th>
                   <th className="col-md-2 text-center">Project Code</th>
                   <th className="col-md-2 text-center">Site Location</th>
                   <th className="col-md-1 text-center">Plant Capacity</th>
-                  <th className="col-md-1 text-center">View</th>
+                  <th className="col-md-1 text-center">View Surveys</th>
+                  <th className="col-md-1 text-center">Edit</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,6 +262,14 @@ function SiteList() {
                           to={`/siteDetails/${item.projectCode}`}
                         >
                           {' '}
+                          <AiOutlineEye />
+                        </Link>
+                      </button>
+                    </td>
+                    <td>
+                      <button className="edit-button">
+                        <Link className="link" to={`/editSite/${item._id}`}>
+                          {' '}
                           <BiEdit />
                         </Link>
                       </button>
@@ -233,7 +285,7 @@ function SiteList() {
           <AlertBox className="alert alert-danger">{error}</AlertBox>
         )} */}
 
-        {loading && (
+        {<LoadingBox /> && (
           <nav className="pagination-container">
             <ul className="pagination">
               {Array(Math.ceil(filteredData.length / itemsPerPage))

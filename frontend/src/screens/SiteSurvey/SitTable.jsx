@@ -89,20 +89,89 @@ function SiteTable({ projectCode }) {
     setHoveredRow(index);
   };
 
+  // const downloadDataAsExcel = (siteSurveys) => {
+  //   // Create a new workbook
+  //   const workbook = XLSX.utils.book_new();
+
+  //   const headerStyle = {
+  //     fill: {
+  //       fgColor: { rgb: 'FFFF00' }, // Yellow background color
+  //     },
+  //     font: {
+  //       bold: true, // Bold font
+  //     },
+  //   };
+
+  //   const worksheet = XLSX.utils.json_to_sheet(siteSurveys, { headerStyle });
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  //   const excelFile = XLSX.write(workbook, {
+  //     bookType: 'xlsx',
+  //     type: 'binary',
+  //   });
+
+  //   const buffer = new ArrayBuffer(excelFile.length);
+  //   const view = new Uint8Array(buffer);
+  //   for (let i = 0; i < excelFile.length; i++) {
+  //     view[i] = excelFile.charCodeAt(i) & 0xff;
+  //   }
+
+  //   const blob = new Blob([buffer], { type: 'application/octet-stream' });
+
+  //   const downloadLink = document.createElement('a');
+  //   downloadLink.href = URL.createObjectURL(blob);
+  //   downloadLink.download = `${projectCode}.xlsx`;
+  //   downloadLink.click();
+  // };
+
+  // const handleDownloadButtonClick = () => {
+  //   const specificData = siteSurveys.filter(
+  //     (item) => item.projectCode === projectCode
+  //   );
+  //   downloadDataAsExcel(specificData);
+  // };
+
   const downloadDataAsExcel = (siteSurveys) => {
-    // Create a new workbook
+    const selectedColumns = [
+      'surveyId',
+      'projectCode',
+      'block',
+      'row',
+      'table',
+      'A',
+      'B',
+      'C',
+      'D',
+      'E',
+      'F',
+      'G',
+      'H',
+      'I',
+      'J',
+      'htablex',
+      'htabley',
+      'submittedBy',
+      'submittedAt',
+      'verifiedBy',
+      'verifiededAt',
+      'remark',
+      'remarkBy',
+      'status',
+    ];
+
+    // Extract only the selected columns from each site survey
+    const filteredData = siteSurveys.map((survey) =>
+      selectedColumns.reduce((obj, key) => {
+        if (key in survey) {
+          obj[key] = survey[key];
+        }
+        return obj;
+      }, {})
+    );
+
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
     const workbook = XLSX.utils.book_new();
-
-    const headerStyle = {
-      fill: {
-        fgColor: { rgb: 'FFFF00' }, // Yellow background color
-      },
-      font: {
-        bold: true, // Bold font
-      },
-    };
-
-    const worksheet = XLSX.utils.json_to_sheet(siteSurveys, { headerStyle });
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
 
     const excelFile = XLSX.write(workbook, {
@@ -307,9 +376,9 @@ function SiteTable({ projectCode }) {
           </table>
         </>
       )}
-      {<LoadingBox /> && filteredData.length === 0 && (
+      {/* {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
-      )}
+      )} */}
       {<LoadingBox /> && (
         <nav className="pagination-container">
           <ul className="pagination">

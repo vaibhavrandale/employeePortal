@@ -81,7 +81,7 @@ const Navbar = () => {
                 &nbsp;
               </span>
               <img
-                src="/images/Vaibhav_Randale.jpg"
+                src={userInfo.profileImage}
                 alt={userInfo.name}
                 onClick={toggleDropdown}
               />

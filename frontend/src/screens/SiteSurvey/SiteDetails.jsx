@@ -1,34 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import '../../App.css';
-import data from '../Employee/data';
+// import data from '../Employee/data';
 import { Link, useParams } from 'react-router-dom';
 import SiteTable from './SitTable';
+import axios from 'axios';
+import LoadingBox from '../../components/LoadingBox';
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        siteSurveys: action.payload,
+      };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 function SiteDetails() {
+  const [{ loading, error, siteSurveys }, dispatch] = useReducer(reducer, {
+    siteSurveys: [], // Update the initial state to an empty object
+    loading: true,
+    error: '',
+  });
   const { projectCode } = useParams();
 
-  const [isLoading, setLoading] = useState(true);
-  const [site, setSite] = useState(null);
+  // const [isLoading, setLoading] = useState(true);
+  // const [site, setSite] = useState(null);
+
+  // useEffect(() => {
+  //   const fetchData = () => {
+  //     const foundSite = data.SiteSurvey.find(
+  //       (site1) => site1.projectCode === projectCode
+  //     );
+  //     setSite(foundSite);
+  //     setLoading(false);
+  //   };
+
+  //   setLoading(true);
+  //   setTimeout(fetchData, 1);
+
+  //   fetchData();
+  // }, [projectCode]);
 
   useEffect(() => {
-    const fetchData = () => {
-      const foundSite = data.SiteSurvey.find(
-        (site1) => site1.projectCode === projectCode
-      );
-      setSite(foundSite);
-      setLoading(false);
-    };
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
 
-    setLoading(true);
-    setTimeout(fetchData, 1);
+      try {
+        const result = await axios.get(
+          `/api/survey/sitesurveys/${projectCode}`
+        );
+        console.log(result);
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+
+        console.log(result.data);
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+    };
 
     fetchData();
   }, [projectCode]);
 
   return (
     <div className="container">
-      {isLoading ? (
-        <p>Loading...</p>
+      {projectCode}
+      {loading ? (
+        <LoadingBox />
       ) : (
         <>
           <nav
@@ -51,10 +98,10 @@ function SiteDetails() {
               </li>
             </ol>
           </nav>{' '}
-          {site ? (
-            <h2>Project code: {site.projectCode}</h2>
+          {siteSurveys ? (
+            <h2>Project code: {siteSurveys.projectCode}</h2>
           ) : (
-            <p>Site not found</p>
+            <p>Survey not found</p>
           )}
           <SiteTable projectCode={projectCode} />{' '}
           {/* Pass projectCode as a prop */}

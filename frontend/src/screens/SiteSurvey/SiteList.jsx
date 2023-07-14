@@ -51,7 +51,7 @@ function SiteList() {
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -126,8 +126,8 @@ function SiteList() {
     (item) =>
       item.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.projectCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.siteLocation.includes(searchTerm) ||
-      item.siteLocation.includes(searchTerm)
+      item.siteLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.plantCapacity.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;

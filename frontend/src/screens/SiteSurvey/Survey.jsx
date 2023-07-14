@@ -32,7 +32,7 @@ function Survey() {
     // surveyNotFound: false,
   });
 
-  const { id: surveyId, projectCode } = useParams();
+  const { id: _id, projectCode } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +40,7 @@ function Survey() {
 
       try {
         const result = await axios.get(
-          `/api/survey/siteSurveys/${projectCode}/${surveyId}`
+          `/api/survey/siteSurveys/${projectCode}/${_id}`
         );
 
         console.log(result);
@@ -51,7 +51,7 @@ function Survey() {
     };
 
     fetchData();
-  }, [projectCode, surveyId]);
+  }, [projectCode, _id]);
 
   return (
     <div className="container1">
@@ -88,7 +88,7 @@ function Survey() {
           <h2 className="text-center">Survey Details</h2>
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
-              <div className="badge bg-danger">Survey Id: {surveyId}</div>
+              <div className="badge bg-danger">Survey Id: {_id}</div>
             </div>
             <div className="flex-grow-1 d-flex flex-column justify-content-end align-items-end">
               <div className="d-flex m-1">

@@ -139,3 +139,14 @@ input:focus {
   align-items: center;
   height: 50vh; /* Adjust the height as needed */
 }
+
+.closeBtn {
+  background: rgb(255, 255, 255);
+  color: #ffffff;
+  font-weight: 900;
+  outline: none;
+  border: none;
+  border-radius: 50%;
+  padding: 1px;
+  font-size: 17px;
+}

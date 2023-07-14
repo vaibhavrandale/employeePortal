@@ -73,7 +73,7 @@ function SiteDetails() {
 
   return (
     <div className="container">
-      {projectCode}
+      {/* {projectCode} */}
       {loading ? (
         <LoadingBox />
       ) : (
@@ -99,7 +99,7 @@ function SiteDetails() {
             </ol>
           </nav>{' '}
           {siteSurveys ? (
-            <h2>Project code: {siteSurveys.projectCode}</h2>
+            <h2>Project code: {projectCode}</h2>
           ) : (
             <p>Survey not found</p>
           )}

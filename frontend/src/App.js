@@ -24,6 +24,7 @@ import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NotFoundPage from './components/pageNotFound/NotFoundPage';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
+// import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
 function App() {
   return (
@@ -136,6 +137,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <AddNewSite />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/editSurvey/:projectCode/:id"
+          element={
+            <ProtectedRoutes>
+              <SurveyFirstPage />
             </ProtectedRoutes>
           }
         />

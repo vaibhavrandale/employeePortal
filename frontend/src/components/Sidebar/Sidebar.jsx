@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineDashboard } from 'react-icons/ai';
 
 import { FcLeave } from 'react-icons/fc';
 import './Sidebar.css';
+import { Store } from '../../Store';
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   const handleMouseEnter = () => {
     setHovered(true);
@@ -46,34 +49,38 @@ const Sidebar = () => {
             {hovered && <span>Dashboard</span>}
           </Link>
         </li>
-        <li>
-          <Link to="/employees">
-            <img
-              src="/images/icons/employee.png"
-              alt="employee"
-              className="icon me-1"
-              height={'23px'}
-            />
-            {hovered && <span>Employees</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="/leaves-history">
-            <FcLeave className="icon me-2" />
-            {hovered && <span>Leaves</span>}
-          </Link>
-        </li>
-        <li>
-          <Link to="sitelist">
-            <img
-              src="/images/icons/survey.png"
-              alt="employee"
-              className="icon me-1"
-              height={'23px'}
-            />
-            {hovered && <span>Site Survey</span>}
-          </Link>
-        </li>
+        {userInfo && userInfo.isAdmin && (
+          <>
+            <li>
+              <Link to="/employees">
+                <img
+                  src="/images/icons/employee.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Employees</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="/leaves-history">
+                <FcLeave className="icon me-2" />
+                {hovered && <span>Leaves</span>}
+              </Link>
+            </li>
+            <li>
+              <Link to="sitelist">
+                <img
+                  src="/images/icons/survey.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Site Survey</span>}
+              </Link>
+            </li>
+          </>
+        )}
         <li>
           <Link to="#">
             <AiOutlineDashboard className="icon me-2" />

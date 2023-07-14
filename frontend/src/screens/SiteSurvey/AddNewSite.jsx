@@ -260,6 +260,7 @@ function AddNewSite() {
                 >
                   Update{' '}
                 </button>
+                {loadingUpdate && <LoadingBox1 />}
               </div>
             </div>
           </form>

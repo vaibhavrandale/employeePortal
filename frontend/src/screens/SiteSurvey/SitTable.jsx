@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from 'react';
+import React, { useEffect, useState, useReducer, useContext } from 'react';
 import '../../App.css';
 import { Link, useNavigate } from 'react-router-dom';
 // import { BiEdit } from 'react-icons/bi';
@@ -13,6 +13,8 @@ import LoadingBox from '../../components/LoadingBox';
 // import logger from 'use-reducer-logger';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import { Store } from '../../Store';
+import { getError } from '../../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -29,17 +31,29 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreate: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreate: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreate: false };
+
     default:
       return state;
   }
 };
 
 function SiteTable({ projectCode }) {
-  const [{ loading, error, siteSurveys }, dispatch] = useReducer(reducer, {
-    siteSurveys: [], // Update the initial state to an empty object
-    loading: true,
-    error: '',
-  });
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+  const [{ loading, error, siteSurveys, loadingCreate }, dispatch] = useReducer(
+    reducer,
+    {
+      siteSurveys: [], // Update the initial state to an empty object
+      loading: true,
+      error: '',
+    }
+  );
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -197,21 +211,27 @@ function SiteTable({ projectCode }) {
     const specificData = siteSurveys.filter(
       (item) => item.projectCode === projectCode
     );
-    downloadDataAsExcel(specificData);
+    if (specificData.length > 0) {
+      downloadDataAsExcel(specificData);
+    } else {
+      toast.error('No site surveys found for export.', {
+        position: 'bottom-right',
+      });
+    }
   };
 
   const createHandler = async (e) => {
     setCreateSurvey(!createSurvey);
   };
 
-  const createSurveyHandler = async () => {
-    toast.success('New Survey Created successfully', {
-      position: 'bottom-right',
-    });
-    createHandler();
+  // const createSurveyHandler = async () => {
+  //   toast.success('New Survey Created successfully', {
+  //     position: 'bottom-right',
+  //   });
+  //   createHandler();
 
-    navigate(`/newSurvey/${projectCode}`);
-  };
+  //   navigate(`/newSurvey/${projectCode}`);
+  // };
 
   const popupHandle = () => {
     setPopupOpen(!isPopupOpen);
@@ -222,6 +242,29 @@ function SiteTable({ projectCode }) {
     toast.success('Verified successfully', {
       position: 'bottom-right',
     });
+  };
+
+  const createSurveyHandler = async () => {
+    // if (window.confirm('Are you sure to create?')) {
+    try {
+      dispatch({ type: 'CREATE_REQUEST' });
+      const { data } = await axios.post(
+        `/api/survey/sitesurveys/${projectCode}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('Survey created successfully');
+      dispatch({ type: 'CREATE_SUCCESS' });
+      navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'CREATE_FAIL',
+      });
+    }
+    // }
   };
 
   return (
@@ -341,7 +384,7 @@ function SiteTable({ projectCode }) {
                   <td className="text-center">
                     <Link
                       className="fs-5"
-                      to={`/survey/${projectCode}/${item.surveyId}`}
+                      to={`/survey/${projectCode}/${item._id}`}
                       style={{ color: 'blue' }}
                     >
                       <AiOutlineEye />
@@ -352,7 +395,7 @@ function SiteTable({ projectCode }) {
                     <button className="edit-button">
                       <Link
                         className="fs-5 "
-                        to={`/editSiteDetails/${item.surveyId}`}
+                        to={`/editSurvey/${projectCode}/${item._id}`}
                         style={{ color: 'blue' }}
                       >
                         {' '}

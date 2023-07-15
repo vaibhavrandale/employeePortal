@@ -15,6 +15,7 @@ import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
+import LoadingBox1 from '../../components/LoadingBox1';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,6 +39,13 @@ const reducer = (state, action) => {
     case 'CREATE_FAIL':
       return { ...state, loadingCreate: false };
 
+    case 'VERIFY_REQUEST':
+      return { ...state, loadingCreate: true };
+    case 'VERIFY_SUCCESS':
+      return { ...state, loadingCreate: false };
+    case 'VERIFY_FAIL':
+      return { ...state, loadingCreate: false };
+
     default:
       return state;
   }
@@ -54,6 +62,11 @@ function SiteTable({ projectCode }) {
       error: '',
     }
   );
+  // const sortedReviews = siteSurveys.reviews.sort((a, b) => {
+  //   return new Date(a.createdAt) - new Date(b.createdAt);
+  // });
+
+  // const latestRemark = sortedReviews[sortedReviews.length - 1];
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -72,8 +85,8 @@ function SiteTable({ projectCode }) {
         );
 
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurveys });
-
-        console.log(result.data);
+        // console.log(latestRemark);
+        // console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -233,17 +246,6 @@ function SiteTable({ projectCode }) {
   //   navigate(`/newSurvey/${projectCode}`);
   // };
 
-  const popupHandle = () => {
-    setPopupOpen(!isPopupOpen);
-  };
-
-  const handleVerify = () => {
-    popupHandle();
-    toast.success('Verified successfully', {
-      position: 'bottom-right',
-    });
-  };
-
   const createSurveyHandler = async () => {
     // if (window.confirm('Are you sure to create?')) {
     try {
@@ -257,7 +259,8 @@ function SiteTable({ projectCode }) {
       );
       toast.success('Survey created successfully');
       dispatch({ type: 'CREATE_SUCCESS' });
-      navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
+      // navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
+      navigate(`/editSurvey/${data.survey._id}`);
     } catch (err) {
       toast.error(getError(err));
       dispatch({
@@ -265,6 +268,59 @@ function SiteTable({ projectCode }) {
       });
     }
     // }
+  };
+
+  // const handleVerify = async (itemId) => {
+  //   popupHandle();
+
+  //   try {
+  //     dispatch({ type: 'VERIFY_REQUEST' });
+  //     const { data } = await axios.put(
+  //       `/api/survey/sitesurveys/${itemId}`,
+  //       { status: true },
+  //       {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       }
+  //     );
+  //     toast.success('Verified successfully');
+  //     dispatch({ type: 'VERIFY_SUCCESS' });
+  //     // navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
+  //     console.log(data);
+  //     navigate(`/sitedetails/${projectCode}`);
+  //   } catch (err) {
+  //     toast.error(getError(err));
+  //     dispatch({
+  //       type: 'VERIFY_FAIL',
+  //     });
+  //   }
+  // };
+
+  const popupHandle = () => {
+    setPopupOpen(!isPopupOpen);
+  };
+
+  const handleVerify = async (itemId) => {
+    popupHandle();
+
+    try {
+      dispatch({ type: 'VERIFY_REQUEST' });
+      const { data } = await axios.put(
+        `/api/survey/sitesurveys/${itemId}`,
+        { status: true },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('Verified successfully');
+      dispatch({ type: 'VERIFY_SUCCESS' });
+      console.log(data);
+      navigate(`/sitedetails/${projectCode}`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'VERIFY_FAIL',
+      });
+    }
   };
 
   return (
@@ -294,7 +350,7 @@ function SiteTable({ projectCode }) {
                 className="popup-button verify"
                 onClick={createSurveyHandler}
               >
-                Yes
+                Yes{loadingCreate && <LoadingBox1 />}
               </button>
               <button className="popup-button cancel" onClick={createHandler}>
                 No
@@ -366,16 +422,21 @@ function SiteTable({ projectCode }) {
                       <span className="badge bg-danger">Pending</span>
                     )}
                   </td>
+
                   <td className="text-center">
                     {item.remark !== '' ? (
-                      <span className="">{item.remark}</span>
+                      <span className="">
+                        {item.reviews[item.reviews.length - 1].remark}
+                      </span>
                     ) : (
                       <span className="badge bg-danger">Pending</span>
                     )}
                   </td>
                   <td className="text-center">
                     {item.remarkBy !== '' ? (
-                      <span className="">{item.remarkBy}</span>
+                      <span className="">
+                        {item.reviews[item.reviews.length - 1].remarkBy}
+                      </span>
                     ) : (
                       <span className="badge bg-danger">Pending</span>
                     )}
@@ -384,7 +445,7 @@ function SiteTable({ projectCode }) {
                   <td className="text-center">
                     <Link
                       className="fs-5"
-                      to={`/survey/${projectCode}/${item._id}`}
+                      to={`/survey/${item._id}`}
                       style={{ color: 'blue' }}
                     >
                       <AiOutlineEye />
@@ -395,7 +456,7 @@ function SiteTable({ projectCode }) {
                     <button className="edit-button">
                       <Link
                         className="fs-5 "
-                        to={`/editSurvey/${projectCode}/${item._id}`}
+                        to={`/editSurvey/${item._id}`}
                         style={{ color: 'blue' }}
                       >
                         {' '}
@@ -405,13 +466,24 @@ function SiteTable({ projectCode }) {
                   </td>
 
                   <td className="text-center">
-                    <button
-                      className=" edit-button fs-5 pt-1 link"
-                      style={{ color: 'blue' }}
-                      onClick={popupHandle}
-                    >
-                      <HiShieldCheck />
-                    </button>
+                    {item.status === false ? (
+                      <button
+                        className=" edit-button fs-5 pt-1 link"
+                        style={{ color: 'blue' }}
+                        // onClick={popupHandle(item._id)}
+                        onClick={() => popupHandle(item._id)}
+                      >
+                        <HiShieldCheck />
+                      </button>
+                    ) : (
+                      <button
+                        className=" edit-button fs-5 pt-1 link"
+                        disabled
+                        style={{ color: 'green' }}
+                      >
+                        <HiShieldCheck />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

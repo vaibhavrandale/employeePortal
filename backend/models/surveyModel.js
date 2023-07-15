@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema(
   {
-    verifiedBy: { type: String },
-    verifiededAt: { type: String },
-    remark: { type: String },
-    remarkBy: { type: String },
+    verifiedBy: { type: String, required: true },
+    verifiededAt: { type: String, required: true },
+    remark: { type: String, required: true },
+    remarkBy: { type: String, required: true },
+    rating: { type: Number, required: true },
   },
   {
     timestamps: true,

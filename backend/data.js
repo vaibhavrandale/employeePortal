@@ -45,7 +45,7 @@ const data = {
       name: 'Satyajeet Patil',
       image: '/images/Satyajit_patil.png',
       email: 'satyajeet.patil@taypro.in',
-      isAdmin: false,
+      isAdmin: true,
       joiningDate: '1/03/2023',
       birth_date: '24/06/2000',
       gender: 'male',

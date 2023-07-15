@@ -94,7 +94,7 @@ function SiteDetails() {
                 </Link>{' '}
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                Site Details
+                Site Details :{projectCode}
               </li>
             </ol>
           </nav>{' '}

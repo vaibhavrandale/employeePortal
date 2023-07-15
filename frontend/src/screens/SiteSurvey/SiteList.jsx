@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
 import { AiOutlineEye } from 'react-icons/ai';
+import LoadingBox1 from '../../components/LoadingBox1';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -165,7 +166,7 @@ function SiteList() {
                 className="popup-button verify"
                 onClick={createSitehandler}
               >
-                Add
+                Add {loadingCreate && <LoadingBox1 />}
               </button>
               <button className="popup-button cancel" onClick={popupHandle}>
                 Cancel
@@ -212,7 +213,8 @@ function SiteList() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        {loadingCreate && <LoadingBox />}
+
+        {loadingCreate && <LoadingBox1 />}
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -267,12 +269,25 @@ function SiteList() {
                       </button>
                     </td>
                     <td>
-                      <button className="edit-button">
-                        <Link className="link" to={`/editSite/${item._id}`}>
-                          {' '}
-                          <BiEdit />
-                        </Link>
-                      </button>
+                      {userInfo.isAdmin ? (
+                        <button className="edit-button">
+                          <Link className="link" to={`/editSite/${item._id}`}>
+                            {' '}
+                            <BiEdit />
+                          </Link>
+                        </button>
+                      ) : (
+                        <button className="edit-button " disabled>
+                          <Link
+                            className="link"
+                            disabled
+                            to={`/editSite/${item._id}`}
+                          >
+                            {' '}
+                            <BiEdit />
+                          </Link>
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -285,7 +300,7 @@ function SiteList() {
           <AlertBox className="alert alert-danger">{error}</AlertBox>
         )} */}
 
-        {<LoadingBox /> && (
+        {<LoadingBox1 /> && (
           <nav className="pagination-container">
             <ul className="pagination">
               {Array(Math.ceil(filteredData.length / itemsPerPage))

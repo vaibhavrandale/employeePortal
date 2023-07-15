@@ -42,11 +42,11 @@ const reducer = (state, action) => {
       return state;
   }
 };
-function SurveyFirstPage() {
+function SurveyFirstPage({ projectCode }) {
   const navigate = useNavigate();
 
   const params = useParams(); // /product/:id
-  const { projectCode, id: _id } = params;
+  const { id } = params;
 
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -99,10 +99,8 @@ function SurveyFirstPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(
-          `/api/survey/sitesurveys/${projectCode}/${_id}`
-        );
-        // console.log(data.siteSurvey.projectCode);
+        const { data } = await axios.get(`/api/survey/sitesurveys/get/${id}`);
+        console.log(data.siteSurveys);
         setProjectcode(data.siteSurvey.projectCode);
         setSurveyId(data.siteSurvey.surveyId);
         setBlock(data.siteSurvey.block);
@@ -133,16 +131,16 @@ function SurveyFirstPage() {
       }
     };
     fetchData();
-  }, [projectCode, _id]);
+  }, [projectcode, id]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
-        `/api/survey/sitesurveys/${projectCode}/${_id}`,
+        `/api/survey/sitesurveys/${id}`,
         {
-          _id,
+          _id: id,
           surveyId,
           projectCode,
           table,
@@ -172,7 +170,7 @@ function SurveyFirstPage() {
         type: 'UPDATE_SUCCESS',
       });
       toast.success('Site updated successfully');
-      navigate(`/siteDetails/${projectCode}`);
+      navigate(`/siteDetails/${projectcode}`);
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
@@ -240,7 +238,15 @@ function SurveyFirstPage() {
                 </Link>{' '}
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                New Survey
+                <Link
+                  to={`/siteDetails/${projectCode}`}
+                  className="text-decoration-none"
+                >
+                  Site Details :{projectCode}
+                </Link>{' '}
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Site Survey
               </li>
             </ol>
           </nav>{' '}

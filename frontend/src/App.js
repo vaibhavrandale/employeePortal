@@ -124,7 +124,7 @@ function AppRouter() {
         />
 
         <Route
-          path="/survey/:projectCode/:id"
+          path="/survey/:id"
           element={
             <ProtectedRoutes>
               <Survey />
@@ -141,8 +141,17 @@ function AppRouter() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/editSurvey/:projectCode/:id"
+          element={
+            <ProtectedRoutes>
+              <SurveyFirstPage />
+            </ProtectedRoutes>
+          }
+        /> */}
+
+        <Route
+          path="/editSurvey/:id"
           element={
             <ProtectedRoutes>
               <SurveyFirstPage />
@@ -150,14 +159,6 @@ function AppRouter() {
           }
         />
 
-        {/* <Route
-          path="/addNewSite"
-          element={
-            <ProtectedRoutes>
-              <AddNewSite />
-            </ProtectedRoutes>
-          }
-        /> */}
         <Route
           path="/newSurvey/:projectCode"
           element={

@@ -240,6 +240,16 @@ function AddNewSite() {
                   />
                 </div>
                 <div className="form-group col-md-5 m-2">
+                  <label htmlFor="leaveDate">Logo file :</label>
+
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={customerLogo}
+                    // onChange={(e) => setCustomerLogo(e.target.value)}
+                  />
+                </div>
+                <div className="form-group col-md-5 m-2">
                   <label htmlFor="leaveDate">Upload Logo :</label>
                   <span className="text-muted">
                     (image size should be 123*43)

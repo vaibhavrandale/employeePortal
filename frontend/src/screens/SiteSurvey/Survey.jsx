@@ -1,9 +1,20 @@
-import React, { useEffect, useReducer } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import MsgBox from '../../components/MessageBox/MsgBox';
 import { getError } from '../../utils';
+import LoadingBox1 from '../../components/LoadingBox1';
+import { toast } from 'react-hot-toast';
+import { Store } from '../../Store';
+import '../../App.css';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -16,32 +27,40 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
-    // case 'SURVEY_NOT_FOUND':
-    //   return { ...state, loading: false, surveyNotFound: true };
+    case 'REFRESH_PRODUCT':
+      return { ...state, siteSurvey: action.payload };
+
+    case 'CREATE_REQUEST':
+      return { ...state, loadingCreateReview: true };
+    case 'CREATE_SUCCESS':
+      return { ...state, loadingCreateReview: false };
+    case 'CREATE_FAIL':
+      return { ...state, loadingCreateReview: false };
 
     default:
       return state;
   }
 };
 
-function Survey() {
-  const [{ loading, error, siteSurvey }, dispatch] = useReducer(reducer, {
-    siteSurvey: {},
-    loading: true,
-    error: '',
-    // surveyNotFound: false,
-  });
-
-  const { id: _id, projectCode } = useParams();
+function Survey({ projectCode }) {
+  const [{ loading, error, siteSurvey, loadingCreateReview }, dispatch] =
+    useReducer(reducer, {
+      siteSurvey: {},
+      loading: true,
+      error: '',
+      // surveyNotFound: false,
+    });
+  const [remark, setRemark] = useState('');
+  const { id } = useParams();
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
 
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(
-          `/api/survey/siteSurveys/${projectCode}/${_id}`
-        );
+        const result = await axios.get(`/api/survey/siteSurveys/get/${id}`);
 
         console.log(result);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurvey });
@@ -51,7 +70,47 @@ function Survey() {
     };
 
     fetchData();
-  }, [projectCode, _id]);
+  }, [id]);
+  let reviewRef = useRef();
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (!remark) {
+      toast.error('Please enter remark ', {
+        position: 'bottom-right',
+      });
+      return;
+    }
+    try {
+      const { data } = await axios.post(
+        `/api/survey/sitesurveys/${id}/reviews`,
+        { remark, name: userInfo.name },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({
+        type: 'CREATE_SUCCESS',
+      });
+      toast.success('Remark submitted successfully', {
+        position: 'bottom-right',
+      });
+      siteSurvey.reviews.unshift(data.review);
+      siteSurvey.numReviews = data.numReviews;
+      siteSurvey.rating = data.rating;
+      dispatch({ type: 'REFRESH_PRODUCT', payload: siteSurvey });
+      setRemark('');
+
+      window.scrollTo({
+        behavior: 'smooth',
+        top: reviewRef.current.offsetTop,
+      });
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'bottom-right',
+      });
+      dispatch({ type: 'CREATE_FAIL' });
+    }
+  };
 
   return (
     <div className="container1">
@@ -64,7 +123,7 @@ function Survey() {
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             <Link
-              to={`/sitedetails/${projectCode}`}
+              to={`/sitedetails/${siteSurvey.projectCode}`}
               className="text-decoration-none"
             >
               Site Details
@@ -88,7 +147,7 @@ function Survey() {
           <h2 className="text-center">Survey Details</h2>
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
-              <div className="badge bg-danger">Survey Id: {_id}</div>
+              <div className="badge bg-danger">Survey Id: {id}</div>
             </div>
             <div className="flex-grow-1 d-flex flex-column justify-content-end align-items-end">
               <div className="d-flex m-1">
@@ -115,6 +174,15 @@ function Survey() {
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
               style={{ width: '110px' }}
             >
+              Project:{' '}
+              <span className="text-dark fw-bolder">
+                {siteSurvey.projectCode}
+              </span>
+            </div>
+            <div
+              className="col-md-3 fw-bolder badge bg-info m-2 p-2"
+              style={{ width: '110px' }}
+            >
               Block:{' '}
               <span className="text-dark fw-bolder">{siteSurvey.block}</span>
             </div>
@@ -134,7 +202,7 @@ function Survey() {
           </div>
 
           <div className="d-flex flex-wrap">
-            <div className="d-flex border m-1" style={{ maxWidth: '52%' }}>
+            <div className="d-flex border m-1" style={{ maxWidth: '51%' }}>
               <img
                 src="/images/twopannel.png"
                 alt=""
@@ -198,6 +266,91 @@ function Survey() {
                 </tbody>
               </table>
             </div>
+          </div>
+          <h3 ref={reviewRef} className="mt-3 text-center">
+            Remarks
+          </h3>
+          <div className="mb-3 d-flex justify-content-center">
+            {siteSurvey.reviews.length === 0 && (
+              <MsgBox className="alert alert-info m-1">
+                There is no remarks
+              </MsgBox>
+            )}
+          </div>
+          <div className="d-flex justify-content-center ">
+            <ul>
+              {siteSurvey.reviews
+                .slice()
+                .reverse()
+                .map((review) => (
+                  <li
+                    key={review._id}
+                    className="bg-info card m-1 p-1  "
+                    style={{ width: '440px' }}
+                    variant=""
+                  >
+                    <span>
+                      Remark By : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <strong>{review.remarkBy}</strong>
+                    </span>
+                    <span>
+                      Remark Date :&nbsp;&nbsp;&nbsp;
+                      {new Date(review.createdAt).toLocaleString('en-US', {
+                        dateStyle: 'short',
+                        timeStyle: 'short',
+                      })}
+                    </span>
+
+                    <span>
+                      Remark
+                      :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{' '}
+                      {review.remark}
+                    </span>
+                  </li>
+                ))}
+            </ul>
+          </div>
+          <div className="my-3 d-flex justify-content-center ">
+            {' '}
+            <form onSubmit={submitHandler}>
+              <h3>Write a Remark</h3>
+
+              <label
+                controlId="floatingTextarea"
+                label="Comments"
+                className="mb-1"
+              >
+                <input
+                  className="form-control"
+                  as="textarea"
+                  placeholder="Leave a remark here"
+                  value={remark}
+                  onChange={(e) => setRemark(e.target.value)}
+                />
+              </label>
+              <div className="mb-3 ">
+                {/* <button
+                  className="btn-sm submitBtn"
+                  disabled={loadingCreateReview}
+                  type="submit"
+                >
+                  Submit
+                </button>
+                {loadingCreateReview && <LoadingBox1></LoadingBox1>} */}
+
+                {loadingCreateReview ? (
+                  <LoadingBox1></LoadingBox1>
+                ) : (
+                  <button
+                    className="btn-sm submitBtn"
+                    disabled={loadingCreateReview}
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                )}
+              </div>
+            </form>
           </div>
         </>
       )}

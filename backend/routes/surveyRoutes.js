@@ -76,177 +76,99 @@ surveyRouter.get('/sitesurveys/:projectCode', async (req, res) => {
   res.send({ siteSurveys });
 });
 
-// surveyRouter.put(
-//   '/sitesurveys/:projectCode/:id',
-//   isAuth,
-//   isAdmin,
+surveyRouter.get('/sitesurveys/:id/reviews', async (req, res) => {
+  const surveyid = req.params.projectCode;
 
-//   expressAsyncHandler(async (req, res) => {
-//     const projectCode = req.params.projectCode;
-//     const surveyId = req.params.sid;
+  // Fetch site survey data based on the project code
+  const remarks = await Survey.find({ surveyid });
 
-//     try {
-//       // Find the survey by ID and project code
-//       const survey = await Survey.findOne({
-//         surveyId,
-//         projectCode,
-//       });
-//       console.log(survey);
-//       if (survey) {
-//         // survey.surveyId = req.body.surveyId;
-//         survey.block = req.body.block;
-//         survey.row = req.body.row;
-//         survey.table = req.body.table;
-//         survey.A = req.body.A;
-//         survey.B = req.body.B;
-//         survey.C = req.body.C;
-//         survey.D = req.body.D;
-//         survey.E = req.body.E;
-//         survey.F = req.body.F;
-//         survey.G = req.body.G;
-//         survey.H = req.body.H;
-//         survey.I = req.body.I;
-//         survey.J = req.body.J;
-//         survey.htablex = req.body.htablex;
-//         survey.htabley = req.body.htabley;
-//         // Set the submittedBy field to the logged-in user's name
-//         survey.submittedBy = req.employee.name; // Assuming the user's name is available in req.user
-//         // Set the submittedAt field to the current date and time
-//         survey.submittedAt = new Date();
-//         product.img = req.body.img;
-//         //product.images = req.body.images;
-
-//         // Save the updated survey
-//         const updatedSurvey = await survey.save();
-//         res.status(200).json(updatedSurvey);
-//       } else {
-//         res.status(404).json({ message: 'Survey not Updated' });
-//       }
-//     } catch (error) {
-//       res.status(500).json({ message: 'Internal server error' });
-//     }
-//   })
-// );
-
-surveyRouter.put(
-  '/sitesurveys/:projectCode/:id',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const projectCode = req.params.projectCode;
-    const id = req.params._id;
-
-    try {
-      const updatedSurvey = await Survey.findOne(
-        { id, projectCode },
-        {
-          block: req.body.block,
-          row: req.body.row,
-          table: req.body.table,
-          A: req.body.A,
-          B: req.body.B,
-          C: req.body.C,
-          D: req.body.D,
-          E: req.body.E,
-          F: req.body.F,
-          G: req.body.G,
-          H: req.body.H,
-          I: req.body.I,
-          J: req.body.J,
-          htablex: req.body.htablex,
-          htabley: req.body.htabley,
-          submittedBy: req.employee.name,
-          submittedAt: new Date(),
-          img: req.body.img,
-        },
-        { new: true } // Return the updated document
-      );
-
-      if (updatedSurvey) {
-        res.status(200).json(updatedSurvey);
-      } else {
-        res.status(404).json({ message: 'Survey not Updated' });
-      }
-    } catch (error) {
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  })
-);
+  // Send the site surveys as the response
+  res.send({ remarks });
+});
 
 surveyRouter.post(
-  '/sitesurveys/:projectCode/:id/reviews',
+  '/sitesurveys/:id/reviews',
   isAuth,
   isAdmin,
 
   expressAsyncHandler(async (req, res) => {
-    const projectCode = req.params.projectCode;
-    const id = req.params.surveyId;
-    try {
-      // Find the survey by ID and project code
-      const survey = await Survey.findById(id, projectCode);
-      if (survey) {
-        const review = {
-          verifiedBy: req.employee.name,
-          verifiededAt: new Date(),
-          remark: req.body.remark,
-          remarkBy: request.employee.name,
-        };
-        survey.reviews.push(review);
-        survey.numReviews = survey.reviews.length;
-        survey.rating =
-          survey.reviews.reduce((a, c) => c.rating + a, 0) /
-          survey.reviews.length;
-        const updatedSurvey = await product.save();
-        res.status(201).send({
-          message: 'Remark Added',
-          review: updatedSurvey.reviews[updatedSurvey.reviews.length - 1],
-          numReviews: survey.numReviews,
-          rating: survey.rating,
-        });
-      } else {
-        res.status(404).send({ message: 'Survey Not Found' });
-      }
-    } catch (err) {
-      res.status(500).json({ message: 'Internal server error' });
+    // const projectCode = req.params.projectCode;
+    const surveyid = req.params.id;
+
+    // Find the survey by ID and project code
+    const survey = await Survey.findById(surveyid);
+    if (survey) {
+      const review = {
+        verifiedBy: req.employee.name,
+        verifiededAt: new Date(),
+        remark: req.body.remark,
+        rating: Number(5),
+        remarkBy: req.employee.name,
+      };
+      survey.reviews.push(review);
+      survey.numReviews = survey.reviews.length;
+      survey.rating =
+        survey.reviews.reduce((a, c) => c.rating + a, 0) /
+        survey.reviews.length;
+      const updatedSurvey = await survey.save();
+      // res.status(200).json(updatedSurvey);
+      res.status(201).send({
+        message: 'Remark Added',
+        review: updatedSurvey.reviews[updatedSurvey.reviews.length - 1],
+        numReviews: survey.numReviews,
+        rating: survey.rating,
+      });
+    } else {
+      res.status(404).send({ message: 'Survey Not Found' });
     }
   })
 );
 
-// surveyRouter.post(
-//   '/sitesurveys',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const newSurvey = new Survey({
-//       projectCode: 'projectcode1' + Date.now(),
-//       block: 'block X' + Date.now(),
-//       surveyId: 'survey' + Date.now(),
-//       row: 'row x',
-//       table: 'table x',
-//       structure: '2P',
-//       A: 'table x',
-//       B: 'table x',
-//       C: 'table x',
-//       D: 'table x',
-//       E: 'table x',
-//       F: 'TABLE F',
-//       G: 'table x',
-//       H: 'table x',
-//       I: 'table x',
-//       J: 'table x',
-//       htablex: 'h table X',
-//       htabley: 'h table y',
-//       submittedBy: req.employee.name,
-//       submittedAt: new Date(),
-//       rating: 0,
-//       numReviews: 0,
-//       img: '/images/taypro_standard.png',
-//       // customerLogo: '/images/sample_logo.png',
-//     });
-//     const survey = await newSurvey.save();
-//     res.send({ message: 'Survey Created', survey });
-//   })
-// );
+surveyRouter.put(
+  '/sitesurveys/:id',
+  isAuth,
+  isAdmin,
+
+  expressAsyncHandler(async (req, res) => {
+    const surveyid = req.params.id;
+
+    // Find the survey by ID and project code
+    const survey = await Survey.findById(surveyid);
+    // console.log(survey);
+    if (survey) {
+      survey.surveyId = req.body.surveyId;
+      survey.block = req.body.block;
+      survey.row = req.body.row;
+      survey.table = req.body.table;
+      survey.A = req.body.A;
+      survey.B = req.body.B;
+      survey.C = req.body.C;
+      survey.D = req.body.D;
+      survey.E = req.body.E;
+      survey.F = req.body.F;
+      survey.G = req.body.G;
+      survey.H = req.body.H;
+      survey.I = req.body.I;
+      survey.J = req.body.J;
+      survey.htablex = req.body.htablex;
+      survey.htabley = req.body.htabley;
+      // Set the submittedBy field to the logged-in user's name
+      survey.submittedBy = req.employee.name; // Assuming the user's name is available in req.user
+      // Set the submittedAt field to the current date and time
+      survey.submittedAt = new Date();
+      survey.img = req.body.img;
+      // survey.status = false;
+      //survey.images = req.body.images;
+
+      // Save the updated survey
+      const updatedSurvey = await survey.save();
+      // res.status(200).json(UpdatedSurvey);
+      res.status(200).json(updatedSurvey);
+    } else {
+      res.status(404).send({ message: 'Survey Not Found' });
+    }
+  })
+);
 
 surveyRouter.post(
   '/sitesurveys/:projectCode',
@@ -285,12 +207,12 @@ surveyRouter.post(
   })
 );
 
-surveyRouter.get('/sitesurveys/:projectCode/:id', async (req, res) => {
-  const projectCode = req.params.projectCode;
-  const id = req.params.surveyId;
+surveyRouter.get('/sitesurveys/get/:id', async (req, res) => {
+  // const projectCode = req.params.projectCode;
+  const id = req.params.id;
 
   // Fetch site survey data based on the project code and survey ID
-  const siteSurvey = await Survey.findOne({ projectCode, id });
+  const siteSurvey = await Survey.findById(id);
 
   if (siteSurvey) {
     res.send({ siteSurvey });

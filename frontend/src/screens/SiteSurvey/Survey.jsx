@@ -20,7 +20,6 @@ const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
-
     case 'FETCH_SUCCESS':
       return { ...state, siteSurvey: action.payload, loading: false };
 

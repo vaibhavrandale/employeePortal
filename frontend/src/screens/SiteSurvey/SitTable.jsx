@@ -424,8 +424,10 @@ function SiteTable({ projectCode }) {
                   </td>
 
                   <td className="text-center">
-                    {item.remark !== '' ? (
-                      <span className="">
+                    {item.reviews &&
+                    item.reviews.length > 0 &&
+                    item.reviews[item.reviews.length - 1].remark !== '' ? (
+                      <span>
                         {item.reviews[item.reviews.length - 1].remark}
                       </span>
                     ) : (
@@ -433,8 +435,10 @@ function SiteTable({ projectCode }) {
                     )}
                   </td>
                   <td className="text-center">
-                    {item.remarkBy !== '' ? (
-                      <span className="">
+                    {item.reviews &&
+                    item.reviews.length > 0 &&
+                    item.reviews[item.reviews.length - 1].remarkBy !== '' ? (
+                      <span>
                         {item.reviews[item.reviews.length - 1].remarkBy}
                       </span>
                     ) : (

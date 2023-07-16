@@ -198,6 +198,16 @@ function Survey({ projectCode }) {
             >
               Row: <span className="text-dark fw-bolder">{siteSurvey.row}</span>
             </div>
+
+            <div
+              className="col-md-3 fw-bolder badge bg-info m-2 p-2"
+              style={{ width: '90px' }}
+            >
+              Structure:{' '}
+              <span className="text-dark fw-bolder">
+                {siteSurvey.structure}
+              </span>
+            </div>
           </div>
 
           <div className="d-flex flex-wrap">
@@ -266,12 +276,51 @@ function Survey({ projectCode }) {
               </table>
             </div>
           </div>
+
+          <div className="m-1">
+            <h3 className="mt-2">Survey Images </h3>{' '}
+            <span className="text-muted">
+              (To view image in click on image)
+            </span>
+            <div className="d-flex ">
+              <div className="d-flex">
+                <Link to={siteSurvey.img} target="blank">
+                  <img
+                    key={siteSurvey.img}
+                    src={siteSurvey.img}
+                    alt={siteSurvey.img}
+                    className="card m-1"
+                    style={{ height: '100px', width: '100px' }}
+                  />
+                </Link>
+              </div>
+              {siteSurvey.images.length === 0 && (
+                <MsgBox className="alert alert-info m-1 text-center">
+                  There is no extra survey Image
+                </MsgBox>
+              )}
+              <div className="d-flex">
+                {siteSurvey.images.map((image, index) => (
+                  <Link to={image} target="blank">
+                    <img
+                      key={image}
+                      src={image}
+                      alt={image}
+                      className="card m-1"
+                      style={{ height: '100px', width: '100px' }}
+                    />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <h3 ref={reviewRef} className="mt-3 text-center">
             Remarks
           </h3>
           <div className="mb-3 d-flex justify-content-center">
             {siteSurvey.reviews.length === 0 && (
-              <MsgBox className="alert alert-info m-1">
+              <MsgBox className="alert alert-info m-1 text-center">
                 There is no remarks
               </MsgBox>
             )}

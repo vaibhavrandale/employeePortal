@@ -61,7 +61,7 @@ function SurveyFirstPage({ projectCode }) {
   const [surveyId, setSurveyId] = useState('');
   const [projectcode, setProjectcode] = useState('');
   const [block, setBlock] = useState('');
-  const [structure, setStructure] = useState('');
+  const [structure, setStructure] = useState('onep');
   const [row, setRow] = useState('');
   const [table, setTable] = useState('');
   const [A, setA] = useState('');
@@ -146,6 +146,7 @@ function SurveyFirstPage({ projectCode }) {
           table,
           row,
           block,
+          structure,
           A,
           B,
           C,
@@ -270,13 +271,13 @@ function SurveyFirstPage({ projectCode }) {
                       onChange={(e) => setStructure(e.target.value)}
                     >
                       <option value="">Structure</option>
-                      <option value="onep">1P</option>
-                      <option value="twop">2P</option>
-                      <option value="fourl">4L</option>
-                      <option value="threep">3P</option>
-                      <option value="sixl">6L</option>
-                      <option value="fourp">4P</option>
-                      <option value="eightl">8L</option>
+                      <option value="1P">1P</option>
+                      <option value="2P">2P</option>
+                      <option value="4L">4L</option>
+                      <option value="3P">3P</option>
+                      <option value="6L">6L</option>
+                      <option value="4P">4P</option>
+                      <option value="8L">8L</option>
                     </select>
                   </div>
 

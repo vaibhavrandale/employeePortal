@@ -1,0 +1,34 @@
+.gallery {
+  /* border: 1px solid #ccc; */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  padding: 20px;
+  background-color: #fff;
+}
+
+.large-image img {
+  width: 100%;
+  height: 350px;
+  object-fit: contain;
+  border: 1px solid #ccc;
+}
+
+.thumbnail-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.thumbnail:hover {
+  border-color: blue;
+}

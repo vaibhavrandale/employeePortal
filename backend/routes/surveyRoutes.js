@@ -99,8 +99,8 @@ surveyRouter.post(
     const survey = await Survey.findById(surveyid);
     if (survey) {
       const review = {
-        verifiedBy: req.employee.name,
-        verifiededAt: new Date(),
+        // verifiedBy: req.employee.name,
+        // verifiededAt: new Date(),
         remark: req.body.remark,
         rating: Number(5),
         remarkBy: req.employee.name,
@@ -142,15 +142,25 @@ surveyRouter.put(
       survey.table = req.body.table;
       survey.structure = req.body.structure;
       survey.A = req.body.A;
+      survey.ImageA = req.body.ImageA;
       survey.B = req.body.B;
+      survey.ImageB = req.body.ImageB;
       survey.C = req.body.C;
+      survey.ImageC = req.body.ImageC;
       survey.D = req.body.D;
+      survey.ImageD = req.body.ImageD;
       survey.E = req.body.E;
+      survey.ImageE = req.body.ImageE;
       survey.F = req.body.F;
+      survey.ImageF = req.body.ImageF;
       survey.G = req.body.G;
+      survey.ImageG = req.body.ImageG;
       survey.H = req.body.H;
+      survey.ImageH = req.body.ImageH;
       survey.I = req.body.I;
+      survey.ImageI = req.body.ImageI;
       survey.J = req.body.J;
+      survey.ImageJ = req.body.ImageJ;
       survey.htablex = req.body.htablex;
       survey.htabley = req.body.htabley;
       // Set the submittedBy field to the logged-in user's name
@@ -158,15 +168,48 @@ surveyRouter.put(
       // Set the submittedAt field to the current date and time
       survey.submittedAt = new Date();
       survey.img = req.body.img;
-      // survey.status = false;
+      survey.status = req.body.status;
       survey.images = req.body.images;
-
+      survey.verifiedBy = req.employee.name;
+      survey.verifiededAt = new Date();
       // Save the updated survey
       const updatedSurvey = await survey.save();
       // res.status(200).json(UpdatedSurvey);
       res.status(200).json(updatedSurvey);
     } else {
       res.status(404).send({ message: 'Survey Not Found' });
+    }
+  })
+);
+
+//verify survey route
+
+surveyRouter.put(
+  '/sitesurveys/verify/:id',
+  isAuth,
+  isAdmin,
+
+  expressAsyncHandler(async (req, res) => {
+    const surveyid = req.params.id;
+
+    // Find the survey by ID and project code
+    const survey = await Survey.findById(surveyid);
+    // console.log(survey);
+    if (survey) {
+      survey.surveyId = req.body.surveyId;
+      survey.block = req.body.block;
+      // survey.ImageC = req.body.ImageC;
+      // survey.ImageG = req.body.ImageG;
+      survey.status = req.body.status;
+
+      survey.verifiedBy = req.employee.name;
+      survey.verifiededAt = new Date();
+      // Save the updated survey
+      const updatedSurvey = await survey.save();
+      // res.status(200).json(UpdatedSurvey);
+      res.status(200).json(updatedSurvey);
+    } else {
+      res.status(404).send({ message: 'verified Survey Not Found' });
     }
   })
 );
@@ -222,21 +265,33 @@ surveyRouter.post(
       table: '',
       structure: '',
       A: '',
+      ImageA: '',
       B: '',
+      ImageB: '',
       C: '',
+      ImageC: '/images/taypro_standard_c.png',
       D: '',
+      ImageD: '',
       E: '',
+      ImageE: '',
       F: '',
+      ImageF: '',
       G: '',
+      ImageG: '/images/taypro_standard_g.png',
       H: '',
+      ImageH: '',
       I: '',
+      ImageI: '',
       J: '',
+      ImageJ: '',
       htablex: '',
       htabley: '',
       submittedBy: req.employee.name,
       submittedAt: new Date(),
       rating: 0,
       numReviews: 0,
+      verifiedBy: '',
+      verifiededAt: '',
       img: '/images/taypro_standard.png',
       // customerLogo: '/images/sample_logo.png',
     });

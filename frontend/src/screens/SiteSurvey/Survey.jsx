@@ -15,6 +15,7 @@ import LoadingBox1 from '../../components/LoadingBox1';
 import { toast } from 'react-hot-toast';
 import { Store } from '../../Store';
 import '../../App.css';
+import { TbExternalLink } from 'react-icons/tb';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -140,7 +141,7 @@ function Survey({ projectCode }) {
           <LoadingBox />
         </div>
       ) : error ? (
-        <AlertBox className="alert alert-danger">{error}</AlertBox>
+        <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
         <>
           <h2 className="text-center">Survey Details</h2>
@@ -228,36 +229,114 @@ function Survey({ projectCode }) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>SOLAR MODULE DIMENSION - A</td>
+                    <td>
+                      SOLAR MODULE DIMENSION - A{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.A}</td>
                   </tr>
                   <tr>
-                    <td>SOLAR MODULE VIRTICAL GAP DIMENSION - B</td>
-                    <td className="text-center">{siteSurvey.B}</td>
+                    <td>
+                      SOLAR MODULE VIRTICAL GAP DIMENSION - B{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>{' '}
+                    </td>
+                    <td className="text-center">{siteSurvey.B} </td>
                   </tr>
                   <tr>
-                    <td>TABLE WIDTH DIMENSION - C</td>
+                    <td>
+                      TABLE WIDTH DIMENSION - C{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.C}</td>
                   </tr>
                   <tr>
-                    <td>BACK GROUND CLEARANCE DIMENSION - D</td>
+                    <td>
+                      BACK GROUND CLEARANCE DIMENSION - D{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.D}</td>
                   </tr>
                   <tr>
-                    <td>FRONT GROUND CLEARANCE DIMENSION - E</td>
+                    <td>
+                      FRONT GROUND CLEARANCE DIMENSION - E{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.E}</td>
                   </tr>
                   <tr>
-                    <td>SOLAR MODULE HEIGHT DIMENSION - F</td>
+                    <td>
+                      SOLAR MODULE HEIGHT DIMENSION - F{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.F}</td>
                   </tr>
                   <tr>
-                    <td>SOLAR MODULE FRAME CROSS SECTION DIMENSION - G</td>
+                    <td>
+                      SOLAR MODULE FRAME CROSS SECTION DIMENSION - G{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.G}</td>
                   </tr>
                   <tr>
                     <td>
                       INTER TABLE GAP DIMENSION - H{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
                       <span className="text-dark fw-bolder">
                         ({siteSurvey.htablex} &amp; {siteSurvey.htabley})
                       </span>
@@ -265,11 +344,31 @@ function Survey({ projectCode }) {
                     <td className="text-center">{siteSurvey.H}</td>
                   </tr>
                   <tr>
-                    <td>SOLAR MODULE GAP HORIZONTAL DIMENSION - I</td>
+                    <td>
+                      SOLAR MODULE GAP HORIZONTAL DIMENSION - I{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.I}</td>
                   </tr>
                   <tr>
-                    <td>TILT ANGLE - J</td>
+                    <td>
+                      TILT ANGLE - J{' '}
+                      <span>
+                        <Link
+                          className="ms-1 text-decoration-none fs-5"
+                          to={`/surveyImages/${id}`}
+                        >
+                          <TbExternalLink />
+                        </Link>
+                      </span>
+                    </td>
                     <td className="text-center">{siteSurvey.J}</td>
                   </tr>
                 </tbody>
@@ -286,7 +385,7 @@ function Survey({ projectCode }) {
               <div className="d-flex">
                 <Link to={siteSurvey.img} target="blank">
                   <img
-                    key={siteSurvey.img}
+                    // key={siteSurvey.img}
                     src={siteSurvey.img}
                     alt={siteSurvey.img}
                     className="card m-1"
@@ -303,7 +402,7 @@ function Survey({ projectCode }) {
                 {siteSurvey.images.map((image, index) => (
                   <Link to={image} target="blank">
                     <img
-                      key={image}
+                      key={index}
                       src={image}
                       alt={image}
                       className="card m-1"
@@ -387,11 +486,11 @@ function Survey({ projectCode }) {
                 {loadingCreateReview && <LoadingBox1></LoadingBox1>} */}
 
                 {loadingCreateReview ? (
-                  <LoadingBox1></LoadingBox1>
+                  <LoadingBox1 />
                 ) : (
                   <button
                     className="btn-sm submitBtn"
-                    disabled={loadingCreateReview}
+                    // disabled={loadingCreateReview}
                     type="submit"
                   >
                     Submit

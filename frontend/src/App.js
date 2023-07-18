@@ -23,6 +23,7 @@ import AddNewSite from './screens/SiteSurvey/AddNewSite';
 import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NotFoundPage from './components/pageNotFound/NotFoundPage';
+import SurveyGallery from './screens/SiteSurvey/SurveyGallery';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -128,6 +129,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <Survey />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/surveyImages/:id"
+          element={
+            <ProtectedRoutes>
+              <SurveyGallery />
             </ProtectedRoutes>
           }
         />

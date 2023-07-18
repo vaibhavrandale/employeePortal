@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema(
   {
-    verifiedBy: { type: String, required: true },
-    verifiededAt: { type: String, required: true },
+    // verifiedBy: { type: String, required: true },
+    // verifiededAt: { type: String, required: true },
     remark: { type: String, required: true },
     remarkBy: { type: String, required: true },
     rating: { type: Number, required: true },
@@ -21,16 +21,25 @@ const surveySchema = new mongoose.Schema({
   table: { type: String },
   structure: { type: String },
   A: { type: String },
+  ImageA: { type: String },
   B: { type: String },
+  ImageB: { type: String },
   C: { type: String },
+  ImageC: { type: String },
   D: { type: String },
+  ImageD: { type: String },
   E: { type: String },
-
+  ImageE: { type: String },
   F: { type: String },
+  ImageF: { type: String },
   G: { type: String },
+  ImageG: { type: String },
   H: { type: String },
+  ImageH: { type: String },
   I: { type: String },
+  ImageI: { type: String },
   J: { type: String },
+  ImageJ: { type: String },
 
   htablex: { type: String },
   htabley: { type: String },
@@ -42,6 +51,8 @@ const surveySchema = new mongoose.Schema({
   numReviews: { type: Number, required: true },
   reviews: [reviewSchema],
   status: { type: Boolean, default: false },
+  verifiedBy: { type: String },
+  verifiededAt: { type: String },
 });
 
 const Survey = mongoose.model('Survey', surveySchema);

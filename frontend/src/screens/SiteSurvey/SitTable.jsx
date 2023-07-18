@@ -16,6 +16,7 @@ import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox1 from '../../components/LoadingBox1';
+import MsgBox from '../../components/MessageBox/MsgBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -40,11 +41,11 @@ const reducer = (state, action) => {
       return { ...state, loadingCreate: false };
 
     case 'VERIFY_REQUEST':
-      return { ...state, loadingCreate: true };
+      return { ...state, loadingVerify: true };
     case 'VERIFY_SUCCESS':
-      return { ...state, loadingCreate: false };
+      return { ...state, loadingVerify: false };
     case 'VERIFY_FAIL':
-      return { ...state, loadingCreate: false };
+      return { ...state, loadingVerify: false };
 
     default:
       return state;
@@ -54,14 +55,14 @@ const reducer = (state, action) => {
 function SiteTable({ projectCode }) {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, siteSurveys, loadingCreate }, dispatch] = useReducer(
-    reducer,
-    {
-      siteSurveys: [], // Update the initial state to an empty object
-      loading: true,
-      error: '',
-    }
-  );
+  const [
+    { loading, error, siteSurveys, loadingCreate, loadingVerify },
+    dispatch,
+  ] = useReducer(reducer, {
+    siteSurveys: [], // Update the initial state to an empty object
+    loading: true,
+    error: '',
+  });
   // const sortedReviews = siteSurveys.reviews.sort((a, b) => {
   //   return new Date(a.createdAt) - new Date(b.createdAt);
   // });
@@ -94,7 +95,7 @@ function SiteTable({ projectCode }) {
 
     fetchData();
   }, [projectCode]);
-
+  // console.log(siteSurveys);
   const itemsPerPage = 10;
   // console.log(site);
   const filteredData = siteSurveys.filter(
@@ -295,18 +296,121 @@ function SiteTable({ projectCode }) {
   //   }
   // };
 
-  const popupHandle = () => {
+  const popupHandle = (_id) => {
     setPopupOpen(!isPopupOpen);
+    // handleVerify(_id);
   };
 
-  const handleVerify = async (itemId) => {
+  // const handleVerify = async (_id, surveyId) => {
+
+  //   popupHandle();
+
+  //   try {
+  //     dispatch({ type: 'VERIFY_REQUEST' });
+  //     const { data } = await axios.put(
+  //       `/api/survey/sitesurveys/${_id}`,
+  //       {
+  //         surveyId: surveyId,
+  //         status: true,
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       }
+  //     );
+  //     toast.success('Verified successfully');
+  //     dispatch({ type: 'VERIFY_SUCCESS' });
+  //     console.log(data);
+  //     navigate(`/sitedetails/${projectCode}`);
+  //   } catch (err) {
+  //     toast.error(getError(err));
+  //     dispatch({
+  //       type: 'VERIFY_FAIL',
+  //     });
+  //   }
+  // };
+
+  const handleVerify = async (
+    _id,
+    surveyId,
+    projectCode,
+    block,
+    row,
+    table,
+    structure,
+    A,
+    B,
+    C,
+    D,
+    E,
+    F,
+    G,
+    H,
+    I,
+    J,
+    ImageA,
+    ImageB,
+    ImageC,
+    ImageD,
+    ImageE,
+    ImageF,
+    ImageG,
+    ImageH,
+    ImageI,
+    ImageJ,
+    htablex,
+    htabley,
+    img,
+    images,
+    submittedBy,
+    submittedAt,
+    rating,
+    numReviews
+  ) => {
     popupHandle();
 
     try {
       dispatch({ type: 'VERIFY_REQUEST' });
       const { data } = await axios.put(
-        `/api/survey/sitesurveys/${itemId}`,
-        { status: true },
+        `/api/survey/sitesurveys/verify/${_id}`,
+        {
+          surveyId: surveyId,
+          projectCode,
+          block,
+          row,
+          table,
+          structure,
+          A,
+          B,
+          C,
+          D,
+          E,
+          F,
+          G,
+          H,
+          I,
+          J,
+          ImageA,
+          ImageB,
+          ImageC,
+          ImageD,
+          ImageE,
+          ImageF,
+          ImageG,
+          ImageH,
+          ImageI,
+          ImageJ,
+          htablex,
+          htabley,
+          img,
+          images,
+          submittedBy,
+          submittedAt,
+          rating,
+          numReviews,
+          status: true,
+          verifiedBy: userInfo.name,
+          verifiedAt: new Date(),
+        },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -314,7 +418,7 @@ function SiteTable({ projectCode }) {
       toast.success('Verified successfully');
       dispatch({ type: 'VERIFY_SUCCESS' });
       console.log(data);
-      navigate(`/sitedetails/${projectCode}`);
+      navigate(`/survey/${_id}`);
     } catch (err) {
       toast.error(getError(err));
       dispatch({
@@ -325,22 +429,6 @@ function SiteTable({ projectCode }) {
 
   return (
     <div className="container">
-      {isPopupOpen && (
-        <div className="popup-container">
-          <div className="popup">
-            <p>Are you sure you want to Verify?</p>
-            <div className="popup-buttons">
-              <button className="popup-button verify" onClick={handleVerify}>
-                Verify
-              </button>
-              <button className="popup-button cancel" onClick={popupHandle}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {createSurvey && (
         <div className="popup-container">
           <div className="popup">
@@ -362,7 +450,7 @@ function SiteTable({ projectCode }) {
       {loading ? (
         <LoadingBox />
       ) : error ? (
-        <AlertBox className="alert alert-danger">{error}</AlertBox>
+        <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
         <>
           <div className="form-group   mb-2 search-input">
@@ -475,7 +563,7 @@ function SiteTable({ projectCode }) {
                         className=" edit-button fs-5 pt-1 link"
                         style={{ color: 'blue' }}
                         // onClick={popupHandle(item._id)}
-                        onClick={() => popupHandle(item._id)}
+                        onClick={() => popupHandle(item._id, item.surveyId)}
                       >
                         <HiShieldCheck />
                       </button>
@@ -487,6 +575,66 @@ function SiteTable({ projectCode }) {
                       >
                         <HiShieldCheck />
                       </button>
+                    )}
+
+                    {isPopupOpen && (
+                      <div className="popup-container">
+                        <div className="popup">
+                          <p>Are you sure you want to Verify?</p>
+                          <div className="popup-buttons">
+                            <button
+                              className="popup-button verify"
+                              onClick={() =>
+                                handleVerify(
+                                  item._id,
+                                  item.surveyId,
+                                  item.projectCode,
+                                  item.block,
+                                  item.row,
+                                  item.table,
+                                  item.structure,
+                                  item.A,
+                                  item.ImageA,
+                                  item.B,
+                                  item.ImageB,
+                                  item.C,
+                                  item.ImageC,
+                                  item.D,
+                                  item.ImageD,
+                                  item.E,
+                                  item.ImageE,
+                                  item.F,
+                                  item.ImageF,
+                                  item.G,
+                                  item.ImageG,
+                                  item.H,
+                                  item.ImageH,
+                                  item.I,
+                                  item.ImageI,
+                                  item.J,
+                                  item.ImageJ,
+                                  item.htablex,
+                                  item.htabley,
+                                  item.img,
+                                  item.images,
+                                  item.submittedBy,
+                                  item.submittedAt,
+                                  item.rating,
+                                  item.numReviews
+                                )
+                              }
+                            >
+                              Verify {loadingVerify && <LoadingBox1 />}
+                            </button>
+                            <button
+                              className="popup-button cancel"
+                              onClick={popupHandle}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </td>
                 </tr>

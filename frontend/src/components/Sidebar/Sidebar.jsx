@@ -29,7 +29,7 @@ const Sidebar = () => {
         <h1 className="heading1">T</h1>
         <h1 className="heading2">
           <img
-            src="/images/taypro.png"
+            src="/images/Taypro.png"
             alt="logo"
             style={{
               height: '28px',

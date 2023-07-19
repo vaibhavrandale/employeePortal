@@ -143,7 +143,7 @@ const Signin = () => {
 
           <form onSubmit={submitHandler}>
             {' '}
-            <h1 className="text-center">L O G I N</h1>
+            <h2 className="text-center fw-bolder tayproHeading">L O G I N</h2>
             <div className="taypro-from">
               <label>Email </label>
               <br />

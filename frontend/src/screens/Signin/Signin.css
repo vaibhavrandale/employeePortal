@@ -18,10 +18,10 @@
   margin: 70px auto 24px auto;
 }
 
-.taypro-card h1 {
+.taypro-card > .tayproHeading {
   padding-top: 10px;
-  font-weight: 600;
-  font-size: 28px;
+  font-weight: 700;
+  font-size: 2px;
 }
 
 .taypro-card label {

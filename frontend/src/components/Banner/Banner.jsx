@@ -57,14 +57,17 @@ const Banner = (props) => {
 
 const CarouselImages = styled(Slider)`
   overflow: hidden;
-  height: 70vh;
-  width: 70vh;
+  height: 37vh;
+  width: 43vh;
   opacity: 1;
   z-index: 1500;
   ul li button {
     &::before {
       font-size: 11px;
       color: rgb(150, 158, 171);
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
   ul li.slick-active button {
@@ -139,7 +142,5 @@ const TextOverlay = styled.div`
   font-weight: bold;
   opacity: ${(props) => (props.isVisible ? 1 : 0)};
   transition: opacity 0.5s ease;
-
-  /* Additional styling for the text overlay */
 `;
 export default Banner;

@@ -124,23 +124,25 @@ function LeavesHistory() {
       ) : (
         <>
           <h2 className="text-dark">Your Leave History</h2>
-          <div className="form-group  d-flex justify-content-end align-item-end mb-2 search-input m-1">
-            <Link className="submitBtn p-1  " to={'/leave'}>
+          <div className="d-flex">
+            <Link className="submitBtn2    " to={'/leave'}>
               Apply{' '}
             </Link>
-            <input
-              type="text"
-              className="form-control search"
-              placeholder="Search Leave.."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div className="form-group    mb-2 search-input m-1">
+              <input
+                type="text"
+                className="form-control search"
+                placeholder="Search Leave.."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
           </div>
           <table className="table table-bordered">
             <thead>
               <tr>
                 <th className="col-md-2 text-center">Applied At </th>
-                <th className="col-md-1 text-center">Type</th>
+                <th className="col-md-1 text-center"> Leave Type</th>
 
                 <th className="col-md-2 text-center">Approved At </th>
                 <th className="col-md-1 text-center">Approved By</th>

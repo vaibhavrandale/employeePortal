@@ -1,0 +1,68 @@
+.section {
+  position: relative;
+  height: 31.5vh;
+  margin-top: 3px;
+  border-radius: 5px;
+  width: 300px;
+  background: #000;
+}
+
+video {
+  object-fit: cover;
+  border-radius: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.taypro {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #ddd;
+  font-size: 1.5em;
+  font-family: 'Apple Chancery', cursive;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+}
+
+.taypro span {
+  opacity: 0;
+  display: inline-block;
+  animation: animate 1s linear forwards;
+  -webkit-animation: animate 1s linear forwards;
+}
+@keyframes animate {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg);
+    filter: blur(0px);
+  }
+}
+
+.taypro span:nth-child(1) {
+  animation-delay: 1s;
+}
+.taypro span:nth-child(2) {
+  animation-delay: 2s;
+}
+.taypro span:nth-child(3) {
+  animation-delay: 3s;
+}
+.taypro span:nth-child(4) {
+  animation-delay: 3.5s;
+}
+.taypro span:nth-child(5) {
+  animation-delay: 4s;
+}
+.taypro span:nth-child(6) {
+  animation-delay: 4.5s;
+}

@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import LoadingBox from '../../components/LoadingBox';
 // import AlertBox from '../../components/MessageBox/AlertBox';
 import axios from 'axios';
+import { LuEdit } from 'react-icons/lu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -21,7 +22,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const EmployeeDetails = () => {
+const Profile = () => {
   const { id } = useParams();
   const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
     employees: {},
@@ -93,15 +94,9 @@ const EmployeeDetails = () => {
             </Link>{' '}
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            <Link to="/employees" className="text-decoration-none">
-              Employees
+            <Link to="#" className="text-decoration-none">
+              Profile
             </Link>{' '}
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Employees Details
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            <span className="text-success">{employees.name}</span>
           </li>
         </ol>
       </nav>{' '}
@@ -113,6 +108,11 @@ const EmployeeDetails = () => {
             <span className="fw-bolder">{employees.name}</span> -
             <span>{employees.employee_id}</span>
           </h2>
+          <Link className="text-decoration-none">
+            {' '}
+            Edit Profile&nbsp;
+            <LuEdit className="pb-1 fs-5" />
+          </Link>
           <div>
             <div className="d-flex flex-column justify-content-end align-items-end">
               <img
@@ -172,4 +172,4 @@ const EmployeeDetails = () => {
   );
 };
 
-export default EmployeeDetails;
+export default Profile;

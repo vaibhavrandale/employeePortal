@@ -200,10 +200,14 @@ function SurveyFirstPage({ projectCode }) {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('Site updated successfully');
+      toast.success('Survey updated successfully', {
+        position: 'bottom-right',
+      });
       navigate(`/siteDetails/${projectcode}`);
     } catch (err) {
-      toast.error(getError(err));
+      toast.error(getError(err), {
+        position: 'bottom-right',
+      });
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
@@ -297,11 +301,11 @@ function SurveyFirstPage({ projectCode }) {
       }
 
       toast.success('Image uploaded successfully. ', {
-        position: 'bottom-right',
+        position: 'bottom-left',
       });
     } catch (err) {
       toast.success(getError(err), {
-        position: 'bottom-right',
+        position: 'bottom-left',
       });
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
@@ -310,7 +314,7 @@ function SurveyFirstPage({ projectCode }) {
   const deleteFileHandler = async (fileName) => {
     setImages(images.filter((x) => x !== fileName));
     toast.success('Image removed successfully. ', {
-      position: 'bottom-right',
+      position: 'bottom-left',
     });
   };
 
@@ -408,7 +412,7 @@ function SurveyFirstPage({ projectCode }) {
                       type="text"
                       className="form-control"
                       id="lastName"
-                      placeholder="Enter Row Name"
+                      placeholder="Enter Table Name"
                       value={table}
                       onChange={(e) => setTable(e.target.value)}
                     />

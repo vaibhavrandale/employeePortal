@@ -14,6 +14,14 @@ emplyeeRouter.get('/', async (req, res) => {
   res.send({ employees });
 });
 
+emplyeeRouter.get('/details/:id', async (req, res) => {
+  const id = req.params.id;
+  const employee = await Employee.findById(id);
+
+  // Send the created employees as the response
+  res.send({ employee });
+});
+
 // emplyeeRouter.post(
 //   '/signin',
 //   expressAsyncHandler(async (req, res) => {

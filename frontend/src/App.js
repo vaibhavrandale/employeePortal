@@ -24,6 +24,7 @@ import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NotFoundPage from './components/pageNotFound/NotFoundPage';
 import SurveyGallery from './screens/SiteSurvey/SurveyGallery';
+import Profile from './screens/Employee/Profile';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -78,6 +79,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <EmployeeDetails />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoutes>
+              <Profile />
             </ProtectedRoutes>
           }
         />

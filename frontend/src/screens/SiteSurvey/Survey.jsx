@@ -406,7 +406,11 @@ function Survey({ projectCode }) {
                       src={image}
                       alt={image}
                       className="card m-1"
-                      style={{ height: '100px', width: '100px' }}
+                      style={{
+                        height: '100px',
+                        width: '100px',
+                        objectFit: 'fill',
+                      }}
                     />
                   </Link>
                 ))}

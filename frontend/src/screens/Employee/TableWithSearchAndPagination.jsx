@@ -199,7 +199,7 @@ const TableWithSearchAndPagination = () => {
               >
                 <td className="text-center">
                   <div className="table-image-container">
-                    <Link to={`/employeedetails/${item.employee_id}`}>
+                    <Link to={`/employeedetails/${item._id}`}>
                       <img
                         src={item.image}
                         alt={item.name}
@@ -215,10 +215,7 @@ const TableWithSearchAndPagination = () => {
                 <td className="text-center">{item.joiningDate}</td>
                 <td className="text-center">
                   <button className="edit-button">
-                    <Link
-                      className="link"
-                      to={`/employeedetails/${item.employee_id}`}
-                    >
+                    <Link className="link" to={`/employeedetails/${item._id}`}>
                       {' '}
                       <BiEdit />
                     </Link>

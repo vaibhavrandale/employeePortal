@@ -5,3 +5,7 @@
   /* border: 1px solid red; */
   /* padding: 10px; */
 }
+
+#profileImg {
+  filter: drop-shadow(10px 10px 10px rgb(104, 104, 104));
+}

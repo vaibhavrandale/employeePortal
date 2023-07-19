@@ -42,8 +42,18 @@ function Leaves() {
                   Home
                 </Link>{' '}
               </li>
+
               <li className="breadcrumb-item active" aria-current="page">
-                Leaves
+                <Link
+                  className="text-decoration-none"
+                  to={'/leaves-history'}
+                  // onClick={historyHandler}
+                >
+                  Leaves History
+                </Link>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Leaves Application
               </li>
             </ol>
           </nav>{' '}
@@ -60,7 +70,7 @@ function Leaves() {
           </div>
           <form action="">
             <div className="form-group mt-4">
-              <div className="row d-flex justify-content-center align-items-center">
+              <div className="row d-flex flex-column justify-content-center align-items-center">
                 <div className="form-group col-md-5 m-2">
                   <label htmlFor="firstName">First Name:</label>
                   <input

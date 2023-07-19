@@ -99,7 +99,11 @@ function SiteDetails() {
             </ol>
           </nav>{' '}
           {siteSurveys ? (
-            <h2>Project code: {projectCode}</h2>
+            <h2>
+              Project code: {projectCode}
+              <br />
+              {siteSurveys.customerName}
+            </h2>
           ) : (
             <p>Survey not found</p>
           )}

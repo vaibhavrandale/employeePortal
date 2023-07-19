@@ -29,11 +29,14 @@ const Sidebar = () => {
         <h1 className="heading1">T</h1>
         <h1 className="heading2">
           <img
-            src="/images/logo-ct.png"
+            src="/images/taypro.png"
             alt="logo"
-            height={'26px'}
-            width={'100px'}
-            style={{ height: '28px', width: '120px', margin: 'auto' }}
+            style={{
+              height: '28px',
+              width: '120px',
+              margin: 'auto',
+              objectFit: 'cover',
+            }}
           />
         </h1>
       </div>

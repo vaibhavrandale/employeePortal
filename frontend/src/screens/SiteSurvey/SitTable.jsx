@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast';
 import LoadingBox from '../../components/LoadingBox';
 // import logger from 'use-reducer-logger';
 import axios from 'axios';
-import AlertBox from '../../components/MessageBox/AlertBox';
+// import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox1 from '../../components/LoadingBox1';
@@ -161,7 +161,7 @@ function SiteTable({ projectCode }) {
 
   const downloadDataAsExcel = (siteSurveys) => {
     const selectedColumns = [
-      'surveyId',
+      // 'surveyId',
       'projectCode',
       'block',
       'row',
@@ -258,7 +258,9 @@ function SiteTable({ projectCode }) {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      toast.success('Survey created successfully');
+      toast.success('Survey created successfully', {
+        position: 'bottom-right',
+      });
       dispatch({ type: 'CREATE_SUCCESS' });
       // navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
       navigate(`/editSurvey/${data.survey._id}`);
@@ -415,12 +417,16 @@ function SiteTable({ projectCode }) {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      toast.success('Verified successfully');
+      toast.success('Verified successfully', {
+        position: 'bottom-right',
+      });
       dispatch({ type: 'VERIFY_SUCCESS' });
       console.log(data);
       navigate(`/survey/${_id}`);
     } catch (err) {
-      toast.error(getError(err));
+      toast.error(getError(err), {
+        position: 'bottom-right',
+      });
       dispatch({
         type: 'VERIFY_FAIL',
       });
@@ -499,7 +505,9 @@ function SiteTable({ projectCode }) {
                   onMouseEnter={() => handleRowHover(index)}
                   onMouseLeave={() => handleRowHover(null)}
                 >
-                  <td className="text-center">{item.block}</td>
+                  <td className=" d-flex justify-content-center align-items-center">
+                    {item.block}
+                  </td>
                   <td className="text-center">{item.table}</td>
                   <td className="text-center">{item.row}</td>
 
@@ -535,13 +543,15 @@ function SiteTable({ projectCode }) {
                   </td>
 
                   <td className="text-center">
-                    <Link
-                      className="fs-5"
-                      to={`/survey/${item._id}`}
-                      style={{ color: 'blue' }}
-                    >
-                      <AiOutlineEye />
-                    </Link>
+                    <button className="edit-button">
+                      <Link
+                        className="fs-5 "
+                        to={`/survey/${item._id}`}
+                        style={{ color: 'blue' }}
+                      >
+                        <AiOutlineEye />
+                      </Link>
+                    </button>
                   </td>
 
                   <td className="text-center">

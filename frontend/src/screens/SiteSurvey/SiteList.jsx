@@ -197,14 +197,29 @@ function SiteList() {
         <h2 className="text-center">All Site's</h2>
 
         <div className="form-group   mb-2 search-input">
-          <Link
-            className="edit-button bg-dark text-white p-1 fs-6"
-            id="AddBtn"
-            onClick={popupHandle}
-          >
-            {' '}
-            New Site
-          </Link>
+          {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+            <Link
+              className="edit-button bg-dark text-white p-1 fs-6"
+              id="AddBtn"
+              onClick={popupHandle}
+            >
+              {' '}
+              New Site
+            </Link>
+          ) : (
+            <Link
+              className="edit-button bg-dark text-white p-1 fs-6"
+              id="AddBtn"
+              style={{
+                opacity: 0.5,
+                cursor: 'not-allowed',
+                pointerEvents: 'none',
+              }}
+            >
+              {' '}
+              New Site
+            </Link>
+          )}
           <input
             type="text"
             className="form-control search"
@@ -269,7 +284,7 @@ function SiteList() {
                       </button>
                     </td>
                     <td>
-                      {userInfo.isAdmin ? (
+                      {userInfo.isAdmin && userInfo.isSuperAdmin ? (
                         <button className="edit-button">
                           <Link className="link" to={`/editSite/${item._id}`}>
                             {' '}
@@ -277,12 +292,8 @@ function SiteList() {
                           </Link>
                         </button>
                       ) : (
-                        <button className="edit-button " disabled>
-                          <Link
-                            className="link"
-                            disabled
-                            to={`/editSite/${item._id}`}
-                          >
+                        <button className="edit-button ">
+                          <Link className="link text-muted" disabled>
                             {' '}
                             <BiEdit />
                           </Link>

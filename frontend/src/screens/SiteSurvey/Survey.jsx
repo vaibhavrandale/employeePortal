@@ -378,20 +378,24 @@ function Survey({ projectCode }) {
 
           <div className="m-1">
             <h3 className="mt-2">Survey Images </h3>{' '}
-            <span className="text-muted">
-              (To view image in click on image)
-            </span>
             <div className="d-flex ">
               <div className="d-flex">
-                <Link to={siteSurvey.img} target="blank">
-                  <img
-                    // key={siteSurvey.img}
-                    src={siteSurvey.img}
-                    alt={siteSurvey.img}
-                    className="card m-1"
-                    style={{ height: '100px', width: '100px' }}
-                  />
-                </Link>
+                {siteSurvey.img && (
+                  <>
+                    {/* <span className="text-muted">
+                      (To view image in click on image)
+                    </span> */}
+                    <Link to={siteSurvey.img} target="blank">
+                      <img
+                        // key={siteSurvey.img}
+                        src={siteSurvey.img}
+                        alt={siteSurvey.img}
+                        className="card m-1"
+                        style={{ height: '100px', width: '100px' }}
+                      />
+                    </Link>
+                  </>
+                )}
               </div>
               {siteSurvey.images.length === 0 && (
                 <MsgBox className="alert alert-info m-1 text-center">

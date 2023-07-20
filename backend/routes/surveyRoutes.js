@@ -269,7 +269,7 @@ surveyRouter.post(
       B: '',
       ImageB: '',
       C: '',
-      ImageC: '/images/taypro_standard_c.png',
+      ImageC: '',
       D: '',
       ImageD: '',
       E: '',
@@ -277,7 +277,7 @@ surveyRouter.post(
       F: '',
       ImageF: '',
       G: '',
-      ImageG: '/images/taypro_standard_g.png',
+      ImageG: '',
       H: '',
       ImageH: '',
       I: '',
@@ -292,7 +292,7 @@ surveyRouter.post(
       numReviews: 0,
       verifiedBy: '',
       verifiededAt: '',
-      img: '/images/taypro_standard.png',
+      img: '',
       // customerLogo: '/images/sample_logo.png',
     });
     const survey = await newSurvey.save();

@@ -41,19 +41,22 @@ const Sidebar = () => {
         </h1>
       </div>
       <ul>
-        <li>
-          <Link to="/">
-            <img
-              src="/images/icons/dashboard.png"
-              alt="employee"
-              className="icon me-1"
-              height={'20px'}
-            />
-            {hovered && <span>Dashboard</span>}
-          </Link>
-        </li>
-        {userInfo && userInfo.isAdmin && (
-          <>
+        {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+          <li>
+            <Link to="/">
+              <img
+                src="/images/icons/dashboard.png"
+                alt="employee"
+                className="icon me-1"
+                height={'20px'}
+              />
+              {hovered && <span>Dashboard</span>}
+            </Link>
+          </li>
+        )}
+
+        <>
+          {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
             <li>
               <Link to="/employees">
                 <img
@@ -65,12 +68,23 @@ const Sidebar = () => {
                 {hovered && <span>Employees</span>}
               </Link>
             </li>
+          )}
+
+          {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+            // userInfo.isSales &&
+            // userInfo.isScm &&
+            // userInfo.isDesign &&
+            // userInfo.isProject &&
+            // userInfo.isProduction &&
             <li>
               <Link to="/leaves-history">
                 <FcLeave className="icon me-2" />
                 {hovered && <span>Leaves</span>}
               </Link>
             </li>
+          )}
+
+          {userInfo && userInfo.isAdmin && (
             <li>
               <Link to="sitelist">
                 <img
@@ -82,14 +96,16 @@ const Sidebar = () => {
                 {hovered && <span>Site Survey</span>}
               </Link>
             </li>
-          </>
+          )}
+        </>
+        {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
+          <li>
+            <Link to="#">
+              <AiOutlineDashboard className="icon me-2" />
+              {hovered && <span>Feature-2</span>}
+            </Link>
+          </li>
         )}
-        <li>
-          <Link to="#">
-            <AiOutlineDashboard className="icon me-2" />
-            {hovered && <span>Feature-2</span>}
-          </Link>
-        </li>
       </ul>
     </div>
   );

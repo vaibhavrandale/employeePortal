@@ -10,6 +10,7 @@ import { getError } from '../../utils';
 import { GrClose } from 'react-icons/gr';
 // import AlertBox1 from '../../components/MessageBox/AlertBox1';
 import '../../App.css';
+import { FiExternalLink } from 'react-icons/fi';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -105,56 +106,73 @@ function SurveyFirstPage({ projectCode }) {
     setProgress(progress - 1);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/survey/sitesurveys/get/${id}`);
-        console.log(data.siteSurveys);
-        setProjectcode(data.siteSurvey.projectCode);
-        setSurveyId(data.siteSurvey.surveyId);
-        setBlock(data.siteSurvey.block);
-        setTable(data.siteSurvey.table);
-        setRow(data.siteSurvey.row);
-        setStructure(data.siteSurvey.structure);
-        setA(data.siteSurvey.A);
-        setImageA(data.siteSurvey.ImageA);
-        setB(data.siteSurvey.B);
-        setImageB(data.siteSurvey.ImageB);
-        setC(data.siteSurvey.C);
-        setImageC(data.siteSurvey.ImageC);
-        setD(data.siteSurvey.D);
-        setImageD(data.siteSurvey.ImageD);
-        setE(data.siteSurvey.E);
-        setImageE(data.siteSurvey.ImageE);
-        setF(data.siteSurvey.F);
-        setImageF(data.siteSurvey.ImageF);
-        setG(data.siteSurvey.G);
-        setImageG(data.siteSurvey.ImageG);
-        setH(data.siteSurvey.H);
-        setImageH(data.siteSurvey.ImageH);
-        setI(data.siteSurvey.I);
-        setImageI(data.siteSurvey.ImageI);
-        setJ(data.siteSurvey.J);
-        setImageJ(data.siteSurvey.ImageJ);
-        setSubmittedBy(data.siteSurvey.submittedBy);
-        setImg(data.siteSurvey.img);
-        setImages(data.siteSurvey.images);
-        setHtablex(data.siteSurvey.htablex);
-        setHtabley(data.siteSurvey.htabley);
-        dispatch({ type: 'FETCH_SUCCESS' });
-      } catch (err) {
-        dispatch({
-          type: 'FETCH_FAIL',
-          payload: getError(err),
-        });
-      }
-    };
-    fetchData();
-  }, [projectcode, id]);
-
   const submitHandler = async (e) => {
     e.preventDefault();
+
+    // Create an array to store the names of empty fields
+    const emptyFields = [];
+
+    // Check and add the names of empty fields to the array
+
+    if (!A) {
+      emptyFields.push('A');
+    }
+    if (!B) {
+      emptyFields.push('B');
+    }
+    if (!C) {
+      emptyFields.push('C');
+    }
+    if (!D) {
+      emptyFields.push('D');
+    }
+    if (!E) {
+      emptyFields.push('E');
+    }
+    if (!F) {
+      emptyFields.push('F');
+    }
+    if (!G) {
+      emptyFields.push('G');
+    }
+    if (!H) {
+      emptyFields.push('H');
+    }
+    if (!I) {
+      emptyFields.push('I');
+    }
+    if (!J) {
+      emptyFields.push('J');
+    }
+    if (!block) {
+      emptyFields.push('block');
+    }
+    if (!row) {
+      emptyFields.push('row');
+    }
+    if (!table) {
+      emptyFields.push('table');
+    }
+    if (!structure) {
+      emptyFields.push('structure');
+    }
+    if (!ImageC) {
+      emptyFields.push('ImageA');
+    }
+    if (!ImageG) {
+      emptyFields.push('ImageB');
+    }
+
+    // Perform your required field validation here
+    if (emptyFields.length > 0) {
+      const errorMessage = `Please fill the following fields: ${emptyFields.join(
+        ', '
+      )}.`;
+      // alert(errorMessage);
+      toast.error(errorMessage);
+      return; // Prevent form submission if any required field is empty
+    }
+
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
@@ -300,9 +318,40 @@ function SurveyFirstPage({ projectCode }) {
         }
       }
 
-      toast.success('Image uploaded successfully. ', {
-        position: 'bottom-left',
-      });
+      // // Save the uploaded image URLs to localStorage
+      // const SavedData = {
+      //   table,
+      //   row,
+      //   block,
+      //   structure,
+      //   A,
+      //   B,
+      //   C,
+      //   D,
+      //   E,
+      //   F,
+      //   G,
+      //   H,
+      //   I,
+      //   J,
+      //   ImageA,
+      //   ImageB,
+      //   ImageC,
+      //   ImageD,
+      //   ImageE,
+      //   ImageF,
+      //   ImageG,
+      //   ImageH,
+      //   ImageI,
+      //   ImageJ,
+      //   htablex,
+      //   htabley,
+      //   img,
+      //   images,
+      // };
+      // localStorage.setItem('SavedData', JSON.stringify(SavedData));
+      // console.log('Uploaded Images:', SavedData);
+      toast.success('Image uploaded successfully. ');
     } catch (err) {
       toast.success(getError(err), {
         position: 'bottom-left',
@@ -310,6 +359,88 @@ function SurveyFirstPage({ projectCode }) {
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/survey/sitesurveys/get/${id}`);
+        console.log(data.siteSurveys);
+
+        setProjectcode(data.siteSurvey.projectCode);
+        // Retrieve uploaded image URLs from localStorage and set the state variables
+        // const SavedData = JSON.parse(localStorage.getItem('SavedData'));
+        // setImageA(SavedData.ImageA || data.siteSurvey.ImageA);
+        // setImageB(SavedData.ImageB || data.siteSurvey.ImageB);
+        // setImageC(SavedData.ImageC || data.siteSurvey.ImageC);
+        // setImageD(SavedData.ImageD || data.siteSurvey.ImageD);
+        // setImageE(SavedData.ImageE || data.siteSurvey.ImageE);
+        // setImageF(SavedData.ImageF || data.siteSurvey.ImageF);
+        // setImageG(SavedData.ImageG || data.siteSurvey.ImageG);
+        // setImageH(SavedData.ImageH || data.siteSurvey.ImageH);
+        // setImageI(SavedData.ImageI || data.siteSurvey.ImageI);
+        // setImageJ(SavedData.ImageJ || data.siteSurvey.ImageJ);
+        // setA(SavedData.A || data.siteSurvey.A);
+        // setB(SavedData.B || data.siteSurvey.B);
+        // setC(SavedData.C || data.siteSurvey.C);
+        // setD(SavedData.D || data.siteSurvey.D);
+        // setE(SavedData.E || data.siteSurvey.E);
+        // setF(SavedData.F || data.siteSurvey.F);
+        // setG(SavedData.G || data.siteSurvey.G);
+        // setH(SavedData.H || data.siteSurvey.H);
+        // setI(SavedData.I || data.siteSurvey.J);
+        // setJ(SavedData.J || data.siteSurvey.K);
+        // console.log('Retrieved Images:', SavedData);
+
+        // setBlock(SavedData.block || data.siteSurvey.block);
+        // setTable(SavedData.table || data.siteSurvey.table);
+        // setRow(SavedData.row || data.siteSurvey.row);
+        // setStructure(SavedData.structure || data.siteSurvey.structure);
+        // setHtablex(SavedData.htablex || data.siteSurvey.htablex);
+        // setHtabley(SavedData.htabley || data.siteSurvey.htabley);
+        // setImg(SavedData.img || data.siteSurvey.img);
+        // setImages(SavedData.images || data.siteSurvey.images);
+
+        setSurveyId(data.siteSurvey.surveyId);
+        setBlock(data.siteSurvey.block);
+        setTable(data.siteSurvey.table);
+        setRow(data.siteSurvey.row);
+        setStructure(data.siteSurvey.structure);
+        setA(data.siteSurvey.A);
+        setImageA(data.siteSurvey.ImageA);
+        setB(data.siteSurvey.B);
+        setImageB(data.siteSurvey.ImageB);
+        setC(data.siteSurvey.C);
+        setImageC(data.siteSurvey.ImageC);
+        setD(data.siteSurvey.D);
+        setImageD(data.siteSurvey.ImageD);
+        setE(data.siteSurvey.E);
+        setImageE(data.siteSurvey.ImageE);
+        setF(data.siteSurvey.F);
+        setImageF(data.siteSurvey.ImageF);
+        setG(data.siteSurvey.G);
+        setImageG(data.siteSurvey.ImageG);
+        setH(data.siteSurvey.H);
+        setImageH(data.siteSurvey.ImageH);
+        setI(data.siteSurvey.I);
+        setImageI(data.siteSurvey.ImageI);
+        setJ(data.siteSurvey.J);
+        setImageJ(data.siteSurvey.ImageJ);
+        setSubmittedBy(data.siteSurvey.submittedBy);
+        setImg(data.siteSurvey.img);
+        setImages(data.siteSurvey.images);
+        setHtablex(data.siteSurvey.htablex);
+        setHtabley(data.siteSurvey.htabley);
+        dispatch({ type: 'FETCH_SUCCESS' });
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(err),
+        });
+      }
+    };
+    fetchData();
+  }, [projectcode, id]);
 
   const deleteFileHandler = async (fileName) => {
     setImages(images.filter((x) => x !== fileName));
@@ -342,10 +473,10 @@ function SurveyFirstPage({ projectCode }) {
               </li>
               <li className="breadcrumb-item active" aria-current="page">
                 <Link
-                  to={`/siteDetails/${projectCode}`}
+                  to={`/siteDetails/${projectcode}`}
                   className="text-decoration-none"
                 >
-                  Site Details :{projectCode}
+                  Site Details :{projectcode}
                 </Link>{' '}
               </li>
               <li className="breadcrumb-item active" aria-current="page">
@@ -354,12 +485,15 @@ function SurveyFirstPage({ projectCode }) {
             </ol>
           </nav>{' '}
           <h2 className="text-center text-dark fw-bolder">Add New Survey</h2>
-          <span className="underline"></span>
-          <div className="col-md-12 d-flex justify-content-end mt-3 me-5">
+          {/* <span className="underline"></span> */}
+          <span className="text-center text-muted">
+            (note* : all values are in mm)
+          </span>
+          {/* <div className="col-md-12 d-flex justify-content-end mt-3 me-5">
             <Link className="historyBtn  bg-warning m-1" to={'/sitelist'}>
               View all
             </Link>
-          </div>
+          </div> */}
           <form onSubmit={submitHandler}>
             {progress === 0 && (
               <div className="form-group mt-4">
@@ -371,6 +505,7 @@ function SurveyFirstPage({ projectCode }) {
                       className="form-control"
                       value={structure}
                       onChange={(e) => setStructure(e.target.value)}
+                      required
                     >
                       <option value="">Structure</option>
                       <option value="1P">1P</option>
@@ -391,6 +526,7 @@ function SurveyFirstPage({ projectCode }) {
                       id="lastName"
                       placeholder="Enter Block Name"
                       value={block}
+                      required
                       onChange={(e) => setBlock(e.target.value)}
                     />
                   </div>
@@ -403,6 +539,7 @@ function SurveyFirstPage({ projectCode }) {
                       id="lastName"
                       placeholder="Enter Row Name"
                       value={row}
+                      required
                       onChange={(e) => setRow(e.target.value)}
                     />
                   </div>
@@ -414,6 +551,7 @@ function SurveyFirstPage({ projectCode }) {
                       id="lastName"
                       placeholder="Enter Table Name"
                       value={table}
+                      required
                       onChange={(e) => setTable(e.target.value)}
                     />
                   </div>
@@ -435,28 +573,51 @@ function SurveyFirstPage({ projectCode }) {
                 <div className="form-group mt-4">
                   <div className="row d-flex flex-column justify-content-center align-items-center">
                     <div className="col-md-12 row d-flex justify-content-center align-items-center">
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> A :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            A :{' '}
+                            {ImageA && (
+                              <Link
+                                className="text-decoration-none "
+                                target="blank"
+                                to={ImageA}
+                              >
+                                A
+                                <span>
+                                  <FiExternalLink className="pb-1 fs-5 " />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter A"
                             value={A}
+                            required
                             onChange={(e) => setA(e.target.value)}
+                          />
+                          <input
+                            type="hidden"
+                            className="form-control"
+                            id="lastName"
+                            placeholder="Enter Row Name"
+                            value={surveyId}
                           />
                         </div>
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
-                            <label htmlFor="lastName ">A Image file :</label>
+                          {/* <div className="form-group mx-1"> */}
+                          {/* <label htmlFor="lastName ">A Image file :</label> */}
 
-                            <input
+                          {/* <input
                               value={ImageA}
                               className="form-control"
                               onChange={(e) => setImageA(e.target.value)}
-                            />
-                          </div>
+                            /> */}
+                          {/* </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image A:</label>
@@ -471,20 +632,36 @@ function SurveyFirstPage({ projectCode }) {
                         </div>
                       </div>
 
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> B :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            B :{' '}
+                            {ImageB && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageB}
+                              >
+                                B
+                                <span className="pb-2 fs-5">
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}{' '}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter B"
                             value={B}
+                            required
                             onChange={(e) => setB(e.target.value)}
                           />
                         </div>
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">B Image file :</label>
 
                             <input
@@ -492,7 +669,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageB(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1 ">
                             <label htmlFor="lastName ">Upload Image B:</label>
@@ -507,20 +684,36 @@ function SurveyFirstPage({ projectCode }) {
                         </div>
                       </div>
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> C :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            C :{' '}
+                            {ImageC && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageC}
+                              >
+                                C{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter C"
                             value={C}
+                            required
                             onChange={(e) => setC(e.target.value)}
                           />
                         </div>
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">C Image file :</label>
 
                             <input
@@ -529,13 +722,14 @@ function SurveyFirstPage({ projectCode }) {
                               onChange={(e) => setImageC(e.target.value)}
                               required
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image C:</label>
                             <span className="text-muted"></span>
                             {loadingUpload && <LoadingBox1 />}
                             <input
+                              required
                               type="file"
                               className="form-control"
                               onChange={(e) => uploadFileHandler(e, false, 'C')}
@@ -546,21 +740,37 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex" mb-2>
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> D :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            D :{' '}
+                            {ImageD && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageD}
+                              >
+                                D{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter D"
                             value={D}
+                            required
                             onChange={(e) => setD(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">D Image file :</label>
 
                             <input
@@ -568,9 +778,9 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageD(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
-                          <div className="form-group mx-1">
+                          <div className="form-group mx-1 ">
                             <label htmlFor="lastName ">Upload Image D:</label>
                             <span className="text-muted"></span>
                             {loadingUpload && <LoadingBox1 />}
@@ -585,21 +795,37 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> E :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            E :{' '}
+                            {ImageE && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageE}
+                              >
+                                E{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter E"
                             value={E}
+                            required
                             onChange={(e) => setE(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">E Image file :</label>
 
                             <input
@@ -607,7 +833,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageE(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image E:</label>
@@ -624,21 +850,37 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> F :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            F :{' '}
+                            {ImageF && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageF}
+                              >
+                                F{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter F"
                             value={F}
+                            required
                             onChange={(e) => setF(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">F Image file :</label>
 
                             <input
@@ -646,7 +888,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageF(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image F:</label>
@@ -663,29 +905,46 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> G :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            G :{' '}
+                            {ImageG && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageG}
+                              >
+                                G{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter G"
                             value={G}
+                            required
                             onChange={(e) => setG(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">G Image file :</label>
 
                             <input
                               value={ImageG}
+                              required
                               className="form-control"
                               onChange={(e) => setImageG(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image G:</label>
@@ -693,6 +952,7 @@ function SurveyFirstPage({ projectCode }) {
                             {loadingUpload && <LoadingBox1 />}
                             <input
                               type="file"
+                              required
                               className="form-control"
                               onChange={(e) => uploadFileHandler(e, false, 'G')}
                             />
@@ -701,7 +961,7 @@ function SurveyFirstPage({ projectCode }) {
                       </div>
                       {/* -------------------------------------------------------- */}
 
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
                           <label htmlFor="lastName"> Table 1 :</label>
                           <input
@@ -710,6 +970,7 @@ function SurveyFirstPage({ projectCode }) {
                             id="lastName"
                             placeholder="Enter table 1"
                             value={htablex}
+                            required
                             onChange={(e) => setHtablex(e.target.value)}
                           />
                         </div>
@@ -721,27 +982,44 @@ function SurveyFirstPage({ projectCode }) {
                             id="lastName"
                             placeholder="Enter table 2"
                             value={htabley}
+                            required
                             onChange={(e) => setHtabley(e.target.value)}
                           />
                         </div>
                       </div>
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> H :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            H :{' '}
+                            {ImageH && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageH}
+                              >
+                                H{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter H"
                             value={H}
+                            required
                             onChange={(e) => setH(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">H Image file :</label>
 
                             <input
@@ -749,7 +1027,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageH(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image H:</label>
@@ -766,21 +1044,37 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex mb-2">
+                      <div className="row d-flex mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName"> I :</label>
+                          <label htmlFor="lastName">
+                            {' '}
+                            I :{' '}
+                            {ImageI && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageI}
+                              >
+                                I{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control"
                             id="lastName"
                             placeholder="Enter I"
                             value={I}
+                            required
                             onChange={(e) => setI(e.target.value)}
                           />
                         </div>
 
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">I Image file :</label>
 
                             <input
@@ -788,7 +1082,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageI(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image I:</label>
@@ -805,19 +1099,35 @@ function SurveyFirstPage({ projectCode }) {
                       {/* -------------------------------------------------------- */}
 
                       {/* -------------------------------------------------------- */}
-                      <div className="row d-flex  mb-2">
+                      <div className="row d-flex  mb-2 m-1">
                         <div className="form-group col-md-6 mx-1">
-                          <label htmlFor="lastName "> J :</label>
+                          <label htmlFor="lastName ">
+                            {' '}
+                            J :{' '}
+                            {ImageJ && (
+                              <Link
+                                className="text-decoration-none"
+                                target="blank"
+                                to={ImageJ}
+                              >
+                                J{' '}
+                                <span>
+                                  <FiExternalLink />
+                                </span>
+                              </Link>
+                            )}
+                          </label>
                           <input
                             type="text"
                             className="form-control m-1"
                             placeholder="Enter J"
                             value={J}
+                            required
                             onChange={(e) => setJ(e.target.value)}
                           />
                         </div>
                         <div className="col-md-5">
-                          <div className="form-group mx-1">
+                          {/* <div className="form-group mx-1">
                             <label htmlFor="lastName ">J Image file :</label>
 
                             <input
@@ -825,7 +1135,7 @@ function SurveyFirstPage({ projectCode }) {
                               className="form-control"
                               onChange={(e) => setImageJ(e.target.value)}
                             />
-                          </div>
+                          </div> */}
 
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image J:</label>
@@ -841,22 +1151,19 @@ function SurveyFirstPage({ projectCode }) {
                       </div>
                       {/* -------------------------------------------------------- */}
 
-                      <div className="form-group mx-1 mb-2">
+                      <div className="form-group mx-1 mb-2 m-1">
                         <label htmlFor="lastName "> Image file :</label>
 
                         <input
                           value={img}
                           className="form-control"
                           onChange={(e) => setImg(e.target.value)}
-                          required
                         />
                       </div>
 
-                      <div className="form-group mx-1 mb-2">
+                      <div className="form-group mx-1 mb-2 m-1">
                         <label htmlFor="lastName ">Upload Image:</label>
-                        <span className="text-muted">
-                          (image size should be 123*43)
-                        </span>
+                        <span className="text-muted">(Optional)</span>
                         {loadingUpload && <LoadingBox1 />}
                         <input
                           type="file"
@@ -866,12 +1173,12 @@ function SurveyFirstPage({ projectCode }) {
                         />
                       </div>
 
-                      <div className="form-group  mx-1 mb-2">
+                      <div className="form-group  mx-1 mb-2 m-1">
                         <label>additional Images</label>
                         {images.length === 0 && (
                           <p
-                            className="bg-info  m-1 border border-rounded p-1"
-                            style={{ width: '20%' }}
+                            className="bg-info text-center m-1 border border-rounded p-1"
+                            style={{ maxWidth: '30%' }}
                           >
                             {' '}
                             no image
@@ -880,21 +1187,22 @@ function SurveyFirstPage({ projectCode }) {
                         )}
 
                         <ul variant="flush " className="m-1"></ul>
-                        {images.map((x) => (
-                          <li className="m-1" key={x}>
-                            {x}
-                            <button
-                              // variant="light "
-                              className=" m-1 closeBtn"
-                              id="closeBtn"
-                              onClick={() => deleteFileHandler(x)}
-                            >
-                              <GrClose className="fs-9" />
-                            </button>
-                          </li>
-                        ))}
+                        {images &&
+                          images.map((x) => (
+                            <li className="m-1" key={x}>
+                              {x}
+                              <button
+                                // variant="light "
+                                className=" m-1 closeBtn"
+                                id="closeBtn"
+                                onClick={() => deleteFileHandler(x)}
+                              >
+                                <GrClose className="fs-9" />
+                              </button>
+                            </li>
+                          ))}
                         <label htmlFor="lastName ">
-                          Upload Additional Image:
+                          Upload Additional Image: (Optional)
                         </label>
 
                         {loadingUpload && <LoadingBox1 />}
@@ -912,20 +1220,14 @@ function SurveyFirstPage({ projectCode }) {
                           placeholder="Enter Row Name"
                           value={submittedBy}
                         />
-                        <input
+                        {/* <input
                           type="hidden"
                           className="form-control"
                           id="lastName"
                           placeholder="Enter Row Name"
                           value={surveyId}
-                        />
-                        <input
-                          type="hidden"
-                          className="form-control"
-                          id="lastName"
-                          placeholder="Enter Row Name"
-                          value={surveyId}
-                        />
+                        /> */}
+
                         <input
                           type="hidden"
                           className="form-control"

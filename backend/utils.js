@@ -7,6 +7,13 @@ export const generateToken = (employee) => {
       name: employee.name,
       email: employee.email,
       isAdmin: employee.isAdmin,
+      isSuperAdmin: employee.isSuperAdmin,
+      isSales: employee.isSales,
+      isScm: employee.isScm,
+      isDesign: employee.isDesign,
+      isProject: employee.isProject,
+      isVisitor: employee.isVisitor,
+      isProduction: employee.isProduction,
       activate: employee.activate,
     },
     process.env.JWT_SECRET,
@@ -35,6 +42,61 @@ export const isAuth = (req, res, next) => {
 
 export const isAdmin = (req, res, next) => {
   if (req.employee && req.employee.isAdmin) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isSuperAdmin = (req, res, next) => {
+  if (req.employee && req.employee.isSuperAdmin) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isSales = (req, res, next) => {
+  if (req.employee && req.employee.isSales) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isScm = (req, res, next) => {
+  if (req.employee && req.employee.isScm) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+export const isDesign = (req, res, next) => {
+  if (req.employee && req.employee.isDesign) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isProject = (req, res, next) => {
+  if (req.employee && req.employee.isProject) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isVisitor = (req, res, next) => {
+  if (req.employee && req.employee.isVisitor) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Admin Token' });
+  }
+};
+
+export const isProduction = (req, res, next) => {
+  if (req.employee && req.employee.isProduction) {
     next();
   } else {
     res.status(401).send({ message: 'Invalid Admin Token' });

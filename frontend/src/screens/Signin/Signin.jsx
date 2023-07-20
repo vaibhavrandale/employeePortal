@@ -39,54 +39,6 @@ const Signin = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // try {
-    //   // Check if the entered email and password match any employee
-    //   const employee = data.employees.find(
-    //     (emp) => emp.email === email && emp.employee_id === password
-    //   );
-    //   if (employee) {
-    //     if (employee.activate === true) {
-    //       // Check if the account is active
-    //       toast.success('Sign in successful', {
-    //         position: 'bottom-right',
-    //       });
-    //       navigate('/');
-    //       localStorage.setItem('userInfo', JSON.stringify(data));
-    //     } else {
-    //       toast.error(
-    //         'your account has been blocked or yet to activate. Please contact to admin',
-    //         {
-    //           position: 'bottom-right',
-    //         }
-    //       );
-    //     }
-    //   } else {
-    //     toast.error('Invalid credentials', {
-    //       position: 'bottom-right',
-    //     });
-    //   }
-    // } catch (err) {
-    //   alert(err);
-    // }
-
-    //   try {
-    //     const { data } = await axios.post('/api/employees/signin', {
-    //       email,
-    //       password,
-    //     });
-    //     ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
-    //     localStorage.setItem('userInfo', JSON.stringify(data));
-    //     navigate('/');
-    //     toast.success('Sign in Successfully', {
-    //       position: 'bottom-right',
-    //     });
-    //     console.log(data);
-    //   } catch (err) {
-    //     toast.error(getError(err), {
-    //       position: 'bottom-right',
-    //     });
-    //   }
-    // };
 
     try {
       const { data } = await axios.post('/api/employees/signin', {
@@ -97,7 +49,7 @@ const Signin = () => {
       if (data.activate === 'true') {
         ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
         localStorage.setItem('userInfo', JSON.stringify(data));
-        navigate('/');
+        // navigate('/');
         toast.success('Sign in Successfully', {
           position: 'bottom-right',
         });
@@ -119,7 +71,11 @@ const Signin = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      if (userInfo.isVisitor) {
+        navigate('/sitelist');
+      } else {
+        navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
+      }
     }
   }, [navigate, userInfo]);
 

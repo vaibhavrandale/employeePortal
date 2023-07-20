@@ -117,48 +117,6 @@ function SiteTable({ projectCode }) {
     setHoveredRow(index);
   };
 
-  // const downloadDataAsExcel = (siteSurveys) => {
-  //   // Create a new workbook
-  //   const workbook = XLSX.utils.book_new();
-
-  //   const headerStyle = {
-  //     fill: {
-  //       fgColor: { rgb: 'FFFF00' }, // Yellow background color
-  //     },
-  //     font: {
-  //       bold: true, // Bold font
-  //     },
-  //   };
-
-  //   const worksheet = XLSX.utils.json_to_sheet(siteSurveys, { headerStyle });
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-
-  //   const excelFile = XLSX.write(workbook, {
-  //     bookType: 'xlsx',
-  //     type: 'binary',
-  //   });
-
-  //   const buffer = new ArrayBuffer(excelFile.length);
-  //   const view = new Uint8Array(buffer);
-  //   for (let i = 0; i < excelFile.length; i++) {
-  //     view[i] = excelFile.charCodeAt(i) & 0xff;
-  //   }
-
-  //   const blob = new Blob([buffer], { type: 'application/octet-stream' });
-
-  //   const downloadLink = document.createElement('a');
-  //   downloadLink.href = URL.createObjectURL(blob);
-  //   downloadLink.download = `${projectCode}.xlsx`;
-  //   downloadLink.click();
-  // };
-
-  // const handleDownloadButtonClick = () => {
-  //   const specificData = siteSurveys.filter(
-  //     (item) => item.projectCode === projectCode
-  //   );
-  //   downloadDataAsExcel(specificData);
-  // };
-
   const downloadDataAsExcel = (siteSurveys) => {
     const selectedColumns = [
       // 'surveyId',
@@ -238,15 +196,6 @@ function SiteTable({ projectCode }) {
     setCreateSurvey(!createSurvey);
   };
 
-  // const createSurveyHandler = async () => {
-  //   toast.success('New Survey Created successfully', {
-  //     position: 'bottom-right',
-  //   });
-  //   createHandler();
-
-  //   navigate(`/newSurvey/${projectCode}`);
-  // };
-
   const createSurveyHandler = async () => {
     // if (window.confirm('Are you sure to create?')) {
     try {
@@ -273,63 +222,10 @@ function SiteTable({ projectCode }) {
     // }
   };
 
-  // const handleVerify = async (itemId) => {
-  //   popupHandle();
-
-  //   try {
-  //     dispatch({ type: 'VERIFY_REQUEST' });
-  //     const { data } = await axios.put(
-  //       `/api/survey/sitesurveys/${itemId}`,
-  //       { status: true },
-  //       {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       }
-  //     );
-  //     toast.success('Verified successfully');
-  //     dispatch({ type: 'VERIFY_SUCCESS' });
-  //     // navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
-  //     console.log(data);
-  //     navigate(`/sitedetails/${projectCode}`);
-  //   } catch (err) {
-  //     toast.error(getError(err));
-  //     dispatch({
-  //       type: 'VERIFY_FAIL',
-  //     });
-  //   }
-  // };
-
   const popupHandle = (_id) => {
     setPopupOpen(!isPopupOpen);
     // handleVerify(_id);
   };
-
-  // const handleVerify = async (_id, surveyId) => {
-
-  //   popupHandle();
-
-  //   try {
-  //     dispatch({ type: 'VERIFY_REQUEST' });
-  //     const { data } = await axios.put(
-  //       `/api/survey/sitesurveys/${_id}`,
-  //       {
-  //         surveyId: surveyId,
-  //         status: true,
-  //       },
-  //       {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       }
-  //     );
-  //     toast.success('Verified successfully');
-  //     dispatch({ type: 'VERIFY_SUCCESS' });
-  //     console.log(data);
-  //     navigate(`/sitedetails/${projectCode}`);
-  //   } catch (err) {
-  //     toast.error(getError(err));
-  //     dispatch({
-  //       type: 'VERIFY_FAIL',
-  //     });
-  //   }
-  // };
 
   const handleVerify = async (
     _id,
@@ -381,6 +277,7 @@ function SiteTable({ projectCode }) {
           row,
           table,
           structure,
+          status: true,
           A,
           B,
           C,
@@ -409,7 +306,7 @@ function SiteTable({ projectCode }) {
           submittedAt,
           rating,
           numReviews,
-          status: true,
+
           verifiedBy: userInfo.name,
           verifiedAt: new Date(),
         },
@@ -574,6 +471,7 @@ function SiteTable({ projectCode }) {
                         style={{ color: 'blue' }}
                         // onClick={popupHandle(item._id)}
                         onClick={() => popupHandle(item._id, item.surveyId)}
+                        disabled={!userInfo.isAdmin || !userInfo.isSuperAdmin} // Add the check here
                       >
                         <HiShieldCheck />
                       </button>

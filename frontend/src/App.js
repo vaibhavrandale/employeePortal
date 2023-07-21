@@ -25,6 +25,8 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import NotFoundPage from './components/pageNotFound/NotFoundPage';
 import SurveyGallery from './screens/SiteSurvey/SurveyGallery';
 import Profile from './screens/Employee/Profile';
+import ForgetPasswordScreen from './screens/Signin/ForgetPasswordScreen';
+import ResetPasswoed from './screens/Signin/ResetPasswoed';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -42,13 +44,24 @@ function App() {
 function AppRouter() {
   const location = useLocation();
   const isSigninPage = location.pathname === '/signin';
+  const forgetPassword = location.pathname === '/forget-password';
+  const resetetPassword = location.pathname === '/reset-password';
+
+  const showSidebar = !(isSigninPage || forgetPassword || resetetPassword);
 
   return (
     <>
-      {!isSigninPage && <Navbar />}
-      {!isSigninPage && <Sidebar />}
+      {/* {!isSigninPage && <Navbar />}
+      {!isSigninPage && <Sidebar />} */}
+
+      {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />}
+      {showSidebar && <Sidebar />}
 
       <Routes>
+        <Route path="/forget-password" element={<ForgetPasswordScreen />} />
+
+        <Route path="/reset-password/:token" element={<ResetPasswoed />} />
+
         <Route
           path="*"
           element={
@@ -100,6 +113,7 @@ function AppRouter() {
           }
         />
         <Route path="/signin" element={<Signin />} />
+
         <Route
           path="/leave"
           element={

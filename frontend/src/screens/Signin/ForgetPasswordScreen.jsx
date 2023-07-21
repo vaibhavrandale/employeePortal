@@ -24,7 +24,7 @@ const reducer = (state, action) => {
   }
 };
 
-const Signin = () => {
+const ForgetPasswordScreen = () => {
   const [{ loading, error, loadingSignin }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
@@ -32,7 +32,6 @@ const Signin = () => {
 
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -41,27 +40,14 @@ const Signin = () => {
     e.preventDefault();
 
     try {
-      const { data } = await axios.post('/api/employees/signin', {
+      const { data } = await axios.post('/api/employees/forget-password', {
         email,
-        password,
       });
 
-      if (data.activate === 'true') {
-        ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
-        localStorage.setItem('userInfo', JSON.stringify(data));
-        // navigate('/');
-        toast.success('Sign in Successfully', {
-          position: 'bottom-right',
-        });
-        console.log(data);
-      } else {
-        toast.error(
-          'Your account has been blocked or is not yet activated. Please contact the admin.',
-          {
-            position: 'bottom-right',
-          }
-        );
-      }
+      toast.success(data.message, {
+        position: 'bottom-right',
+      });
+      console.log(data);
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',
@@ -71,18 +57,14 @@ const Signin = () => {
 
   useEffect(() => {
     if (userInfo) {
-      if (userInfo.isVisitor) {
-        navigate('/sitelist');
-      } else {
-        navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
-      }
+      navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
     }
   }, [navigate, userInfo]);
 
   return (
     <>
       <section>
-        <title>LogIn </title>
+        <title>Forgot Password ! </title>
 
         <div className="taypro-card ">
           <div className="taypro-logo">
@@ -99,9 +81,11 @@ const Signin = () => {
 
           <form onSubmit={submitHandler}>
             {' '}
-            <h2 className="text-center fw-bolder tayproHeading">L O G I N</h2>
+            <h2 className="text-center fw-bolder tayproHeading">
+              Forget Password
+            </h2>
             <div className="taypro-from">
-              <label>Email </label>
+              <label>Enter you Email </label>
               <br />
               <input
                 onChange={(e) => setEmail(e.target.value)}
@@ -109,21 +93,12 @@ const Signin = () => {
                 type="email"
               />
               <br />
-              <label>Password</label>
-              <br />
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                type="password"
-              />
+
               <button className="signin-button" type="submit">
                 Continue {loadingSignin && <LoadingBox1 />}
               </button>
-              <Link
-                to={`/forget-password`}
-                className="mt-2  text-decoration-none"
-              >
-                Forgot Password?
+              <Link to={`/signin`} className="mt-2  text-decoration-none">
+                continue signin?
               </Link>
             </div>
           </form>
@@ -147,4 +122,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default ForgetPasswordScreen;

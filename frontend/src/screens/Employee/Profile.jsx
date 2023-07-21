@@ -25,13 +25,10 @@ const reducer = (state, action) => {
 const Profile = () => {
   const { id } = useParams();
   const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employees: {},
+    employee: {},
     loading: true,
     error: '',
   });
-
-  // const [loading, setLoading] = useState(true);
-  // const [employee, setEmployee] = useState(null);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -55,33 +52,6 @@ const Profile = () => {
     // setLoading(true);
     fetchData();
   }, [id]);
-
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     const foundEmployee = data.employees.find(
-  //       (emp) => emp.employee_id === employee_id
-  //     );
-  //     setEmployee(foundEmployee);
-  //     setLoading(false);
-  //   };
-
-  //   setLoading(true);
-  //   setTimeout(fetchData, 1);
-
-  //   fetchData();
-  // }, [employee_id]);
-
-  // if (isLoading) {
-  //   return <LoadingBox />;
-  // }
-
-  // if (!employee) {
-  //   return (
-  //     <AlertBox className="container alert alert-danger">
-  //       Employee Not Found / Blocked
-  //     </AlertBox>
-  //   );
-  // }
 
   return (
     <div className="container">

@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-
+import mg from 'mailgun-js';
 export const generateToken = (employee) => {
   return jwt.sign(
     {
@@ -102,3 +102,16 @@ export const isProduction = (req, res, next) => {
     res.status(401).send({ message: 'Invalid Admin Token' });
   }
 };
+
+export const mailgun = () =>
+  mg({
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN,
+  });
+
+export const baseUrl = () =>
+  process.env.BASE_URL
+    ? process.env.BASE_URL
+    : process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:3000'
+    : 'https://employee-lwbn.onrender.com';

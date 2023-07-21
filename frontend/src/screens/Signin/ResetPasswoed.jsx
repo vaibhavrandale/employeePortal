@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import logo from './Taypro.png';
 import './Signin.css';
 import '../../App.css';
@@ -24,44 +24,34 @@ const reducer = (state, action) => {
   }
 };
 
-const Signin = () => {
+const ResetPasswoed = () => {
   const [{ loading, error, loadingSignin }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
   });
-
+  const { token } = useParams();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmpassword, setConfirmPassword] = useState('');
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    if (password !== confirmpassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
     try {
-      const { data } = await axios.post('/api/employees/signin', {
-        email,
+      await axios.post('/api/employees/reset-password', {
         password,
+        token,
       });
-
-      if (data.activate === 'true') {
-        ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
-        localStorage.setItem('userInfo', JSON.stringify(data));
-        // navigate('/');
-        toast.success('Sign in Successfully', {
-          position: 'bottom-right',
-        });
-        console.log(data);
-      } else {
-        toast.error(
-          'Your account has been blocked or is not yet activated. Please contact the admin.',
-          {
-            position: 'bottom-right',
-          }
-        );
-      }
+      navigate('/signin');
+      toast.success('Password updated successfully', {
+        position: 'bottom-right',
+      });
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',
@@ -70,19 +60,15 @@ const Signin = () => {
   };
 
   useEffect(() => {
-    if (userInfo) {
-      if (userInfo.isVisitor) {
-        navigate('/sitelist');
-      } else {
-        navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
-      }
+    if (userInfo || !token) {
+      navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
     }
-  }, [navigate, userInfo]);
+  }, [navigate, userInfo, token]);
 
   return (
     <>
       <section>
-        <title>LogIn </title>
+        <title>Forgot Password ! </title>
 
         <div className="taypro-card ">
           <div className="taypro-logo">
@@ -101,26 +87,28 @@ const Signin = () => {
             {' '}
             <h2 className="text-center fw-bolder tayproHeading">L O G I N</h2>
             <div className="taypro-from">
-              <label>Email </label>
-              <br />
-              <input
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                type="email"
-              />
-              <br />
-              <label>Password</label>
+              <label>Enter password </label>
               <br />
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                type="password"
+                type="text"
               />
+              <br />
+
+              <label>Confirm password </label>
+              <br />
+              <input
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                type="text"
+              />
+
               <button className="signin-button" type="submit">
                 Continue {loadingSignin && <LoadingBox1 />}
               </button>
               <Link
-                to={`/forget-password`}
+                to={`/forgot-password`}
                 className="mt-2  text-decoration-none"
               >
                 Forgot Password?
@@ -147,4 +135,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default ResetPasswoed;

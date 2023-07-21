@@ -230,37 +230,6 @@ function SurveyFirstPage({ projectCode }) {
     }
   };
 
-  // const uploadFileHandler = async (e, forImages) => {
-  //   const file = e.target.files[0];
-  //   const bodyFormData = new FormData();
-  //   bodyFormData.append('file', file);
-  //   try {
-  //     dispatch({ type: 'UPLOAD_REQUEST' });
-  //     const { data } = await axios.post('/api/upload', bodyFormData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //     });
-  //     dispatch({ type: 'UPLOAD_SUCCESS' });
-
-  //     if (forImages) {
-  //       setImages([...images, data.secure_url]);
-  //     } else {
-  //       setImg(data.secure_url);
-  //     }
-
-  //     toast.success('Image uploaded successfully. ', {
-  //       position: 'bottom-right',
-  //     });
-  //   } catch (err) {
-  //     toast.success(getError(err), {
-  //       position: 'bottom-right',
-  //     });
-  //     dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
-  //   }
-  // };
-
   const uploadFileHandler = async (e, forImages, fieldName) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -318,39 +287,6 @@ function SurveyFirstPage({ projectCode }) {
         }
       }
 
-      // // Save the uploaded image URLs to localStorage
-      // const SavedData = {
-      //   table,
-      //   row,
-      //   block,
-      //   structure,
-      //   A,
-      //   B,
-      //   C,
-      //   D,
-      //   E,
-      //   F,
-      //   G,
-      //   H,
-      //   I,
-      //   J,
-      //   ImageA,
-      //   ImageB,
-      //   ImageC,
-      //   ImageD,
-      //   ImageE,
-      //   ImageF,
-      //   ImageG,
-      //   ImageH,
-      //   ImageI,
-      //   ImageJ,
-      //   htablex,
-      //   htabley,
-      //   img,
-      //   images,
-      // };
-      // localStorage.setItem('SavedData', JSON.stringify(SavedData));
-      // console.log('Uploaded Images:', SavedData);
       toast.success('Image uploaded successfully. ');
     } catch (err) {
       toast.success(getError(err), {

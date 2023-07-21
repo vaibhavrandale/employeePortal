@@ -4,7 +4,10 @@ const employeeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     employee_id: { type: String, required: true, unique: true },
+
+    resetToken: { type: String },
     email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     image: { type: String, required: true },
     joiningDate: { type: String, required: true },
     birth_date: { type: String, required: true },

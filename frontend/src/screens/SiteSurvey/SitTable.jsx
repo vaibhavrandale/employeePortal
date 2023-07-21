@@ -331,7 +331,7 @@ function SiteTable({ projectCode }) {
   };
 
   return (
-    <div className="container">
+    <>
       {createSurvey && (
         <div className="popup-container">
           <div className="popup">
@@ -350,234 +350,236 @@ function SiteTable({ projectCode }) {
           </div>
         </div>
       )}
-      {loading ? (
-        <LoadingBox />
-      ) : error ? (
-        <MsgBox className="alert alert-danger">{error}</MsgBox>
-      ) : (
-        <>
-          <div className="form-group   mb-2 search-input">
-            <Link
-              id="AddBtn"
-              className="bg-dark text-white m-1"
-              onClick={createHandler}
-            >
-              New Survey
-            </Link>
-            <Link
-              id="AddBtn"
-              className="bg-success text-white m-1"
-              onClick={handleDownloadButtonClick}
-            >
-              Export
-            </Link>
-            <input
-              type="text"
-              className="form-control search"
-              placeholder="Search Location.."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <table className="table table-bordered ">
-            <thead>
-              <tr>
-                <th className="col-md-2 text-center">Block </th>
-                <th className="col-md-2 text-center">Table </th>
-                <th className="col-md-2 text-center">Row </th>
+      <div className="container">
+        {loading ? (
+          <LoadingBox />
+        ) : error ? (
+          <MsgBox className="alert alert-danger">{error}</MsgBox>
+        ) : (
+          <>
+            <div className="form-group   mb-2 search-input">
+              <Link
+                id="AddBtn"
+                className="bg-dark text-white m-1"
+                onClick={createHandler}
+              >
+                New Survey
+              </Link>
+              <Link
+                id="AddBtn"
+                className="bg-success text-white m-1"
+                onClick={handleDownloadButtonClick}
+              >
+                Export
+              </Link>
+              <input
+                type="text"
+                className="form-control search"
+                placeholder="Search Location.."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <table className="table table-bordered ">
+              <thead>
+                <tr>
+                  <th className="col-md-2 text-center">Block </th>
+                  <th className="col-md-2 text-center">Table </th>
+                  <th className="col-md-2 text-center">Row </th>
 
-                <th className="col-md-2 text-center">Status </th>
-                <th className="col-md-2 text-center">Remark </th>
-                <th className="col-md-2 text-center">Remark By </th>
-                <th className="col-md-1 text-center">View </th>
-                <th className="col-md-1 text-center">Edit </th>
-                <th className="col-md-2 text-center">verify </th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((item, index) => (
-                <tr
-                  key={index}
-                  className={index === hoveredRow ? 'hovered-row' : ''}
-                  onMouseEnter={() => handleRowHover(index)}
-                  onMouseLeave={() => handleRowHover(null)}
-                >
-                  <td className=" d-flex justify-content-center align-items-center">
-                    {item.block}
-                  </td>
-                  <td className="text-center">{item.table}</td>
-                  <td className="text-center">{item.row}</td>
+                  <th className="col-md-2 text-center">Status </th>
+                  <th className="col-md-2 text-center">Remark </th>
+                  <th className="col-md-2 text-center">Remark By </th>
+                  <th className="col-md-1 text-center">View </th>
+                  <th className="col-md-1 text-center">Edit </th>
+                  <th className="col-md-2 text-center">verify </th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={index === hoveredRow ? 'hovered-row' : ''}
+                    onMouseEnter={() => handleRowHover(index)}
+                    onMouseLeave={() => handleRowHover(null)}
+                  >
+                    <td className=" d-flex justify-content-center align-items-center">
+                      {item.block}
+                    </td>
+                    <td className="text-center">{item.table}</td>
+                    <td className="text-center">{item.row}</td>
 
-                  <td className="text-center">
-                    {item.status === true ? (
-                      <span className="badge bg-success">Verified</span>
-                    ) : (
-                      <span className="badge bg-danger">Pending</span>
-                    )}
-                  </td>
+                    <td className="text-center">
+                      {item.status === true ? (
+                        <span className="badge bg-success">Verified</span>
+                      ) : (
+                        <span className="badge bg-danger">Pending</span>
+                      )}
+                    </td>
 
-                  <td className="text-center">
-                    {item.reviews &&
-                    item.reviews.length > 0 &&
-                    item.reviews[item.reviews.length - 1].remark !== '' ? (
-                      <span>
-                        {item.reviews[item.reviews.length - 1].remark}
-                      </span>
-                    ) : (
-                      <span className="badge bg-danger">Pending</span>
-                    )}
-                  </td>
-                  <td className="text-center">
-                    {item.reviews &&
-                    item.reviews.length > 0 &&
-                    item.reviews[item.reviews.length - 1].remarkBy !== '' ? (
-                      <span>
-                        {item.reviews[item.reviews.length - 1].remarkBy}
-                      </span>
-                    ) : (
-                      <span className="badge bg-danger">Pending</span>
-                    )}
-                  </td>
+                    <td className="text-center">
+                      {item.reviews &&
+                      item.reviews.length > 0 &&
+                      item.reviews[item.reviews.length - 1].remark !== '' ? (
+                        <span>
+                          {item.reviews[item.reviews.length - 1].remark}
+                        </span>
+                      ) : (
+                        <span className="badge bg-danger">Pending</span>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      {item.reviews &&
+                      item.reviews.length > 0 &&
+                      item.reviews[item.reviews.length - 1].remarkBy !== '' ? (
+                        <span>
+                          {item.reviews[item.reviews.length - 1].remarkBy}
+                        </span>
+                      ) : (
+                        <span className="badge bg-danger">Pending</span>
+                      )}
+                    </td>
 
-                  <td className="text-center">
-                    <button className="edit-button">
-                      <Link
-                        className="fs-5 "
-                        to={`/survey/${item._id}`}
-                        style={{ color: 'blue' }}
-                      >
-                        <AiOutlineEye />
-                      </Link>
-                    </button>
-                  </td>
-
-                  <td className="text-center">
-                    <button className="edit-button">
-                      <Link
-                        className="fs-5 "
-                        to={`/editSurvey/${item._id}`}
-                        style={{ color: 'blue' }}
-                      >
-                        {' '}
-                        <BiEdit />
-                      </Link>
-                    </button>
-                  </td>
-
-                  <td className="text-center">
-                    {item.status === false ? (
-                      <button
-                        className=" edit-button fs-5 pt-1 link"
-                        style={{ color: 'blue' }}
-                        // onClick={popupHandle(item._id)}
-                        onClick={() => popupHandle(item._id, item.surveyId)}
-                        disabled={!userInfo.isAdmin || !userInfo.isSuperAdmin} // Add the check here
-                      >
-                        <HiShieldCheck />
+                    <td className="text-center">
+                      <button className="edit-button">
+                        <Link
+                          className="fs-5 "
+                          to={`/survey/${item._id}`}
+                          style={{ color: 'blue' }}
+                        >
+                          <AiOutlineEye />
+                        </Link>
                       </button>
-                    ) : (
-                      <button
-                        className=" edit-button fs-5 pt-1 link"
-                        disabled
-                        style={{ color: 'green' }}
-                      >
-                        <HiShieldCheck />
-                      </button>
-                    )}
+                    </td>
 
-                    {isPopupOpen && (
-                      <div className="popup-container">
-                        <div className="popup">
-                          <p>Are you sure you want to Verify?</p>
-                          <div className="popup-buttons">
-                            <button
-                              className="popup-button verify"
-                              onClick={() =>
-                                handleVerify(
-                                  item._id,
-                                  item.surveyId,
-                                  item.projectCode,
-                                  item.block,
-                                  item.row,
-                                  item.table,
-                                  item.structure,
-                                  item.A,
-                                  item.ImageA,
-                                  item.B,
-                                  item.ImageB,
-                                  item.C,
-                                  item.ImageC,
-                                  item.D,
-                                  item.ImageD,
-                                  item.E,
-                                  item.ImageE,
-                                  item.F,
-                                  item.ImageF,
-                                  item.G,
-                                  item.ImageG,
-                                  item.H,
-                                  item.ImageH,
-                                  item.I,
-                                  item.ImageI,
-                                  item.J,
-                                  item.ImageJ,
-                                  item.htablex,
-                                  item.htabley,
-                                  item.img,
-                                  item.images,
-                                  item.submittedBy,
-                                  item.submittedAt,
-                                  item.rating,
-                                  item.numReviews
-                                )
-                              }
-                            >
-                              Verify {loadingVerify && <LoadingBox1 />}
-                            </button>
-                            <button
-                              className="popup-button cancel"
-                              onClick={popupHandle}
-                            >
-                              Cancel
-                            </button>
+                    <td className="text-center">
+                      <button className="edit-button">
+                        <Link
+                          className="fs-5 "
+                          to={`/editSurvey/${item._id}`}
+                          style={{ color: 'blue' }}
+                        >
+                          {' '}
+                          <BiEdit />
+                        </Link>
+                      </button>
+                    </td>
+
+                    <td className="text-center">
+                      {item.status === false ? (
+                        <button
+                          className=" edit-button fs-5 pt-1 link"
+                          style={{ color: 'blue' }}
+                          // onClick={popupHandle(item._id)}
+                          onClick={() => popupHandle(item._id, item.surveyId)}
+                          disabled={!userInfo.isAdmin || !userInfo.isSuperAdmin} // Add the check here
+                        >
+                          <HiShieldCheck />
+                        </button>
+                      ) : (
+                        <button
+                          className=" edit-button fs-5 pt-1 link"
+                          disabled
+                          style={{ color: 'green' }}
+                        >
+                          <HiShieldCheck />
+                        </button>
+                      )}
+
+                      {isPopupOpen && (
+                        <div className="popup-container">
+                          <div className="popup">
+                            <p>Are you sure you want to Verify?</p>
+                            <div className="popup-buttons">
+                              <button
+                                className="popup-button verify"
+                                onClick={() =>
+                                  handleVerify(
+                                    item._id,
+                                    item.surveyId,
+                                    item.projectCode,
+                                    item.block,
+                                    item.row,
+                                    item.table,
+                                    item.structure,
+                                    item.A,
+                                    item.ImageA,
+                                    item.B,
+                                    item.ImageB,
+                                    item.C,
+                                    item.ImageC,
+                                    item.D,
+                                    item.ImageD,
+                                    item.E,
+                                    item.ImageE,
+                                    item.F,
+                                    item.ImageF,
+                                    item.G,
+                                    item.ImageG,
+                                    item.H,
+                                    item.ImageH,
+                                    item.I,
+                                    item.ImageI,
+                                    item.J,
+                                    item.ImageJ,
+                                    item.htablex,
+                                    item.htabley,
+                                    item.img,
+                                    item.images,
+                                    item.submittedBy,
+                                    item.submittedAt,
+                                    item.rating,
+                                    item.numReviews
+                                  )
+                                }
+                              >
+                                Verify {loadingVerify && <LoadingBox1 />}
+                              </button>
+                              <button
+                                className="popup-button cancel"
+                                onClick={popupHandle}
+                              >
+                                Cancel
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </>
-      )}
-      {/* {<LoadingBox /> && filteredData.length === 0 && (
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+        {/* {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )} */}
-      {<LoadingBox /> && (
-        <nav className="pagination-container">
-          <ul className="pagination">
-            {Array(Math.ceil(filteredData.length / itemsPerPage))
-              .fill()
-              .map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item ${
-                    currentPage === index + 1 ? 'active' : ''
-                  }`}
-                >
-                  <button
-                    className="page-link bg-dark border border-dark"
-                    onClick={() => handlePageChange(index + 1)}
+        {<LoadingBox /> && (
+          <nav className="pagination-container">
+            <ul className="pagination">
+              {Array(Math.ceil(filteredData.length / itemsPerPage))
+                .fill()
+                .map((_, index) => (
+                  <li
+                    key={index}
+                    className={`page-item ${
+                      currentPage === index + 1 ? 'active' : ''
+                    }`}
                   >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-          </ul>
-        </nav>
-      )}
-    </div>
+                    <button
+                      className="page-link bg-dark border border-dark"
+                      onClick={() => handlePageChange(index + 1)}
+                    >
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          </nav>
+        )}
+      </div>
+    </>
   );
 }
 

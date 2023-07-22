@@ -232,12 +232,14 @@ function Survey({ projectCode }) {
                     <td>
                       SOLAR MODULE DIMENSION - A{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageA && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.A}</td>
@@ -246,12 +248,14 @@ function Survey({ projectCode }) {
                     <td>
                       SOLAR MODULE VIRTICAL GAP DIMENSION - B{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageB && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>{' '}
                     </td>
                     <td className="text-center">{siteSurvey.B} </td>
@@ -260,12 +264,14 @@ function Survey({ projectCode }) {
                     <td>
                       TABLE WIDTH DIMENSION - C{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageC && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.C}</td>
@@ -274,12 +280,14 @@ function Survey({ projectCode }) {
                     <td>
                       BACK GROUND CLEARANCE DIMENSION - D{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageD && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.D}</td>
@@ -288,12 +296,14 @@ function Survey({ projectCode }) {
                     <td>
                       FRONT GROUND CLEARANCE DIMENSION - E{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageE && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.E}</td>
@@ -302,12 +312,14 @@ function Survey({ projectCode }) {
                     <td>
                       SOLAR MODULE HEIGHT DIMENSION - F{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageF && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.F}</td>
@@ -316,12 +328,14 @@ function Survey({ projectCode }) {
                     <td>
                       SOLAR MODULE FRAME CROSS SECTION DIMENSION - G{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageG && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.G}</td>
@@ -330,12 +344,14 @@ function Survey({ projectCode }) {
                     <td>
                       INTER TABLE GAP DIMENSION - H{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageH && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                       <span className="text-dark fw-bolder">
                         ({siteSurvey.htablex} &amp; {siteSurvey.htabley})
@@ -347,12 +363,14 @@ function Survey({ projectCode }) {
                     <td>
                       SOLAR MODULE GAP HORIZONTAL DIMENSION - I{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageI && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.I}</td>
@@ -361,12 +379,14 @@ function Survey({ projectCode }) {
                     <td>
                       TILT ANGLE - J{' '}
                       <span>
-                        <Link
-                          className="ms-1 text-decoration-none fs-5"
-                          to={`/surveyImages/${id}`}
-                        >
-                          <TbExternalLink />
-                        </Link>
+                        {siteSurvey.ImageJ && (
+                          <Link
+                            className="ms-1 text-decoration-none fs-5"
+                            to={`/surveyImages/${id}`}
+                          >
+                            <TbExternalLink />
+                          </Link>
+                        )}
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.J}</td>

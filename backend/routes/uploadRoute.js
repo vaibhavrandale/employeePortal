@@ -3,6 +3,7 @@ import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
 import streamifier from 'streamifier';
 import { isAdmin, isAuth } from '../utils.js';
+import mongoose from 'mongoose';
 
 const upload = multer();
 
@@ -35,4 +36,27 @@ uploadRouter.post(
     res.send(result);
   }
 );
+
+// Define a MongoDB schema and model (adjust as needed for your specific data structure)
+const pdfSchema = new mongoose.Schema({
+  name: String,
+  data: Buffer,
+});
+const PdfModel = mongoose.model('Pdf', pdfSchema);
+
+// Route to handle file upload
+uploadRouter.post('/pdffiles', upload.single('pdf'), async (req, res) => {
+  try {
+    const { originalname, buffer } = req.file;
+    const newPdf = new PdfModel({
+      name: originalname,
+      data: buffer,
+    });
+    await newPdf.save();
+    res.json({ message: 'File uploaded successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default uploadRouter;

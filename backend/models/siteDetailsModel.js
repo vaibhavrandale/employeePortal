@@ -6,6 +6,7 @@ const siteSchema = new mongoose.Schema({
   customerLogo: { type: String, required: true },
   siteLocation: { type: String, required: true },
   plantCapacity: { type: String, required: true },
+  plantLayout: { type: String, required: true },
 });
 
 const Sites = mongoose.model('Sites', siteSchema);

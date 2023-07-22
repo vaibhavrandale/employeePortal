@@ -157,17 +157,17 @@ function SurveyFirstPage({ projectCode }) {
       emptyFields.push('structure');
     }
     if (!ImageC) {
-      emptyFields.push('ImageA');
+      emptyFields.push('ImageC');
     }
     if (!ImageG) {
-      emptyFields.push('ImageB');
+      emptyFields.push('ImageG');
     }
 
     // Perform your required field validation here
     if (emptyFields.length > 0) {
-      const errorMessage = `Please fill the following fields: ${emptyFields.join(
+      const errorMessage = `Please fill the following fields,it is mandatory: ${emptyFields.join(
         ', '
-      )}.`;
+      )} .`;
       // alert(errorMessage);
       toast.error(errorMessage);
       return; // Prevent form submission if any required field is empty
@@ -665,7 +665,7 @@ function SurveyFirstPage({ projectCode }) {
                             <span className="text-muted"></span>
                             {loadingUpload && <LoadingBox1 />}
                             <input
-                              required
+                              // required
                               type="file"
                               className="form-control"
                               onChange={(e) => uploadFileHandler(e, false, 'C')}
@@ -888,7 +888,7 @@ function SurveyFirstPage({ projectCode }) {
                             {loadingUpload && <LoadingBox1 />}
                             <input
                               type="file"
-                              required
+                              // required
                               className="form-control"
                               onChange={(e) => uploadFileHandler(e, false, 'G')}
                             />

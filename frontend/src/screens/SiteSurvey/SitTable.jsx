@@ -392,7 +392,11 @@ function SiteTable({ projectCode }) {
                   <th className="col-md-2 text-center">Remark By </th>
                   <th className="col-md-1 text-center">View </th>
                   <th className="col-md-1 text-center">Edit </th>
-                  <th className="col-md-2 text-center">verify </th>
+                  {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                    <th className="col-md-2 text-center">verify </th>
+                  ) : (
+                    ''
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -464,88 +468,93 @@ function SiteTable({ projectCode }) {
                         </Link>
                       </button>
                     </td>
+                    {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                      <td className="text-center">
+                        {item.status === false ? (
+                          <button
+                            className=" edit-button fs-5 pt-1 link"
+                            style={{ color: 'blue' }}
+                            // onClick={popupHandle(item._id)}
+                            onClick={() => popupHandle(item._id, item.surveyId)}
+                            disabled={
+                              !userInfo.isAdmin || !userInfo.isSuperAdmin
+                            } // Add the check here
+                          >
+                            <HiShieldCheck />
+                          </button>
+                        ) : (
+                          <button
+                            className=" edit-button fs-5 pt-1 link"
+                            disabled
+                            style={{ color: 'green' }}
+                          >
+                            <HiShieldCheck />
+                          </button>
+                        )}
 
-                    <td className="text-center">
-                      {item.status === false ? (
-                        <button
-                          className=" edit-button fs-5 pt-1 link"
-                          style={{ color: 'blue' }}
-                          // onClick={popupHandle(item._id)}
-                          onClick={() => popupHandle(item._id, item.surveyId)}
-                          disabled={!userInfo.isAdmin || !userInfo.isSuperAdmin} // Add the check here
-                        >
-                          <HiShieldCheck />
-                        </button>
-                      ) : (
-                        <button
-                          className=" edit-button fs-5 pt-1 link"
-                          disabled
-                          style={{ color: 'green' }}
-                        >
-                          <HiShieldCheck />
-                        </button>
-                      )}
-
-                      {isPopupOpen && (
-                        <div className="popup-container">
-                          <div className="popup">
-                            <p>Are you sure you want to Verify?</p>
-                            <div className="popup-buttons">
-                              <button
-                                className="popup-button verify"
-                                onClick={() =>
-                                  handleVerify(
-                                    item._id,
-                                    item.surveyId,
-                                    item.projectCode,
-                                    item.block,
-                                    item.row,
-                                    item.table,
-                                    item.structure,
-                                    item.A,
-                                    item.ImageA,
-                                    item.B,
-                                    item.ImageB,
-                                    item.C,
-                                    item.ImageC,
-                                    item.D,
-                                    item.ImageD,
-                                    item.E,
-                                    item.ImageE,
-                                    item.F,
-                                    item.ImageF,
-                                    item.G,
-                                    item.ImageG,
-                                    item.H,
-                                    item.ImageH,
-                                    item.I,
-                                    item.ImageI,
-                                    item.J,
-                                    item.ImageJ,
-                                    item.htablex,
-                                    item.htabley,
-                                    item.img,
-                                    item.images,
-                                    item.submittedBy,
-                                    item.submittedAt,
-                                    item.rating,
-                                    item.numReviews
-                                  )
-                                }
-                              >
-                                Verify {loadingVerify && <LoadingBox1 />}
-                              </button>
-                              <button
-                                className="popup-button cancel"
-                                onClick={popupHandle}
-                              >
-                                Cancel
-                              </button>
+                        {isPopupOpen && (
+                          <div className="popup-container">
+                            <div className="popup">
+                              <p>Are you sure you want to Verify?</p>
+                              <div className="popup-buttons">
+                                <button
+                                  className="popup-button verify"
+                                  onClick={() =>
+                                    handleVerify(
+                                      item._id,
+                                      item.surveyId,
+                                      item.projectCode,
+                                      item.block,
+                                      item.row,
+                                      item.table,
+                                      item.structure,
+                                      item.A,
+                                      item.ImageA,
+                                      item.B,
+                                      item.ImageB,
+                                      item.C,
+                                      item.ImageC,
+                                      item.D,
+                                      item.ImageD,
+                                      item.E,
+                                      item.ImageE,
+                                      item.F,
+                                      item.ImageF,
+                                      item.G,
+                                      item.ImageG,
+                                      item.H,
+                                      item.ImageH,
+                                      item.I,
+                                      item.ImageI,
+                                      item.J,
+                                      item.ImageJ,
+                                      item.htablex,
+                                      item.htabley,
+                                      item.img,
+                                      item.images,
+                                      item.submittedBy,
+                                      item.submittedAt,
+                                      item.rating,
+                                      item.numReviews
+                                    )
+                                  }
+                                >
+                                  Verify {loadingVerify && <LoadingBox1 />}
+                                </button>
+                                <button
+                                  className="popup-button cancel"
+                                  onClick={popupHandle}
+                                >
+                                  Cancel
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
-                    </td>
+                        )}
+                      </td>
+                    ) : (
+                      ''
+                    )}
                   </tr>
                 ))}
               </tbody>

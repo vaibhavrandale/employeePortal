@@ -100,7 +100,7 @@ const Sidebar = () => {
         </>
         {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
           <li>
-            <Link to="#">
+            <Link to="dummypages">
               <AiOutlineDashboard className="icon me-2" />
               {hovered && <span>Feature-2</span>}
             </Link>

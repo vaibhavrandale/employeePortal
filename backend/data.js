@@ -458,6 +458,7 @@ const data = {
       customerLogo: '/images/avaada_logo.png',
       siteLocation: 'Karnataka',
       plantCapacity: '200MW',
+      plantLayout: '/plantA.pdf',
     },
     {
       projectCode: '112234',
@@ -465,6 +466,7 @@ const data = {
       customerLogo: '/images/ayana_logo.png',
       siteLocation: 'Karnataka',
       plantCapacity: '200MW',
+      plantLayout: '/plantA.pdf',
     },
   ],
 

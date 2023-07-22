@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './Sitetable.css';
 // import data from '../Employee/data';
 import { Link, useNavigate } from 'react-router-dom';
-import { BiEdit } from 'react-icons/bi';
+import { LuEdit2 } from 'react-icons/lu';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import LoadingBox from '../../components/LoadingBox';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
-import { AiOutlineEye } from 'react-icons/ai';
+import { AiOutlineEye, AiOutlineFilePdf } from 'react-icons/ai';
+import { RiSurveyLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
 
 const reducer = (state, action) => {
@@ -207,18 +208,7 @@ function SiteList() {
               New Site
             </Link>
           ) : (
-            <Link
-              className="edit-button bg-dark text-white p-1 fs-6"
-              id="AddBtn"
-              style={{
-                opacity: 0.5,
-                cursor: 'not-allowed',
-                pointerEvents: 'none',
-              }}
-            >
-              {' '}
-              New Site
-            </Link>
+            ''
           )}
           <input
             type="text"
@@ -244,8 +234,14 @@ function SiteList() {
                   <th className="col-md-2 text-center">Project Code</th>
                   <th className="col-md-2 text-center">Site Location</th>
                   <th className="col-md-1 text-center">Plant Capacity</th>
+                  <th className="col-md-1 text-center">Plant Layout</th>
                   <th className="col-md-1 text-center">View Surveys</th>
-                  <th className="col-md-1 text-center">Edit</th>
+
+                  {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                    <th className="col-md-1 text-center">Edit</th>
+                  ) : (
+                    ''
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -275,31 +271,37 @@ function SiteList() {
                     <td className="text-center">
                       <button className="edit-button">
                         <Link
+                          className="text-decoration-none"
+                          to={`/plantlayout/${item._id}`}
+                        >
+                          <AiOutlineFilePdf className="text-danger" />
+                        </Link>
+                      </button>
+                    </td>
+                    <td className="text-center">
+                      <button className="edit-button">
+                        <Link
                           className="link"
                           to={`/siteDetails/${item.projectCode}`}
                         >
                           {' '}
-                          <AiOutlineEye />
+                          <RiSurveyLine className="text-warning" />
                         </Link>
                       </button>
                     </td>
-                    <td>
-                      {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+
+                    {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                      <td>
                         <button className="edit-button">
                           <Link className="link" to={`/editSite/${item._id}`}>
                             {' '}
-                            <BiEdit />
+                            <LuEdit2 className="text-success fs-5" />
                           </Link>
                         </button>
-                      ) : (
-                        <button className="edit-button ">
-                          <Link className="link text-muted" disabled>
-                            {' '}
-                            <BiEdit />
-                          </Link>
-                        </button>
-                      )}
-                    </td>
+                      </td>
+                    ) : (
+                      ''
+                    )}
                   </tr>
                 ))}
               </tbody>

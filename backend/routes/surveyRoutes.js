@@ -214,43 +214,6 @@ surveyRouter.put(
   })
 );
 
-// surveyRouter.post(
-//   '/sitesurveys/:projectCode',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const projectCode = req.params.projectCode;
-//     const newSurvey = new Survey({
-//       projectCode: projectCode,
-//       block: 'block X' + Date.now(),
-//       surveyId: 'survey' + Date.now(),
-//       row: 'row x',
-//       table: 'table x',
-//       structure: '2P',
-//       A: 'table x',
-//       B: 'table x',
-//       C: 'table x',
-//       D: 'table x',
-//       E: 'table x',
-//       F: 'TABLE F',
-//       G: 'table x',
-//       H: 'table x',
-//       I: 'table x',
-//       J: 'table x',
-//       htablex: 'h table X',
-//       htabley: 'h table y',
-//       submittedBy: req.employee.name,
-//       submittedAt: new Date(),
-//       rating: 0,
-//       numReviews: 0,
-//       img: '/images/taypro_standard.png',
-//       // customerLogo: '/images/sample_logo.png',
-//     });
-//     const survey = await newSurvey.save();
-//     res.send({ message: 'Survey Created', survey });
-//   })
-// );
-
 surveyRouter.post(
   '/sitesurveys/:projectCode',
   isAuth,

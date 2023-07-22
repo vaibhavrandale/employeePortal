@@ -27,6 +27,8 @@ import SurveyGallery from './screens/SiteSurvey/SurveyGallery';
 import Profile from './screens/Employee/Profile';
 import ForgetPasswordScreen from './screens/Signin/ForgetPasswordScreen';
 import ResetPasswoed from './screens/Signin/ResetPasswoed';
+import Dummypages from './screens/Dummypages';
+import PlantLayout from './screens/SiteSurvey/PlantLayout';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -67,6 +69,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <NotFoundPage />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/dummypages"
+          element={
+            <ProtectedRoutes>
+              <Dummypages />
             </ProtectedRoutes>
           }
         />
@@ -198,6 +209,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SurveyFirstPage />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/plantlayout/:id"
+          element={
+            <ProtectedRoutes>
+              <PlantLayout />
             </ProtectedRoutes>
           }
         />

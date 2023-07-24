@@ -106,6 +106,15 @@ const Sidebar = () => {
             </Link>
           </li>
         )}
+
+        {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
+          <li>
+            <Link to="/pay-sleep">
+              <AiOutlineDashboard className="icon me-2" />
+              {hovered && <span>Pay Sleep</span>}
+            </Link>
+          </li>
+        )}
       </ul>
     </div>
   );

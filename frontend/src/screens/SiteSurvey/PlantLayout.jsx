@@ -67,7 +67,7 @@ function PlantLayout() {
   };
 
   return (
-    <div className="">
+    <div className="container1  d-flex  flex-column justify-content-center p-1">
       <h3 className="text-center mt-2 fw-bold">
         Plant Layout of {site.customerName}
       </h3>

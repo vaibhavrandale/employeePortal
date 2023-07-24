@@ -29,6 +29,7 @@ import ForgetPasswordScreen from './screens/Signin/ForgetPasswordScreen';
 import ResetPasswoed from './screens/Signin/ResetPasswoed';
 import Dummypages from './screens/Dummypages';
 import PlantLayout from './screens/SiteSurvey/PlantLayout';
+import SalarySleep from './screens/salarySleep/SalarySleep';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -146,6 +147,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SiteList />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/pay-sleep"
+          element={
+            <ProtectedRoutes>
+              <SalarySleep />
             </ProtectedRoutes>
           }
         />

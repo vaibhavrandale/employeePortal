@@ -5,9 +5,12 @@ import VideoSection from '../components/Videosection/VideoSection';
 
 function Dashboard() {
   return (
-    <div className="container d-flex ">
-      <VideoSection />
-      <Banner />
+    <div className="container">
+      <div className=" d-flex ">
+        <VideoSection />
+        <Banner />
+      </div>
+      {/* <SalarySleep/> */}
     </div>
   );
 }

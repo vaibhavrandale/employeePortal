@@ -130,7 +130,8 @@ input:focus {
   cursor: pointer;
   padding: 4px;
   text-decoration: none;
-
+  margin: 10px;
+  width: 15%;
   color: #050505;
 }
 .historyBtn:hover {

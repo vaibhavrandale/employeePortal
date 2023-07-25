@@ -30,6 +30,41 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '11223344',
+      bank_account_no: '1122334455',
+      uan_number: '390324',
+      pan_number: 'werrt123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'July',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+        {
+          status: true,
+          month: 'June',
+          year: 2023,
+          salary: 22000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+        {
+          status: true,
+          month: 'May',
+          year: 2023,
+          salary: 21000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192020',
@@ -58,6 +93,23 @@ const data = {
       activate: false,
 
       leaves: 10,
+
+      pf_account_no: '11223341',
+      bank_account_no: '11223344552',
+      uan_number: '390324e4',
+      pan_number: 'werrt12333',
+
+      payslips: [
+        {
+          status: true,
+          month: 'June',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192021',
@@ -86,6 +138,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1122334423',
+      bank_account_no: '112233445532',
+      uan_number: '39032444',
+      pan_number: 'werrt12322',
+
+      payslips: [
+        {
+          status: true,
+          month: 'April',
+          year: 2023,
+          salary: 26000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192022',
@@ -114,6 +183,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1122334434',
+      bank_account_no: '112233445e5',
+      uan_number: '3903254454',
+      pan_number: 'werrt123232',
+
+      payslips: [
+        {
+          status: true,
+          month: 'June',
+          year: 2023,
+          salary: 125000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
 
     {
@@ -143,6 +229,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1122113344',
+      bank_account_no: '112211334455',
+      uan_number: '39011324',
+      pan_number: 'werrt11123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'May',
+          year: 2023,
+          salary: 35000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192024',
@@ -171,6 +274,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1122223344',
+      bank_account_no: '112222334455',
+      uan_number: '39022324',
+      pan_number: 'werrt22123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'March',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192017',
@@ -199,6 +319,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1122311344',
+      bank_account_no: '111122334455',
+      uan_number: '3903214',
+      pan_number: 'wer1rt1123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'Feb',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: 'external2019',
@@ -227,6 +364,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1111223344',
+      bank_account_no: '111122334455',
+      uan_number: '3q190324',
+      pan_number: 'werr12t123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'June',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192026',
@@ -255,6 +409,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '121223344',
+      bank_account_no: '166122334455',
+      uan_number: '39660324',
+      pan_number: 'we66rrt123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'August',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
 
     {
@@ -284,6 +455,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1121123344',
+      bank_account_no: '111122334455',
+      uan_number: '39110324',
+      pan_number: 'we11rrt123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'June',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
     {
       employee_id: '20192028',
@@ -312,6 +500,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '111199223344',
+      bank_account_no: '99111122334455',
+      uan_number: '39099324',
+      pan_number: 'w88errt123',
+
+      payslips: [
+        {
+          status: true,
+          month: 'April',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
 
     {
@@ -341,6 +546,23 @@ const data = {
       activate: true,
 
       leaves: 10,
+
+      pf_account_no: '1661223344',
+      bank_account_no: '661122334455',
+      uan_number: '39036624',
+      pan_number: 'werrt16623',
+
+      payslips: [
+        {
+          status: true,
+          month: 'July',
+          year: 2023,
+          salary: 25000,
+          deductions: 200,
+          deductionReason: 'NA',
+          bonuses: 0,
+        },
+      ],
     },
   ],
   Leaves: [

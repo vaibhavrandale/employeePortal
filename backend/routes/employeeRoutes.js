@@ -137,4 +137,46 @@ emplyeeRouter.post(
   })
 );
 
+// ----------payslip------------------
+// Route for adding a payslip entry
+emplyeeRouter.post('/:id/payslips', async (req, res) => {
+  const { id } = req.params;
+  const { month, year, salary, deductions, deductionReason, bonuses, status } =
+    req.body;
+
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+
+    // Create a new payslip entry
+    const payslipEntry = {
+      month,
+      year,
+      salary,
+      deductions,
+      deductionReason,
+      bonuses,
+      status,
+    };
+
+    // Add the payslip entry to the employee's payslips array
+    employee.payslips.push(payslipEntry);
+
+    // Save the updated employee document
+    await employee.save();
+
+    return res
+      .status(201)
+      .json({ message: `Payslip  of month ${month} created successfully.` });
+  } catch (error) {
+    console.error('Error adding payslip entry:', error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+// ----------payslip------------------
+
 export default emplyeeRouter;

@@ -1,0 +1,45 @@
+/* Style the popup container */
+#popupContainer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#headbackground {
+  background: rgb(23, 34, 252);
+  padding: 0px 5px 0px 5px;
+  color: #fff;
+}
+
+/* Style the popup itself */
+.popupDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 3px;
+  border: 1px solid black;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide the select arrow on Chrome and Firefox */
+.selectOption {
+  appearance: none;
+  /* margin-left: 10px; */
+}
+
+/* Style the close button */
+#closePopupButton {
+  margin-top: 10px;
+}
+
+/* Center the text inside the popup */
+.headingOfPopup {
+  text-align: center;
+}

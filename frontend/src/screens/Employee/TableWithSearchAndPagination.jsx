@@ -45,22 +45,6 @@ const TableWithSearchAndPagination = () => {
   const itemsPerPage = 4;
   const navigate = useNavigate();
 
-  //old
-  // useEffect(() => {
-  //   // Simulate API call or data fetching
-  //   const fetchData = () => {
-  //     // Replace this with your actual data fetching logic
-  //     // For demonstration purposes, we'll use a timeout
-  //     setTimeout(() => {
-  //       setEmployees(data.employees);
-  //       setLoading(false);
-  //     }, 2000); // Simulating a 2-second delay
-  //   };
-
-  //   setLoading(true);
-  //   fetchData();
-  // }, []);
-
   //new
   useEffect(() => {
     // Simulate API call or data fetching

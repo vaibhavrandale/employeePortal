@@ -1,5 +1,19 @@
 import mongoose from 'mongoose';
-
+// Define the payslip sub-document schema
+const payslipSchema = new mongoose.Schema(
+  {
+    month: { type: String, required: true }, // Month of the payslip
+    year: { type: Number, required: true }, // Year of the payslip
+    salary: { type: Number, required: true }, // Salary for the specified month and year
+    deductions: { type: Number, default: 0 }, // Any deductions from the salary
+    deductionReason: { type: String, default: 'NA' },
+    bonuses: { type: Number, default: 0 }, // Any bonuses or additional payments
+    status: { type: Boolean, default: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 const employeeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
@@ -29,6 +43,11 @@ const employeeSchema = new mongoose.Schema(
     isVisitor: { type: Boolean, default: false, required: true },
     isProduction: { type: Boolean, default: false, required: true },
     isAccountant: { type: Boolean, default: false, required: true },
+    payslips: [payslipSchema],
+    pf_account_no: { type: String, required: true },
+    bank_account_no: { type: String, required: true },
+    uan_number: { type: String, required: true },
+    pan_number: { type: String, required: true },
   },
   {
     timestamps: true,

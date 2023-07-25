@@ -18,16 +18,6 @@ function reducer(state, action) {
     case 'EMP_SIGNOUT':
       return { ...state, userInfo: null };
 
-    // Add action type to update the form data
-    // case 'UPDATE_FORM_DATA':
-    //   const updatedFormData = { ...state.SavedData, ...action.payload };
-    //   // Save the updated form data to local storage
-    //   localStorage.setItem('SavedData', JSON.stringify(updatedFormData));
-    //   return { ...state, SavedData: updatedFormData };
-
-    // case 'CLEAR_FORM_DATA':
-    //   return { ...state, formData: null };
-
     default:
       return state;
   }
@@ -38,36 +28,3 @@ export function StoreProvider(props) {
   const value = { state, dispatch };
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
 }
-
-// SavedData: {
-//   surveyId: '',
-//   projectcode: '',
-//   block: '',
-//   structure: '',
-//   A: '',
-//   B: '',
-//   C: '',
-//   D: '',
-//   E: '',
-//   F: '',
-//   G: '',
-//   H: '',
-//   I: '',
-//   J: '',
-//   ImageA: '',
-//   ImageB: '',
-//   ImageC: '',
-//   ImageD: '',
-//   ImageE: '',
-//   ImageF: '',
-//   ImageG: '',
-//   ImageH: '',
-//   ImageI: '',
-//   ImageJ: '',
-
-//   htablex: '',
-//   htabley: '',
-//   img: '',
-//   images: '',
-//   // Add other form data fields here...
-// },

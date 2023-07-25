@@ -98,11 +98,11 @@ const Sidebar = () => {
             </li>
           )}
         </>
-        {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
+        {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
           <li>
-            <Link to="dummypages">
+            <Link to="/salary-Entry">
               <AiOutlineDashboard className="icon me-2" />
-              {hovered && <span>Feature-2</span>}
+              {hovered && <span>Salary Entry</span>}
             </Link>
           </li>
         )}

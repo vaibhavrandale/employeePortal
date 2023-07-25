@@ -53,6 +53,19 @@
   /* padding: 10px; */
 }
 
+.small-container {
+  /* margin-left: 52px;
+  margin-top: 59px; */
+  max-width: 950px;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  margin: 59px auto 0px 52px;
+  min-height: 10vh;
+  /* border: 1px solid black; */
+  z-index: 1;
+}
+
 .container1 {
   margin-left: 55px;
   margin-top: 59px;
@@ -204,3 +217,17 @@ input:focus {
     flex-direction: column;
   }
 } */
+
+.closeBtn {
+  background: transparent;
+  outline: none;
+}
+
+.selectOption:focus {
+  outline: none;
+
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  /* border-radius: 4px; */
+  /* outline: none; */
+}

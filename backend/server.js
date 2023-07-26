@@ -17,7 +17,7 @@ import uploadRouter from './routes/uploadRoute.js';
 
 dotenv.config();
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI_TESTING)
   .then(() => {
     console.log('connected to DB');
   })

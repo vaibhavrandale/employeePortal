@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineDashboard } from 'react-icons/ai';
+import { FcMoneyTransfer } from 'react-icons/fc';
+import { MdOutlineReceiptLong } from 'react-icons/md';
 
 import { FcLeave } from 'react-icons/fc';
 import './Sidebar.css';
@@ -26,7 +28,7 @@ const Sidebar = () => {
       onMouseLeave={handleMouseLeave}
     >
       <div className="logo">
-        <h1 className="heading1">T</h1>
+        <h1 className="heading1 fw-bold">T</h1>
         <h1 className="heading2">
           <img
             src="/images/Taypro.png"
@@ -56,7 +58,7 @@ const Sidebar = () => {
         )}
 
         <>
-          {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
+          {userInfo && userInfo.isAccountant && userInfo.isSuperAdmin && (
             <li>
               <Link to="/employees">
                 <img
@@ -101,16 +103,16 @@ const Sidebar = () => {
         {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
           <li>
             <Link to="/salary-Entry">
-              <AiOutlineDashboard className="icon me-2" />
+              <FcMoneyTransfer className="icon me-2" />
               {hovered && <span>Salary Entry</span>}
             </Link>
           </li>
         )}
 
-        {userInfo && userInfo.isAdmin && userInfo.isSuperAdmin && (
+        {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
           <li>
             <Link to="/pay-sleep">
-              <AiOutlineDashboard className="icon me-2" />
+              <MdOutlineReceiptLong className="icon me-2 text-success" />
               {hovered && <span>Pay Sleep</span>}
             </Link>
           </li>

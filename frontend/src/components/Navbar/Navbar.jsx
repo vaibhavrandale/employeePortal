@@ -79,13 +79,14 @@ const Navbar = () => {
             <div className="dropdown1" ref={dropdownRef}>
               <span>
                 Welcome,{' '}
-                <span className="text-success pt-3">{userInfo.name}</span>
+                <span className="text-dark pt-3 fw-bold">{userInfo.name}</span>
                 &nbsp;
               </span>
               <img
                 src={userInfo.profileImage}
                 alt={userInfo.name}
                 onClick={toggleDropdown}
+                style={{ objectFit: 'cover' }}
               />
               {isDropdownOpen && (
                 <div className="dropdown-menu1">

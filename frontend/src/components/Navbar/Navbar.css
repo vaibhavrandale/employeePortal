@@ -54,7 +54,7 @@
   /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
   filter: drop-shadow(5px 5px 5px rgb(104, 104, 104));
   padding: 10px;
-  min-width: 110px;
+  width: 245px;
   border-radius: 5px;
 }
 
@@ -120,6 +120,10 @@
 
 /* Use media queries to adjust styles for mobile devices */
 @media screen and (max-width: 767px) {
+  .navbar {
+    width: 100%;
+  }
+
   .popup-container {
     display: none;
     position: fixed;

@@ -187,11 +187,7 @@ function AddNewSite() {
           </nav>{' '}
           <h2 className="text-center text-dark fw-bolder">Add New Site</h2>
           <span className="underline"></span>
-          <div className="col-md-12 d-flex justify-content-end mt-3 me-5">
-            <Link className="historyBtn  bg-warning m-1" to={'/sitelist'}>
-              View all
-            </Link>
-          </div>
+          <div className="col-md-12 d-flex justify-content-end mt-3 me-5"></div>
           <form onSubmit={submitHandler}>
             <div className="form-group mt-4">
               <div className="row d-flex justify-content-center align-items-center">

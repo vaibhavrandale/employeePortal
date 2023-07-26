@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiEdit } from 'react-icons/bi';
 import './Table.css'; // Import the CSS file for custom styling
@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import { Store } from '../../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,8 @@ const TableWithSearchAndPagination = () => {
     loading: true,
     error: '',
   });
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   // const [loading, setLoading] = useState(true);
   // const [employees, setEmployees] = useState([]);
@@ -145,9 +148,15 @@ const TableWithSearchAndPagination = () => {
       </div>
       <h2 className="text-center">Employees Details</h2>
       <div className="form-group   mb-2 search-input">
-        <Link id="AddBtn" className="bg-dark text-white" onClick={popupHandle}>
-          ADD
-        </Link>
+        {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
+          <Link
+            id="AddBtn"
+            className="bg-dark text-white"
+            onClick={popupHandle}
+          >
+            ADD
+          </Link>
+        )}
         <input
           type="text"
           className="form-control search"
@@ -168,6 +177,7 @@ const TableWithSearchAndPagination = () => {
               <th className="col-md-1 text-center">Image</th>
               <th className="col-md-2 text-center">Name</th>
               <th className="col-md-2 text-center">Employee ID</th>
+              <th className="col-md-2 text-center">Designation</th>
               <th className="col-md-3 text-center">Email</th>
               <th className="col-md-1 text-center">Joining Date</th>
               <th className="col-md-1 text-center">Action</th>
@@ -195,6 +205,7 @@ const TableWithSearchAndPagination = () => {
                 </td>
                 <td className="text-center">{item.name}</td>
                 <td className="text-center">{item.employee_id}</td>
+                <td className="text-center">{item.designation}</td>
                 <td className="text-center">{item.email}</td>
                 <td className="text-center">{item.joiningDate}</td>
                 <td className="text-center">

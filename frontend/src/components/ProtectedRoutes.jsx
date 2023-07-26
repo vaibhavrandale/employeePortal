@@ -5,5 +5,5 @@ import { Store } from '../Store';
 export default function ProtectedRoutes({ children }) {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  return userInfo ? children : <Navigate to="/signin" />;
+  return userInfo && userInfo.isAdmin ? children : <Navigate to="/signin" />;
 }

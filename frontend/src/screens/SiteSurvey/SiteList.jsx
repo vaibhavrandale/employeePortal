@@ -270,12 +270,16 @@ function SiteList() {
                     <td className="text-center">{item.plantCapacity}</td>
                     <td className="text-center">
                       <button className="edit-button">
-                        <Link
-                          className="text-decoration-none"
-                          to={`/plantlayout/${item._id}`}
-                        >
-                          <AiOutlineFilePdf className="text-danger" />
-                        </Link>
+                        {item.plantLayout ? (
+                          <Link
+                            className="text-decoration-none"
+                            to={`/plantlayout/${item._id}`}
+                          >
+                            <AiOutlineFilePdf className="text-danger" />
+                          </Link>
+                        ) : (
+                          <span className="fs-6">NA</span>
+                        )}
                       </button>
                     </td>
                     <td className="text-center">

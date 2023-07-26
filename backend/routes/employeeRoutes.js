@@ -23,26 +23,87 @@ emplyeeRouter.get('/details/:id', async (req, res) => {
   res.send({ employee });
 });
 
-// emplyeeRouter.post(
-//   '/signin',
-//   expressAsyncHandler(async (req, res) => {
-//     const employee = await Employee.findOne({ email: req.body.email });
-//     if (employee && req.body.password === employee.employee_id) {
-//       // Code to be executed if the employee ID matches
+// --add employee-------------------
+emplyeeRouter.post('/', async (req, res) => {
+  const {
+    employee_id,
+    name,
+    image,
+    email,
+    password,
+    isAdmin,
+    isSuperAdmin,
+    isSales,
+    isScm,
+    isDesign,
+    isProject,
+    isVisitor,
+    isProduction,
+    isAccountant,
+    joiningDate,
+    birth_date,
+    gender,
+    designation,
+    state,
+    address,
+    mobile_no,
+    age,
+    experience,
+    activate,
+    leaves,
+    pf_account_no,
+    bank_account_no,
+    uan_number,
+    pan_number,
+    payslips,
+  } = req.body;
 
-//       res.send({
-//         _id: employee._id,
-//         name: employee.name,
-//         email: employee.email,
-//         isAdmin: employee.isAdmin,
-//         activate: employee.activate,
-//         token: generateToken(employee),
-//       });
-//       return;
-//     }
-//     res.status(401).send({ message: 'Invalid Credentials' });
-//   })
-// );
+  // Create a new Employee instance with the provided data
+  const newEmployee = new Employee({
+    employee_id,
+    name,
+    image,
+    email,
+    password,
+    isAdmin,
+    isSuperAdmin,
+    isSales,
+    isScm,
+    isDesign,
+    isProject,
+    isVisitor,
+    isProduction,
+    isAccountant,
+    joiningDate,
+    birth_date,
+    gender,
+    designation,
+    state,
+    address,
+    mobile_no,
+    age,
+    experience,
+    activate,
+    leaves,
+    pf_account_no,
+    bank_account_no,
+    uan_number,
+    pan_number,
+    payslips,
+  });
+
+  try {
+    // Save the new employee to the database
+    const savedEmployee = await newEmployee.save();
+
+    // Send the newly created employee as the response
+    res.status(201).json({ success: true, employee: savedEmployee });
+  } catch (error) {
+    // Handle any errors that may occur during employee creation
+    res.status(500).json({ success: false, error: 'Failed to add employee' });
+  }
+});
+// --add employee-------------------
 
 emplyeeRouter.post(
   '/signin',

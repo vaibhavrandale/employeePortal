@@ -31,6 +31,8 @@ import Dummypages from './screens/Dummypages';
 import PlantLayout from './screens/SiteSurvey/PlantLayout';
 import SalarySleep from './screens/salarySleep/SalarySleep';
 import SalaryEntry from './screens/salarySleep/SalaryEntry';
+import Table from './screens/Table';
+
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 
@@ -80,6 +82,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <Dummypages />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/table"
+          element={
+            <ProtectedRoutes>
+              <Table />
             </ProtectedRoutes>
           }
         />

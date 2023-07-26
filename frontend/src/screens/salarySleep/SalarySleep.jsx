@@ -107,10 +107,11 @@ const SalarySleep = ({ onClose, onSubmit }) => {
     doc.text(`TAYPRO PRIVATE LIMITED`, 70, 30);
     doc.setFontSize(10);
     doc.text(
-      `Payslip for the month ${selectedMonth} - ${selectedYear}`,
+      `Payslip for the month ${selectedMonth.toUpperCase()} - ${selectedYear}`,
       80,
       35
     );
+
     doc.text(
       `Financial Period ${selectedYear}-${parseInt(selectedYear, 10) + 1}`,
       84,

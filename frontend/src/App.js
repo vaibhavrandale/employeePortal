@@ -51,7 +51,7 @@ function AppRouter() {
   const location = useLocation();
   const isSigninPage = location.pathname === '/signin';
   const forgetPassword = location.pathname === '/forget-password';
-  const resetetPassword = location.pathname === '/reset-password';
+  const resetetPassword = location.pathname === '/reset-password/:token';
 
   const showSidebar = !(isSigninPage || forgetPassword || resetetPassword);
 

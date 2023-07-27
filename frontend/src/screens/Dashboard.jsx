@@ -72,6 +72,7 @@ function Dashboard() {
               </div>
             </div>
           )}
+
           <div className="col">
             <div className="card border border-0 quicklikCard">
               <Link to="sitelist" className="p-1">
@@ -91,43 +92,47 @@ function Dashboard() {
               </Link>
             </div>
           </div>
-          <div className="col">
-            <div className="card border border-0 quicklikCard">
-              <Link to="leaves-history" className="p-1">
-                <img
-                  src="/images/icons/leaves.png"
-                  height={50}
-                  style={{ objectFit: 'contain' }}
-                  className="card-img-top quicklikCardImg"
-                  alt="i"
-                />
-                <div className="card-body text-center">
-                  <span className="card-title">leaves</span>
-                </div>
-              </Link>
+          {userInfo && !userInfo.isVisitor && (
+            <div className="col">
+              <div className="card border border-0 quicklikCard">
+                <Link to="leaves-history" className="p-1">
+                  <img
+                    src="/images/icons/leaves.png"
+                    height={50}
+                    style={{ objectFit: 'contain' }}
+                    className="card-img-top quicklikCardImg"
+                    alt="i"
+                  />
+                  <div className="card-body text-center">
+                    <span className="card-title">leaves</span>
+                  </div>
+                </Link>
+              </div>
             </div>
-          </div>
-          <div className="col">
-            <div className="card border border-0 quicklikCard">
-              <Link to="pay-sleep" className="p-1">
-                <img
-                  src="/images/icons/slip.png"
-                  height={50}
-                  style={{ objectFit: 'contain' }}
-                  className="card-img-top quicklikCardImg"
-                  alt="i"
-                />
-                <div className="card-body text-center">
-                  <span className="card-title">Pay Slip</span>
-                </div>
-              </Link>
+          )}
+          {userInfo && !userInfo.isVisitor && (
+            <div className="col">
+              <div className="card border border-0 quicklikCard">
+                <Link to="pay-sleep" className="p-1">
+                  <img
+                    src="/images/icons/slip.png"
+                    height={50}
+                    style={{ objectFit: 'contain' }}
+                    className="card-img-top quicklikCardImg"
+                    alt="i"
+                  />
+                  <div className="card-body text-center">
+                    <span className="card-title">Pay Slip</span>
+                  </div>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* ---------------------2nd row ---------------------- */}
         <div className="row row-cols-1 row-cols-md-4 g-2">
-          {userInfo && userInfo.isAccountant && (
+          {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
                 <Link to="salary-Entry" className="p-1">
@@ -145,23 +150,24 @@ function Dashboard() {
               </div>
             </div>
           )}
-
-          <div className="col">
-            <div className="card border border-0 quicklikCard">
-              <Link to="" className="p-1">
-                <img
-                  src="/images/icons/soon_watch.png"
-                  height={50}
-                  style={{ objectFit: 'contain' }}
-                  className="card-img-top quicklikCardImg"
-                  alt="i"
-                />
-                <div className="card-body text-center">
-                  <span className="card-title">comming..</span>
-                </div>
-              </Link>
+          {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+            <div className="col">
+              <div className="card border border-0 quicklikCard">
+                <Link to="" className="p-1">
+                  <img
+                    src="/images/icons/soon_watch.png"
+                    height={50}
+                    style={{ objectFit: 'contain' }}
+                    className="card-img-top quicklikCardImg"
+                    alt="i"
+                  />
+                  <div className="card-body text-center">
+                    <span className="card-title">comming..</span>
+                  </div>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 

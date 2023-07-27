@@ -91,13 +91,14 @@ const ForgetPasswordScreen = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 type="email"
+                className="input"
               />
               <br />
 
               <button className="signin-button" type="submit">
                 Continue {loadingSignin && <LoadingBox1 />}
               </button>
-              <Link to={`/signin`} className="mt-2  text-decoration-none">
+              <Link to={`/signin`} className="mt-2  forgotLink">
                 continue signin?
               </Link>
             </div>

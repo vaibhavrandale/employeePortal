@@ -86,7 +86,7 @@ const Navbar = () => {
                 src={userInfo.profileImage}
                 alt={userInfo.name}
                 onClick={toggleDropdown}
-                style={{ objectFit: 'cover' }}
+                style={{ objectFit: 'contain', scale: '1' }}
               />
               {isDropdownOpen && (
                 <div className="dropdown-menu1">

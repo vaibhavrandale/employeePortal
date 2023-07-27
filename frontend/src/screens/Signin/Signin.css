@@ -1,3 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+section {
+  background-image: url(./product.jpg);
+  /* background: #1c1c1c; */
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  border: 0.1px solid transparent;
+  position: relative;
+}
+
 .taypro-logo {
   display: flex;
   justify-content: center;
@@ -8,14 +24,25 @@
   width: 350px;
   height: 400px;
   padding: 10px 36px;
-
+  /*background: transparent;
+  */
+  backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.01);
+  box-shadow: 10px 35px 35px rgba(129, 124, 124, 0.2);
+  /*border-radius: 1px;
+  */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  /*border: 1px solid #ddd;
+  */
+  border-radius: 0px;
   margin: 70px auto 24px auto;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  -ms-border-radius: 0px;
+  -o-border-radius: 0px;
 }
 
 .taypro-card > .tayproHeading {
@@ -31,8 +58,8 @@
   font-weight: 700;
 }
 
-.taypro-card input {
-  width: 283px;
+.taypro-card .input {
+  width: 270px;
   margin: 3px auto;
   padding: 10px 10px;
   height: 35px;
@@ -43,21 +70,42 @@
 }
 
 .taypro-card .signin-button {
-  width: 283px;
-  margin-top: 20px;
-  font-weight: 500;
+  width: 270px;
+  margin-top: 7px;
+  font-weight: 600;
   height: 35px;
-  color: #fff;
-  background-color: #1c1c1c;
-  border: 1px solid #a6a6a6;
-  border-top-color: #949494;
-  background-image: linear-gradient(#1d1d1c #444444);
+  color: #ffffff;
+  background-color: #000;
+  /*border: 1px solid #000;
+  */
+  outline: none;
+  border: none;
   border-radius: 4px;
+  transition: all 0.9s;
+  /*animation: pulse 1.8s infinite;
+  */
+  -webkit-transition: all 0.9s;
+  -moz-transition: all 0.9s;
+  -ms-transition: all 0.9s;
+  -o-transition: all 0.9s;
 }
+
+/* @keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 #000;
+  }
+  65% {
+    box-shadow: 0 0 0 10 transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+} */
 
 .taypro-card .signin-button:hover {
   color: #ffffff;
-  background-color: #393939;
+  background-color: #0f0f0f;
+  /* border: 1px solid #ffffff; */
 }
 
 .taypro-card p,
@@ -71,4 +119,13 @@
 
 .break p {
   font-weight: 700;
+}
+
+.forgotLink {
+  color: rgb(255, 255, 255);
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+  color: rgb(255, 255, 255);
 }

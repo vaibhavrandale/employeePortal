@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useReducer, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import LoadingBox1 from '../components/LoadingBox1';
 import { getError } from '../utils';
@@ -55,11 +55,53 @@ function Dummypages() {
     }
   };
 
+  const [pdfs, setPdfs] = useState([]);
+  //new
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get('/api/upload/pdfs');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        console.log(result.data);
+        setPdfs(result.data);
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
+      setTimeout(() => {
+        // setEmployees(result.data);
+        // setLoading(false);
+      }, 2000); // Simulating a 2-second delay
+    };
+
+    // setLoading(true);
+    fetchData();
+  }, []);
+
   return (
     <div className="container">
       <h1>PDF Upload</h1>
       <input type="file" onChange={handleFileChange} accept=".pdf" />{' '}
       {loadingUpload && <LoadingBox1 />}
+      <div className="box">
+        {pdfs.map((pdf) => (
+          <div key={pdf._id} className="m-1 card">
+            <h3>{pdf.name}</h3>
+
+            <object
+              data={pdf._id}
+              type="application/pdf"
+              width="100%"
+              height="200px"
+              alt=""
+            />
+          </div>
+        ))}
+        ;
+      </div>
     </div>
   );
 }

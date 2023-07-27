@@ -240,3 +240,45 @@ input:focus {
   /* border-radius: 4px; */
   /* outline: none; */
 }
+
+input {
+  width: 270px;
+
+  height: 35px;
+  padding: 10px 10px;
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  outline: none;
+}
+
+.input {
+  width: 270px;
+
+  height: 35px;
+  /* padding: 10px 10px; */
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  outline: none;
+}
+.input1 {
+  width: 270px;
+
+  height: 45px;
+  padding: 10px 10px;
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  outline: none;
+}
+
+.input2 {
+  width: 20px;
+
+  height: 45px;
+  background-color: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 4px;
+  outline: none;
+}

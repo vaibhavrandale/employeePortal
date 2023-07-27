@@ -59,4 +59,16 @@ uploadRouter.post('/pdffiles', upload.single('pdf'), async (req, res) => {
   }
 });
 
+// get pdfs
+
+uploadRouter.get('/pdfs', async (req, res) => {
+  try {
+    const pdfs = await PdfModel.find();
+    res.json(pdfs);
+  } catch (error) {
+    console.error('Error fetching PDFs:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 export default uploadRouter;

@@ -86,10 +86,6 @@ function PlantLayout() {
             type="application/pdf"
             alt=""
           />
-          {/* <p pageNumber={pageNumber}>
-            {site.plantLayout && `Page ${pageNumber} of ${numPages}`}
-            {!site.plantLayout && 'Loading PDF...'}
-          </p> */}
         </div>
       )}
     </div>

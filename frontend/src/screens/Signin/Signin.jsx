@@ -33,6 +33,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -79,6 +80,10 @@ const Signin = () => {
     }
   }, [navigate, userInfo]);
 
+  const ShowPasswordHanfler = async (e) => {
+    setShowPassword(e.target.checked);
+  };
+
   return (
     <>
       <section>
@@ -91,7 +96,8 @@ const Signin = () => {
                 src={logo}
                 alt=""
                 height={85}
-                width={300}
+                width={200}
+                style={{ objectFit: 'contain' }}
                 // className="border rounded"
               />
             }
@@ -99,7 +105,10 @@ const Signin = () => {
 
           <form onSubmit={submitHandler}>
             {' '}
-            <h2 className="text-center fw-bolder tayproHeading">L O G I N</h2>
+            <h5 className="text-center fw-bolder tayproHeading">
+              Welcome back, <br />
+              Please Login to continue
+            </h5>
             <div className="taypro-from">
               <label>Email </label>
               <br />
@@ -107,6 +116,7 @@ const Signin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 type="email"
+                className="input"
               />
               <br />
               <label>Password</label>
@@ -114,15 +124,27 @@ const Signin = () => {
               <input
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                type="password"
+                // type="password"
+                type={showPassword ? 'text' : 'password'}
+                className="input"
               />
-              <button className="signin-button" type="submit">
-                Continue {loadingSignin && <LoadingBox1 />}
-              </button>
-              <Link
-                to={`/forget-password`}
-                className="mt-2  text-decoration-none"
+              <br />
+              <div
+                className="d-flex justify-content-end"
+                style={{ width: '270px' }}
               >
+                {' '}
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  onChange={ShowPasswordHanfler}
+                />
+                <span className="ms-1 text-light">show</span>{' '}
+              </div>
+              <button className="signin-button" type="submit">
+                continue {loadingSignin && <LoadingBox1 />}
+              </button>
+              <Link to={`/forget-password`} className="mt-2  forgotLink">
                 Forgot Password?
               </Link>
             </div>

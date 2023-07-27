@@ -4,6 +4,7 @@ import img from './Taypro.png';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
+import './salarySleep.css';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -96,12 +97,31 @@ function SalaryEntry() {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
-    // if (!d) {
+    // if (!selectedEmployee || salary || month) {
     //   toast.error('Please select mandatory field ', {
     //     position: 'bottom-right',
     //   });
     //   return;
     // }
+
+    const missingFields = [];
+
+    if (!selectedEmployee) {
+      missingFields.push('Employee ID');
+    }
+
+    if (!salary) {
+      missingFields.push('Salary');
+    }
+
+    if (!month) {
+      missingFields.push('Month');
+    }
+
+    if (missingFields.length > 0) {
+      toast.error(`Please fill : ${missingFields.join(', ')}`);
+      return;
+    }
 
     try {
       const { data } = await axios.post(
@@ -151,11 +171,21 @@ function SalaryEntry() {
           <div className="row g-3 ">
             <div className="col-lg-3 col-md-6 col-sm-12">
               <label htmlFor="inputState" className="form-label">
-                Employee Id
+                Employee Id <span className="text-danger">*</span>
               </label>
               <select
                 id="inputState"
-                className="form-select"
+                // className="form-select"
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '0px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
                 required
                 value={selectedEmployee}
                 onChange={(e) => setSelectedEmployee(e.target.value)}
@@ -170,26 +200,46 @@ function SalaryEntry() {
             </div>
             <div className="col-lg-3 col-md-6 col-sm-12">
               <label htmlFor="" className="form-label">
-                Enter Salary
+                Enter Salary <span className="text-danger">*</span>
               </label>
               <input
-                required
                 type="text"
-                className="form-control"
+                id="input"
+                // className="form-control "
                 placeholder="Salary"
                 aria-label="Salary"
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '10px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
               />
             </div>
             <div className="col-lg-3 col-md-6 col-sm-12">
               <label htmlFor="" className="form-label">
-                Month
+                Month<span className="text-danger">*</span>
               </label>
               <select
                 name=""
                 id=""
-                className=" form-select "
+                // className=" form-select "
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '0px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
                 value={month}
                 onChange={(e) => setMonth(e.target.value)}
               >
@@ -217,7 +267,17 @@ function SalaryEntry() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                // className="form-control input"
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '10px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
                 placeholder="Deduction"
                 aria-label="Deduction"
                 value={deductions}
@@ -230,13 +290,46 @@ function SalaryEntry() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                // className="form-control input"
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '10px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
                 placeholder="Reason"
                 aria-label="Reason"
                 value={deductionReason}
                 onChange={(e) => setDeductionReason(e.target.value)}
               />
               <input type="hidden" name="currentYear" value={year} />
+            </div>
+            <div className="col-lg-3 col-md-6 col-sm-12">
+              <label htmlFor="" className="form-label">
+                Bonus (If Any)
+              </label>
+              <input
+                type="text"
+                // className="form-control input"
+                style={{
+                  backgroundColor: '#fff',
+                  border: '1px solid #a6a6a6',
+                  borderRadius: '4px',
+                  outline: ' none',
+                  padding: '10px',
+                  width: '200px',
+
+                  height: '35px',
+                }}
+                placeholder="Deduction"
+                aria-label="Deduction"
+                value={bonuses}
+                onChange={(e) => setBonuses(e.target.value)}
+              />
             </div>
             <div className="">
               <button

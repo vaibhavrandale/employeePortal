@@ -48,6 +48,7 @@ const employeeSchema = new mongoose.Schema(
     bank_account_no: { type: String, required: true },
     uan_number: { type: String, required: true },
     pan_number: { type: String, required: true },
+    aadhar_no: { type: String, required: true },
   },
   {
     timestamps: true,

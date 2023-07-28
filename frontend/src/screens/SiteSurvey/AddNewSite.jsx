@@ -5,10 +5,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../../Store';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import { toast } from 'react-hot-toast';
-import LoadingBox from '../../components/LoadingBox';
 import axios from 'axios';
 import { getError } from '../../utils';
-import LoadingBox1 from '../../components/LoadingBox1';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -162,7 +162,7 @@ function AddNewSite() {
     <div className="container1  ">
       {/* {siteId} */}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : (
         <div className="m-2 card p-1 pb-2">
           <nav
@@ -250,7 +250,7 @@ function AddNewSite() {
                   <span className="text-muted">
                     (image size should be 123*43)
                   </span>
-                  {loadingUpload && <LoadingBox1 />}
+                  {loadingUpload && <LoadingBox4 />}
                   <input
                     type="file"
                     className="form-control"
@@ -264,9 +264,8 @@ function AddNewSite() {
                   className="submitBtn px-2 pt-1 pb-1"
                   style={{ marginRight: '50px' }}
                 >
-                  Update{' '}
+                  Update {loadingUpdate && <LoadingBox4 />}
                 </button>
-                {loadingUpdate && <LoadingBox1 />}
               </div>
             </div>
           </form>

@@ -6,6 +6,7 @@ import '../App.css';
 import './dashboard.css';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
+import LoadingBox4 from '../components/LoadingBox/LoadingBox4';
 
 function Dashboard() {
   const { state } = useContext(Store);
@@ -23,23 +24,6 @@ function Dashboard() {
         <VideoSection />
         <Banner />
       </div> */}
-      {/* <div className=" row">
-        <h4>Quick Links</h4>
-        {[...Array(12)].map((_, index) => (
-          <div key={index} className="col-md-2 col-sm-3 col-6">
-            <div className="card d-flex flex-column justify-content-center align-items-center border m-1">
-              <img
-                src={logo}
-                alt=""
-                height={50}
-                width={100}
-                className="border m-1"
-              />
-              <span className="border">ABCD</span>
-            </div>
-          </div>
-        ))}
-      </div> */}
 
       <div
         className=" row  col-6 m-1 pb-3 border  "
@@ -53,7 +37,7 @@ function Dashboard() {
                 className="card border border-0 quicklikCard"
                 id="quicklikCard"
               >
-                <Link to="employees" className="p-1">
+                <Link to="employees" className="p-1 text-decoration-none">
                   <img
                     src="/images/icons/employees_or.png"
                     height={50}
@@ -64,8 +48,11 @@ function Dashboard() {
                   />
                   {/* <span className='card-img-top'></span> */}
                   <div className="card-body text-center">
-                    <span className="card-title ">
-                      <Link to="employees">Employees</Link>
+                    <span
+                      className="card-title  "
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      Employees
                     </span>
                   </div>
                 </Link>
@@ -75,7 +62,7 @@ function Dashboard() {
 
           <div className="col">
             <div className="card border border-0 quicklikCard">
-              <Link to="sitelist" className="p-1">
+              <Link to="sitelist" className="p-1 text-decoration-none">
                 <img
                   src="/images/icons/survey.png"
                   className="card-img-top quicklikCardImg"
@@ -84,9 +71,12 @@ function Dashboard() {
                   alt="..."
                 />
                 <div className="card-body text-center ">
-                  <span className="card-title">
+                  <span
+                    className="card-title"
+                    style={{ color: '#2749f5', fontWeight: '500' }}
+                  >
                     {' '}
-                    <Link to="sitelist">Survey</Link>
+                    Survey
                   </span>
                 </div>
               </Link>
@@ -95,7 +85,7 @@ function Dashboard() {
           {userInfo && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
-                <Link to="leaves-history" className="p-1">
+                <Link to="leaves-history" className="p-1 text-decoration-none">
                   <img
                     src="/images/icons/leaves.png"
                     height={50}
@@ -104,7 +94,12 @@ function Dashboard() {
                     alt="i"
                   />
                   <div className="card-body text-center">
-                    <span className="card-title">leaves</span>
+                    <span
+                      className="card-title"
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      leaves
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -113,7 +108,7 @@ function Dashboard() {
           {userInfo && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
-                <Link to="pay-sleep" className="p-1">
+                <Link to="pay-sleep" className="p-1 text-decoration-none">
                   <img
                     src="/images/icons/slip.png"
                     height={50}
@@ -122,7 +117,12 @@ function Dashboard() {
                     alt="i"
                   />
                   <div className="card-body text-center">
-                    <span className="card-title">Pay Slip</span>
+                    <span
+                      className="card-title"
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      Pay Slip
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -135,7 +135,7 @@ function Dashboard() {
           {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
-                <Link to="salary-Entry" className="p-1">
+                <Link to="salary-Entry" className="p-1 text-decoration-none">
                   <img
                     src="/images/icons/salary.jpg"
                     height={50}
@@ -144,7 +144,12 @@ function Dashboard() {
                     alt="i"
                   />
                   <div className="card-body text-center">
-                    <span className="card-title ">Entry</span>
+                    <span
+                      className="card-title "
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      Entry
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -153,7 +158,7 @@ function Dashboard() {
           {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
-                <Link to="" className="p-1">
+                <Link to="" className="p-1 text-decoration-none">
                   <img
                     src="/images/icons/soon_watch.png"
                     height={50}
@@ -162,7 +167,12 @@ function Dashboard() {
                     alt="i"
                   />
                   <div className="card-body text-center">
-                    <span className="card-title">comming..</span>
+                    <span
+                      className="card-title"
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      comming..
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -172,6 +182,7 @@ function Dashboard() {
       </div>
 
       {/* 2nd row--------------------------- */}
+      {/* <LoadingBox4 /> */}
     </div>
   );
 }

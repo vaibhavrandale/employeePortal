@@ -1,10 +1,17 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 // import data from './data';
 import './Employee.css';
-import { Link, useParams } from 'react-router-dom';
-import LoadingBox from '../../components/LoadingBox';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+// import LoadingBox from '../../components/LoadingBox';
 // import AlertBox from '../../components/MessageBox/AlertBox';
 import axios from 'axios';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import { toast } from 'react-hot-toast';
+import { getError } from '../../utils';
+import { Store } from '../../Store';
+// import { Cursor } from 'mongoose';
+import { MdVerified } from 'react-icons/md';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,20 +24,32 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'UPDATE_REQUEST':
+      return { ...state, loadingUpdate: true };
+
+    case 'UPDATE_SUCCESS':
+      return { ...state, employees: action.payload, loadingUpdate: false };
+
+    case 'UPDATE_FAIL':
+      return { ...state, loadingUpdate: false, error: action.payload };
+
     default:
       return state;
   }
 };
 const EmployeeDetails = () => {
   const { id } = useParams();
-  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employees: {},
-    loading: true,
-    error: '',
-  });
-
-  // const [loading, setLoading] = useState(true);
-  // const [employee, setEmployee] = useState(null);
+  const [{ loading, error, employees, loadingUpdate }, dispatch] = useReducer(
+    reducer,
+    {
+      employees: {},
+      loading: true,
+      error: '',
+    }
+  );
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -55,32 +74,61 @@ const EmployeeDetails = () => {
     fetchData();
   }, [id]);
 
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     const foundEmployee = data.employees.find(
-  //       (emp) => emp.employee_id === employee_id
-  //     );
-  //     setEmployee(foundEmployee);
-  //     setLoading(false);
-  //   };
+  const DeactivateHandler = async (e) => {
+    e.preventDefault();
 
-  //   setLoading(true);
-  //   setTimeout(fetchData, 1);
+    dispatch({ type: 'UPDATE_REQUEST' });
 
-  //   fetchData();
-  // }, [employee_id]);
+    try {
+      const { data } = await axios.put(
+        `/api/employees/activate/${id}`,
+        {
+          activate: false,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      console.log(data);
+      dispatch({ type: 'UPDATE_SUCCESS', payload: data.employee });
+      const customMessage = data.message;
 
-  // if (isLoading) {
-  //   return <LoadingBox />;
-  // }
+      toast.success(customMessage);
+      // toast.success('Employee Deactivated successfully');
+    } catch (error) {
+      toast.error(getError(error));
+      dispatch({ type: 'UPDATE_FAIL' });
+    }
+  };
 
-  // if (!employee) {
-  //   return (
-  //     <AlertBox className="container alert alert-danger">
-  //       Employee Not Found / Blocked
-  //     </AlertBox>
-  //   );
-  // }
+  const ActivateHandler = async (e) => {
+    e.preventDefault();
+
+    dispatch({ type: 'UPDATE_REQUEST' });
+
+    try {
+      const { data } = await axios.put(
+        `/api/employees/activate/${id}`,
+        {
+          activate: true,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      console.log(data);
+      dispatch({ type: 'UPDATE_SUCCESS', payload: data.employee });
+      const customMessage = data.message;
+
+      toast.success(customMessage, {
+        position: 'top-right',
+      });
+      // toast.success('Employee Deactivated successfully');
+    } catch (error) {
+      toast.error(getError(error));
+      dispatch({ type: 'UPDATE_FAIL' });
+    }
+  };
 
   return (
     <div className="container">
@@ -106,12 +154,57 @@ const EmployeeDetails = () => {
         </ol>
       </nav>{' '}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : (
         <>
           <h2>
-            <span className="fw-bolder">{employees.name}</span> -
-            <span>{employees.employee_id}</span>
+            <div className="d-flex justify-content-lg-between">
+              <div className="">
+                <span className="fw-bolder">{employees.name}</span> -
+                <span>{employees.employee_id}</span>
+              </div>
+
+              <div className="">
+                {' '}
+                {employees.activate === 'true' ? (
+                  <>
+                    <span
+                      className={`badge bg-success `}
+                      style={{ fontSize: '15px' }}
+                    >
+                      activated
+                    </span>
+                    <MdVerified
+                      className="fa fa-ban fs-5 ms-1 text-success "
+                      style={{ cursor: 'pointer' }}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="click here to activate"
+                      onClick={DeactivateHandler}
+                    />
+                    {loadingUpdate && <LoadingBox4 />}
+                  </>
+                ) : (
+                  <>
+                    <span
+                      className={`badge bg-danger`}
+                      style={{ fontSize: '15px' }}
+                    >
+                      deactivated
+                    </span>
+                    <i
+                      className="fa fa-ban fs-5 ms-1 text-danger "
+                      style={{ cursor: 'pointer' }}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="click here to deactivate"
+                      onClick={ActivateHandler}
+                    ></i>
+                    {loadingUpdate && <LoadingBox4 />}
+                  </>
+                )}
+              </div>
+            </div>
           </h2>
           <div>
             <div className="d-flex flex-column justify-content-end align-items-end">

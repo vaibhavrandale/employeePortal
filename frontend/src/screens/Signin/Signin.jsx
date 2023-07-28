@@ -130,13 +130,12 @@ const Signin = () => {
               />
               <br />
               <div
-                className="d-flex justify-content-end"
+                className="d-flex justify-content-end align-items-center"
                 style={{ width: '270px' }}
               >
-                {' '}
                 <input
                   type="checkbox"
-                  className="checkbox"
+                  className="input3"
                   onChange={ShowPasswordHanfler}
                 />
                 <span className="ms-1 text-light">show</span>{' '}

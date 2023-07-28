@@ -55,6 +55,7 @@ emplyeeRouter.post('/', async (req, res) => {
     bank_account_no,
     uan_number,
     pan_number,
+    aadhar_no,
     payslips,
   } = req.body;
 
@@ -89,6 +90,7 @@ emplyeeRouter.post('/', async (req, res) => {
     bank_account_no,
     uan_number,
     pan_number,
+    aadhar_no,
     payslips,
   });
 
@@ -104,6 +106,43 @@ emplyeeRouter.post('/', async (req, res) => {
   }
 });
 // --add employee-------------------
+
+// -----------------activate employee------------
+emplyeeRouter.put('/activate/:id', async (req, res) => {
+  const { id } = req.params;
+  const { activate } = req.body;
+
+  try {
+    // Find the employee in the database by the provided employee_id
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'Employee not found' });
+    }
+
+    // Update the 'activate' property based on the provided value
+    employee.activate = activate;
+
+    // Save the updated employee to the database
+    const updatedEmployee = await employee.save();
+
+    const message = `Employee ${employee.name} has been ${
+      activate ? 'Activated' : 'Deactivated'
+    }`;
+
+    // Send the updated employee and custom message as the response
+    res.json({ success: true, employee: updatedEmployee, message });
+  } catch (error) {
+    // Handle any errors that may occur during the update
+    res
+      .status(500)
+      .json({ success: false, error: 'Failed to update employee' });
+  }
+});
+
+// -----------------activate employee------------
 
 emplyeeRouter.post(
   '/signin',

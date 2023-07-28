@@ -28,6 +28,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '1122334408',
 
       leaves: 10,
 
@@ -136,6 +137,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '112233409',
 
       leaves: 10,
 
@@ -181,6 +183,7 @@ const data = {
       age: '27',
       experience: '5',
       activate: true,
+      aadhar_no: '112233410',
 
       leaves: 10,
 
@@ -227,6 +230,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223341',
 
       leaves: 10,
 
@@ -272,6 +276,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223342',
 
       leaves: 10,
 
@@ -317,6 +322,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223343',
 
       leaves: 10,
 
@@ -362,6 +368,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223344',
 
       leaves: 10,
 
@@ -394,7 +401,7 @@ const data = {
       isScm: false,
       isDesign: false,
       isProject: false,
-      isVisitor: true,
+      isVisitor: false,
       isProduction: false,
       isAccountant: false,
       joiningDate: '1/03/2023',
@@ -407,6 +414,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223345',
 
       leaves: 10,
 
@@ -453,6 +461,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223347',
 
       leaves: 10,
 
@@ -498,6 +507,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223349',
 
       leaves: 10,
 
@@ -544,6 +554,7 @@ const data = {
       age: '22',
       experience: '1',
       activate: true,
+      aadhar_no: '11223340',
 
       leaves: 10,
 

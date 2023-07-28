@@ -6,6 +6,7 @@ import LoadingBox from '../../components/LoadingBox';
 // import AlertBox from '../../components/MessageBox/AlertBox';
 import axios from 'axios';
 import { LuEdit } from 'react-icons/lu';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -71,7 +72,7 @@ const Profile = () => {
         </ol>
       </nav>{' '}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : (
         <>
           <h2>

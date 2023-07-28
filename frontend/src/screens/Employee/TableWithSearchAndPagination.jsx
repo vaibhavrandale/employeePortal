@@ -9,6 +9,7 @@ import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -45,7 +46,7 @@ const TableWithSearchAndPagination = () => {
 
   // const [backEmployee, setBackEmployee] = useState([]);
 
-  const itemsPerPage = 4;
+  const itemsPerPage = 10;
   const navigate = useNavigate();
 
   //new
@@ -93,9 +94,7 @@ const TableWithSearchAndPagination = () => {
   };
   const createHandler = async () => {
     popupHandle();
-    toast.success('Employee Added Successfully', {
-      position: 'bottom-right',
-    });
+    toast.error('Please fill all details before submiting!');
     navigate('/addemployee');
   };
 
@@ -167,7 +166,9 @@ const TableWithSearchAndPagination = () => {
       </div>
 
       {loading ? (
-        <LoadingBox />
+        // <LoadingBox />
+
+        <LoadingBox3 />
       ) : error ? (
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
@@ -222,33 +223,29 @@ const TableWithSearchAndPagination = () => {
         </table>
       )}
 
-      {<LoadingBox /> && filteredData.length === 0 && (
-        <p className="text-center">No results found.</p>
-      )}
-
-      {<LoadingBox /> && (
-        <nav className="pagination-container">
-          <ul className="pagination">
-            {Array(Math.ceil(filteredData.length / itemsPerPage))
-              .fill()
-              .map((_, index) => (
-                <li
-                  key={index}
-                  className={`page-item  ${
-                    currentPage === index + 1 ? 'active ' : ''
-                  }`}
+      {/* {<LoadingBox /> && ( */}
+      <nav className="pagination-container">
+        <ul className="pagination">
+          {Array(Math.ceil(filteredData.length / itemsPerPage))
+            .fill()
+            .map((_, index) => (
+              <li
+                key={index}
+                className={`page-item  ${
+                  currentPage === index + 1 ? 'active ' : ''
+                }`}
+              >
+                <button
+                  className="page-link bg-dark border border-white"
+                  onClick={() => handlePageChange(index + 1)}
                 >
-                  <button
-                    className="page-link bg-dark border border-white"
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-          </ul>
-        </nav>
-      )}
+                  {index + 1}
+                </button>
+              </li>
+            ))}
+        </ul>
+      </nav>
+      {/* )} */}
     </div>
   );
 };

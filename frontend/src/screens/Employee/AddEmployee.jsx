@@ -1,11 +1,12 @@
 import React, { useContext, useReducer, useState } from 'react';
 import '../../App.css';
 // import data from '../Employee/data';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { getError } from '../../utils';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Store } from '../../Store';
+import LoadingBox1 from '../../components/LoadingBox1';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -18,18 +19,32 @@ const reducer = (state, action) => {
     case 'CREATE_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'UPLOAD_REQUEST':
+      return { ...state, loadingUpload: true, errorUpload: '' };
+    case 'UPLOAD_SUCCESS':
+      return {
+        ...state,
+        loadingUpload: false,
+        errorUpload: '',
+      };
+    case 'UPLOAD_FAIL':
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
+
     default:
       return state;
   }
 };
 
 function AddEmployee() {
-  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employees: [],
-    loading: true,
-    error: '',
-  });
-
+  const [{ loading, error, employees, loadingUpload }, dispatch] = useReducer(
+    reducer,
+    {
+      employees: [],
+      loading: true,
+      error: '',
+    }
+  );
+  const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
@@ -115,6 +130,7 @@ function AddEmployee() {
           experience,
           activate,
           leaves,
+          aadhar_no,
           pf_account_no,
           bank_account_no,
           uan_number,
@@ -129,9 +145,10 @@ function AddEmployee() {
       dispatch({
         type: 'CREATE_SUCCESS',
       });
-      toast.success('Employee successfully', {
+      toast.success('Employee Added successfully', {
         position: 'bottom-right',
       });
+      navigate('/employees');
 
       //   siteSurvey.rating = data.rating;
       //   dispatch({ type: 'REFRESH_EMPLOYEE', payload: employees });
@@ -140,6 +157,43 @@ function AddEmployee() {
         position: 'bottom-right',
       });
       dispatch({ type: 'CREATE_FAIL' });
+    }
+  };
+
+  // profileImages
+
+  const uploadFileHandler = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/profileImages',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_SUCCESS' });
+
+      if (forImages) {
+        setImage([...image, data.secure_url]);
+      } else {
+        setImage(data.secure_url);
+      }
+
+      toast.success('Image uploaded successfully.', {
+        position: 'bottom-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'bottom-right',
+      });
+      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
 
@@ -174,14 +228,6 @@ function AddEmployee() {
                 className=""
                 id="firstName"
                 placeholder="Enter Employee ID"
-                value={employee_id}
-                onChange={(e) => setEmployee_id(e.target.value)}
-              />
-              <input
-                type="hidden"
-                className=""
-                id="password"
-                placeholder="password"
                 value={employee_id}
                 onChange={(e) => setEmployee_id(e.target.value)}
               />
@@ -401,12 +447,14 @@ function AddEmployee() {
               <label htmlFor="joiningDate">Is Admin ?: &nbsp;</label>
               <input
                 type="checkbox"
-                checked
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.value)}
+                // value={isAdmin}
+                // onChange={(e) => setIsAdmin(e.target.value)}
+
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)}
               />
             </div>
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -415,8 +463,10 @@ function AddEmployee() {
                 type="checkbox"
                 className="input2"
                 id="joiningDate"
-                value={isSuperAdmin}
-                onChange={(e) => setIsSuperAdmin(e.target.value)}
+                // value={isSuperAdmin}
+                // onChange={(e) => setIsSuperAdmin(e.target.value)}
+                checked={isSuperAdmin}
+                onChange={(e) => setIsSuperAdmin(e.target.checked)}
               />
             </div>{' '}
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -425,8 +475,10 @@ function AddEmployee() {
                 type="checkbox"
                 className="input2"
                 id="joiningDate"
-                value={isProduction}
-                onChange={(e) => setIsProduction(e.target.value)}
+                // value={isProduction}
+                // onChange={(e) => setIsProduction(e.target.value)}
+                checked={isProduction}
+                onChange={(e) => setIsProduction(e.target.checked)}
               />
             </div>{' '}
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -435,8 +487,10 @@ function AddEmployee() {
                 type="checkbox"
                 className="input2"
                 id="joiningDate"
-                value={isScm}
-                onChange={(e) => setIsScm(e.target.value)}
+                // value={isScm}
+                // onChange={(e) => setIsScm(e.target.value)}
+                checked={isScm}
+                onChange={(e) => setIsScm(e.target.checked)}
               />
             </div>{' '}
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -446,8 +500,10 @@ function AddEmployee() {
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isSales}
-                onChange={(e) => setIsSales(e.target.value)}
+                // value={isSales}
+                // onChange={(e) => setIsSales(e.target.value)}
+                checked={isSales}
+                onChange={(e) => setIsSales(e.target.checked)}
               />
             </div>{' '}
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -457,8 +513,10 @@ function AddEmployee() {
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isAccountant}
-                onChange={(e) => setIsAccountant(e.target.value)}
+                // value={isAccountant}
+                // onChange={(e) => setIsAccountant(e.target.value)}
+                checked={isAccountant}
+                onChange={(e) => setIsAccountant(e.target.checked)}
               />
             </div>{' '}
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -468,8 +526,10 @@ function AddEmployee() {
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isProject}
-                onChange={(e) => setIsProject(e.target.value)}
+                // value={isProject}
+                // onChange={(e) => setIsProject(e.target.value)}
+                checked={isProject}
+                onChange={(e) => setIsProject(e.target.checked)}
               />
             </div>
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -479,8 +539,10 @@ function AddEmployee() {
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isDesign}
-                onChange={(e) => setIsDesign(e.target.value)}
+                // value={isDesign}
+                // onChange={(e) => setIsDesign(e.target.value)}
+                checked={isDesign}
+                onChange={(e) => setIsDesign(e.target.checked)}
               />
             </div>
             <div className="form-group col-md-2 d-flex justify-content-center align-items-center">
@@ -490,23 +552,31 @@ function AddEmployee() {
                 className="input2"
                 id="joiningDate"
                 placeholder="Enter Joining Date"
-                value={isVisitor}
-                onChange={(e) => setIsVisitor(e.target.value)}
+                // value={isVisitor}
+                // onChange={(e) => setIsVisitor(e.target.value)}
+                checked={isVisitor}
+                onChange={(e) => setIsVisitor(e.target.checked)}
               />
             </div>
           </div>
 
           <div className="row d-flex justify-content-center align-items-center mt-3">
             <div className="form-group col-md-4">
-              <label htmlFor="profileImage">Passport Size Image:</label> <br />
+              <label htmlFor="profileImage">Passport Size Image: </label> <br />
               <input
                 type="file"
                 className="input1 w-50"
-                id="profileImage"
-                placeholder="Upload Image"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
+                id="logo"
+                onChange={uploadFileHandler}
+              />{' '}
+              {loadingUpload && <LoadingBox1 />}
+              {image && (
+                <img
+                  src={image}
+                  alt={image}
+                  className="circle-rounded border"
+                />
+              )}{' '}
             </div>
             <div className="form-group col-md-4">
               <label htmlFor="experienceLetter">Experience Letter:</label>{' '}

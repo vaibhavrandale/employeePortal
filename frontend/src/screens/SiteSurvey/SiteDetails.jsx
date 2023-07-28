@@ -5,6 +5,8 @@ import { Link, useParams } from 'react-router-dom';
 import SiteTable from './SitTable';
 import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -75,7 +77,7 @@ function SiteDetails() {
     <div className="container">
       {/* {projectCode} */}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : (
         <>
           <nav

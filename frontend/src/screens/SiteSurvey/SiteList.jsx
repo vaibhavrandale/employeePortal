@@ -12,6 +12,8 @@ import { Store } from '../../Store';
 import { AiOutlineEye, AiOutlineFilePdf } from 'react-icons/ai';
 import { RiSurveyLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -167,7 +169,7 @@ function SiteList() {
                 className="popup-button verify"
                 onClick={createSitehandler}
               >
-                Add {loadingCreate && <LoadingBox1 />}
+                Add {loadingCreate && <LoadingBox4 />}
               </button>
               <button className="popup-button cancel" onClick={popupHandle}>
                 Cancel
@@ -219,9 +221,8 @@ function SiteList() {
           />
         </div>
 
-        {loadingCreate && <LoadingBox1 />}
         {loading ? (
-          <LoadingBox />
+          <LoadingBox3 />
         ) : error ? (
           <AlertBox className="alert alert-danger">{error}</AlertBox>
         ) : (

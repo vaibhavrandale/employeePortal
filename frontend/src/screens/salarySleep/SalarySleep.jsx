@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import LoadingBox from '../../components/LoadingBox';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox1 from '../../components/LoadingBox1';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -361,33 +362,14 @@ const SalarySleep = ({ onClose, onSubmit }) => {
       // Handle the scenario when PDF generation fails
       console.log('PDF generation failed.');
     }
-
-    // const employeeId = employeeData._id; // Assuming 'id' is the property in employeeData containing the employee ID
-    // // const salarySlipPdf = generatePdf(employeeData);
-    // const salarySlipPdf = generatePdf(
-    //   employeeData,
-    //   selectedYear,
-    //   selectedMonth
-    // );
-    // const pdfBlob = salarySlipPdf.output('blob');
-    // const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    // if (pdfPreviewRef.current) {
-    //   pdfPreviewRef.current.src = pdfUrl;
-    //   pdfPreviewRef.current.id = `employee-${employeeId}`;
-    // }
   };
-
-  // if (!employeeData) {
-  //   return <div>Loading...</div>;
-  // }
 
   return (
     <div className="container1  d-flex  flex-column justify-content-center  p-1">
       {/* Your existing salary slip content */}
       <h3 className="text-center">Download Pay Slip</h3>
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (

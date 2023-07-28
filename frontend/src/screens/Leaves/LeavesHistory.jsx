@@ -5,6 +5,8 @@ import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
 import logger from 'use-reducer-logger';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 // import { BiEdit } from 'react-icons/bi';
 // import data from '../Employee/data';
 
@@ -118,7 +120,7 @@ function LeavesHistory() {
         </ol>
       </nav>{' '}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : error ? (
         <AlertBox>{error}</AlertBox>
       ) : (

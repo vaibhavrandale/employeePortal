@@ -11,6 +11,8 @@ import { GrClose } from 'react-icons/gr';
 // import AlertBox1 from '../../components/MessageBox/AlertBox1';
 import '../../App.css';
 import { FiExternalLink } from 'react-icons/fi';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -389,7 +391,7 @@ function SurveyFirstPage({ projectCode }) {
     <div className="container1">
       {projectCode}
       {loading ? (
-        <LoadingBox />
+        <LoadingBox3 />
       ) : (
         <div className="m-2 card p-1 pb-2">
           <nav
@@ -1186,7 +1188,7 @@ function SurveyFirstPage({ projectCode }) {
                       className="submitBtn px-2 pt-1 pb-1 me-2"
                       style={{ marginRight: '50px' }}
                     >
-                      Submit{loadingUpdate && <LoadingBox1 />}
+                      Submit{loadingUpdate && <LoadingBox4 />}
                     </button>
                   </div>
                 </div>

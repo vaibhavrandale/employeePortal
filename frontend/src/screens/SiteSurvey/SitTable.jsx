@@ -9,14 +9,17 @@ import { HiShieldCheck } from 'react-icons/hi';
 import * as XLSX from 'xlsx';
 import './Sitetable.css';
 import { toast } from 'react-hot-toast';
-import LoadingBox from '../../components/LoadingBox';
+// import LoadingBox from '../../components/LoadingBox';
 // import logger from 'use-reducer-logger';
 import axios from 'axios';
 // import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
-import LoadingBox1 from '../../components/LoadingBox1';
+// import LoadingBox1 from '../../components/LoadingBox1';
 import MsgBox from '../../components/MessageBox/MsgBox';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+// import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -265,7 +268,10 @@ function SiteTable({ projectCode }) {
     numReviews
   ) => {
     popupHandle();
-
+    if (!projectCode || !block || !row || !table || !structure) {
+      toast.error('you cannot verify as there are some fields are missing');
+      return;
+    }
     try {
       dispatch({ type: 'VERIFY_REQUEST' });
       const { data } = await axios.put(
@@ -341,7 +347,7 @@ function SiteTable({ projectCode }) {
                 className="popup-button verify"
                 onClick={createSurveyHandler}
               >
-                Yes{loadingCreate && <LoadingBox1 />}
+                Yes{loadingCreate && <LoadingBox4 />}
               </button>
               <button className="popup-button cancel" onClick={createHandler}>
                 No
@@ -352,7 +358,7 @@ function SiteTable({ projectCode }) {
       )}
       <div className="container">
         {loading ? (
-          <LoadingBox />
+          <LoadingBox3 />
         ) : error ? (
           <MsgBox className="alert alert-danger">{error}</MsgBox>
         ) : (
@@ -539,7 +545,7 @@ function SiteTable({ projectCode }) {
                                     )
                                   }
                                 >
-                                  Verify {loadingVerify && <LoadingBox1 />}
+                                  Verify {loadingVerify && <LoadingBox3 />}
                                 </button>
                                 <button
                                   className="popup-button cancel"
@@ -564,7 +570,7 @@ function SiteTable({ projectCode }) {
         {/* {<LoadingBox /> && filteredData.length === 0 && (
         <p className="text-center">No results found.</p>
       )} */}
-        {<LoadingBox /> && (
+        {<LoadingBox3 /> && (
           <nav className="pagination-container">
             <ul className="pagination">
               {Array(Math.ceil(filteredData.length / itemsPerPage))

@@ -112,13 +112,13 @@ const ResetPasswoed = () => {
               />
               <br />
               <div
-                className="d-flex justify-content-end"
+                className="d-flex justify-content-end align-items-center"
                 style={{ width: '270px' }}
               >
                 {' '}
                 <input
                   type="checkbox"
-                  className="checkbox"
+                  className="input3"
                   onChange={ShowPasswordHanfler}
                   style={{}}
                 />

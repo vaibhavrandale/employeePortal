@@ -132,8 +132,8 @@
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
   }
 
   .popup {
@@ -155,7 +155,7 @@
 
   .popup-button {
     margin-bottom: 10px; /* Add some spacing between buttons */
-    padding: 5px 10px;
-    width: 30%; /* Make the buttons full width on mobile devices */
+    padding: 5px 5px;
+    width: 50%; /* Make the buttons full width on mobile devices */
   }
 }

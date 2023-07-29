@@ -35,10 +35,10 @@ function SalaryEntry() {
   const [salary, setSalary] = useState('');
   //   const [employeeid, setEmployeeid] = useState('');
   const [month, setMonth] = useState('');
-  const [deductions, setDeductions] = useState('');
-  const [deductionReason, setDeductionReason] = useState('');
+  const [deductions, setDeductions] = useState('0');
+  const [deductionReason, setDeductionReason] = useState('NA');
   const [year, setYear] = useState('');
-  const [bonuses, setBonuses] = useState('');
+  const [bonuses, setBonuses] = useState('0');
   //new
   useEffect(() => {
     // Simulate API call or data fetching
@@ -202,6 +202,7 @@ function SalaryEntry() {
               <label htmlFor="" className="form-label">
                 Enter Salary <span className="text-danger">*</span>
               </label>
+              <br />
               <input
                 type="text"
                 id="input"
@@ -226,6 +227,7 @@ function SalaryEntry() {
               <label htmlFor="" className="form-label">
                 Month<span className="text-danger">*</span>
               </label>
+              <br />
               <select
                 name=""
                 id=""
@@ -325,18 +327,14 @@ function SalaryEntry() {
 
                   height: '35px',
                 }}
-                placeholder="Deduction"
+                placeholder="Bonus"
                 aria-label="Deduction"
                 value={bonuses}
                 onChange={(e) => setBonuses(e.target.value)}
               />
             </div>
             <div className="">
-              <button
-                type="submit"
-                className=" btn submitBtn2"
-                aria-label="Reason"
-              >
+              <button type="submit" className=" btn submitBtn2">
                 Submit
               </button>
             </div>

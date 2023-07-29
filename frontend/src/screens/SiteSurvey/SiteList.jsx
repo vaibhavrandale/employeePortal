@@ -226,8 +226,14 @@ function SiteList() {
         ) : error ? (
           <AlertBox className="alert alert-danger">{error}</AlertBox>
         ) : (
-          <div className="d-flex flex-column justify-content-start align-items-start flex-wrap  p-1">
-            <table className="table table-bordered">
+          // <div className="d-flex flex-column justify-content-start align-items-start flex-wrap  p-1">
+          // <table className="table table-bordered">
+
+          <div className="">
+            <table
+              className="table table-bordered table-responsive "
+              // style={{ overflowX: 'auto' }}
+            >
               <thead>
                 <tr>
                   <th className="col-md-1 text-center">Customer Logo</th>

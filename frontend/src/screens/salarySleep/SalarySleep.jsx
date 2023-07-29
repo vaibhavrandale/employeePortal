@@ -199,6 +199,27 @@ const SalarySleep = ({ onClose, onSubmit }) => {
       },
     });
 
+    const calculateTotalEarnings = () => {
+      let totalEarnings = 0;
+
+      // Check if payslipData.salary is a valid number
+      if (!isNaN(parseInt(payslipData.salary, 10))) {
+        totalEarnings += parseInt(payslipData.salary, 10);
+      }
+
+      // Check if payslipData.bonuses is a valid number
+      if (!isNaN(parseInt(payslipData.bonuses, 10))) {
+        totalEarnings += parseInt(payslipData.bonuses, 10);
+      }
+
+      // Check if payslipData.deductions is a valid number
+      if (!isNaN(parseInt(payslipData.deductions, 10))) {
+        totalEarnings -= parseInt(payslipData.deductions, 10);
+      }
+
+      return totalEarnings;
+    };
+
     const salaryData = [
       [{ content: 'Basic', fontStyle: 'bold' }, '12445'],
       [{ content: 'House Rent Allowance', fontStyle: 'bold' }, '12445'],
@@ -210,8 +231,9 @@ const SalarySleep = ({ onClose, onSubmit }) => {
       [{ content: '', fontStyle: 'bold' }, ''],
       [
         { content: '(A) Total Earnings', fontStyle: 'bold' },
-        { content: payslipData.salary, halign: 'right' },
+        calculateTotalEarnings(),
       ],
+
       // Add other salary components here
     ];
 
@@ -287,7 +309,7 @@ const SalarySleep = ({ onClose, onSubmit }) => {
     const netSalaryDate = [
       [
         { content: 'Net Salary = (A) - (B)', fontStyle: 'bold' },
-        `${parseInt(payslipData.salary, 10) - parseInt(totalDeduction, 10)}`,
+        `${calculateTotalEarnings() - parseInt(totalDeduction, 10)}`,
       ],
 
       // Add other salary components here
@@ -335,9 +357,7 @@ const SalarySleep = ({ onClose, onSubmit }) => {
     // If no payslips are found for the selected month and year, you can handle it accordingly
     if (filteredPayslips.length === 0) {
       // Display an error message or handle the scenario as per your requirement
-      toast.error('No payslips found for the selected month and year.', {
-        position: 'bottom-right',
-      });
+      toast.error('No payslips found for the selected month and year.');
       return;
     }
 
@@ -364,6 +384,38 @@ const SalarySleep = ({ onClose, onSubmit }) => {
     }
   };
 
+  const generateAndDownloadPdf = () => {
+    const filteredPayslips = employeeData.payslips.filter(
+      (payslip) =>
+        payslip.year.toString() === selectedYear &&
+        payslip.month.toLowerCase() === selectedMonth.toLowerCase()
+    );
+
+    // Check if payslips are available for the selected month and year
+    if (filteredPayslips.length === 0) {
+      toast.error('No payslips found for the selected month and year.');
+      return;
+    }
+
+    // Generate the PDF
+    const salarySlipPdf = generatePdf(
+      employeeData,
+      selectedYear,
+      selectedMonth
+    );
+
+    // Check if the PDF generation is successful before proceeding
+    if (salarySlipPdf) {
+      // Save the PDF to the user's device
+      salarySlipPdf.save(
+        `${employee.name}_${selectedMonth}_${selectedYear}.pdf`
+      );
+    } else {
+      // Handle the scenario when PDF generation fails
+      console.log('PDF generation failed.');
+    }
+  };
+
   return (
     <div className="container1  d-flex  flex-column justify-content-center  p-1">
       {/* Your existing salary slip content */}
@@ -373,7 +425,7 @@ const SalarySleep = ({ onClose, onSubmit }) => {
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
-        <div className="d-flex form-group justify-content-center">
+        <div className="d-flex form-group justify-content-center flex-wrap">
           <div className="year m-1">
             <label className="headingOfPopup m-1 " htmlFor="year">
               Select Year:
@@ -434,7 +486,23 @@ const SalarySleep = ({ onClose, onSubmit }) => {
                     className="btn btn-dark"
                     onClick={generateAndPreviewPdf}
                   >
-                    Download Slip
+                    View
+                  </button>
+                </>
+              )}
+          </div>
+          <div className="preview m-1 d-flex flex-column">
+            {selectedYear &&
+              selectedMonth && ( // Check if both options are selected
+                <>
+                  <label htmlFor="" className="headingOfPopup m-1">
+                    Export
+                  </label>
+                  <button
+                    className="btn btn-success"
+                    onClick={generateAndDownloadPdf}
+                  >
+                    Export PDF
                   </button>
                 </>
               )}

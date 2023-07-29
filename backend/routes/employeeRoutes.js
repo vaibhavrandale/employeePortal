@@ -277,6 +277,117 @@ emplyeeRouter.post('/:id/payslips', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error.' });
   }
 });
+
 // ----------payslip------------------
+
+// 1
+// ----------edit employee adreess------------------
+
+// Route for edit emplopyee address
+emplyeeRouter.put('/address/:id', async (req, res) => {
+  const { id } = req.params;
+  const { address, state } = req.body;
+
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+    (employee.address = address),
+      (employee.state = state),
+      // Save the updated employee document
+      await employee.save();
+
+    return res.status(201).json({ message: `Address updated successfully.` });
+  } catch (error) {
+    console.error('Error while updating address:', error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+// ----------edit employee adreess------------------
+
+// 2
+// ----------edit personal Details------------------
+
+// Route for edit emplopyee personal details
+emplyeeRouter.put('/personaldetails/:id', async (req, res) => {
+  const { id } = req.params;
+  const {
+    name,
+    email,
+    joiningDate,
+    birth_date,
+    gender,
+    designation,
+    mobile_no,
+    age,
+    experience,
+  } = req.body;
+
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+
+    (employee.name = name),
+      (employee.email = email),
+      (employee.joiningDate = joiningDate),
+      (employee.birth_date = birth_date),
+      (employee.gender = gender),
+      (employee.designation = designation),
+      (employee.age = age),
+      (employee.experience = experience),
+      (employee.mobile_no = mobile_no),
+      // Save the updated employee document
+      await employee.save();
+
+    return res
+      .status(201)
+      .json({ message: `Personal Details updated successfully.` });
+  } catch (error) {
+    console.error('Error while updating Personal Details:', error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+// ----------edit employee personalDetails------------------
+
+// 3
+// ----------edit identity Details------------------
+
+// Route for edit emplopyee identity details
+emplyeeRouter.put('/identitydetails/:id', async (req, res) => {
+  const { id } = req.params;
+  const { pf_account_no, bank_account_no, uan_number, pan_number, aadhar_no } =
+    req.body;
+
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+    (employee.pf_account_no = pf_account_no),
+      (employee.bank_account_no = bank_account_no),
+      (employee.uan_number = uan_number),
+      (employee.pan_number = pan_number),
+      (employee.aadhar_no = aadhar_no),
+      // Save the updated employee document
+      await employee.save();
+
+    return res
+      .status(201)
+      .json({ message: `Identity details updated successfully.` });
+  } catch (error) {
+    console.error('Error while updating Identity Details:', error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+// ----------edit employee identity------------------
 
 export default emplyeeRouter;

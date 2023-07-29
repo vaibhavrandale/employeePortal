@@ -172,55 +172,63 @@ const TableWithSearchAndPagination = () => {
       ) : error ? (
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th className="col-md-1 text-center">Image</th>
-              <th className="col-md-2 text-center">Name</th>
-              <th className="col-md-2 text-center">Employee ID</th>
-              <th className="col-md-2 text-center">Designation</th>
-              <th className="col-md-3 text-center">Email</th>
-              <th className="col-md-1 text-center">Joining Date</th>
-              <th className="col-md-1 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((item, index) => (
-              <tr
-                key={index}
-                className={index === hoveredRow ? 'hovered-row' : ''}
-                onMouseEnter={() => handleRowHover(index)}
-                onMouseLeave={() => handleRowHover(null)}
-              >
-                <td className="text-center">
-                  <div className="table-image-container">
-                    <Link to={`/employeedetails/${item._id}`}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="table-image"
-                        onLoad={() => handleImageLoad(index)}
-                      />
-                    </Link>
-                  </div>
-                </td>
-                <td className="text-center">{item.name}</td>
-                <td className="text-center">{item.employee_id}</td>
-                <td className="text-center">{item.designation}</td>
-                <td className="text-center">{item.email}</td>
-                <td className="text-center">{item.joiningDate}</td>
-                <td className="text-center">
-                  <button className="edit-button">
-                    <Link className="link" to={`/employeedetails/${item._id}`}>
-                      {' '}
-                      <BiEdit />
-                    </Link>
-                  </button>
-                </td>
+        <div className="">
+          <table
+            className="table table-bordered table-responsive"
+            style={{ overflowX: 'auto' }}
+          >
+            <thead>
+              <tr>
+                <th className="col-md-1 text-center">Image</th>
+                <th className="col-md-2 text-center">Name</th>
+                <th className="col-md-2 text-center">Employee ID</th>
+                <th className="col-md-2 text-center">Designation</th>
+                <th className="col-md-3 text-center">Email</th>
+                <th className="col-md-1 text-center">Joining Date</th>
+                <th className="col-md-1 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentItems.map((item, index) => (
+                <tr
+                  key={index}
+                  className={index === hoveredRow ? 'hovered-row' : ''}
+                  onMouseEnter={() => handleRowHover(index)}
+                  onMouseLeave={() => handleRowHover(null)}
+                >
+                  <td className="text-center">
+                    <div className="table-image-container">
+                      <Link to={`/employeedetails/${item._id}`}>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="table-image"
+                          onLoad={() => handleImageLoad(index)}
+                        />
+                      </Link>
+                    </div>
+                  </td>
+                  <td className="text-center">{item.name}</td>
+                  <td className="text-center">{item.employee_id}</td>
+                  <td className="text-center">{item.designation}</td>
+                  <td className="text-center">{item.email}</td>
+                  <td className="text-center">{item.joiningDate}</td>
+                  <td className="text-center">
+                    <button className="edit-button">
+                      <Link
+                        className="link"
+                        to={`/employeedetails/${item._id}`}
+                      >
+                        {' '}
+                        <BiEdit />
+                      </Link>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
 
       {/* {<LoadingBox /> && ( */}

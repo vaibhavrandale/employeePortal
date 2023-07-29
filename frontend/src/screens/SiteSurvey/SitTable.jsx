@@ -386,7 +386,9 @@ function SiteTable({ projectCode }) {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+
             <table className="table table-bordered ">
+              {/* <table className="table table-bordered "> */}
               <thead>
                 <tr>
                   <th className="col-md-2 text-center">Block </th>

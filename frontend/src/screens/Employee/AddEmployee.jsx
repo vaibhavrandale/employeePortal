@@ -198,7 +198,7 @@ function AddEmployee() {
   };
 
   return (
-    <div className="container">
+    <div className="container d-flex flex-column justify-content-center">
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -400,6 +400,9 @@ function AddEmployee() {
                 onChange={(e) => setAge(e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="row d-flex justify-content-center align-items-center mt-3">
             <div className="form-group col-md-4">
               <label htmlFor="age">Experience:</label> <br />
               <input
@@ -411,9 +414,6 @@ function AddEmployee() {
                 onChange={(e) => setExperience(e.target.value)}
               />
             </div>
-          </div>
-
-          <div className="row d-flex justify-content-center align-items-center mt-3">
             <div className="form-group col-md-4">
               <label htmlFor="state">Address :</label> <br />
               <textarea

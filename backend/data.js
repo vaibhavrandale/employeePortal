@@ -3,11 +3,11 @@ import bcrypt from 'bcryptjs';
 const data = {
   employees: [
     {
-      employee_id: '20192019',
+      employee_id: '19007223009',
       name: 'Vaibhav Randale',
       image: '/images/Vaibhav_Randale.jpg',
       email: 'vaibhav.randale@taypro.in',
-      password: '20192019',
+      password: '19007223009',
       isAdmin: true,
 
       isSuperAdmin: true,

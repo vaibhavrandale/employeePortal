@@ -27,6 +27,7 @@ surveyRouter.post(
       customerLogo: '/images/sample_logo.png',
       siteLocation: 'siteLocation',
       plantCapacity: 'plantCapacity',
+      status: false,
     });
     const site = await newSite.save();
     res.send({ message: 'Site Created', site });
@@ -55,9 +56,28 @@ surveyRouter.put(
       site.projectCode = req.body.projectCode;
       site.customerLogo = req.body.customerLogo;
       site.plantCapacity = req.body.plantCapacity;
+      site.status = req.body.status;
 
       await site.save();
       res.send({ message: 'Site Updated' });
+    } else {
+      res.status(404).send({ message: 'Site Not Found' });
+    }
+  })
+);
+
+surveyRouter.put(
+  '/sites/hide/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const siteId = req.params.id;
+    const site = await Sites.findById(siteId);
+    if (site) {
+      site.status = req.body.status;
+
+      await site.save();
+      res.send({ message: 'Site Hided' });
     } else {
       res.status(404).send({ message: 'Site Not Found' });
     }
@@ -124,6 +144,106 @@ surveyRouter.post(
   })
 );
 
+// -----------------new---------------------
+surveyRouter.post(
+  '/sitesurveys/:projectCode',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const projectCode = req.params.projectCode;
+    const newSurvey = new Survey({
+      projectCode: projectCode,
+      block: req.body.block,
+      surveyId: 'taypro' + Date.now(),
+      row: req.body.row,
+      table: req.body.table,
+      structure: req.body.structure,
+      A: req.body.A,
+      ImageA: req.body.ImageA,
+      B: req.body.B,
+      ImageB: req.body.ImageB,
+      C: req.body.C,
+      ImageC: req.body.ImageC,
+      D: req.body.D,
+      ImageD: req.body.ImageD,
+      E: req.body.E,
+      ImageE: req.body.ImageE,
+      F: req.body.F,
+      ImageF: req.body.ImageF,
+      G: req.body.G,
+      ImageG: req.body.ImageG,
+      H: req.body.H,
+      ImageH: req.body.ImageH,
+      I: req.body.I,
+      ImageI: req.body.ImageI,
+      J: req.body.J,
+      ImageJ: req.body.ImageJ,
+      htablex: req.body.htablex,
+      htabley: req.body.htabley,
+      submittedBy: req.employee.name,
+      submittedAt: new Date(),
+      rating: 0,
+      numReviews: 0,
+      verifiedBy: '',
+      verifiededAt: '',
+      img: '',
+      // customerLogo: '/images/sample_logo.png',
+    });
+    const survey = await newSurvey.save();
+    res.send({ message: 'New Survey Created', survey });
+  })
+);
+// -----------------new---------------------
+
+// surveyRouter.post(
+//   '/sitesurveys/:projectCode',
+//   isAuth,
+//   isAdmin,
+//   expressAsyncHandler(async (req, res) => {
+//     const projectCode = req.params.projectCode;
+//     const newSurvey = new Survey({
+//       projectCode: projectCode,
+//       block: '',
+//       surveyId: 'taypro' + Date.now(),
+//       row: '',
+//       table: '',
+//       structure: '',
+//       A: '',
+//       ImageA: '',
+//       B: '',
+//       ImageB: '',
+//       C: '',
+//       ImageC: '',
+//       D: '',
+//       ImageD: '',
+//       E: '',
+//       ImageE: '',
+//       F: '',
+//       ImageF: '',
+//       G: '',
+//       ImageG: '',
+//       H: '',
+//       ImageH: '',
+//       I: '',
+//       ImageI: '',
+//       J: '',
+//       ImageJ: '',
+//       htablex: '',
+//       htabley: '',
+//       submittedBy: req.employee.name,
+//       submittedAt: new Date(),
+//       rating: 0,
+//       numReviews: 0,
+//       verifiedBy: '',
+//       verifiededAt: '',
+//       img: '',
+//       // customerLogo: '/images/sample_logo.png',
+//     });
+//     const survey = await newSurvey.save();
+//     res.send({ message: 'Survey Created', survey });
+//   })
+// );
+
 surveyRouter.put(
   '/sitesurveys/:id',
   isAuth,
@@ -172,6 +292,7 @@ surveyRouter.put(
       survey.images = req.body.images;
       survey.verifiedBy = req.employee.name;
       survey.verifiededAt = new Date();
+
       // Save the updated survey
       const updatedSurvey = await survey.save();
       // res.status(200).json(UpdatedSurvey);
@@ -196,10 +317,6 @@ surveyRouter.put(
     const survey = await Survey.findById(surveyid);
     // console.log(survey);
     if (survey) {
-      survey.surveyId = req.body.surveyId;
-      survey.block = req.body.block;
-      // survey.ImageC = req.body.ImageC;
-      // survey.ImageG = req.body.ImageG;
       survey.status = req.body.status;
 
       survey.verifiedBy = req.employee.name;
@@ -211,55 +328,6 @@ surveyRouter.put(
     } else {
       res.status(404).send({ message: 'verified Survey Not Found' });
     }
-  })
-);
-
-surveyRouter.post(
-  '/sitesurveys/:projectCode',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const projectCode = req.params.projectCode;
-    const newSurvey = new Survey({
-      projectCode: projectCode,
-      block: '',
-      surveyId: 'taypro' + Date.now(),
-      row: '',
-      table: '',
-      structure: '',
-      A: '',
-      ImageA: '',
-      B: '',
-      ImageB: '',
-      C: '',
-      ImageC: '',
-      D: '',
-      ImageD: '',
-      E: '',
-      ImageE: '',
-      F: '',
-      ImageF: '',
-      G: '',
-      ImageG: '',
-      H: '',
-      ImageH: '',
-      I: '',
-      ImageI: '',
-      J: '',
-      ImageJ: '',
-      htablex: '',
-      htabley: '',
-      submittedBy: req.employee.name,
-      submittedAt: new Date(),
-      rating: 0,
-      numReviews: 0,
-      verifiedBy: '',
-      verifiededAt: '',
-      img: '',
-      // customerLogo: '/images/sample_logo.png',
-    });
-    const survey = await newSurvey.save();
-    res.send({ message: 'Survey Created', survey });
   })
 );
 

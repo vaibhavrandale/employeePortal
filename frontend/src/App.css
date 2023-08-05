@@ -54,12 +54,12 @@ a:hover {
 }
 
 .container {
-  margin-left: 52px;
-  margin-top: 59px;
+  margin: 59px 0px 0px 52px;
   z-index: 1;
-  /* height: 100vh; */
-  /* border: 1px solid red; */
-  /* padding: 10px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .small-container {
@@ -88,14 +88,23 @@ a:hover {
 }
 
 .container4 {
-  margin-left: 52px;
-  margin-top: 59px;
+  margin: 59px 0px 0px 52px;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
+.container5 {
+  margin-left: 52px;
+  margin-top: 59px;
+  z-index: 1;
+}
+/* .navlinks {
+  margin-left: 5px;
+  margin-top: 59px;
+} */
 
 input:focus {
   outline: none;

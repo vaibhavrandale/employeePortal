@@ -128,23 +128,6 @@ const TableWithSearchAndPagination = () => {
         </div>
       )}
 
-      <div className="heading d-flex justify-content-between">
-        <nav
-          style={{ '--bs-breadcrumb-divider': "'>'" }}
-          aria-label="breadcrumb"
-        >
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link to="/" className="text-decoration-none">
-                Home
-              </Link>{' '}
-            </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              Employees
-            </li>
-          </ol>
-        </nav>{' '}
-      </div>
       <h2 className="text-center">Employees Details</h2>
       <div className="form-group   mb-2 search-input">
         {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
@@ -175,16 +158,16 @@ const TableWithSearchAndPagination = () => {
         <div className="">
           <table
             className="table table-bordered table-responsive"
-            style={{ overflowX: 'auto' }}
+            style={{ minWidth: '1100px' }}
           >
             <thead>
               <tr>
-                <th className="col-md-1 text-center">Image</th>
-                <th className="col-md-2 text-center">Name</th>
+                <th className="col-md-2 text-center">Image</th>
+                <th className="col-md-4 text-center">Name</th>
                 <th className="col-md-2 text-center">Employee ID</th>
                 <th className="col-md-2 text-center">Designation</th>
-                <th className="col-md-3 text-center">Email</th>
-                <th className="col-md-1 text-center">Joining Date</th>
+                <th className="col-md-5 text-center">Email</th>
+                <th className="col-md-4 text-center">Joining Date</th>
                 <th className="col-md-1 text-center">Action</th>
               </tr>
             </thead>

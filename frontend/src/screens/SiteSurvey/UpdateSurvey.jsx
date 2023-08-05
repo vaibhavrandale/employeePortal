@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../../Store';
 import LoadingBox from '../../components/LoadingBox';
-import LoadingBox1 from '../../components/LoadingBox1';
+// import LoadingBox4 from '../../components/LoadingBox4';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
@@ -45,7 +45,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-function SurveyFirstPage({ projectCode }) {
+function UpdateSurvey({ projectCode }) {
   const navigate = useNavigate();
 
   const params = useParams(); // /product/:id
@@ -97,6 +97,56 @@ function SurveyFirstPage({ projectCode }) {
   //     setLoading(false);
   //   }, 2000);
   // }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/survey/sitesurveys/get/${id}`);
+        console.log(data.siteSurveys);
+
+        setProjectcode(data.siteSurvey.projectCode);
+
+        setSurveyId(data.siteSurvey.surveyId);
+        setBlock(data.siteSurvey.block);
+        setTable(data.siteSurvey.table);
+        setRow(data.siteSurvey.row);
+        setStructure(data.siteSurvey.structure);
+        setA(data.siteSurvey.A);
+        setImageA(data.siteSurvey.ImageA);
+        setB(data.siteSurvey.B);
+        setImageB(data.siteSurvey.ImageB);
+        setC(data.siteSurvey.C);
+        setImageC(data.siteSurvey.ImageC);
+        setD(data.siteSurvey.D);
+        setImageD(data.siteSurvey.ImageD);
+        setE(data.siteSurvey.E);
+        setImageE(data.siteSurvey.ImageE);
+        setF(data.siteSurvey.F);
+        setImageF(data.siteSurvey.ImageF);
+        setG(data.siteSurvey.G);
+        setImageG(data.siteSurvey.ImageG);
+        setH(data.siteSurvey.H);
+        setImageH(data.siteSurvey.ImageH);
+        setI(data.siteSurvey.I);
+        setImageI(data.siteSurvey.ImageI);
+        setJ(data.siteSurvey.J);
+        setImageJ(data.siteSurvey.ImageJ);
+        setSubmittedBy(data.siteSurvey.submittedBy);
+        setImg(data.siteSurvey.img);
+        setImages(data.siteSurvey.images);
+        setHtablex(data.siteSurvey.htablex);
+        setHtabley(data.siteSurvey.htabley);
+        dispatch({ type: 'FETCH_SUCCESS' });
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(err),
+        });
+      }
+    };
+    fetchData();
+  }, [projectcode, id]);
 
   const handleNextSection = (e) => {
     e.preventDefault();
@@ -298,88 +348,6 @@ function SurveyFirstPage({ projectCode }) {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/survey/sitesurveys/get/${id}`);
-        console.log(data.siteSurveys);
-
-        setProjectcode(data.siteSurvey.projectCode);
-        // Retrieve uploaded image URLs from localStorage and set the state variables
-        // const SavedData = JSON.parse(localStorage.getItem('SavedData'));
-        // setImageA(SavedData.ImageA || data.siteSurvey.ImageA);
-        // setImageB(SavedData.ImageB || data.siteSurvey.ImageB);
-        // setImageC(SavedData.ImageC || data.siteSurvey.ImageC);
-        // setImageD(SavedData.ImageD || data.siteSurvey.ImageD);
-        // setImageE(SavedData.ImageE || data.siteSurvey.ImageE);
-        // setImageF(SavedData.ImageF || data.siteSurvey.ImageF);
-        // setImageG(SavedData.ImageG || data.siteSurvey.ImageG);
-        // setImageH(SavedData.ImageH || data.siteSurvey.ImageH);
-        // setImageI(SavedData.ImageI || data.siteSurvey.ImageI);
-        // setImageJ(SavedData.ImageJ || data.siteSurvey.ImageJ);
-        // setA(SavedData.A || data.siteSurvey.A);
-        // setB(SavedData.B || data.siteSurvey.B);
-        // setC(SavedData.C || data.siteSurvey.C);
-        // setD(SavedData.D || data.siteSurvey.D);
-        // setE(SavedData.E || data.siteSurvey.E);
-        // setF(SavedData.F || data.siteSurvey.F);
-        // setG(SavedData.G || data.siteSurvey.G);
-        // setH(SavedData.H || data.siteSurvey.H);
-        // setI(SavedData.I || data.siteSurvey.J);
-        // setJ(SavedData.J || data.siteSurvey.K);
-        // console.log('Retrieved Images:', SavedData);
-
-        // setBlock(SavedData.block || data.siteSurvey.block);
-        // setTable(SavedData.table || data.siteSurvey.table);
-        // setRow(SavedData.row || data.siteSurvey.row);
-        // setStructure(SavedData.structure || data.siteSurvey.structure);
-        // setHtablex(SavedData.htablex || data.siteSurvey.htablex);
-        // setHtabley(SavedData.htabley || data.siteSurvey.htabley);
-        // setImg(SavedData.img || data.siteSurvey.img);
-        // setImages(SavedData.images || data.siteSurvey.images);
-
-        setSurveyId(data.siteSurvey.surveyId);
-        setBlock(data.siteSurvey.block);
-        setTable(data.siteSurvey.table);
-        setRow(data.siteSurvey.row);
-        setStructure(data.siteSurvey.structure);
-        setA(data.siteSurvey.A);
-        setImageA(data.siteSurvey.ImageA);
-        setB(data.siteSurvey.B);
-        setImageB(data.siteSurvey.ImageB);
-        setC(data.siteSurvey.C);
-        setImageC(data.siteSurvey.ImageC);
-        setD(data.siteSurvey.D);
-        setImageD(data.siteSurvey.ImageD);
-        setE(data.siteSurvey.E);
-        setImageE(data.siteSurvey.ImageE);
-        setF(data.siteSurvey.F);
-        setImageF(data.siteSurvey.ImageF);
-        setG(data.siteSurvey.G);
-        setImageG(data.siteSurvey.ImageG);
-        setH(data.siteSurvey.H);
-        setImageH(data.siteSurvey.ImageH);
-        setI(data.siteSurvey.I);
-        setImageI(data.siteSurvey.ImageI);
-        setJ(data.siteSurvey.J);
-        setImageJ(data.siteSurvey.ImageJ);
-        setSubmittedBy(data.siteSurvey.submittedBy);
-        setImg(data.siteSurvey.img);
-        setImages(data.siteSurvey.images);
-        setHtablex(data.siteSurvey.htablex);
-        setHtabley(data.siteSurvey.htabley);
-        dispatch({ type: 'FETCH_SUCCESS' });
-      } catch (err) {
-        dispatch({
-          type: 'FETCH_FAIL',
-          payload: getError(err),
-        });
-      }
-    };
-    fetchData();
-  }, [projectcode, id]);
-
   const deleteFileHandler = async (fileName) => {
     setImages(images.filter((x) => x !== fileName));
     toast.success('Image removed successfully. ', {
@@ -422,7 +390,9 @@ function SurveyFirstPage({ projectCode }) {
               </li>
             </ol>
           </nav>{' '}
-          <h2 className="text-center text-dark fw-bolder">Add New Survey</h2>
+          <h2 className="text-center text-dark fw-bolder">
+            Update Survey: {id}
+          </h2>
           {/* <span className="underline"></span> */}
           <span className="text-center text-muted">
             (note* : all values are in mm)
@@ -500,7 +470,7 @@ function SurveyFirstPage({ projectCode }) {
                     className="submitBtn px-2 pt-1 pb-1 me-2"
                     onClick={handleNextSection}
                   >
-                    Next{loading && <LoadingBox1 />}
+                    Next{loading && <LoadingBox4 />}
                   </button>
                 </div>
               </div>
@@ -560,7 +530,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image A:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -612,7 +582,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1 ">
                             <label htmlFor="lastName ">Upload Image B:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -665,7 +635,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image C:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               // required
                               type="file"
@@ -721,7 +691,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1 ">
                             <label htmlFor="lastName ">Upload Image D:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -776,7 +746,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image E:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -831,7 +801,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image F:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -887,7 +857,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image G:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               // required
@@ -970,7 +940,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image H:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -1025,7 +995,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image I:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -1078,7 +1048,7 @@ function SurveyFirstPage({ projectCode }) {
                           <div className="form-group mx-1">
                             <label htmlFor="lastName ">Upload Image J:</label>
                             <span className="text-muted"></span>
-                            {loadingUpload && <LoadingBox1 />}
+                            {loadingUpload && <LoadingBox4 />}
                             <input
                               type="file"
                               className="form-control"
@@ -1088,7 +1058,8 @@ function SurveyFirstPage({ projectCode }) {
                         </div>
                       </div>
                       {/* -------------------------------------------------------- */}
-
+                      <hr className="mt-2" />
+                      <h3 className="text-center">If Any Additional Image</h3>
                       <div className="form-group mx-1 mb-2 m-1">
                         <label htmlFor="lastName "> Image file :</label>
 
@@ -1102,7 +1073,7 @@ function SurveyFirstPage({ projectCode }) {
                       <div className="form-group mx-1 mb-2 m-1">
                         <label htmlFor="lastName ">Upload Image:</label>
                         <span className="text-muted">(Optional)</span>
-                        {loadingUpload && <LoadingBox1 />}
+                        {loadingUpload && <LoadingBox4 />}
                         <input
                           type="file"
                           className="form-control"
@@ -1143,7 +1114,7 @@ function SurveyFirstPage({ projectCode }) {
                           Upload Additional Image: (Optional)
                         </label>
 
-                        {loadingUpload && <LoadingBox1 />}
+                        {loadingUpload && <LoadingBox4 />}
                         <input
                           type="file"
                           className="form-control"
@@ -1201,4 +1172,4 @@ function SurveyFirstPage({ projectCode }) {
   );
 }
 
-export default SurveyFirstPage;
+export default UpdateSurvey;

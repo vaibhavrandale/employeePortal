@@ -101,7 +101,7 @@ function LeavesHistory() {
     setHoveredRow(index);
   };
   return (
-    <div className="container">
+    <div className="container1 ">
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -109,11 +109,7 @@ function LeavesHistory() {
               Home
             </Link>{' '}
           </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            <Link to="/leaves" className="text-decoration-none">
-              Leaves
-            </Link>{' '}
-          </li>
+
           <li className="breadcrumb-item active" aria-current="page">
             Leaves-history
           </li>
@@ -140,7 +136,7 @@ function LeavesHistory() {
               />
             </div>
           </div>
-          <table className="table table-bordered">
+          <table className="table table-bordered ">
             <thead>
               <tr>
                 <th className="col-md-2 text-center">Applied At </th>

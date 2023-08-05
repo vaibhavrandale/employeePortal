@@ -7,6 +7,7 @@ const siteSchema = new mongoose.Schema({
   siteLocation: { type: String, required: true },
   plantCapacity: { type: String, required: true },
   plantLayout: { type: String },
+  status: { type: Boolean, default: true },
 });
 
 const Sites = mongoose.model('Sites', siteSchema);

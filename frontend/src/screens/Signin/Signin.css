@@ -7,11 +7,14 @@
 section {
   background-image: url(./product.jpg);
   /* background: #1c1c1c; */
-  height: 100vh;
+  min-height: 100vh;
   background-position: center;
   background-size: cover;
   border: 0.1px solid transparent;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .taypro-logo {

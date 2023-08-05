@@ -90,33 +90,38 @@ const Navbar = () => {
               />
               {isDropdownOpen && (
                 <div className="dropdown-menu1">
-                  <Link to="#" className="dropdown-item1 d-flex">
-                    {/* <GoMail className="fs-5 pb-1" />{' '} */}
-                    <img
-                      id="dropimg"
-                      src={userInfo.profileImage}
-                      className="thumbnail "
-                      alt=""
-                    />
-                    <span
-                      className="fw-bolder text-dark d-flex justify-content-center align-items-center "
-                      style={{ fontSize: '13px' }}
-                    >
-                      {userInfo.email}
-                    </span>
-                  </Link>
-                  <Link
-                    to={`/profile/${userInfo._id}`}
-                    className=" dropdown-item1"
-                  >
-                    <BsFilePerson className="fs-5 pb-1 text-warning" /> Profile
-                  </Link>
-                  <Link to="#" className=" dropdown-item1">
-                    <HiLink className="fs-5 pb-1 text-info" /> Link 1
-                  </Link>
-                  <Link to="#" className=" dropdown-item1">
-                    <HiLink className="fs-5 pb-1 text-info" /> Link 2
-                  </Link>
+                  {!userInfo.isVisitor && (
+                    <>
+                      <Link to="#" className="dropdown-item1 d-flex">
+                        {/* <GoMail className="fs-5 pb-1" />{' '} */}
+                        <img
+                          id="dropimg"
+                          src={userInfo.profileImage}
+                          className="thumbnail "
+                          alt=""
+                        />
+                        <span
+                          className="fw-bolder text-dark d-flex justify-content-center align-items-center "
+                          style={{ fontSize: '13px' }}
+                        >
+                          {userInfo.email}
+                        </span>
+                      </Link>
+                      <Link
+                        to={`/profile/${userInfo._id}`}
+                        className=" dropdown-item1"
+                      >
+                        <BsFilePerson className="fs-5 pb-1 text-warning" />{' '}
+                        Profile
+                      </Link>
+                      <Link to="#" className=" dropdown-item1">
+                        <HiLink className="fs-5 pb-1 text-info" /> Link 1
+                      </Link>
+                      <Link to="#" className=" dropdown-item1">
+                        <HiLink className="fs-5 pb-1 text-info" /> Link 2
+                      </Link>
+                    </>
+                  )}
                   <Link
                     onClick={popupHandle}
                     className="dropdown-item1 fw-bolder text-danger"

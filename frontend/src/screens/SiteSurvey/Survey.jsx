@@ -172,7 +172,7 @@ function Survey({ projectCode }) {
           <div className="row m-2">
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ width: '110px' }}
+              style={{ minWidth: '10px' }}
             >
               Project:{' '}
               <span className="text-dark fw-bolder">

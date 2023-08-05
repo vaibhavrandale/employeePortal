@@ -1,11 +1,11 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import '../../App.css';
 // import data from '../Employee/data';
 import { Link, useParams } from 'react-router-dom';
 import SiteTable from './SitTable';
 import axios from 'axios';
-import LoadingBox from '../../components/LoadingBox';
-import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+// import LoadingBox from '../../components/LoadingBox';
+// import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
@@ -35,24 +35,6 @@ function SiteDetails() {
   });
   const { projectCode } = useParams();
 
-  // const [isLoading, setLoading] = useState(true);
-  // const [site, setSite] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = () => {
-  //     const foundSite = data.SiteSurvey.find(
-  //       (site1) => site1.projectCode === projectCode
-  //     );
-  //     setSite(foundSite);
-  //     setLoading(false);
-  //   };
-
-  //   setLoading(true);
-  //   setTimeout(fetchData, 1);
-
-  //   fetchData();
-  // }, [projectCode]);
-
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -74,7 +56,7 @@ function SiteDetails() {
   }, [projectCode]);
 
   return (
-    <div className="container">
+    <div className="container1">
       {/* {projectCode} */}
       {loading ? (
         <LoadingBox3 />

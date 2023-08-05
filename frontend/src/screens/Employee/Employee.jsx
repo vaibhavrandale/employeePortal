@@ -1,11 +1,31 @@
 import React from 'react';
 import './Employee.css';
 import Table from './Table';
+import { Link } from 'react-router-dom';
 function Employee() {
   return (
-    <div className="container">
-      <Table />
-    </div>
+    <>
+      <div className="heading d-flex justify-content-between navlinks">
+        <nav
+          style={{ '--bs-breadcrumb-divider': "'>'" }}
+          aria-label="breadcrumb"
+        >
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
+              <Link to="/" className="text-decoration-none">
+                Home
+              </Link>{' '}
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              Employees
+            </li>
+          </ol>
+        </nav>{' '}
+      </div>
+      <div className="container">
+        <Table />
+      </div>
+    </>
   );
 }
 

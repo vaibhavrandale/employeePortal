@@ -66,11 +66,6 @@ function SiteTable({ projectCode }) {
     loading: true,
     error: '',
   });
-  // const sortedReviews = siteSurveys.reviews.sort((a, b) => {
-  //   return new Date(a.createdAt) - new Date(b.createdAt);
-  // });
-
-  // const latestRemark = sortedReviews[sortedReviews.length - 1];
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -200,29 +195,7 @@ function SiteTable({ projectCode }) {
   };
 
   const createSurveyHandler = async () => {
-    // if (window.confirm('Are you sure to create?')) {
-    try {
-      dispatch({ type: 'CREATE_REQUEST' });
-      const { data } = await axios.post(
-        `/api/survey/sitesurveys/${projectCode}`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      toast.success('Survey created successfully', {
-        position: 'bottom-right',
-      });
-      dispatch({ type: 'CREATE_SUCCESS' });
-      // navigate(`/editSurvey/${data.survey.projectCode}/${data.survey._id}`);
-      navigate(`/editSurvey/${data.survey._id}`);
-    } catch (err) {
-      toast.error(getError(err));
-      dispatch({
-        type: 'CREATE_FAIL',
-      });
-    }
-    // }
+    navigate(`/newsurvey/${projectCode}`);
   };
 
   const popupHandle = (_id) => {
@@ -230,88 +203,15 @@ function SiteTable({ projectCode }) {
     // handleVerify(_id);
   };
 
-  const handleVerify = async (
-    _id,
-    surveyId,
-    projectCode,
-    block,
-    row,
-    table,
-    structure,
-    A,
-    B,
-    C,
-    D,
-    E,
-    F,
-    G,
-    H,
-    I,
-    J,
-    ImageA,
-    ImageB,
-    ImageC,
-    ImageD,
-    ImageE,
-    ImageF,
-    ImageG,
-    ImageH,
-    ImageI,
-    ImageJ,
-    htablex,
-    htabley,
-    img,
-    images,
-    submittedBy,
-    submittedAt,
-    rating,
-    numReviews
-  ) => {
+  const handleVerify = async (_id) => {
     popupHandle();
-    if (!projectCode || !block || !row || !table || !structure) {
-      toast.error('you cannot verify as there are some fields are missing');
-      return;
-    }
+
     try {
       dispatch({ type: 'VERIFY_REQUEST' });
       const { data } = await axios.put(
         `/api/survey/sitesurveys/verify/${_id}`,
         {
-          surveyId: surveyId,
-          projectCode,
-          block,
-          row,
-          table,
-          structure,
           status: true,
-          A,
-          B,
-          C,
-          D,
-          E,
-          F,
-          G,
-          H,
-          I,
-          J,
-          ImageA,
-          ImageB,
-          ImageC,
-          ImageD,
-          ImageE,
-          ImageF,
-          ImageG,
-          ImageH,
-          ImageI,
-          ImageJ,
-          htablex,
-          htabley,
-          img,
-          images,
-          submittedBy,
-          submittedAt,
-          rating,
-          numReviews,
 
           verifiedBy: userInfo.name,
           verifiedAt: new Date(),
@@ -323,9 +223,9 @@ function SiteTable({ projectCode }) {
       toast.success('Verified successfully', {
         position: 'bottom-right',
       });
-      dispatch({ type: 'VERIFY_SUCCESS' });
+      dispatch({ type: 'VERIFY_SUCCESS', payload: data.siteSurveys });
       console.log(data);
-      navigate(`/survey/${_id}`);
+      navigate(`/sitedetails/${projectCode}`);
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',
@@ -356,7 +256,7 @@ function SiteTable({ projectCode }) {
           </div>
         </div>
       )}
-      <div className="container">
+      <div className="mx-3">
         {loading ? (
           <LoadingBox3 />
         ) : error ? (
@@ -391,11 +291,12 @@ function SiteTable({ projectCode }) {
               {/* <table className="table table-bordered "> */}
               <thead>
                 <tr>
-                  <th className="col-md-2 text-center">Block </th>
-                  <th className="col-md-2 text-center">Table </th>
-                  <th className="col-md-2 text-center">Row </th>
+                  <th className="col-md-1 text-center">Block </th>
+                  <th className="col-md-1 text-center">Row </th>
+                  <th className="col-md-1 text-center">Table </th>
+                  <th className="col-md-2 text-center">Submitted By </th>
 
-                  <th className="col-md-2 text-center">Status </th>
+                  <th className="col-md-1 text-center">Status </th>
                   <th className="col-md-2 text-center">Remark </th>
                   <th className="col-md-2 text-center">Remark By </th>
                   <th className="col-md-1 text-center">View </th>
@@ -417,10 +318,10 @@ function SiteTable({ projectCode }) {
                   >
                     <td className=" d-flex justify-content-center align-items-center">
                       {item.block}
-                    </td>
-                    <td className="text-center">{item.table}</td>
+                    </td>{' '}
                     <td className="text-center">{item.row}</td>
-
+                    <td className="text-center">{item.table}</td>
+                    <td className="text-center">{item.submittedBy}</td>
                     <td className="text-center">
                       {item.status === true ? (
                         <span className="badge bg-success">Verified</span>
@@ -428,7 +329,6 @@ function SiteTable({ projectCode }) {
                         <span className="badge bg-danger">Pending</span>
                       )}
                     </td>
-
                     <td className="text-center">
                       {item.reviews &&
                       item.reviews.length > 0 &&
@@ -451,7 +351,6 @@ function SiteTable({ projectCode }) {
                         <span className="badge bg-danger">Pending</span>
                       )}
                     </td>
-
                     <td className="text-center">
                       <button className="edit-button">
                         <Link
@@ -463,18 +362,30 @@ function SiteTable({ projectCode }) {
                         </Link>
                       </button>
                     </td>
-
                     <td className="text-center">
-                      <button className="edit-button">
-                        <Link
-                          className="fs-5 "
-                          to={`/editSurvey/${item._id}`}
-                          style={{ color: 'blue' }}
-                        >
-                          {' '}
-                          <BiEdit />
-                        </Link>
-                      </button>
+                      {!userInfo.isSuperAdmin && item.status ? (
+                        <button className="edit-button" disabled>
+                          <Link
+                            className="fs-5"
+                            to="#"
+                            style={{ color: 'black' }}
+                          >
+                            {' '}
+                            <BiEdit />
+                          </Link>
+                        </button>
+                      ) : (
+                        <button className="edit-button">
+                          <Link
+                            className="fs-5"
+                            to={`/editSurvey/${item._id}`}
+                            style={{ color: 'blue' }}
+                          >
+                            {' '}
+                            <BiEdit />
+                          </Link>
+                        </button>
+                      )}
                     </td>
                     {userInfo.isAdmin && userInfo.isSuperAdmin ? (
                       <td className="text-center">
@@ -507,45 +418,7 @@ function SiteTable({ projectCode }) {
                               <div className="popup-buttons">
                                 <button
                                   className="popup-button verify"
-                                  onClick={() =>
-                                    handleVerify(
-                                      item._id,
-                                      item.surveyId,
-                                      item.projectCode,
-                                      item.block,
-                                      item.row,
-                                      item.table,
-                                      item.structure,
-                                      item.A,
-                                      item.ImageA,
-                                      item.B,
-                                      item.ImageB,
-                                      item.C,
-                                      item.ImageC,
-                                      item.D,
-                                      item.ImageD,
-                                      item.E,
-                                      item.ImageE,
-                                      item.F,
-                                      item.ImageF,
-                                      item.G,
-                                      item.ImageG,
-                                      item.H,
-                                      item.ImageH,
-                                      item.I,
-                                      item.ImageI,
-                                      item.J,
-                                      item.ImageJ,
-                                      item.htablex,
-                                      item.htabley,
-                                      item.img,
-                                      item.images,
-                                      item.submittedBy,
-                                      item.submittedAt,
-                                      item.rating,
-                                      item.numReviews
-                                    )
-                                  }
+                                  onClick={() => handleVerify(item._id)}
                                 >
                                   Verify {loadingVerify && <LoadingBox3 />}
                                 </button>

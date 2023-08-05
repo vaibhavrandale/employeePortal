@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
 import { AiOutlineEye, AiOutlineFilePdf } from 'react-icons/ai';
+import { BiShowAlt } from 'react-icons/bi';
 import { RiSurveyLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
@@ -33,20 +34,25 @@ const reducer = (state, action) => {
     case 'CREATE_FAIL':
       return { ...state, loadingCreate: false };
 
+    case 'UPDATE_STATUS_REQUEST':
+      return { ...state, loadingUpdate: true };
+    case 'UPDATE_STATUS_SUCCESS':
+      return { ...state, loadingUpdate: false };
+    case 'UPDATE_STATUS_FAIL':
+      return { ...state, loadingUpdate: false };
+
     default:
       return state;
   }
 };
 
 function SiteList() {
-  const [{ loading, error, sitelist, loadingCreate }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, error, sitelist, loadingCreate, loadingUpdate }, dispatch] =
+    useReducer(reducer, {
       sitelist: [],
       loading: true,
       error: '',
-    }
-  );
+    });
 
   // const [loading, setLoading] = useState(true);
   // const [site, setSite] = useState([]);
@@ -81,7 +87,7 @@ function SiteList() {
       try {
         const result = await axios.get('/api/survey/sites');
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.sitelist });
-        console.log(result.data);
+        // console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -157,6 +163,56 @@ function SiteList() {
   //   });
   //   navigate(`/addNewSite`);
   // };
+
+  const SiteStatusShowHandler = async (id) => {
+    try {
+      dispatch({ type: 'UPDATE_STATUS_REQUEST' });
+      const { result } = await axios.put(
+        `/api/survey/sites/hide/${id}`,
+        { status: true },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('site hide successfully');
+      dispatch({
+        type: 'UPDATE_STATUS_SUCCESS',
+        // payload: result.data.sitelist,
+      });
+      // navigate(`/sitelist`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'UPDATE_STATUS_FAIL',
+      });
+    }
+  };
+
+  const SiteStatusHideHandler = async (id) => {
+    try {
+      dispatch({ type: 'UPDATE_STATUS_REQUEST' });
+      const { result } = await axios.put(
+        `/api/survey/sites/hide/${id}`,
+        { status: false },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+
+      toast.success('site unhide successfully');
+      dispatch({
+        type: 'UPDATE_STATUS_SUCCESS',
+        // payload: result.data.sitelist,
+      });
+      // console.log(id);
+      // navigate(`/sitelist`);
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'UPDATE_STATUS_FAIL',
+      });
+    }
+  };
 
   return (
     <div className="container">
@@ -249,6 +305,11 @@ function SiteList() {
                   ) : (
                     ''
                   )}
+                  {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                    <th className="col-md-1 text-center">Status</th>
+                  ) : (
+                    ''
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -259,47 +320,53 @@ function SiteList() {
                     onMouseEnter={() => handleRowHover(index)}
                     onMouseLeave={() => handleRowHover(null)}
                   >
-                    <td className="text-center">
-                      <div className="table-image-container1">
-                        <Link to={`/siteDetails/${item.projectCode}`}>
-                          {' '}
-                          <img
-                            src={item.customerLogo}
-                            alt="Profile"
-                            className="table-image1"
-                          />
-                        </Link>
-                      </div>
-                    </td>
-                    <td className="text-center">{item.customerName}</td>
-                    <td className="text-center">{item.projectCode}</td>
-                    <td className="text-center">{item.siteLocation}</td>
-                    <td className="text-center">{item.plantCapacity}</td>
-                    <td className="text-center">
-                      <button className="edit-button">
-                        {item.plantLayout ? (
-                          <Link
-                            className="text-decoration-none"
-                            to={`/plantlayout/${item._id}`}
-                          >
-                            <AiOutlineFilePdf className="text-danger" />
-                          </Link>
-                        ) : (
-                          <span className="fs-6">NA</span>
-                        )}
-                      </button>
-                    </td>
-                    <td className="text-center">
-                      <button className="edit-button">
-                        <Link
-                          className="link"
-                          to={`/siteDetails/${item.projectCode}`}
-                        >
-                          {' '}
-                          <RiSurveyLine className="text-warning" />
-                        </Link>
-                      </button>
-                    </td>
+                    {!userInfo.isVisitor || item.status === false ? (
+                      <>
+                        <td className="text-center">
+                          <div className="table-image-container1">
+                            <Link to={`/siteDetails/${item.projectCode}`}>
+                              {' '}
+                              <img
+                                src={item.customerLogo}
+                                alt="Profile"
+                                className="table-image1"
+                              />
+                            </Link>
+                          </div>
+                        </td>
+                        <td className="text-center">{item.customerName}</td>
+                        <td className="text-center">{item.projectCode}</td>
+                        <td className="text-center">{item.siteLocation}</td>
+                        <td className="text-center">{item.plantCapacity}</td>
+                        <td className="text-center">
+                          <button className="edit-button">
+                            {item.plantLayout ? (
+                              <Link
+                                className="text-decoration-none"
+                                to={`/plantlayout/${item._id}`}
+                              >
+                                <AiOutlineFilePdf className="text-danger" />
+                              </Link>
+                            ) : (
+                              <span className="fs-6">NA</span>
+                            )}
+                          </button>
+                        </td>
+                        <td className="text-center">
+                          <button className="edit-button">
+                            <Link
+                              className="link"
+                              to={`/siteDetails/${item.projectCode}`}
+                            >
+                              {' '}
+                              <RiSurveyLine className="text-warning" />
+                            </Link>
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      ''
+                    )}
 
                     {userInfo.isAdmin && userInfo.isSuperAdmin ? (
                       <td>
@@ -309,6 +376,38 @@ function SiteList() {
                             <LuEdit2 className="text-success fs-5" />
                           </Link>
                         </button>
+                      </td>
+                    ) : (
+                      ''
+                    )}
+
+                    {userInfo.isAdmin && userInfo.isSuperAdmin ? (
+                      <td>
+                        {item.status ? (
+                          <button
+                            className="edit-button fs-5 "
+                            onClick={() => SiteStatusHideHandler(item._id)}
+                          >
+                            {' '}
+                            <span className="badge bg-none text-info fs-5">
+                              <BiShowAlt />
+                              {loadingUpdate && <LoadingBox4 />}
+                            </span>
+                          </button>
+                        ) : (
+                          <button
+                            className="edit-button fs-5"
+                            onClick={() => SiteStatusShowHandler(item._id)}
+                          >
+                            <span className="badge bg-none">
+                              <i
+                                className="fa fa-ban ms-1 text-danger "
+                                style={{ cursor: 'pointer' }}
+                              ></i>
+                              {loadingUpdate && <LoadingBox4 />}
+                            </span>{' '}
+                          </button>
+                        )}
                       </td>
                     ) : (
                       ''

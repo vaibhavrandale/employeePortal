@@ -20,7 +20,7 @@ import SiteList from './screens/SiteSurvey/SiteList';
 import SiteDetails from './screens/SiteSurvey/SiteDetails';
 import Survey from './screens/SiteSurvey/Survey';
 import AddNewSite from './screens/SiteSurvey/AddNewSite';
-import SurveyFirstPage from './screens/SiteSurvey/SurveyFirstPage';
+import UpdateSurvey from './screens/SiteSurvey/UpdateSurvey';
 import ProtectedRoutes from './components/ProtectedRoutes';
 import NotFoundPage from './components/pageNotFound/NotFoundPage';
 import SurveyGallery from './screens/SiteSurvey/SurveyGallery';
@@ -32,6 +32,7 @@ import PlantLayout from './screens/SiteSurvey/PlantLayout';
 import SalarySleep from './screens/salarySleep/SalarySleep';
 import SalaryEntry from './screens/salarySleep/SalaryEntry';
 import Table from './screens/Table';
+import CreateNewSyrvey from './screens/SiteSurvey/CreateNewSyrvey';
 
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
@@ -214,21 +215,36 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+        <Route
+          path="/newsurvey"
+          element={
+            <ProtectedRoutes>
+              <CreateNewSyrvey />
+            </ProtectedRoutes>
+          }
+        />
 
         {/* <Route
           path="/editSurvey/:projectCode/:id"
           element={
             <ProtectedRoutes>
-              <SurveyFirstPage />
+              <UpdateSurvey />
             </ProtectedRoutes>
           }
         /> */}
-
+        <Route
+          path="/newsurvey/:id"
+          element={
+            <ProtectedRoutes>
+              <CreateNewSyrvey />
+            </ProtectedRoutes>
+          }
+        />
         <Route
           path="/editSurvey/:id"
           element={
             <ProtectedRoutes>
-              <SurveyFirstPage />
+              <UpdateSurvey />
             </ProtectedRoutes>
           }
         />
@@ -237,7 +253,7 @@ function AppRouter() {
           path="/newSurvey/:projectCode"
           element={
             <ProtectedRoutes>
-              <SurveyFirstPage />
+              <UpdateSurvey />
             </ProtectedRoutes>
           }
         />

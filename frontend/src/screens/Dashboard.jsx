@@ -6,20 +6,12 @@ import '../App.css';
 import './dashboard.css';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
-import LoadingBox4 from '../components/LoadingBox/LoadingBox4';
 
 function Dashboard() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   return (
-    <div
-      className="container "
-      style={{
-        display: 'flex',
-        // flexWrap: 'wrap',
-        justifyContent: 'center',
-      }}
-    >
+    <div className="container">
       {/* <div className=" d-flex ">
         <VideoSection />
         <Banner />

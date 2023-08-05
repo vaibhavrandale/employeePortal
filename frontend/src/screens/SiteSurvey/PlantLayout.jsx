@@ -81,7 +81,7 @@ function PlantLayout() {
           <object
             onLoad={handlePdfLoad} // Set the onLoad event handler
             width="100%"
-            height="600"
+            style={{ minHeight: '100vh' }}
             data={site.plantLayout}
             type="application/pdf"
             alt=""

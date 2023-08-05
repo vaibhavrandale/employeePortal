@@ -37,7 +37,7 @@ const Sidebar = () => {
               height: '28px',
               width: '120px',
               margin: 'auto',
-              objectFit: 'cover',
+              objectFit: 'contain',
             }}
           />
         </h1>

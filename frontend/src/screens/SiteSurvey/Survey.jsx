@@ -5,10 +5,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import LoadingBox from '../../components/LoadingBox';
-import AlertBox from '../../components/MessageBox/AlertBox';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import { getError } from '../../utils';
 import LoadingBox1 from '../../components/LoadingBox1';
@@ -16,6 +14,7 @@ import { toast } from 'react-hot-toast';
 import { Store } from '../../Store';
 import '../../App.css';
 import { TbExternalLink } from 'react-icons/tb';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -54,23 +53,26 @@ function Survey({ projectCode }) {
   const { id } = useParams();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-
+  const navigate = useNavigate();
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
+    if (userInfo) {
+      const fetchData = async () => {
+        dispatch({ type: 'FETCH_REQUEST' });
 
-      try {
-        const result = await axios.get(`/api/survey/siteSurveys/get/${id}`);
+        try {
+          const result = await axios.get(`/api/survey/siteSurveys/get/${id}`);
 
-        console.log(result);
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurvey });
-      } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
-      }
-    };
-
-    fetchData();
-  }, [id]);
+          console.log(result);
+          dispatch({ type: 'FETCH_SUCCESS', payload: result.data.siteSurvey });
+        } catch (err) {
+          dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        }
+      };
+      fetchData();
+    } else {
+      navigate('/'); // Use "replace: true" to avoid adding a new entry to the history
+    }
+  }, [id, navigate, userInfo]);
   let reviewRef = useRef();
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -104,8 +106,8 @@ function Survey({ projectCode }) {
         behavior: 'smooth',
         top: reviewRef.current.offsetTop,
       });
-    } catch (error) {
-      toast.error(getError(error), {
+    } catch (err) {
+      toast.error(getError(err), {
         position: 'bottom-right',
       });
       dispatch({ type: 'CREATE_FAIL' });
@@ -138,10 +140,10 @@ function Survey({ projectCode }) {
       {loading ? (
         <div className="container1">
           {' '}
-          <LoadingBox />
+          <LoadingBox3 />
         </div>
       ) : error ? (
-        <MsgBox className="alert alert-danger">{error}</MsgBox>
+        <MsgBox className="alert alert-danger text-center">{error}</MsgBox>
       ) : (
         <>
           <h2 className="text-center">Survey Details</h2>
@@ -172,7 +174,7 @@ function Survey({ projectCode }) {
           <div className="row m-2">
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ minWidth: '10px' }}
+              style={{ maxWidth: '130px' }}
             >
               Project:{' '}
               <span className="text-dark fw-bolder">

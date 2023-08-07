@@ -181,13 +181,13 @@ surveyRouter.post(
         .messages()
         .send(
           {
-            from: 'TAYPRO <employee-lwbn@mg.yourdomain.com>',
+            from: 'TAYPRO INTERNAL PORTAL <employee-lwbn@mg.yourdomain.com>',
             to: `<${email}>`,
             subject: 'A New Review has been Added!',
             html: `
-             <p>Hello, <b>${creatorName}</b> A new review has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
-             <p> Project Code :${projectCode}</p> 
-             <p>Survey Id :${id}</p> 
+             <p>Hello, <b>${creatorName}</b> A new Remark has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
+             <p> Project Code : ${projectCode}</p> 
+             <p>Survey Id : ${id}</p> 
              <p>Remark: ${review.remark}</p>
              <a href="${baseUrl()}/survey/${id}"}>View Survey</a>
              `,

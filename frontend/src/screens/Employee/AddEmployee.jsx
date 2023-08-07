@@ -1,7 +1,7 @@
 import React, { useContext, useReducer, useState } from 'react';
 import '../../App.css';
 // import data from '../Employee/data';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getError } from '../../utils';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
@@ -36,16 +36,13 @@ const reducer = (state, action) => {
 };
 
 function AddEmployee() {
-  const [{ loading, error, employees, loadingUpload }, dispatch] = useReducer(
-    reducer,
-    {
-      employees: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loadingUpload }, dispatch] = useReducer(reducer, {
+    employees: [],
+    loading: true,
+    error: '',
+  });
   const navigate = useNavigate();
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo } = state;
 
   const [employee_id, setEmployee_id] = useState('');
@@ -83,12 +80,6 @@ function AddEmployee() {
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
-    // if (!selectedEmployee || salary || month) {
-    //   toast.error('Please select mandatory field ', {
-    //     position: 'bottom-right',
-    //   });
-    //   return;
-    // }
 
     const missingFields = [];
 

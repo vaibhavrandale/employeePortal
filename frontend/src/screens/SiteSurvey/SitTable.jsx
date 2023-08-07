@@ -212,7 +212,6 @@ function SiteTable({ projectCode }) {
         `/api/survey/sitesurveys/verify/${_id}`,
         {
           status: true,
-
           verifiedBy: userInfo.name,
           verifiedAt: new Date(),
         },
@@ -220,12 +219,10 @@ function SiteTable({ projectCode }) {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      toast.success('Verified successfully', {
-        position: 'bottom-right',
-      });
+      toast.success('Verified successfully');
       dispatch({ type: 'VERIFY_SUCCESS', payload: data.siteSurveys });
       console.log(data);
-      navigate(`/sitedetails/${projectCode}`);
+      navigate(`/survey/${_id}`);
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',
@@ -235,7 +232,6 @@ function SiteTable({ projectCode }) {
       });
     }
   };
-
   return (
     <>
       {createSurvey && (

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from './Taypro.png';
 import './Signin.css';
@@ -8,28 +8,8 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
-import LoadingBox1 from '../../components/LoadingBox1';
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'CREATE_REQUEST':
-      return { ...state, loadingSignin: true };
-    case 'CREATE_SUCCESS':
-      return { ...state, loadingSignin: false };
-    case 'CREATE_FAIL':
-      return { ...state, loadingSignin: false };
-
-    default:
-      return state;
-  }
-};
 
 const Signin = () => {
-  const [{ loading, error, loadingSignin }, dispatch] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
-
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +32,7 @@ const Signin = () => {
         localStorage.setItem('userInfo', JSON.stringify(data));
         // navigate('/');
         toast.success('Sign in Successfully', {
-          position: 'bottom-right',
+          position: 'top-right',
         });
         console.log(data);
       } else {
@@ -141,7 +121,7 @@ const Signin = () => {
                 <span className="ms-1 text-light">show</span>{' '}
               </div>
               <button className="signin-button" type="submit">
-                continue {loadingSignin && <LoadingBox1 />}
+                continue
               </button>
               <Link to={`/forget-password`} className="mt-2  forgotLink">
                 Forgot Password?

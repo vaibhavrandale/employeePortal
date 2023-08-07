@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useReducer, useContext } from 'react';
-// import data from './data';
 import './Employee.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-// import LoadingBox from '../../components/LoadingBox';
-// import AlertBox from '../../components/MessageBox/AlertBox';
 import axios from 'axios';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
 import { LuEdit } from 'react-icons/lu';
-// import { Cursor } from 'mongoose';
 import { MdVerified } from 'react-icons/md';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import MsgBox from '../../components/MessageBox/MsgBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -203,8 +200,8 @@ const EmployeeDetails = () => {
       dispatch({ type: 'UPDATE_ADDRESS_SUCCESS' });
       setAddress(false);
       navigate(`/employees`);
-    } catch (error) {
-      toast.error(getError(error), {
+    } catch (err) {
+      toast.error(getError(err), {
         position: 'bottom-right',
       });
       dispatch({ type: 'UPDATE_ADDRESS_FAIL' });
@@ -386,7 +383,11 @@ const EmployeeDetails = () => {
         </ol>
       </nav>{' '}
       {loading ? (
+        // <LoadingBox />
+
         <LoadingBox3 />
+      ) : error ? (
+        <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
         <>
           <div className="d-flex justify-content-lg-between flex-wrap">

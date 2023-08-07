@@ -155,6 +155,7 @@ surveyRouter.post(
     const surveyid = req.params.id;
     const survey = await Survey.findById(surveyid);
     const creatorEmail = survey.submittedByEmail;
+    const creatorName = survey.submittedBy;
     const projectCode = survey.projectCode;
     const SurveyId = survey.surveyId;
     const id = survey._id;
@@ -184,7 +185,7 @@ surveyRouter.post(
             to: `<${email}>`,
             subject: 'A New Review has been Added!',
             html: `
-             <p>Hello, <b>${Name}</b> A new review has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
+             <p>Hello, <b>${creatorName}</b> A new review has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
              <p> Project Code :${projectCode}</p> 
              <p>Survey Id :${id}</p> 
              <p>Remark: ${review.remark}</p>

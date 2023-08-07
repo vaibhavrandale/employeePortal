@@ -46,6 +46,7 @@ const surveySchema = new mongoose.Schema({
   img: { type: String },
   images: [String],
   submittedBy: { type: String, required: true },
+  submittedByEmail: { type: String, required: true },
   submittedAt: { type: String, required: true },
   rating: { type: Number, required: true },
   numReviews: { type: Number, required: true },

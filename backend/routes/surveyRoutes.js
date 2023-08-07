@@ -3,6 +3,7 @@ import Survey from '../models/surveyModel.js';
 import Sites from '../models/siteDetailsModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 import expressAsyncHandler from 'express-async-handler';
+import { mailgun, baseUrl } from '../utils.js';
 
 const surveyRouter = express.Router();
 
@@ -106,21 +107,59 @@ surveyRouter.get('/sitesurveys/:id/reviews', async (req, res) => {
   res.send({ remarks });
 });
 
+// ---------------------------review------------------------
+
+// surveyRouter.post(
+//   '/sitesurveys/:id/reviews',
+//   isAuth,
+//   isAdmin,
+
+//   expressAsyncHandler(async (req, res) => {
+//     // const projectCode = req.params.projectCode;
+//     const surveyid = req.params.id;
+
+//     // Find the survey by ID and project code
+//     const survey = await Survey.findById(surveyid);
+//     if (survey) {
+//       const review = {
+//         // verifiedBy: req.employee.name,
+//         // verifiededAt: new Date(),
+//         remark: req.body.remark,
+//         rating: Number(5),
+//         remarkBy: req.employee.name,
+//       };
+//       survey.reviews.push(review);
+//       survey.numReviews = survey.reviews.length;
+//       survey.rating =
+//         survey.reviews.reduce((a, c) => c.rating + a, 0) /
+//         survey.reviews.length;
+//       const updatedSurvey = await survey.save();
+//       // res.status(200).json(updatedSurvey);
+//       res.status(201).send({
+//         message: 'Remark Added',
+//         review: updatedSurvey.reviews[updatedSurvey.reviews.length - 1],
+//         numReviews: survey.numReviews,
+//         rating: survey.rating,
+//       });
+//     } else {
+//       res.status(404).send({ message: 'Survey Not Found' });
+//     }
+//   })
+// );
+
 surveyRouter.post(
   '/sitesurveys/:id/reviews',
   isAuth,
   isAdmin,
-
   expressAsyncHandler(async (req, res) => {
-    // const projectCode = req.params.projectCode;
     const surveyid = req.params.id;
-
-    // Find the survey by ID and project code
     const survey = await Survey.findById(surveyid);
+    const creatorEmail = survey.submittedByEmail;
+    const projectCode = survey.projectCode;
+    const SurveyId = survey.surveyId;
+    const id = survey._id;
     if (survey) {
       const review = {
-        // verifiedBy: req.employee.name,
-        // verifiededAt: new Date(),
         remark: req.body.remark,
         rating: Number(5),
         remarkBy: req.employee.name,
@@ -131,7 +170,36 @@ surveyRouter.post(
         survey.reviews.reduce((a, c) => c.rating + a, 0) /
         survey.reviews.length;
       const updatedSurvey = await survey.save();
-      // res.status(200).json(updatedSurvey);
+
+      // Assuming you have the email and name of the person who created the survey
+      const email = creatorEmail; // Replace with actual creator's email
+      const Name = req.employee.name; // Replace with actual creator's name
+
+      // Send an email to the survey creator using Mailgun
+      mailgun()
+        .messages()
+        .send(
+          {
+            from: 'TAYPRO <employee-lwbn@mg.yourdomain.com>',
+            to: `<${email}>`,
+            subject: 'A New Review has been Added!',
+            html: `
+             <p>Hello, <b>${Name}</b> A new review has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
+             <p> Project Code :${projectCode}</p> 
+             <p>Survey Id :${id}</p> 
+             <p>Remark: ${review.remark}</p>
+             <a href="${baseUrl()}/survey/${id}"}>View Survey</a>
+             `,
+          },
+          (error, body) => {
+            if (error) {
+              console.error('Error sending email:', error);
+            } else {
+              console.log('Email sent:', body);
+            }
+          }
+        );
+
       res.status(201).send({
         message: 'Remark Added',
         review: updatedSurvey.reviews[updatedSurvey.reviews.length - 1],
@@ -181,6 +249,7 @@ surveyRouter.post(
       htablex: req.body.htablex,
       htabley: req.body.htabley,
       submittedBy: req.employee.name,
+      submittedByEmail: req.employee.email,
       submittedAt: new Date(),
       rating: 0,
       numReviews: 0,
@@ -193,56 +262,6 @@ surveyRouter.post(
     res.send({ message: 'New Survey Created', survey });
   })
 );
-// -----------------new---------------------
-
-// surveyRouter.post(
-//   '/sitesurveys/:projectCode',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const projectCode = req.params.projectCode;
-//     const newSurvey = new Survey({
-//       projectCode: projectCode,
-//       block: '',
-//       surveyId: 'taypro' + Date.now(),
-//       row: '',
-//       table: '',
-//       structure: '',
-//       A: '',
-//       ImageA: '',
-//       B: '',
-//       ImageB: '',
-//       C: '',
-//       ImageC: '',
-//       D: '',
-//       ImageD: '',
-//       E: '',
-//       ImageE: '',
-//       F: '',
-//       ImageF: '',
-//       G: '',
-//       ImageG: '',
-//       H: '',
-//       ImageH: '',
-//       I: '',
-//       ImageI: '',
-//       J: '',
-//       ImageJ: '',
-//       htablex: '',
-//       htabley: '',
-//       submittedBy: req.employee.name,
-//       submittedAt: new Date(),
-//       rating: 0,
-//       numReviews: 0,
-//       verifiedBy: '',
-//       verifiededAt: '',
-//       img: '',
-//       // customerLogo: '/images/sample_logo.png',
-//     });
-//     const survey = await newSurvey.save();
-//     res.send({ message: 'Survey Created', survey });
-//   })
-// );
 
 surveyRouter.put(
   '/sitesurveys/:id',

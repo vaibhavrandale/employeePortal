@@ -443,7 +443,7 @@ function Survey({ projectCode }) {
           </div>
 
           <h3 ref={reviewRef} className="mt-3 text-center">
-            Remarks
+            Remarks ({siteSurvey.numReviews})
           </h3>
           <div className="mb-3 d-flex justify-content-center">
             {siteSurvey.reviews.length === 0 && (

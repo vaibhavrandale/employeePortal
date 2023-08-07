@@ -11,7 +11,14 @@ function Dashboard() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       {/* <div className=" d-flex ">
         <VideoSection />
         <Banner />

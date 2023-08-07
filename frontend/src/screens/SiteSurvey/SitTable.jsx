@@ -256,7 +256,7 @@ function SiteTable({ projectCode }) {
           </div>
         </div>
       )}
-      <div className="mx-3">
+      <div className="container mx-3">
         {loading ? (
           <LoadingBox3 />
         ) : error ? (

@@ -70,8 +70,8 @@ const SalarySleep = ({ onClose, onSubmit }) => {
   useEffect(() => {
     // Clean up the PDF URL when the component is unmounted
     return () => {
-      if (pdfPreviewRef.current) {
-        URL.revokeObjectURL(pdfPreviewRef.current.src);
+      if (pdfPreviewRef) {
+        URL.revokeObjectURL(pdfPreviewRef.src);
       }
     };
   }, []);
@@ -425,8 +425,11 @@ const SalarySleep = ({ onClose, onSubmit }) => {
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
-        <div className="d-flex form-group justify-content-center flex-wrap">
-          <div className="year m-1">
+        <div
+          className=" w-100 m-auto d-flex flex-column form-group justify-content-center  flex-wrap "
+          style={{ maxWidth: '200px' }}
+        >
+          <div className="year m-1 ">
             <label className="headingOfPopup m-1 " htmlFor="year">
               Select Year:
             </label>
@@ -491,6 +494,7 @@ const SalarySleep = ({ onClose, onSubmit }) => {
                 </>
               )}
           </div>
+          {/* <hr /> */}
           <div className="preview m-1 d-flex flex-column">
             {selectedYear &&
               selectedMonth && ( // Check if both options are selected
@@ -515,7 +519,7 @@ const SalarySleep = ({ onClose, onSubmit }) => {
             ref={pdfPreviewRef}
             title="PDF Preview"
             width="100%"
-            height="500px"
+            height="700px"
             //   style={{ border: '1px solid black' }}
           />
         </div>

@@ -101,7 +101,7 @@ function LeavesHistory() {
     setHoveredRow(index);
   };
   return (
-    <div className="container1 ">
+    <div className="container ">
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">

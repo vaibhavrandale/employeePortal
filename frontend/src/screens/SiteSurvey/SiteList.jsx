@@ -36,8 +36,10 @@ const reducer = (state, action) => {
 
     case 'UPDATE_STATUS_REQUEST':
       return { ...state, loadingUpdate: true };
+
     case 'UPDATE_STATUS_SUCCESS':
       return { ...state, loadingUpdate: false };
+
     case 'UPDATE_STATUS_FAIL':
       return { ...state, loadingUpdate: false };
 
@@ -179,6 +181,7 @@ function SiteList() {
         type: 'UPDATE_STATUS_SUCCESS',
         // payload: result.data.sitelist,
       });
+      window.location.reload();
       // navigate(`/sitelist`);
     } catch (err) {
       toast.error(getError(err));
@@ -204,8 +207,7 @@ function SiteList() {
         type: 'UPDATE_STATUS_SUCCESS',
         // payload: result.data.sitelist,
       });
-      // console.log(id);
-      // navigate(`/sitelist`);
+      window.location.reload();
     } catch (err) {
       toast.error(getError(err));
       dispatch({

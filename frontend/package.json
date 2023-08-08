@@ -30,7 +30,6 @@
     "reactstrap": "^9.2.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.11",
-    "use-reducer-logger": "^1.0.2",
     "web-vitals": "^2.1.4",
     "xlsx": "^0.18.5"
   },

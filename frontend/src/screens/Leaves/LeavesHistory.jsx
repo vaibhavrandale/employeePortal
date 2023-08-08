@@ -3,9 +3,7 @@ import '../../App.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import LoadingBox from '../../components/LoadingBox';
-import logger from 'use-reducer-logger';
 import AlertBox from '../../components/MessageBox/AlertBox';
-import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 // import { BiEdit } from 'react-icons/bi';
 // import data from '../Employee/data';
@@ -27,7 +25,7 @@ const reducer = (state, action) => {
 };
 
 function LeavesHistory() {
-  const [{ loading, error, leaves }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, leaves }, dispatch] = useReducer(reducer, {
     leaves: [],
     loading: true,
     error: '',

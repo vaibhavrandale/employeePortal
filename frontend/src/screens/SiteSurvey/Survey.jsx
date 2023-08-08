@@ -211,6 +211,15 @@ function Survey({ projectCode }) {
                 {siteSurvey.structure}
               </span>
             </div>
+
+            <div className=" d-flex   justify-content-start flex-wrap">
+              <span>Table 1</span>
+              <input type="radio" style={{ height: '10px' }} />{' '}
+              <span>Table 1</span>
+              <input type="radio" style={{ height: '10px' }} />{' '}
+              <span>Table 1</span>
+              <input type="radio" style={{ height: '10px' }} />
+            </div>
           </div>
 
           <div className="d-flex flex-wrap">

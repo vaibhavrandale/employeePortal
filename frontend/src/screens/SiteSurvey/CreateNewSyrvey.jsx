@@ -73,17 +73,28 @@ function CreateNewSyrvey({ projectCode }) {
   const [ImageF, setImageF] = useState('');
   const [G, setG] = useState('');
   const [ImageG, setImageG] = useState('');
-  const [H, setH] = useState('');
+  // const [H, setH] = useState('');
   const [ImageH, setImageH] = useState('');
   const [I, setI] = useState('');
   const [ImageI, setImageI] = useState('');
   const [J, setJ] = useState('');
   const [ImageJ, setImageJ] = useState('');
-  const [htablex, setHtablex] = useState('');
-  const [htabley, setHtabley] = useState('');
+  // const [htablex, setHtablex] = useState('');
+  // const [htabley, setHtabley] = useState('');
   const [img, setImg] = useState('');
   const [images, setImages] = useState([]);
   const [submittedBy, setSubmittedBy] = useState('');
+  const initialHtablex = Array.from({ length: parseInt(table, 10) - 1 }).fill(
+    ''
+  );
+  const initialHtabley = Array.from({ length: parseInt(table, 10) - 1 }).fill(
+    ''
+  );
+  const initialH = Array.from({ length: parseInt(table, 10) - 1 }).fill('');
+
+  const [htablex, setHtablex] = useState(initialHtablex);
+  const [htabley, setHtabley] = useState(initialHtabley);
+  const [H, setH] = useState(initialH);
 
   const handleNextSection = (e) => {
     e.preventDefault();
@@ -289,6 +300,27 @@ function CreateNewSyrvey({ projectCode }) {
     });
   };
 
+  // Define a function to update htablex values based on index
+  const handleHtablexChange = (e, index) => {
+    const newHtablexValues = [...htablex];
+    newHtablexValues[index] = e.target.value;
+    setHtablex(newHtablexValues);
+  };
+
+  // Define a function to update htabley values based on index
+  const handleHtableyChange = (e, index) => {
+    const newHtableyValues = [...htabley];
+    newHtableyValues[index] = e.target.value;
+    setHtabley(newHtableyValues);
+  };
+
+  // Define a function to update H values based on index
+  const handleHChange = (e, index) => {
+    const newHValues = [...H];
+    newHValues[index] = e.target.value;
+    setH(newHValues);
+  };
+
   return (
     <div className="container1">
       <div className="m-2 card p-1 pb-2">
@@ -375,12 +407,12 @@ function CreateNewSyrvey({ projectCode }) {
                   />
                 </div>
                 <div className="form-group col-md-2 m-1">
-                  <label htmlFor="lastName">Enter Table Name :</label>
+                  <label htmlFor="lastName">Enter No of Tables :</label>
                   <input
                     type="text"
                     className="form-control"
                     id="lastName"
-                    placeholder="Enter Table Name"
+                    placeholder="Enter no of Tables"
                     value={table}
                     required
                     onChange={(e) => setTable(e.target.value)}
@@ -730,7 +762,7 @@ function CreateNewSyrvey({ projectCode }) {
                     </div>
                     {/* -------------------------------------------------------- */}
 
-                    <div className="row d-flex mb-2 m-1">
+                    {/* <div className="row d-flex mb-2 m-1">
                       <div className="form-group col-md-6 mx-1">
                         <label htmlFor="lastName"> Table 1 :</label>
                         <input
@@ -756,8 +788,6 @@ function CreateNewSyrvey({ projectCode }) {
                         />
                       </div>
                     </div>
-
-                    {/* -------------------------------------------------------- */}
                     <div className="row d-flex mb-2 m-1">
                       <div className="form-group col-md-6 mx-1">
                         <label htmlFor="lastName">
@@ -799,7 +829,99 @@ function CreateNewSyrvey({ projectCode }) {
                           />
                         </div>
                       </div>
-                    </div>
+                    </div> */}
+
+                    {Array.from({ length: parseInt(table, 10) - 1 }).map(
+                      (_, index) => (
+                        <div
+                          className="row d-flex mb-2 m-1"
+                          key={`table_${index}`}
+                        >
+                          <div className="form-group col-md-6 mx-1">
+                            <label htmlFor={`htablex_${index}`}>
+                              {' '}
+                              Table {index + 1} - htablex:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`htablex_${index}`}
+                              placeholder={`Enter htablex for table ${
+                                index + 1
+                              }`}
+                              required
+                              onChange={(e) => handleHtablexChange(e, index)}
+                            />
+                          </div>
+                          <div className="form-group col-md-5 mx-1">
+                            <label htmlFor={`htabley_${index}`}>
+                              {' '}
+                              Table {index + 1} - htabley:
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`htabley_${index}`}
+                              placeholder={`Enter htabley for table ${
+                                index + 1
+                              }`}
+                              required
+                              onChange={(e) => handleHtableyChange(e, index)}
+                            />
+                          </div>
+                        </div>
+                      )
+                    )}
+                    {Array.from({ length: parseInt(table, 10) - 1 }).map(
+                      (_, index) => (
+                        <div className="row d-flex mb-2 m-1" key={`h_${index}`}>
+                          <div className="form-group col-md-6 mx-1">
+                            <label htmlFor={`H_${index}`}>
+                              {' '}
+                              H (for Table {index + 1}):{' '}
+                              {ImageH && (
+                                <Link
+                                  className="text-decoration-none"
+                                  target="blank"
+                                  to={ImageH}
+                                >
+                                  H{' '}
+                                  <span>
+                                    <FiExternalLink />
+                                  </span>
+                                </Link>
+                              )}
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`H_${index}`}
+                              placeholder={`Enter H for Table ${index + 1}`}
+                              value={H[index]}
+                              required
+                              onChange={(e) => handleHChange(e, index)}
+                            />
+                          </div>
+                          <div className="col-md-5">
+                            <div className="form-group mx-1">
+                              <label htmlFor={`ImageH_${index}`}>
+                                Upload Image H (for Table {index + 1}):
+                              </label>
+                              <span className="text-muted"></span>
+                              {loadingUpload && <LoadingBox4 />}
+                              <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) =>
+                                  uploadFileHandler(e, false, `H_${index}`)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+
                     {/* -------------------------------------------------------- */}
 
                     {/* -------------------------------------------------------- */}

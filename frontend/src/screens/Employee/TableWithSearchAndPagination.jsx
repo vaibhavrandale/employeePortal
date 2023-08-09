@@ -186,6 +186,7 @@ const TableWithSearchAndPagination = () => {
                           src={item.image}
                           alt={item.name}
                           className="table-image"
+                          // style={{ backgroundColor: 'transparent' }}
                           onLoad={() => handleImageLoad(index)}
                         />
                       </Link>

@@ -8,6 +8,7 @@ import { getError } from '../../utils';
 import { Store } from '../../Store';
 import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
+import { toast } from 'react-hot-toast';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -62,8 +63,10 @@ function SurveyGallery() {
   }, [id]);
 
   const handleThumbnailClick = (imageUrl) => {
+    console.log('Clicked on thumbnail with URL:', imageUrl);
     setSelectedImage(imageUrl);
     localStorage.setItem('selectedImage', imageUrl);
+    console.log('Updated selectedImage state and local storage');
   };
 
   const imageNames = {
@@ -165,7 +168,8 @@ function SurveyGallery() {
               </div>
               <div className="thumbnail-row" id="thumbnailRow">
                 {/* {Object.entries(siteSurvey).map(([key, value]) => {
-                  if (key.startsWith('Image')) {
+                  if (key.startsWith('Image') && value) {
+                    // Check if value is truthy
                     return (
                       <div
                         className="d-flex justify-content-center flex-column"
@@ -186,26 +190,46 @@ function SurveyGallery() {
                   }
                   return null;
                 })} */}
+
                 {Object.entries(siteSurvey).map(([key, value]) => {
                   if (key.startsWith('Image') && value) {
-                    // Check if value is truthy
-                    return (
-                      <div
-                        className="d-flex justify-content-center flex-column"
-                        key={key}
-                      >
-                        <span className="text-center fw-bolder">
-                          {key.slice(5)}
-                        </span>
-                        <img
-                          id={key}
-                          className="thumbnail rounded rounded"
-                          src={value}
-                          alt={value}
-                          onClick={() => handleThumbnailClick(value)}
-                        />
-                      </div>
-                    );
+                    if (key === 'ImageH' && Array.isArray(value)) {
+                      return value.map((img, index) => (
+                        <div
+                          className="d-flex justify-content-center flex-column"
+                          key={`ImageH-${index}`}
+                        >
+                          <span className="text-center fw-bolder">
+                            H{index + 1}
+                          </span>
+                          <img
+                            id={`ImageH-${index}`}
+                            className="thumbnail rounded rounded"
+                            src={img}
+                            alt={img}
+                            onClick={() => handleThumbnailClick(img)}
+                          />
+                        </div>
+                      ));
+                    } else {
+                      return (
+                        <div
+                          className="d-flex justify-content-center flex-column"
+                          key={key}
+                        >
+                          <span className="text-center fw-bolder">
+                            {key.slice(5)}
+                          </span>
+                          <img
+                            id={key}
+                            className="thumbnail rounded rounded"
+                            src={value}
+                            alt={value}
+                            onClick={() => handleThumbnailClick(value)}
+                          />
+                        </div>
+                      );
+                    }
                   }
                   return null;
                 })}

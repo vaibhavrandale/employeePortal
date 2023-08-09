@@ -18,7 +18,7 @@ const surveySchema = new mongoose.Schema({
   projectCode: { type: String, required: true },
   block: { type: String },
   row: { type: String },
-  table: { type: String },
+  table: { type: Number },
   structure: { type: String },
   A: { type: String },
   ImageA: { type: String },
@@ -34,15 +34,22 @@ const surveySchema = new mongoose.Schema({
   ImageF: { type: String },
   G: { type: String },
   ImageG: { type: String },
-  H: { type: String },
-  ImageH: { type: String },
+
   I: { type: String },
   ImageI: { type: String },
   J: { type: String },
   ImageJ: { type: String },
 
-  htablex: { type: String },
-  htabley: { type: String },
+  // H: { type: String },
+  // ImageH: { type: String },
+  // htablex: { type: String },
+  // htabley: { type: String },
+
+  H: [String], // Change from 'String' to '[String]'
+  ImageH: [String], // Change from 'String' to '[String]'
+  htablex: [String], // Change from 'String' to '[String]'
+  htabley: [String], // Change from 'String' to '[String]'
+
   img: { type: String },
   images: [String],
   submittedBy: { type: String, required: true },

@@ -54,6 +54,8 @@ function Survey({ projectCode }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();
+  const [selectedTable, setSelectedTable] = useState(0); // Defaults to the first table
+
   useEffect(() => {
     if (userInfo) {
       const fetchData = async () => {
@@ -212,13 +214,31 @@ function Survey({ projectCode }) {
               </span>
             </div>
 
-            <div className=" d-flex   justify-content-start flex-wrap">
-              <span>Table 1</span>
-              <input type="radio" style={{ height: '10px' }} />{' '}
-              <span>Table 1</span>
-              <input type="radio" style={{ height: '10px' }} />{' '}
-              <span>Table 1</span>
-              <input type="radio" style={{ height: '10px' }} />
+            <div className="d-flex ">
+              {' '}
+              <div className="m-1">Select Table : </div>
+              <div className="form-check m-1 d-flex">
+                {Array.from({ length: siteSurvey.table - 1 }).map(
+                  (_, index) => (
+                    <div key={index} className="me-5">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="flexRadioDefault"
+                        onChange={() => setSelectedTable(index)}
+                        id={`flexRadioDefault${index + 1}`}
+                        defaultChecked={index === 0}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`flexRadioDefault${index + 1}`}
+                      >
+                        Table{index + 1}
+                      </label>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
 
@@ -351,7 +371,8 @@ function Survey({ projectCode }) {
                     </td>
                     <td className="text-center">{siteSurvey.G}</td>
                   </tr>
-                  <tr>
+
+                  {/* <tr>
                     <td>
                       INTER TABLE GAP DIMENSION - H{' '}
                       <span>
@@ -369,7 +390,35 @@ function Survey({ projectCode }) {
                       </span>
                     </td>
                     <td className="text-center">{siteSurvey.H}</td>
-                  </tr>
+                  </tr> */}
+
+                  {siteSurvey.table >= 1 &&
+                    siteSurvey.H &&
+                    siteSurvey.H[selectedTable] && (
+                      <tr key={selectedTable}>
+                        <td>
+                          INTER TABLE GAP DIMENSION - H{selectedTable + 1}{' '}
+                          <span>
+                            {siteSurvey.ImageH && (
+                              <Link
+                                className="ms-1 text-decoration-none fs-5"
+                                to={`/surveyImages/${id}`}
+                              >
+                                <TbExternalLink />
+                              </Link>
+                            )}
+                          </span>
+                          <span className="text-dark fw-bolder">
+                            ({siteSurvey.htablex[selectedTable]} &amp;{' '}
+                            {siteSurvey.htabley[selectedTable]})
+                          </span>
+                        </td>
+                        <td className="text-center">
+                          {siteSurvey.H[selectedTable]}
+                        </td>
+                      </tr>
+                    )}
+
                   <tr>
                     <td>
                       SOLAR MODULE GAP HORIZONTAL DIMENSION - I{' '}
@@ -501,11 +550,7 @@ function Survey({ projectCode }) {
             <form onSubmit={submitHandler}>
               <h3>Write a Remark</h3>
 
-              <label
-                controlId="floatingTextarea"
-                label="Comments"
-                className="mb-1"
-              >
+              <label label="Comments" className="mb-1">
                 <input
                   className="form-control"
                   as="textarea"

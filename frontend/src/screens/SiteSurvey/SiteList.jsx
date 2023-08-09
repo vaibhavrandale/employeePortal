@@ -332,6 +332,10 @@ function SiteList() {
                                 src={item.customerLogo}
                                 alt="Profile"
                                 className="table-image1"
+                                style={{
+                                  objectFit: 'contain',
+                                  // mixBlendMode: 'color-burn',
+                                }}
                               />
                             </Link>
                           </div>
@@ -341,6 +345,7 @@ function SiteList() {
                         <td className="text-center">{item.siteLocation}</td>
                         <td className="text-center">{item.plantCapacity}</td>
                         <td className="text-center">
+                          {' '}
                           <button className="edit-button">
                             {item.plantLayout ? (
                               <Link

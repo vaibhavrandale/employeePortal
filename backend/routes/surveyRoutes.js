@@ -213,13 +213,80 @@ surveyRouter.post(
   })
 );
 
-// -----------------new---------------------
+// // -----------------old---------------------
+// surveyRouter.post(
+//   '/sitesurveys/:projectCode',
+//   isAuth,
+//   isAdmin,
+//   expressAsyncHandler(async (req, res) => {
+//     const projectCode = req.params.projectCode;
+//     const newSurvey = new Survey({
+//       projectCode: projectCode,
+//       block: req.body.block,
+//       surveyId: 'taypro' + Date.now(),
+//       row: req.body.row,
+//       table: req.body.table,
+//       structure: req.body.structure,
+//       A: req.body.A,
+//       ImageA: req.body.ImageA,
+//       B: req.body.B,
+//       ImageB: req.body.ImageB,
+//       C: req.body.C,
+//       ImageC: req.body.ImageC,
+//       D: req.body.D,
+//       ImageD: req.body.ImageD,
+//       E: req.body.E,
+//       ImageE: req.body.ImageE,
+//       F: req.body.F,
+//       ImageF: req.body.ImageF,
+//       G: req.body.G,
+//       ImageG: req.body.ImageG,
+//       H: req.body.H,
+//       ImageH: req.body.ImageH,
+//       I: req.body.I,
+//       ImageI: req.body.ImageI,
+//       J: req.body.J,
+//       ImageJ: req.body.ImageJ,
+//       htablex: req.body.htablex,
+//       htabley: req.body.htabley,
+//       submittedBy: req.employee.name,
+//       submittedByEmail: req.employee.email,
+//       submittedAt: new Date(),
+//       rating: 0,
+//       numReviews: 0,
+//       verifiedBy: '',
+//       verifiededAt: '',
+//       img: '',
+//       // customerLogo: '/images/sample_logo.png',
+//     });
+//     const survey = await newSurvey.save();
+//     res.send({ message: 'New Survey Created', survey });
+//   })
+// );
+
+//-------------------old---------------------
+
+// -----------------------------new---------------------------
 surveyRouter.post(
   '/sitesurveys/:projectCode',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const projectCode = req.params.projectCode;
+    // Initialization
+    let hArray = req.body.H || [];
+    let imageHArray = req.body.ImageH || [];
+    let htablexArray = req.body.htablex || [];
+    let htableyArray = req.body.htabley || [];
+
+    if (req.body.table && (!req.body.H || !req.body.H.length)) {
+      // Only fill with empty strings if there's no provided 'H' in the request body
+      const length = req.body.table - 1;
+      hArray = new Array(length).fill('');
+      imageHArray = new Array(length).fill('');
+      htablexArray = new Array(length).fill('');
+      htableyArray = new Array(length).fill('');
+    }
     const newSurvey = new Survey({
       projectCode: projectCode,
       block: req.body.block,
@@ -241,14 +308,15 @@ surveyRouter.post(
       ImageF: req.body.ImageF,
       G: req.body.G,
       ImageG: req.body.ImageG,
-      H: req.body.H,
-      ImageH: req.body.ImageH,
+      H: hArray,
+      ImageH: imageHArray,
+      htablex: htablexArray,
+      htabley: htableyArray,
       I: req.body.I,
       ImageI: req.body.ImageI,
       J: req.body.J,
       ImageJ: req.body.ImageJ,
-      htablex: req.body.htablex,
-      htabley: req.body.htabley,
+
       submittedBy: req.employee.name,
       submittedByEmail: req.employee.email,
       submittedAt: new Date(),
@@ -259,10 +327,13 @@ surveyRouter.post(
       img: '',
       // customerLogo: '/images/sample_logo.png',
     });
+
     const survey = await newSurvey.save();
     res.send({ message: 'New Survey Created', survey });
   })
 );
+
+// -----------------------------new---------------------------
 
 surveyRouter.put(
   '/sitesurveys/:id',

@@ -4,6 +4,7 @@ import expressAsyncHandler from 'express-async-handler';
 // import bcrypt from 'bcryptjs';
 import { generateToken, baseUrl, mailgun } from '../utils.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 const emplyeeRouter = express.Router();
 
@@ -148,7 +149,7 @@ emplyeeRouter.post(
   '/signin',
   expressAsyncHandler(async (req, res) => {
     const employee = await Employee.findOne({ email: req.body.email });
-    if (employee && req.body.password === employee.password) {
+    if (employee && bcrypt.compareSync(req.body.password, employee.password)) {
       // Code to be executed if the employee ID matches
 
       res.send({
@@ -167,9 +168,11 @@ emplyeeRouter.post(
         activate: employee.activate,
         profileImage: employee.image, // Include the profile image URL
         token: generateToken(employee),
+        message: 'Sign in successful!', // Success message
       });
       return;
     }
+
     res.status(401).send({ message: 'Invalid Credentials' });
   })
 );
@@ -223,7 +226,8 @@ emplyeeRouter.post(
         const employee = await Employee.findOne({ resetToken: req.body.token });
         if (employee) {
           if (req.body.password) {
-            employee.password = req.body.password;
+            employee.password = bcrypt.hashSync(req.body.password, 8);
+            // user.password = bcrypt.hashSync(req.body.password, 8);
             await employee.save();
             res.send({
               message: 'Password reseted successfully',

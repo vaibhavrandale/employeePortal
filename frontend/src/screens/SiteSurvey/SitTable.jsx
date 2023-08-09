@@ -314,7 +314,7 @@ function SiteTable({ projectCode }) {
                   >
                     <td className=" d-flex justify-content-center align-items-center">
                       {item.block}
-                    </td>{' '}
+                    </td>
                     <td className="text-center">{item.row}</td>
                     <td className="text-center">{item.table}</td>
                     <td className="text-center">{item.submittedBy}</td>

@@ -340,11 +340,8 @@ function CreateNewSyrvey({ projectCode }) {
               </Link>{' '}
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              <Link
-                to={`/siteDetails/${projectcode}`}
-                className="text-decoration-none"
-              >
-                Site Details :{projectcode}
+              <Link to={`/siteDetails/${id}`} className="text-decoration-none">
+                Site Details :{id}
               </Link>{' '}
             </li>
             <li className="breadcrumb-item active" aria-current="page">
@@ -831,7 +828,8 @@ function CreateNewSyrvey({ projectCode }) {
                       </div>
                     </div> */}
 
-                    {Array.from({ length: parseInt(table, 10) - 1 }).map(
+                    {/* ----------------------------new-------------------------- */}
+                    {/* {Array.from({ length: parseInt(table, 10) - 1 }).map(
                       (_, index) => (
                         <div
                           className="row d-flex mb-2 m-1"
@@ -918,6 +916,176 @@ function CreateNewSyrvey({ projectCode }) {
                               />
                             </div>
                           </div>
+                        </div>
+                      )
+                    )} */}
+
+                    {/* {Array.from({ length: parseInt(table, 10) - 1 }).map(
+                      (_, index) => (
+                        <div
+                          className="row d-flex mb-2 m-1"
+                          key={`table_row_${index}`}
+                        >
+                          <div className="form-group col-md-3 mx-1">
+                            <label htmlFor={`htablex_${index}`}>
+                              Table {index + 1} :
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`htablex_${index}`}
+                              placeholder={`Enter htablex for table ${
+                                index + 1
+                              }`}
+                              required
+                              onChange={(e) => handleHtablexChange(e, index)}
+                            />
+                          </div>
+
+                          <div className="form-group col-md-2 mx-1">
+                            <label htmlFor={`H_${index}`}>
+                              H (for Table {index + 1}):
+                              {ImageH && (
+                                <Link
+                                  className="text-decoration-none"
+                                  target="blank"
+                                  to={ImageH}
+                                >
+                                  H{' '}
+                                  <span>
+                                    <FiExternalLink />
+                                  </span>
+                                </Link>
+                              )}
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`H_${index}`}
+                              placeholder={`Enter H for Table ${index + 1}`}
+                              value={H[index]}
+                              required
+                              onChange={(e) => handleHChange(e, index)}
+                            />
+                          </div>
+
+                          <div className="col-md-3">
+                            <div className="form-group mx-1">
+                              <label htmlFor={`ImageH_${index}`}>
+                                Upload Image H (for Table {index + 1}):
+                              </label>
+                              {loadingUpload && <LoadingBox4 />}
+                              <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) =>
+                                  uploadFileHandler(e, false, `H_${index}`)
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          <div className="form-group col-md-3 mx-1">
+                            <label htmlFor={`htabley_${index}`}>
+                              Table {index + 1} :
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`htabley_${index}`}
+                              placeholder={`Enter htabley for table ${
+                                index + 1
+                              }`}
+                              required
+                              onChange={(e) => handleHtableyChange(e, index)}
+                            />
+                          </div>
+                        </div>
+                      )
+                    )} */}
+
+                    {Array.from({ length: parseInt(table, 10) - 1 }).map(
+                      (_, index) => (
+                        <div
+                          className="row d-flex mb-2 m-1 justify-content-center border p-1"
+                          key={`table_row_${index}`}
+                        >
+                          {/* htablex input for current table */}
+                          <div className="form-group col-md-2 mx-1 ">
+                            <label htmlFor={`htablex_${index}`}>
+                              Table {index + 1} :
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`htablex_${index}`}
+                              placeholder={`Enter table ${index + 1}`}
+                              required
+                              onChange={(e) => handleHtablexChange(e, index)}
+                            />
+                          </div>
+
+                          {/* H input for current table */}
+                          <div className="form-group col-md-2 mx-1">
+                            <label htmlFor={`H_${index}`}>
+                              H (for Table {index + 1}):
+                              {ImageH && (
+                                <Link
+                                  className="text-decoration-none"
+                                  target="blank"
+                                  to={ImageH}
+                                >
+                                  H{' '}
+                                  <span>
+                                    <FiExternalLink />
+                                  </span>
+                                </Link>
+                              )}
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id={`H_${index}`}
+                              placeholder={`Enter H for table ${index + 1}`}
+                              value={H[index]}
+                              required
+                              onChange={(e) => handleHChange(e, index)}
+                            />
+                          </div>
+
+                          {/* ImageH input for current table */}
+                          <div className="col-md-3">
+                            <div className="form-group mx-1">
+                              <label htmlFor={`ImageH_${index}`}>
+                                Upload Image H (for Table {index + 1}):
+                              </label>
+                              {loadingUpload && <LoadingBox4 />}
+                              <input
+                                type="file"
+                                className="form-control"
+                                onChange={(e) =>
+                                  uploadFileHandler(e, false, `H_${index}`)
+                                }
+                              />
+                            </div>
+                          </div>
+
+                          {/* htabley input for the next table */}
+                          {index + 1 < parseInt(table, 10) ? (
+                            <div className="form-group col-md-2 mx-1">
+                              <label htmlFor={`htabley_${index + 1}`}>
+                                Table {index + 2} :
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id={`htabley_${index + 1}`}
+                                placeholder={`Enter table ${index + 1}`}
+                                required
+                                onChange={(e) => handleHtableyChange(e, index)}
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       )
                     )}

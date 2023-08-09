@@ -233,7 +233,8 @@ function Survey({ projectCode }) {
                         className="form-check-label"
                         htmlFor={`flexRadioDefault${index + 1}`}
                       >
-                        Table{index + 1}
+                        gap- ({siteSurvey.htablex[index]} &amp;{' '}
+                        {siteSurvey.htabley[index]})
                       </label>
                     </div>
                   )

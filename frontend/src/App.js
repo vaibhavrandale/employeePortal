@@ -33,6 +33,8 @@ import SalarySleep from './screens/salarySleep/SalarySleep';
 import SalaryEntry from './screens/salarySleep/SalaryEntry';
 import Table from './screens/Table';
 import CreateNewSyrvey from './screens/SiteSurvey/CreateNewSyrvey';
+// import Calendar from './screens/Calendar/Calendar';
+import MyCalendar from './screens/Calendar/MyCalendar';
 
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
 // import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
@@ -176,6 +178,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SalaryEntry />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/calendar"
+          element={
+            <ProtectedRoutes>
+              <MyCalendar />
             </ProtectedRoutes>
           }
         />

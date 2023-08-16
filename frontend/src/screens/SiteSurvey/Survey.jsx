@@ -15,6 +15,7 @@ import { Store } from '../../Store';
 import '../../App.css';
 import { TbExternalLink } from 'react-icons/tb';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import SurveyVersions from './SurveyVersions';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,12 +42,13 @@ const reducer = (state, action) => {
   }
 };
 
-function Survey({ projectCode }) {
+function Survey({ selectedVersion }) {
   const [{ loading, error, siteSurvey, loadingCreateReview }, dispatch] =
     useReducer(reducer, {
       siteSurvey: {},
       loading: true,
       error: '',
+      selectedVersion: null,
       // surveyNotFound: false,
     });
   const [remark, setRemark] = useState('');
@@ -56,6 +58,11 @@ function Survey({ projectCode }) {
   const navigate = useNavigate();
   const [selectedTable, setSelectedTable] = useState(0); // Defaults to the first table
 
+  const handleSelectVersion = (version) => {
+    // Handle the version selection
+    // You can update the state or perform any other necessary actions
+    console.log('Selected version:', version);
+  };
   useEffect(() => {
     if (userInfo) {
       const fetchData = async () => {
@@ -149,6 +156,12 @@ function Survey({ projectCode }) {
       ) : (
         <>
           <h2 className="text-center">Survey Details</h2>
+          <SurveyVersions
+            id={id}
+            onSelectVersion={handleSelectVersion} // Pass the function here
+            selectedVersion={selectedVersion}
+          />
+
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
               <div className="badge bg-danger">Survey Id: {id}</div>
@@ -185,28 +198,28 @@ function Survey({ projectCode }) {
             </div>
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ width: '110px' }}
+              style={{ maxWidth: '210px' }}
             >
               Block:{' '}
               <span className="text-dark fw-bolder">{siteSurvey.block}</span>
             </div>
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ width: '95px' }}
+              style={{ maxWidth: '110px' }}
             >
-              Table:{' '}
+              No Of Table:{' '}
               <span className="text-dark fw-bolder">{siteSurvey.table}</span>
             </div>
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ width: '90px' }}
+              style={{ maxWidth: '210px' }}
             >
               Row: <span className="text-dark fw-bolder">{siteSurvey.row}</span>
             </div>
 
             <div
               className="col-md-3 fw-bolder badge bg-info m-2 p-2"
-              style={{ width: '90px' }}
+              style={{ maxWidth: '210px' }}
             >
               Structure:{' '}
               <span className="text-dark fw-bolder">
@@ -522,7 +535,7 @@ function Survey({ projectCode }) {
                   <li
                     key={review._id}
                     className="bg-info card m-1 p-1  "
-                    style={{ width: '440px' }}
+                    style={{ maxWidth: '300px' }}
                     variant=""
                   >
                     <span>
@@ -552,13 +565,13 @@ function Survey({ projectCode }) {
               <h3>Write a Remark</h3>
 
               <label label="Comments" className="mb-1">
-                <input
+                <textarea
                   className="form-control"
                   as="textarea"
                   placeholder="Leave a remark here"
                   value={remark}
                   onChange={(e) => setRemark(e.target.value)}
-                />
+                ></textarea>
               </label>
               <div className="mb-3 ">
                 {/* <button

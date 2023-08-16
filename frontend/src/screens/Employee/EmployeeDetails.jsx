@@ -121,6 +121,10 @@ const EmployeeDetails = () => {
   const [mobile_no, setMobile_no] = useState('');
   const [age, setAge] = useState('');
   const [experience, setExperiene] = useState('');
+  const [leaves, setLeaves] = useState('');
+  const [sick, setSick] = useState('');
+  const [privilege, setPrivilege] = useState('');
+  const [casual, setCasual] = useState('');
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -141,15 +145,11 @@ const EmployeeDetails = () => {
         setPf_account_no(result.data.employee.pf_account_no);
         setUan_number(result.data.employee.uan_number);
 
-        // name,
-        // email,
-        // joiningDate,
-        // birth_date,
-        // gender,
-        // designation,
-        // mobile_no,
-        // age,
-        // experience,
+        setLeaves(result.data.employee.leaves);
+        setCasual(result.data.employee.casual);
+        setPrivilege(result.data.employee.privilege);
+        setSick(result.data.employee.sick);
+
         setName(result.data.employee.name);
         setEmail(result.data.employee.email);
         setJoiningDate(result.data.employee.joiningDate);

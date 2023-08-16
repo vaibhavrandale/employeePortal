@@ -4,10 +4,11 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import seedRouter from './routes/seedRouter.js';
 import path from 'path';
+
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
-// import { v2 as cloudinary } from 'cloudinary';
 import uploadRouter from './routes/uploadRoute.js';
+import EventRouter from './routes/EventRoutes.js';
 
 dotenv.config();
 mongoose
@@ -30,6 +31,7 @@ app.use('/api/employees', emplyeeRouter);
 
 app.use('/api/survey', surveyRouter);
 app.use('/api/upload', uploadRouter);
+app.use('/api/calendar', EventRouter);
 
 app.get('/api/leaves', (req, res) => {
   res.send(data.Leaves);

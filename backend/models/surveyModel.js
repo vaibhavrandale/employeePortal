@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema(
   {
-    // verifiedBy: { type: String, required: true },
-    // verifiededAt: { type: String, required: true },
     remark: { type: String, required: true },
     remarkBy: { type: String, required: true },
     rating: { type: Number, required: true },
@@ -12,6 +10,12 @@ const reviewSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+const versionSchema = new mongoose.Schema({
+  versionNumber: { type: Number, required: true },
+  editedBy: { type: String, required: true },
+  editedAt: { type: Date, required: true },
+  editedData: { type: mongoose.Schema.Types.Mixed }, // Store the edited data here
+});
 
 const surveySchema = new mongoose.Schema({
   surveyId: { type: String, required: true, unique: true },
@@ -40,11 +44,6 @@ const surveySchema = new mongoose.Schema({
   J: { type: String },
   ImageJ: { type: String },
 
-  // H: { type: String },
-  // ImageH: { type: String },
-  // htablex: { type: String },
-  // htabley: { type: String },
-
   H: [String], // Change from 'String' to '[String]'
   ImageH: [String], // Change from 'String' to '[String]'
   htablex: [String], // Change from 'String' to '[String]'
@@ -61,6 +60,7 @@ const surveySchema = new mongoose.Schema({
   status: { type: Boolean, default: false },
   verifiedBy: { type: String },
   verifiededAt: { type: String },
+  versions: [versionSchema],
 });
 
 const Survey = mongoose.model('Survey', surveySchema);

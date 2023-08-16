@@ -6,10 +6,10 @@ import { LuEdit2 } from 'react-icons/lu';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
-import LoadingBox from '../../components/LoadingBox';
+// import LoadingBox from '../../components/LoadingBox';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
-import { AiOutlineEye, AiOutlineFilePdf } from 'react-icons/ai';
+import { AiOutlineFilePdf } from 'react-icons/ai';
 import { BiShowAlt } from 'react-icons/bi';
 import { RiSurveyLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
@@ -411,8 +411,8 @@ function SiteList() {
                                 className="fa fa-ban ms-1 text-danger "
                                 style={{ cursor: 'pointer' }}
                               ></i>
-                              {loadingUpdate && <LoadingBox4 />}
                             </span>{' '}
+                            {loadingUpdate && <LoadingBox4 />}
                           </button>
                         )}
                       </td>

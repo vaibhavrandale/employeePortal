@@ -77,7 +77,6 @@ function AddEmployee() {
   const [isVisitor, setIsVisitor] = useState(false);
   const [isProduction, setIsProduction] = useState(false);
   const [isAccountant, setIsAccountant] = useState(false);
-
   const SubmitHandler = async (e) => {
     e.preventDefault();
 

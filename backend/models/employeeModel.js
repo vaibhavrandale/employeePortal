@@ -14,6 +14,28 @@ const payslipSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+const LeaveSchema = new mongoose.Schema(
+  {
+    employee_id: { type: String },
+    name: { type: String },
+    type: { type: String },
+    other: { type: String },
+    expectedDateOfLeave: { type: String },
+    expectedDateOfreturn: { type: String },
+    reasonInDetail: { type: String },
+    mobileNo: { type: String },
+    approved: { type: Boolean, default: false },
+    approvedBy: { type: String },
+    remark: { type: String },
+    approvedAt: { type: String },
+    remarkBy: { type: String },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const employeeSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
@@ -32,7 +54,13 @@ const employeeSchema = new mongoose.Schema(
     mobile_no: { type: String, required: true },
     age: { type: Number, required: true },
     experience: { type: String, required: true },
-    leaves: { type: Number, default: 10, required: true },
+
+    allLeaves: [LeaveSchema],
+    leaves: { type: Number, default: 18, required: true },
+    sick: { type: Number, default: 3, required: true },
+    privilege: { type: Number, default: 12, required: true },
+    casual: { type: Number, default: 3, required: true },
+
     activate: { type: String, required: true },
     isAdmin: { type: Boolean, default: false, required: true },
     isSuperAdmin: { type: Boolean, default: false, required: true },

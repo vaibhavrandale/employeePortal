@@ -4,9 +4,11 @@ import Sites from '../models/siteDetailsModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 import expressAsyncHandler from 'express-async-handler';
 import { mailgun, baseUrl } from '../utils.js';
-
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 const surveyRouter = express.Router();
 
+dotenv.config();
 surveyRouter.get('/sites', async (req, res) => {
   // Insert new employee data using insertMany()
   const sitelist = await Sites.find();
@@ -147,6 +149,8 @@ surveyRouter.get('/sitesurveys/:id/reviews', async (req, res) => {
 //   })
 // );
 
+const logo =
+  'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
 surveyRouter.post(
   '/sitesurveys/:id/reviews',
   isAuth,
@@ -157,7 +161,7 @@ surveyRouter.post(
     const creatorEmail = survey.submittedByEmail;
     const creatorName = survey.submittedBy;
     const projectCode = survey.projectCode;
-    const SurveyId = survey.surveyId;
+    // const SurveyId = survey.surveyId;
     const id = survey._id;
     if (survey) {
       const review = {
@@ -176,31 +180,46 @@ surveyRouter.post(
       const email = creatorEmail; // Replace with actual creator's email
       const Name = req.employee.name; // Replace with actual creator's name
 
-      // Send an email to the survey creator using Mailgun
-      mailgun()
-        .messages()
-        .send(
-          {
-            from: 'TAYPRO INTERNAL PORTAL <employee-lwbn@mg.yourdomain.com>',
-            to: `<${email}>`,
-            subject: 'A New Review has been Added!',
-            html: `
-             <p>Hello, <b>${creatorName}</b> A new Remark has been added to your survey by <b style="color: green;">${Name}</b>.</p> 
-             <p> Project Code : ${projectCode}</p> 
-             <p>Survey Id : ${id}</p> 
-             <p>Remark: ${review.remark}</p>
-             <a href="${baseUrl()}/survey/${id}"}>View Survey</a>
-             `,
-          },
-          (error, body) => {
-            if (error) {
-              console.error('Error sending email:', error);
-            } else {
-              console.log('Email sent:', body);
-            }
-          }
-        );
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        service: 'Yandex', // Use the Yandex service
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
 
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL PORTAL <${process.env.MAIL_USER}>`,
+          to: `<${email}>`,
+          subject: 'A New Remark has been Added!',
+          html: `
+          <div style="background-color: #f5f5f5; padding: 20px; ">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="${logo}" alt="Company Logo" style="max-width: 100px;">
+    <div>
+        
+            <p>Hello, <b>${creatorName}</b> A new Remark has been added to your survey by <b style="color: green;">${Name}</b>.</p>
+            <p>Project Code : ${projectCode}</p>
+            <p>Survey Id : ${id}</p>
+            <p>Remark: ${review.remark}</p>
+            <a href="${baseUrl()}/survey/${id}" style="background:black; color:white; padding:5px; text-decoration:none">View Survey</a>
+            <div style="margin-top: 20px; background-color: #333; color: #fff; padding: 5px; display: flex; justify-content: center; align-items: center;">
+            © Copyright  ${new Date().getFullYear()} Taypro Private Limited. 
+            </br> All Rights Reserved.
+            </div>
+          </div>
+        `,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
       res.status(201).send({
         message: 'Remark Added',
         review: updatedSurvey.reviews[updatedSurvey.reviews.length - 1],
@@ -326,6 +345,7 @@ surveyRouter.post(
       verifiededAt: '',
       img: '',
       // customerLogo: '/images/sample_logo.png',
+      versions: [],
     });
 
     const survey = await newSurvey.save();
@@ -335,19 +355,87 @@ surveyRouter.post(
 
 // -----------------------------new---------------------------
 
+// ----------------put old----------------------------
+// surveyRouter.put(
+//   '/sitesurveys/:id',
+//   isAuth,
+//   isAdmin,
+
+//   expressAsyncHandler(async (req, res) => {
+//     const surveyid = req.params.id;
+
+//     // Find the survey by ID and project code
+//     const survey = await Survey.findById(surveyid);
+//     // console.log(survey);
+//     if (survey) {
+//       survey.surveyId = req.body.surveyId;
+//       survey.block = req.body.block;
+//       survey.row = req.body.row;
+//       survey.table = req.body.table;
+//       survey.structure = req.body.structure;
+//       survey.A = req.body.A;
+//       survey.ImageA = req.body.ImageA;
+//       survey.B = req.body.B;
+//       survey.ImageB = req.body.ImageB;
+//       survey.C = req.body.C;
+//       survey.ImageC = req.body.ImageC;
+//       survey.D = req.body.D;
+//       survey.ImageD = req.body.ImageD;
+//       survey.E = req.body.E;
+//       survey.ImageE = req.body.ImageE;
+//       survey.F = req.body.F;
+//       survey.ImageF = req.body.ImageF;
+//       survey.G = req.body.G;
+//       survey.ImageG = req.body.ImageG;
+//       survey.H = req.body.H;
+//       survey.ImageH = req.body.ImageH;
+//       survey.I = req.body.I;
+//       survey.ImageI = req.body.ImageI;
+//       survey.J = req.body.J;
+//       survey.ImageJ = req.body.ImageJ;
+//       survey.htablex = req.body.htablex;
+//       survey.htabley = req.body.htabley;
+//       // Set the submittedBy field to the logged-in user's name
+//       survey.submittedBy = req.employee.name; // Assuming the user's name is available in req.user
+//       // Set the submittedAt field to the current date and time
+//       survey.submittedAt = new Date();
+//       survey.img = req.body.img;
+//       survey.status = req.body.status;
+//       survey.images = req.body.images;
+//       survey.verifiedBy = req.employee.name;
+//       survey.verifiededAt = new Date();
+
+//       // Save the updated survey
+//       const updatedSurvey = await survey.save();
+//       // res.status(200).json(UpdatedSurvey);
+//       res.status(200).json(updatedSurvey);
+//     } else {
+//       res.status(404).send({ message: 'Survey Not Found' });
+//     }
+//   })
+// );
+
+// -----------------------------put  old----------------------------
+
+// ----------------------new put------------------------
+// Update an existing survey and handle version history
 surveyRouter.put(
   '/sitesurveys/:id',
   isAuth,
   isAdmin,
-
   expressAsyncHandler(async (req, res) => {
-    const surveyid = req.params.id;
+    const surveyId = req.params.id;
 
-    // Find the survey by ID and project code
-    const survey = await Survey.findById(surveyid);
-    // console.log(survey);
+    // Find the survey by ID
+    const survey = await Survey.findById(surveyId);
+
     if (survey) {
+      // Capture the current survey data for version history
+      const currentData = survey.toObject();
+
+      // Set the updated data from the request body
       survey.surveyId = req.body.surveyId;
+
       survey.block = req.body.block;
       survey.row = req.body.row;
       survey.table = req.body.table;
@@ -384,15 +472,71 @@ surveyRouter.put(
       survey.verifiedBy = req.employee.name;
       survey.verifiededAt = new Date();
 
+      // Handle filling with empty strings if 'H' is not provided
+      if (req.body.table && (!req.body.H || !req.body.H.length)) {
+        const length = req.body.table - 1;
+        survey.H = new Array(length).fill('');
+        survey.ImageH = new Array(length).fill('');
+        survey.htablex = new Array(length).fill('');
+        survey.htabley = new Array(length).fill('');
+      } else {
+        survey.H = req.body.H;
+        survey.ImageH = req.body.ImageH;
+        survey.htablex = req.body.htablex;
+        survey.htabley = req.body.htabley;
+      }
+
+      // Create a new version object
+      const newVersion = {
+        versionNumber: survey.versions.length + 1,
+        editedBy: req.employee.name,
+        editedAt: new Date(),
+        editedData: currentData, // Capture the original data
+      };
+
+      // Push the new version to the survey's version history
+      survey.versions.push(newVersion);
+
+      // Set the submittedBy field to the logged-in user's name
+      survey.submittedBy = req.employee.name;
+      // Set the submittedAt field to the current date and time
+      survey.submittedAt = new Date();
+      // Set other fields as needed...
+
       // Save the updated survey
       const updatedSurvey = await survey.save();
-      // res.status(200).json(UpdatedSurvey);
+
+      // Return the updated survey
       res.status(200).json(updatedSurvey);
     } else {
       res.status(404).send({ message: 'Survey Not Found' });
     }
   })
 );
+
+// ----------get-survey-version-----------------------
+surveyRouter.get('/sitesurveys/version/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Find the survey by ID
+    const survey = await Survey.findById(id);
+
+    if (survey) {
+      // Fetch the survey's versions
+      const versions = survey.versions;
+      res.send({ versions });
+    } else {
+      res.status(404).send({ message: 'Survey not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Failed to fetch survey versions', error });
+  }
+});
+
+// ----------get-survey-version-----------------------
+
+// ----------------------new put------------------------
 
 //verify survey route
 

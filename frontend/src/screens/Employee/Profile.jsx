@@ -234,6 +234,7 @@ const Profile = () => {
               </div>
             </div>
             <hr />
+
             <div className=" p-1 m-1 ">
               <h4>
                 <b>Available Pay-slips</b>
@@ -276,13 +277,6 @@ const Profile = () => {
                   </tbody>
                 </table>
               </div>
-              {/* <ul>
-                {employees.payslips.map((item, index) => (
-                  <li key={index}>
-                    {item.month}: {item.salary}
-                  </li>
-                ))}
-              </ul> */}
             </div>
           </div>
         </>

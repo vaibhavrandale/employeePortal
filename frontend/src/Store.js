@@ -5,9 +5,6 @@ const initialState = {
   userInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null,
-  // SavedData: localStorage.getItem('SavedData')
-  //   ? JSON.parse(localStorage.getItem('SavedData'))
-  //   : {},
 };
 
 function reducer(state, action) {

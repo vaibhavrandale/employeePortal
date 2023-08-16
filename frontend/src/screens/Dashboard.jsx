@@ -6,6 +6,7 @@ import '../App.css';
 import './dashboard.css';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
+import { SlCalender } from 'react-icons/sl';
 
 function Dashboard() {
   const { state } = useContext(Store);
@@ -38,7 +39,7 @@ function Dashboard() {
               >
                 <Link to="employees" className="p-1 text-decoration-none">
                   <img
-                    src="/images/icons/employees_or.png"
+                    src="/images/icons/employee.png"
                     height={50}
                     width={100}
                     alt=""
@@ -154,6 +155,31 @@ function Dashboard() {
               </div>
             </div>
           )}
+
+          {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+            <div className="col">
+              <div className="card border border-0 quicklikCard">
+                <Link to="calendar" className="p-1 text-decoration-none">
+                  <img
+                    src="/images/icons/calendar.png"
+                    height={50}
+                    style={{ objectFit: 'contain', background: '' }}
+                    className="card-img-top quicklikCardImg"
+                    alt="i"
+                  />
+                  <div className="card-body text-center">
+                    <span
+                      className="card-title "
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      Calendar
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
+
           {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">

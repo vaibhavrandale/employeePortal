@@ -59,6 +59,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  overflow-x:auto;
 }
 
 .small-container {

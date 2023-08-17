@@ -133,6 +133,7 @@ const EmployeeDetails = () => {
 
       try {
         const result = await axios.get(`/api/employees/details/${id}`);
+        console.log(result.data.employee);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
         // console.log(result.data.employee.address);
 
@@ -189,17 +190,20 @@ const EmployeeDetails = () => {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      const custommessage = data.message;
       console.log(data);
+
+      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
+      dispatch({
+        type: 'UPDATE_ADDRESS_SUCCESS',
+        payload: data.employee,
+      });
+      setAddress(false);
+      const custommessage = data.message;
 
       toast.success(custommessage, {
         position: 'bottom-right',
       });
-
-      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
-      dispatch({ type: 'UPDATE_ADDRESS_SUCCESS' });
-      setAddress(false);
-      navigate(`/employees`);
+      // navigate(`/employees`);
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',
@@ -227,16 +231,19 @@ const EmployeeDetails = () => {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      const custommessage = data.message;
       console.log(data);
+
+      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
+      dispatch({
+        type: 'UPDATE_IDENTITY_SUCCESS',
+        payload: data.employee,
+      });
+      setIdentity(false);
+      const custommessage = data.message;
 
       toast.success(custommessage, {
         position: 'bottom-right',
       });
-
-      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
-      dispatch({ type: 'UPDATE_IDENTITY_SUCCESS' });
-      setAddress(false);
       navigate(`/employees`);
     } catch (error) {
       toast.error(getError(error), {
@@ -269,16 +276,19 @@ const EmployeeDetails = () => {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      const custommessage = data.message;
       console.log(data);
+
+      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
+      dispatch({
+        type: 'UPDATE_PERSONAL_SUCCESS',
+        payload: data.employee,
+      });
+      setPersonal(false);
+      const custommessage = data.message;
 
       toast.success(custommessage, {
         position: 'bottom-right',
       });
-
-      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
-      dispatch({ type: 'UPDATE_PERSONAL_SUCCESS' });
-      setAddress(false);
       navigate(`/employees`);
     } catch (error) {
       toast.error(getError(error), {

@@ -8,8 +8,10 @@ import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import { Store } from '../../Store';
 import { BsShieldCheck } from 'react-icons/bs';
 import { toast } from 'react-hot-toast';
+// import { toast } from 'react-toastify';
+
 import { getError } from '../../utils';
-// import data from '../Employee/data';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,17 +24,29 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'LEAVE_STATUS_REQUEST':
+      return { ...state, loadingLeaveStatus: true };
+
+    case 'LEAVE_STATUS_SUCCESS':
+      return { ...state, leaves: action.payload, loadingLeaveStatus: false };
+
+    case 'LEAVE_STATUS_FAIL':
+      return { ...state, loadingLeaveStatus: false, error: action.payload };
+
     default:
       return state;
   }
 };
 
 function LeavesHistory() {
-  const [{ loading, error, leaves }, dispatch] = useReducer(reducer, {
-    leaves: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, leaves, loadingLeaveStatus }, dispatch] = useReducer(
+    reducer,
+    {
+      leaves: [],
+      loading: true,
+      error: '',
+    }
+  );
 
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -51,8 +65,17 @@ function LeavesHistory() {
     privilege: 0,
     casual: 0,
   });
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   // const navigate = useNavigate();
+  const saveSettings = async (settings) => {
+    // Simulating a delay for API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Normally, here you would make an API call to save the settings
+    // For the sake of this example, we're assuming it always succeeds
+
+    return 'Success'; // Return a success message or data
+  };
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -136,8 +159,12 @@ function LeavesHistory() {
 
     if (missingFields.length > 0) {
       toast.error(`${missingFields.join(', ')}`);
+
       return;
     }
+    dispatch({
+      type: 'LEAVE_STATUS_REQUEST',
+    });
     try {
       const { data } = await axios.put(
         `api/employees/leaves/${userInfo._id}/${_id}/approve`,
@@ -151,20 +178,27 @@ function LeavesHistory() {
       );
       console.log(data);
       dispatch({
-        type: 'CREATE_SUCCESS',
+        type: 'LEAVE_STATUS_SUCCESS',
+        payload: data.employee.allLeaves,
       });
-      toast.success('Leave Status Updated Successfully', {
-        position: 'bottom-right',
+      // toast.success('Leave Approved Successfully', {
+      //   position: 'bottom-right',
+      // });
+      toast.promise(saveSettings({ action: 'approve', leaveId: _id }), {
+        position: 'top-right',
+        loading: 'Approving leave...',
+        success: <b>Leave Approved Successfully!</b>,
+        error: <b>Could not approved Leave.</b>,
       });
-      navigate('/leaves-history');
-      window.location.reload();
+      // navigate('/leaves-history');
+      // window.location.reload();
       //   siteSurvey.rating = data.rating;
       //   dispatch({ type: 'REFRESH_EMPLOYEE', payload: employees });
     } catch (error) {
       toast.error(getError(error), {
-        position: 'bottom-right',
+        position: 'top-right',
       });
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: 'LEAVE_STATUS_FAIL' });
     }
   };
 
@@ -186,6 +220,9 @@ function LeavesHistory() {
       toast.error(`${missingFields.join(', ')}`);
       return;
     }
+    dispatch({
+      type: 'LEAVE_STATUS_REQUEST',
+    });
     try {
       const { data } = await axios.put(
         `api/employees/leaves/${userInfo._id}/${_id}/reject`,
@@ -199,20 +236,28 @@ function LeavesHistory() {
       );
       console.log(data);
       dispatch({
-        type: 'CREATE_SUCCESS',
+        type: 'LEAVE_STATUS_SUCCESS',
+        payload: data.employee.allLeaves,
       });
-      toast.success('Leave Status Updated Successfully', {
-        position: 'bottom-right',
+      // toast.success('Leave Rejected Successfully', {
+      //   position: 'top-right',
+      // });
+      toast.promise(saveSettings({ action: 'approve', leaveId: _id }), {
+        position: 'top-right',
+        loading: 'Rejecting leave...',
+        success: <b>Leave Rejected Successfully!</b>,
+        error: <b>Could not reject Leave.</b>,
       });
+
       navigate('/leaves-history');
-      window.location.reload();
+      // window.location.reload();
       //   siteSurvey.rating = data.rating;
       //   dispatch({ type: 'REFRESH_EMPLOYEE', payload: employees });
     } catch (error) {
       toast.error(getError(error), {
         position: 'bottom-right',
       });
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: 'LEAVE_STATUS_FAIL' });
     }
   };
 
@@ -280,18 +325,19 @@ function LeavesHistory() {
           <table className="table table-bordered ">
             <thead>
               <tr>
+                <th className="col-md-1 text-center">Sr No </th>
                 <th className="col-md-1 text-center">Applied At </th>
                 <th className="col-md-1 text-center">Type</th>
-                <th className="col-md-2 text-center">From </th>
-                <th className="col-md-2 text-center">To </th>
+                <th className="col-md-1 text-center">From </th>
+                <th className="col-md-1 text-center">To </th>
 
                 <th className="col-md-1 text-center">Status</th>
                 <th className="col-md-1 text-center">Approved At </th>
                 <th className="col-md-1 text-center">Approved By</th>
-                <th className="col-md-3 text-center">Remark</th>
-                <th className="col-md-2 text-center">Remark By</th>
-                <th className="col-md-2 text-center">Approve</th>
-                <th className="col-md-2 text-center">Decline</th>
+                <th className="col-md-1 text-center">Remark</th>
+                <th className="col-md-1 text-center">Remark By</th>
+                <th className="col-md-1 text-center">Approve</th>
+                <th className="col-md-1 text-center">Decline</th>
               </tr>
             </thead>
             <tbody>
@@ -302,9 +348,18 @@ function LeavesHistory() {
                   onMouseEnter={() => handleRowHover(index)}
                   onMouseLeave={() => handleRowHover(null)}
                 >
+                  {/* {(index = index + 1)} */}
+                  <td className="text-center fw-bold">
+                    <Link
+                      className="text-decoration-none"
+                      to={`/edit-leave/${item._id}`}
+                    >
+                      {index + 1}
+                    </Link>
+                  </td>
                   <td className="text-center">
                     {}{' '}
-                    {new Date(item.createdAt).toLocaleDateString('en-US', {
+                    {new Date(item.createdAt).toLocaleDateString('en-GB', {
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric',
@@ -313,7 +368,7 @@ function LeavesHistory() {
                   <td className="text-center fw-bold">{item.type}</td>
                   <td className="text-center">
                     {new Date(item.expectedDateOfLeave).toLocaleDateString(
-                      'en-US',
+                      'en-GB',
                       {
                         day: '2-digit',
                         month: '2-digit',
@@ -324,7 +379,7 @@ function LeavesHistory() {
                   <td className="text-center">
                     {}{' '}
                     {new Date(item.expectedDateOfreturn).toLocaleDateString(
-                      'en-US',
+                      'en-GB',
                       {
                         day: '2-digit',
                         month: '2-digit',
@@ -345,7 +400,7 @@ function LeavesHistory() {
                     {item.approvedAt !== '' ? (
                       <span className="badge p-2 text-bg-light">
                         {}
-                        {new Date(item.createdAt).toLocaleDateString('en-US', {
+                        {new Date(item.createdAt).toLocaleDateString('en-GB', {
                           day: '2-digit',
                           month: '2-digit',
                           year: 'numeric',
@@ -485,10 +540,12 @@ function LeavesHistory() {
                             <div className="popup-buttons">
                               <button
                                 className="popup-button verify"
-                                onClick={() => LeaveApproveHandler(item._id)}
+                                onClick={() =>
+                                  LeaveApproveHandler(approveLeave._id)
+                                }
                               >
                                 Approve
-                                {/* {loadingCreate && <LoadingBox4 />} */}
+                                {loadingLeaveStatus && <LoadingBox4 />}
                               </button>
                               <button
                                 className="popup-button cancel"
@@ -524,14 +581,15 @@ function LeavesHistory() {
                               {declineLeave._id}
                             </span>
                             <br />
-                            <hr /> <span>Reason : {item.reasonInDetail}</span>
+                            <hr />{' '}
+                            <span>Reason : {declineLeave.reasonInDetail}</span>
                             <hr />
                             <div className="d-flex justify-content-evenly">
                               From :{' '}
                               <span className="text-success">
                                 {' '}
                                 {new Date(
-                                  item.expectedDateOfLeave
+                                  declineLeave.expectedDateOfLeave
                                 ).toLocaleDateString('en-US', {
                                   day: 'numeric',
                                   month: 'short',
@@ -541,7 +599,7 @@ function LeavesHistory() {
                               | To :{' '}
                               <span className="text-success">
                                 {new Date(
-                                  item.expectedDateOfreturn
+                                  declineLeave.expectedDateOfreturn
                                 ).toLocaleDateString('en-US', {
                                   day: 'numeric',
                                   month: 'short',
@@ -585,9 +643,11 @@ function LeavesHistory() {
                           <div className="popup-buttons">
                             <button
                               className="popup-button verify"
-                              onClick={() => LeaveDeclineHandler(item._id)}
+                              onClick={() =>
+                                LeaveDeclineHandler(declineLeave._id)
+                              }
                             >
-                              Decline
+                              Decline {loadingLeaveStatus && <LoadingBox4 />}
                               {/* {loadingCreate && <LoadingBox4 />} */}
                             </button>
                             <button

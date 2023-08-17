@@ -35,16 +35,18 @@ import Table from './screens/Table';
 import CreateNewSyrvey from './screens/SiteSurvey/CreateNewSyrvey';
 // import Calendar from './screens/Calendar/Calendar';
 import MyCalendar from './screens/Calendar/MyCalendar';
-
-// import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
-// import AddNewSurvey from './screens/SiteSurvey/AddNewSurvey';
+import EditLeave from './screens/Leaves/EditLeave';
+import LeaveApplication from './screens/Leaves/LeaveApplication';
 
 function App() {
   return (
     <>
       <Router>
         <AppRouter />
-        <Toaster />
+        <Toaster
+          position="top-right"
+          // ... other configurations
+        />
       </Router>
     </>
   );
@@ -153,6 +155,22 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <LeavesHistory />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/edit-leave/:id"
+          element={
+            <ProtectedRoutes>
+              <EditLeave />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/leave-application/:id"
+          element={
+            <ProtectedRoutes>
+              <LeaveApplication />
             </ProtectedRoutes>
           }
         />

@@ -259,8 +259,8 @@ emplyeeRouter.post(
       // Send the email
       transporter.sendMail(
         {
-          from: `TAYPRO INTERNAL PORTAL <${process.env.MAIL_USER}>`,
-          to: `${employee.name} <${employee.email}>`,
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${employee.email}>`,
           subject: 'Reset Password',
           html: `
           <p>Please Click the following link to reset your password:</p>
@@ -371,7 +371,9 @@ emplyeeRouter.put('/address/:id', async (req, res) => {
       // Save the updated employee document
       await employee.save();
 
-    return res.status(201).json({ message: `Address updated successfully.` });
+    return res
+      .status(201)
+      .json({ message: `Address updated successfully.`, employee });
   } catch (error) {
     console.error('Error while updating address:', error);
     return res.status(500).json({ message: 'Internal server error.' });
@@ -461,65 +463,9 @@ emplyeeRouter.put('/identitydetails/:id', async (req, res) => {
 });
 // ----------edit employee identity------------------
 
-// ----------------------------leaveapply-------------------------------
-
-// emplyeeRouter.post(
-//   '/apply-leave/:id',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {
-//     const employeeid = req.params.id;
-//     const employee = await Employee.findById(employeeid);
-
-//     if (employee) {
-//       const leaveType = req.body.type;
-
-//       // Check if the leave type is 'sick', 'privilege', or 'casual'
-//       if (['sick', 'privilege', 'casual'].includes(leaveType)) {
-//         // Check if the employee has enough leave days of the specified type
-//         const leaveCountField = `${leaveType}`;
-//         if (employee[leaveCountField] > 0 && employee.leaves > 0) {
-//           // Update the leave count fields
-//           employee[leaveCountField] -= 1;
-//           employee.leaves -= 1; // Subtract from total leave count
-
-//           // Create the leave application
-//           const allLeaves = {
-//             employee_id: employee.employee_id,
-//             name: employee.name,
-//             type: leaveType,
-//             other: req.body.other,
-//             expectedDateOfLeave: req.body.expectedDateOfLeave,
-//             expectedDateOfreturn: req.body.expectedDateOfreturn,
-//             reasonInDetail: req.body.reasonInDetail,
-//             mobileNo: employee.mobile_no,
-//           };
-
-//           employee.allLeaves.push(allLeaves);
-
-//           // Save the employee's updated leave counts and leave application
-//           const updatedEmployee = await employee.save();
-
-//           res.status(201).send({
-//             message: 'Leave Application submitted',
-//             updatedEmployee, // Return the updated employee document
-//           });
-//         } else {
-//           res.status(400).send({
-//             message: 'Insufficient leave balance or invalid leave type.',
-//           });
-//         }
-//       } else {
-//         // Handle other leave types (if needed)
-//         res.status(400).send({
-//           message: 'Unsupported leave type.',
-//         });
-//       }
-//     } else {
-//       res.status(404).send({ message: 'Employee Not Found' });
-//     }
-//   })
-// );
-
+const logo =
+  'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
+// ------------------apply for leave-------------------------------
 emplyeeRouter.post(
   '/apply-leave/:id',
   isAuth,
@@ -567,12 +513,144 @@ emplyeeRouter.post(
           approvedAt: '',
           remarkBy: '',
         };
-
-        // Add the leave application to the employee's record
-        employee.allLeaves.push(leaveApplication);
-
-        // Save the updated employee document
+        // Create a transporter object using Yandex SMTP
+        const transporter = nodemailer.createTransport({
+          service: 'Yandex', // Use the Yandex service
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
         const updatedEmployee = await employee.save();
+
+        // Fetch the _id of the last added leave application
+        const leaveApplicationId =
+          updatedEmployee.allLeaves[updatedEmployee.allLeaves.length - 1]._id;
+
+        transporter.sendMail(
+          {
+            from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+            to: `<${req.employee.email}>`,
+            subject: `${employee.name} - Leave Request`,
+            html: `
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Email Content</title>
+            <style>
+            body {
+              font-family: Arial, sans-serif;
+              margin: 0;
+              padding: 20px;
+              background-color: #f5f5f5;
+            }
+            .container {
+              background-color: #ffffff;
+              padding-left: 70px;
+              padding-right: 70px;
+              border-radius: 10px;
+              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+              text-align: center;
+            }
+            .image-content {
+              text-align: center;
+            }
+            img {
+              width: 100px;
+              height: 100px;
+              object-fit: contain;
+              display: flex;
+              justify-content: start;
+            }
+            .main-content {
+              margin: 20px 0px;
+            }
+            
+            .main-content a {
+              display: flex;
+              justify-content: center;
+              padding: 10px;
+              text-decoration: none;
+              background: rgb(94, 223, 94);
+              width: 130px;
+              color: #f5f5f5;
+              border-radius: 3px;
+            
+              /* margin: auto; */
+             
+            }
+            
+            .main-content a:hover {
+              background: rgb(76, 214, 71);
+            }
+            .footer {
+              font-size: 12px;
+              text-align: center;
+            }
+            
+            </style>
+        </head>
+        <body>
+        <div class="container">
+        <div class="header">
+          <h2>
+            <img src=${logo} alt="Embedded Image" />
+          </h2>
+        </div>
+        <div class="image-content"></div>
+        <div class="main-content">
+          <p>Dear Sir,</p>
+          <p>
+            This is to inform you that <b>${leaveApplication.name}-[${
+              leaveApplication.employee_id
+            }]</b>,
+            working as <b>${
+              employee.designation
+            }</b>, has requested a leave from
+            <b>
+            ${new Date(leaveApplication.expectedDateOfLeave).toLocaleDateString(
+              'en-GB',
+              {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              }
+            )}
+           </b> to <b>${new Date(
+             leaveApplication.expectedDateOfreturn
+           ).toLocaleDateString('en-GB', {
+             day: '2-digit',
+             month: '2-digit',
+             year: 'numeric',
+           })}</b> .
+          </p>
+          <p>
+            <b>Reason for Leave:</b>
+            <span>${leaveApplication.reasonInDetail}</span>
+          </p>
+          <p>
+            Kindly review the request and take necessary actions. You can contact
+            the employee directly for any clarifications.
+          </p>
+          <a href='${baseUrl()}/leave-application/${leaveApplicationId}' target="blank"> Take Action </a>
+        </div>
+        <div class="footer">
+          <p>This is an auto-generated email. Please do not reply.</p>
+        </div>
+      </div>
+        </body>
+        `,
+          },
+          (error, info) => {
+            if (error) {
+              console.error('Error sending email:', error);
+            } else {
+              console.log('Email sent:', info.response);
+            }
+          }
+        );
 
         res.status(201).send({
           message: 'Leave Application submitted',
@@ -590,6 +668,9 @@ emplyeeRouter.post(
   })
 );
 
+// ------------------apply for leave-------------------------------
+
+// ------------------------------get all leaves of one employee-----------------------
 emplyeeRouter.get('/leaves/:id', async (req, res) => {
   const employeeId = req.params.id;
 
@@ -608,50 +689,88 @@ emplyeeRouter.get('/leaves/:id', async (req, res) => {
     res.status(500).send({ message: 'Internal server error' });
   }
 });
+// ------------------------------get all leaves of one employee-----------------------
 
-// ------------------------------approve leave-----------------------
-// emplyeeRouter.put(
-//   '/leaves/:id',
-//   isAuth,
-//   isAdmin,
-//   isSuperAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const { id } = req.params;
+//--------------------------------get one leave of one emplyee-------------------------
+emplyeeRouter.get('/leave/:employeeid/:id', async (req, res) => {
+  const employeeId = req.params.employeeid;
+  const leaveId = req.params.id;
 
-//     try {
-//       // Find the employee by ID
-//       const employee = await Employee.findById(id);
+  try {
+    // Find the employee by ID and retrieve their leaves
+    const employee = await Employee.findById(employeeId);
+    if (!employee) {
+      return res.status(404).send({ message: 'Employee Not Found' });
+    }
 
-//       if (!employee) {
-//         return res.status(404).json({ message: 'Employee not found.' });
-//       }
+    const leaves = employee.allLeaves; // Retrieve the leaves array from the employee document
 
-//       // Create a new payslip entry
-//       // const leaverApprove = {
-//       (employee.allLeaves.approved = req.body.approved),
-//         (employee.allLeaves.approvedBy = req.employee.name),
-//         (employee.allLeaves.remark = req.body.remark),
-//         (employee.allLeaves.approvedAt = new Date()),
-//         (employee.allLeaves.remarkBy = req.employee.name),
-//         // };
+    // Find the specific leave by its ID
+    const specificLeave = leaves.find(
+      (leave) => leave._id.toString() === leaveId
+    );
 
-//         // Add the payslip entry to the employee's payslips array
-//         // employee.allLeaves.push(leaverApprove);
+    if (!specificLeave) {
+      return res.status(404).send({ message: 'Leave Not Found' });
+    }
 
-//         // Save the updated employee document
-//         await employee.save();
+    res.status(200).send({ message: 'Leave  Found', leave: specificLeave });
+  } catch (error) {
+    console.error('Error while retrieving leaves:', error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+//--------------------------------get one leave of one emplyee-------------------------
 
-//       return res
-//         .status(201)
-//         .json({ message: `Leave Approved successfully.`, employee });
-//     } catch (error) {
-//       console.error('Error while approving leave:', error);
-//       return res.status(500).json({ message: 'Internal server error.' });
-//     }
-//   })
-// );
+//--------------------------------update one leave of one emplyee-------------------------
+emplyeeRouter.put(
+  '/leave/:employeeid/:id',
+  isAuth,
+  isAdmin,
+  isSuperAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const { employeeid, id } = req.params;
 
-// Assuming you have imported the necessary dependencies and middleware (isAuth, isAdmin, isSuperAdmin, expressAsyncHandler)...
+    try {
+      // Find the employee by ID
+      const employee = await Employee.findById(employeeid);
+
+      if (!employee) {
+        return res.status(404).json({ message: 'Employee not found.' });
+      }
+
+      // Find the leave entry within the employee's allLeaves array by leave ID
+      const leaveFound = employee.allLeaves.find(
+        (leave) => leave._id.toString() === id
+      );
+
+      if (!leaveFound) {
+        return res
+          .status(404)
+          .json({ message: 'Leave not found for the employee.' });
+      }
+
+      // Update the leave entry with approval details
+      leaveFound.name = req.body.name;
+      leaveFound.type = req.body.type;
+      leaveFound.expectedDateOfLeave = req.body.expectedDateOfLeave;
+      leaveFound.expectedDateOfreturn = req.body.expectedDateOfreturn;
+      leaveFound.reasonInDetail = req.body.reasonInDetail;
+      leaveFound.mobileNo = req.body.mobileNo;
+
+      // Save the updated employee document
+      await employee.save();
+
+      return res
+        .status(201)
+        .json({ message: 'Leave updated successfully.', leaveFound });
+    } catch (error) {
+      console.error('Error while approving leave:', error);
+      return res.status(500).json({ message: 'Internal server error.' });
+    }
+  })
+);
+//--------------------------------update one leave of one emplyee-------------------------
 
 // Update the route path to include the employee ID and leave ID
 emplyeeRouter.put(
@@ -753,7 +872,5 @@ emplyeeRouter.put(
 );
 
 // ------------------------------reject leave-----------------------
-
-// ----------------------------leaveapply-------------------------------
 
 export default emplyeeRouter;

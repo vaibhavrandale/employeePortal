@@ -8,19 +8,21 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const Signin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const { data } = await axios.post('/api/employees/signin', {
         email,
@@ -48,6 +50,7 @@ const Signin = () => {
         position: 'bottom-right',
       });
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -121,7 +124,7 @@ const Signin = () => {
                 <span className="ms-1 text-light">show</span>{' '}
               </div>
               <button className="signin-button" type="submit">
-                continue
+                {loading ? <LoadingBox4 /> : 'Continue'}
               </button>
               <Link to={`/forget-password`} className="mt-2  forgotLink">
                 Forgot Password?

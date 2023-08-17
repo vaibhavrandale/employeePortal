@@ -8,7 +8,7 @@ import path from 'path';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
 import uploadRouter from './routes/uploadRoute.js';
-import EventRouter from './routes/employeeRoutes.js';
+import EventRouter from './routes/eventRoutes.js';
 
 dotenv.config();
 mongoose

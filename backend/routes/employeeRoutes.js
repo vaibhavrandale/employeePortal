@@ -495,11 +495,13 @@ emplyeeRouter.post(
       // Check if the employee has enough leave days of the specified type
       if (employee[leaveType] >= numberOfDays) {
         // Update the leave count field
-        employee[leaveType] -= numberOfDays;
-        employee.leaves -= numberOfDays;
+        // employee[leaveType] -= numberOfDays;
+        // employee.leaves -= numberOfDays;
         // Create the leave application
+
         const leaveApplication = {
           employee_id: employee.employee_id,
+          email: employee.email,
           name: employee.name,
           type: leaveType,
           other: req.body.other || '',
@@ -521,16 +523,26 @@ emplyeeRouter.post(
             pass: process.env.MAIL_PASS, // Your Yandex email password
           },
         });
+        employee.allLeaves.push(leaveApplication);
         const updatedEmployee = await employee.save();
 
         // Fetch the _id of the last added leave application
-        const leaveApplicationId =
-          updatedEmployee.allLeaves[updatedEmployee.allLeaves.length - 1]._id;
-
+        let leaveApplicationId;
+        if (updatedEmployee.allLeaves && updatedEmployee.allLeaves.length > 0) {
+          leaveApplicationId =
+            updatedEmployee.allLeaves[updatedEmployee.allLeaves.length - 1]._id;
+        } else {
+          return res
+            .status(400)
+            .send({ message: 'No leaves associated with the employee' });
+        }
+        const superAdmins = await Employee.find({ isSuperAdmin: true });
+        const superAdminEmails = superAdmins.map((admin) => admin.email);
         transporter.sendMail(
           {
             from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-            to: `<${req.employee.email}>`,
+            // to: `<${req.employee.email}>`,
+            to: superAdminEmails.join(', '),
             subject: `${employee.name} - Leave Request`,
             html: `
             <head>
@@ -631,10 +643,17 @@ emplyeeRouter.post(
             <span>${leaveApplication.reasonInDetail}</span>
           </p>
           <p>
+            <b>Employee Contact Details :</b> <br/>
+            <span>Email  :  ${leaveApplication.email}</span> <br/>
+            <span>Mobile :  ${leaveApplication.mobileNo}</span>
+          </p>
+          <p>
             Kindly review the request and take necessary actions. You can contact
             the employee directly for any clarifications.
           </p>
-          <a href='${baseUrl()}/leave-application/${leaveApplicationId}' target="blank"> Take Action </a>
+          <a href='${baseUrl()}/leave-application/${
+              employee._id
+            }' target="blank"> Take Action </a>
         </div>
         <div class="footer">
           <p>This is an auto-generated email. Please do not reply.</p>
@@ -799,7 +818,16 @@ emplyeeRouter.put(
           .status(404)
           .json({ message: 'Leave not found for the employee.' });
       }
+      const numberOfDays =
+        Math.floor(
+          (new Date(leaveEntry.expectedDateOfreturn) -
+            new Date(leaveEntry.expectedDateOfLeave)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
 
+      // Return the deducted leaves to the employee
+      employee[leaveEntry.type] -= numberOfDays; // Return leaves of the specific type
+      employee.leaves -= numberOfDays;
       // Update the leave entry with approval details
       leaveEntry.approved = req.body.approved;
       leaveEntry.approvedBy = req.employee.name;
@@ -809,7 +837,131 @@ emplyeeRouter.put(
 
       // Save the updated employee document
       await employee.save();
-
+      const transporter = nodemailer.createTransport({
+        service: 'Yandex', // Use the Yandex service
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${leaveEntry.email}>`,
+          subject: `${employee.name} - Leave Request`,
+          html: `
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Email Content</title>
+          <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+          }
+          .container {
+            background-color: #ffffff;
+            padding-left: 70px;
+            padding-right: 70px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            text-align: center;
+          }
+          .image-content {
+            text-align: center;
+          }
+          img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            display: flex;
+            justify-content: start;
+          }
+          .main-content {
+            margin: 20px 0px;
+          }
+          
+          .main-content a {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            text-decoration: none;
+            background: rgb(94, 223, 94);
+            width: 130px;
+            color: #f5f5f5;
+            border-radius: 3px;
+          
+            /* margin: auto; */
+           
+          }
+          
+          .main-content a:hover {
+            background: rgb(76, 214, 71);
+          }
+          .footer {
+            font-size: 12px;
+            text-align: center;
+          }
+          
+          </style>
+      </head>
+      <body>
+      <div class="container">
+      <div class="header">
+        <h2>
+          <img src=${logo} alt="Embedded Image" />
+        </h2>
+      </div>
+      <div class="image-content"></div>
+      <div class="main-content">
+      <p>Dear ${employee.name},</p>
+      <p>
+        We are pleased to inform you that your leave request has been <b>approved</b>.
+      </p>
+      <p>
+        <b>Leave Details:</b>
+        <ul>
+          <li><b>Start Date:</b> ${new Date(
+            leaveEntry.expectedDateOfLeave
+          ).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })}</li>
+          <li><b>End Date:</b> ${new Date(
+            leaveEntry.expectedDateOfreturn
+          ).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })}</li>
+          <li><b>Reason:</b> ${leaveEntry.reasonInDetail}</li>
+          <li><b>Approved By:</b> ${leaveEntry.approvedBy}</li>
+          <li><b>Remark:</b> ${leaveEntry.remark}</li>
+        </ul>
+      </p>
+      <p>
+        Please ensure to handover your responsibilities to a colleague or make arrangements during your absence.
+      </p>
+      <div class="footer">
+        <p>This is an auto-generated email. Please do not reply.</p>
+      </div>
+    </div>
+      </body>
+      `,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+          } else {
+            console.log('Email sent:', leaveEntry.email, info.response);
+          }
+        }
+      );
       return res
         .status(201)
         .json({ message: 'Leave Approved successfully.', employee });
@@ -850,6 +1002,16 @@ emplyeeRouter.put(
           .status(404)
           .json({ message: 'Leave not found for the employee.' });
       }
+      const numberOfDays =
+        Math.floor(
+          (new Date(leaveEntry.expectedDateOfreturn) -
+            new Date(leaveEntry.expectedDateOfLeave)) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+
+      // Return the deducted leaves to the employee
+      employee[leaveEntry.type] += numberOfDays; // Return leaves of the specific type
+      employee.leaves += numberOfDays;
 
       // Update the leave entry with rejection details
       leaveEntry.approved = false;
@@ -860,7 +1022,129 @@ emplyeeRouter.put(
 
       // Save the updated employee document
       await employee.save();
-
+      const transporter = nodemailer.createTransport({
+        service: 'Yandex', // Use the Yandex service
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${leaveEntry.email}>`,
+          subject: `${employee.name} - Leave Request`,
+          html: `
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Email Content</title>
+          <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+          }
+          .container {
+            background-color: #ffffff;
+            padding-left: 70px;
+            padding-right: 70px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            text-align: center;
+          }
+          .image-content {
+            text-align: center;
+          }
+          img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            display: flex;
+            justify-content: start;
+          }
+          .main-content {
+            margin: 20px 0px;
+          }
+          
+          .main-content a {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            text-decoration: none;
+            background: rgb(94, 223, 94);
+            width: 130px;
+            color: #f5f5f5;
+            border-radius: 3px;
+          
+            /* margin: auto; */
+           
+          }
+          
+          .main-content a:hover {
+            background: rgb(76, 214, 71);
+          }
+          .footer {
+            font-size: 12px;
+            text-align: center;
+          }
+          
+          </style>
+      </head>
+      <body>
+      <div class="container">
+      <div class="header">
+        <h2>
+          <img src=${logo} alt="Embedded Image" />
+        </h2>
+      </div>
+      <div class="image-content"></div>
+      <div class="main-content">
+      <p>Dear ${employee.name},</p>
+      <p>
+        We are pleased to inform you that your leave request has been <b>Rejected</b>.
+      </p>
+      <p>
+        <b>Leave Details:</b>
+        <ul>
+          <li><b>Start Date:</b> ${new Date(
+            leaveEntry.expectedDateOfLeave
+          ).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })}</li>
+          <li><b>End Date:</b> ${new Date(
+            leaveEntry.expectedDateOfreturn
+          ).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })}</li>
+          <li><b>Reason:</b> ${leaveEntry.reasonInDetail}</li>
+          <li><b>Remark By:</b> ${leaveEntry.remarkBy}</li>
+          <li><b>Remark:</b> ${leaveEntry.remark}</li>
+        </ul>
+      </p>
+    
+      <div class="footer">
+        <p>This is an auto-generated email. Please do not reply.</p>
+      </div>
+    </div>
+      </body>
+      `,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+          } else {
+            console.log('Email sent:', employee.name, info.response);
+          }
+        }
+      );
       return res
         .status(201)
         .json({ message: 'Leave Rejected successfully.', employee });

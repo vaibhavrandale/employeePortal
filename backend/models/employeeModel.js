@@ -18,6 +18,7 @@ const payslipSchema = new mongoose.Schema(
 const LeaveSchema = new mongoose.Schema(
   {
     employee_id: { type: String },
+    email: { type: String },
     name: { type: String },
     type: { type: String },
     other: { type: String },

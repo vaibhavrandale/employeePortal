@@ -289,7 +289,7 @@ const EmployeeDetails = () => {
       toast.success(custommessage, {
         position: 'bottom-right',
       });
-      navigate(`/employees`);
+      // navigate(`/employees`);
     } catch (error) {
       toast.error(getError(error), {
         position: 'bottom-right',
@@ -462,6 +462,12 @@ const EmployeeDetails = () => {
                 height={200}
                 width={200}
               />
+              <Link
+                to={`/leave-application/${employees._id}`}
+                className=" btn btn-sm btn-primary"
+              >
+                Leaves
+              </Link>
             </div>
 
             <div className="d-flex justify-content-center flex-wrap">

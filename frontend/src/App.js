@@ -37,6 +37,7 @@ import CreateNewSyrvey from './screens/SiteSurvey/CreateNewSyrvey';
 import MyCalendar from './screens/Calendar/MyCalendar';
 import EditLeave from './screens/Leaves/EditLeave';
 import LeaveApplication from './screens/Leaves/LeaveApplication';
+import SuperAdminRoutes from './components/SuperAdminRoutes';
 
 function App() {
   return (
@@ -169,9 +170,9 @@ function AppRouter() {
         <Route
           path="/leave-application/:id"
           element={
-            <ProtectedRoutes>
+            <SuperAdminRoutes>
               <LeaveApplication />
-            </ProtectedRoutes>
+            </SuperAdminRoutes>
           }
         />
         <Route

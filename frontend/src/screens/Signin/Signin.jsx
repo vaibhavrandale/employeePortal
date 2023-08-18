@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from './Taypro.png';
 import './Signin.css';
 import '../../App.css';
@@ -19,7 +19,9 @@ const Signin = () => {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-
+  const { search } = useLocation();
+  const redirectInUrl = new URLSearchParams(search).get('redirect');
+  const redirect = redirectInUrl ? redirectInUrl : '/';
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -37,6 +39,7 @@ const Signin = () => {
           position: 'top-right',
         });
         console.log(data);
+        navigate(redirect || '/');
       } else {
         toast.error(
           'Your account has been blocked or is not yet activated. Please contact the admin.',
@@ -55,14 +58,9 @@ const Signin = () => {
 
   useEffect(() => {
     if (userInfo) {
-      if (userInfo.isVisitor) {
-        navigate('/sitelist');
-      } else {
-        navigate('/', { replace: true }); // Use "replace: true" to avoid adding a new entry to the history
-      }
+      navigate(redirect);
     }
-  }, [navigate, userInfo]);
-
+  }, [navigate, redirect, userInfo]);
   const ShowPasswordHanfler = async (e) => {
     setShowPassword(e.target.checked);
   };

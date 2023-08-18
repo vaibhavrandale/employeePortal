@@ -233,8 +233,7 @@ function Leaves() {
                 type="submit"
                 style={{ marginRight: '50px' }}
               >
-                Apply
-                {loadingCreate && <LoadingBox4 />}
+                {loadingCreate ? <LoadingBox4 /> : 'Apply'}
               </button>
             </div>
           </div>

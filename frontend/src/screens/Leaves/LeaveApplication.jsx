@@ -1402,9 +1402,22 @@ function LeaveApplication() {
               Home
             </Link>{' '}
           </li>
+          <li className="breadcrumb-item">
+            <Link to={`/employees`} className="text-decoration-none">
+              Employees{' '}
+            </Link>{' '}
+          </li>
+          <li className="breadcrumb-item">
+            <Link
+              to={`/employeedetails/${id}`}
+              className="text-decoration-none"
+            >
+              Employee Details
+            </Link>{' '}
+          </li>
 
           <li className="breadcrumb-item active" aria-current="page">
-            <b>{name}</b> Leaves-history
+            Leaves-history
           </li>
         </ol>
       </nav>{' '}
@@ -1418,9 +1431,9 @@ function LeaveApplication() {
             <b>{name}</b>- Leave History
           </h2>
           <div className="d-flex">
-            <Link className="submitBtn2    " to={'/leave'}>
+            {/* <Link className="submitBtn2    " to={'/leave'}>
               Apply{' '}
-            </Link>
+            </Link> */}
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-danger mx-1 pt-2 pb-2">
                 Total Leaves : {remainingLeaves.totalleaves}

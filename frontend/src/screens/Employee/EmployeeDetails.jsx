@@ -289,7 +289,7 @@ const EmployeeDetails = () => {
       toast.success(custommessage, {
         position: 'bottom-right',
       });
-      // navigate(`/employees`);
+      navigate(`/employees`);
     } catch (error) {
       toast.error(getError(error), {
         position: 'bottom-right',
@@ -463,7 +463,10 @@ const EmployeeDetails = () => {
                 width={200}
               />
               <Link
-                to={`/leave-application/${employees._id}`}
+                // to={`/leave-application/${employees._id}`}
+                // navigate('/signin?redirect=/shipping');
+
+                to={`/signin?redirect=/leave-application/${employees._id}`}
                 className=" btn btn-sm btn-primary"
               >
                 Leaves
@@ -475,7 +478,7 @@ const EmployeeDetails = () => {
 
               <div
                 className="card m-1 p-1"
-                style={{ width: '350px', minHeight: '450px' }}
+                style={{ minWidth: '320px', minHeight: '450px' }}
               >
                 <div className="d-flex justify-content-center">
                   <h4 className="mt-2">

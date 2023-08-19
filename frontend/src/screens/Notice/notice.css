@@ -1,0 +1,67 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated {
+  animation: fadeIn 0.5s forwards;
+}
+.notice-container {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid rgb(201, 201, 201);
+  min-height: 50vh;
+}
+.notice-header {
+  text-align: center;
+}
+.notice-subject {
+  text-align: right;
+  font-weight: bold;
+}
+.highlight-points li {
+  list-style-type: square;
+}
+.notice-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+.company-seal {
+  width: 100px;
+  height: 130px;
+}
+
+.marquee-container {
+  overflow: hidden; /* This will hide any overflowing content */
+  width: 100%; /* Ensure it spans the full width */
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+  }
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+  /* padding-left: 100%; */
+  /*Starttheanimationoutsideofthecontainer*/
+  animation: marquee 15s linear infinite;
+  -webkit-animation: marquee 15s linear infinite;
+  color: rgb(255, 0, 0);
+}

@@ -38,6 +38,8 @@ import MyCalendar from './screens/Calendar/MyCalendar';
 import EditLeave from './screens/Leaves/EditLeave';
 import LeaveApplication from './screens/Leaves/LeaveApplication';
 import SuperAdminRoutes from './components/SuperAdminRoutes';
+import NoticeHome from './screens/Notice/NoticeHome';
+import ViewNotice from './screens/Notice/ViewNotice';
 
 function App() {
   return (
@@ -175,6 +177,26 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
+
+        {/* -----------------------Notice----------------------------- */}
+        <Route
+          path="/notice-home-page"
+          element={
+            <ProtectedRoutes>
+              <NoticeHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/notice/:id"
+          element={
+            <ProtectedRoutes>
+              <ViewNotice />
+            </ProtectedRoutes>
+          }
+        />
+        {/* -----------------------Notice----------------------------- */}
+
         <Route
           path="/sitelist"
           element={

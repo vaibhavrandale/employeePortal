@@ -180,6 +180,33 @@ function Dashboard() {
             </div>
           )}
 
+          {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+            <div className="col">
+              <div className="card border border-0 quicklikCard">
+                <Link
+                  to="notice-home-page"
+                  className="p-1 text-decoration-none"
+                >
+                  <img
+                    src="/images/icons/notice.png"
+                    height={50}
+                    style={{ objectFit: 'contain', background: '' }}
+                    className="card-img-top quicklikCardImg"
+                    alt="i"
+                  />
+                  <div className="card-body text-center">
+                    <span
+                      className="card-title "
+                      style={{ color: '#2749f5', fontWeight: '500' }}
+                    >
+                      Notice's
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
+
           {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
             <div className="col">
               <div className="card border border-0 quicklikCard">
@@ -203,6 +230,11 @@ function Dashboard() {
               </div>
             </div>
           )}
+        </div>
+        <div className="marquee-container">
+          <div className="marquee-content">
+            New notice from Yogesh Kudale regarding holiday on 15th August
+          </div>
         </div>
       </div>
 

@@ -1,27 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import './notice.css';
 import { Link } from 'react-router-dom';
-import notice from './notice';
+// import notice from './notice';
 import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
 import { Element, scroller } from 'react-scroll'; // Import Element
+import axios from 'axios';
+import MsgBox from '../../components/MessageBox/MsgBox';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, notices: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 function NoticeHome() {
+  const [{ loading, error, notices }, dispatch] = useReducer(reducer, {
+    notices: [],
+    loading: true,
+    error: '',
+  });
+
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/notice`);
+        console.log(result);
+
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: result.data.notices,
+        });
+
+        // Calculate remaining leaves based on fetched leave counts
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
+      setTimeout(() => {
+        // setEmployees(result.data);
+        // setLoading(false);
+      }, 2000); // Simulating a 2-second delay
+    };
+
+    fetchData();
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState(''); // Add state for searchTerm
 
   // Filter notices based on the searchTerm
-  const filteredNotices = notice.filter((item) =>
+  const filteredNotices = notices.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const [loading, setIsLoading] = useState(true); // Add loading state
+  // const [loading, setIsLoading] = useState(true); // Add loading state
 
-  useEffect(() => {
-    // Simulating a data fetch with a timeout
-    setTimeout(() => {
-      setIsLoading(false); // Set loading to false after data is fetched
-    }, 1000); // For example, after 1 second
-  }, []);
+  // useEffect(() => {
+  //   // Simulating a data fetch with a timeout
+  //   setTimeout(() => {
+  //    // Set loading to false after data is fetched
+  //   }, 1000); // For example, after 1 second
+  // }, []);
 
+  function noNotice() {
+    if (notices.length === 0) {
+      <div className="alert alert-danger">No Notices Found</div>;
+    }
+  }
   return (
     <div className="container">
       <div className="mb-3 d-flex justify-content-end "></div>
@@ -37,9 +94,11 @@ function NoticeHome() {
           onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
         />
       </div>
-      <div className="d-flex justify-content-center  flex-wrap">
+      <div className="d-flex justify-content-center align-items-start flex-wrap">
         {loading ? (
           <LoadingBox2 />
+        ) : filteredNotices.length === 0 ? (
+          <MsgBox className="alert alert-danger">No Notice Found</MsgBox>
         ) : (
           filteredNotices
             .slice(0)
@@ -77,7 +136,7 @@ function NoticeHome() {
                     <p className="card-text">{item.date}</p>
                     <p className="card-text">{item.description}</p>
                     <Link
-                      to={`/notice/${item.id}`}
+                      to={`/notice/${item._id}`}
                       className="btn btn-sm btn-primary text-decoration-none"
                     >
                       View

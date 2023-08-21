@@ -1,14 +1,60 @@
-import React from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import notice from './notice';
+// import notice from './notice';
+import axios from 'axios';
+import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, notice: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 function ViewNotice() {
   const { id } = useParams();
-  const matchingNotice = notice.find((item) => item.id === parseInt(id));
+  const [{ loading, error, notice }, dispatch] = useReducer(reducer, {
+    notice: {},
+    loading: true,
+    error: '',
+  });
 
-  // If there's no matching notice, return early
-  if (!matchingNotice)
-    return <div className="container">Notice not found!</div>;
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/notice/${id}`);
+        console.log(result);
+
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: result.data.notice,
+        });
+
+        // Calculate remaining leaves based on fetched leave counts
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+
+      setTimeout(() => {
+        // setEmployees(result.data);
+        // setLoading(false);
+      }, 2000); // Simulating a 2-second delay
+    };
+
+    fetchData();
+  }, [id]);
 
   return (
     <div className="container">
@@ -30,44 +76,49 @@ function ViewNotice() {
             </Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            Notice Details -<span className='text-danger'>{matchingNotice.title}</span>
+            Notice Details -<span className="text-danger">{notice.title}</span>
           </li>
         </ol>
       </nav>{' '}
-      <div className="notice-container">
-        <div className="notice-header">
-          <h2 className="text-uppercase fw-bold text-primary">
-            {matchingNotice.title}
-          </h2>
-          <div className="notice-subject">
-            <strong>Date:</strong>{' '}
-            <span className="text-success">{matchingNotice.date}</span>
+      {loading ? (
+        <LoadingBox2 />
+      ) : (
+        <div className="notice-container">
+          <div className="notice-header">
+            <h2 className="text-uppercase fw-bold text-primary">
+              {notice.title}
+            </h2>
+            <div className="notice-subject">
+              <strong>Date:</strong>{' '}
+              <span className="text-success">{notice.date}</span>
+            </div>
+            <hr />
           </div>
-          <hr />
-        </div>
-        <div className="notice-body">
-          <p>{matchingNotice.briefNotice}</p>
-          <h4>Key Points:</h4>
-          <ul className="highlight-points">
-            {matchingNotice.highlightPoints.map((point, index) => (
-              <li key={index}>{point}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="notice-footer">
-          <div className="footer-content">
-            <p>
-              <strong>Notice by:</strong> {matchingNotice.noticeBy}
-            </p>
-            <img
-              src={matchingNotice.seal}
-              style={{ objectFit: 'contain', width: '100px', height: '50px' }} // Adjust size as required
-              alt="Company Seal"
-              className="company-seal"
-            />
+          <div className="notice-body">
+            <p>{notice.briefNotice}</p>
+            <h4>Key Points:</h4>
+            <ul className="highlight-points">
+              {notice &&
+                notice.highlightPoints.map((point, index) => (
+                  <li key={index}>{point}</li>
+                ))}
+            </ul>
+          </div>
+          <div className="notice-footer">
+            <div className="footer-content">
+              <p>
+                <strong>Notice by:</strong> {notice.noticeBy}
+              </p>
+              <img
+                src={notice.seal}
+                style={{ objectFit: 'contain', width: '100px', height: '50px' }} // Adjust size as required
+                alt="Company Seal"
+                className="company-seal"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

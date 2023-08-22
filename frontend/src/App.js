@@ -41,6 +41,7 @@ import SuperAdminRoutes from './components/SuperAdminRoutes';
 import NoticeHome from './screens/Notice/NoticeHome';
 import ViewNotice from './screens/Notice/ViewNotice';
 import NewNotice from './screens/Notice/NewNotice';
+import ProgressBar from './ProgressBar';
 
 function App() {
   return (
@@ -71,7 +72,7 @@ function AppRouter() {
 
       {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />}
       {showSidebar && <Sidebar />}
-
+      <ProgressBar />
       <Routes>
         <Route path="/forget-password" element={<ForgetPasswordScreen />} />
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './notice.css';
 import { Link } from 'react-router-dom';
 // import notice from './notice';
@@ -7,6 +7,7 @@ import { Element, scroller } from 'react-scroll'; // Import Element
 import axios from 'axios';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import logo from '../Signin/Taypro.png';
+import { Store } from '../../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,8 @@ function NoticeHome() {
     error: '',
   });
 
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
@@ -94,13 +97,15 @@ function NoticeHome() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
         />
-        <Link
-          className="btn btn-sm btn-warning mt-2"
-          to="/new-notice"
-          style={{ width: '250px' }}
-        >
-          Post Notice
-        </Link>
+        {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+          <Link
+            className="btn btn-sm btn-warning mt-2"
+            to="/new-notice"
+            style={{ width: '250px' }}
+          >
+            Post Notice
+          </Link>
+        )}
       </div>
       <div className="d-flex justify-content-center align-items-start flex-wrap">
         {loading ? (

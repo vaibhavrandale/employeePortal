@@ -7,9 +7,10 @@ import nodemailer from 'nodemailer';
 import Employee from '../models/employeeModel.js';
 
 const NoticeRouter = express.Router();
+dotenv.config();
 const logo =
   'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
-dotenv.config();
+
 NoticeRouter.post(
   '/',
   isAuth,
@@ -27,7 +28,7 @@ NoticeRouter.post(
       seal,
     } = req.body;
     const notice = new Notice({
-      img,
+      img: logo,
       title,
       date,
       subject,
@@ -35,7 +36,7 @@ NoticeRouter.post(
       briefNotice,
       highlightPoints,
       noticeBy,
-      seal,
+      seal: logo,
     });
     await notice.save();
     // Create a transporter object using Yandex SMTP

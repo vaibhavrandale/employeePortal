@@ -6,6 +6,7 @@ import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
 import { Element, scroller } from 'react-scroll'; // Import Element
 import axios from 'axios';
 import MsgBox from '../../components/MessageBox/MsgBox';
+import logo from '../Signin/Taypro.png';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -93,6 +94,13 @@ function NoticeHome() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
         />
+        <Link
+          className="btn btn-sm btn-warning mt-2"
+          to="/new-notice"
+          style={{ width: '250px' }}
+        >
+          Post Notice
+        </Link>
       </div>
       <div className="d-flex justify-content-center align-items-start flex-wrap">
         {loading ? (
@@ -118,7 +126,7 @@ function NoticeHome() {
                   }}
                 >
                   <img
-                    src={item.img}
+                    src={logo}
                     className="card-img-top"
                     alt="..."
                     style={{

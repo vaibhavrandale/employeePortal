@@ -40,6 +40,7 @@ import LeaveApplication from './screens/Leaves/LeaveApplication';
 import SuperAdminRoutes from './components/SuperAdminRoutes';
 import NoticeHome from './screens/Notice/NoticeHome';
 import ViewNotice from './screens/Notice/ViewNotice';
+import NewNotice from './screens/Notice/NewNotice';
 
 function App() {
   return (
@@ -192,6 +193,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <ViewNotice />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/new-notice"
+          element={
+            <ProtectedRoutes>
+              <NewNotice />
             </ProtectedRoutes>
           }
         />

@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 // import notice from './notice';
 import axios from 'axios';
 import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
+import logo from '../Signin/Taypro.png';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -110,7 +111,7 @@ function ViewNotice() {
                 <strong>Notice by:</strong> {notice.noticeBy}
               </p>
               <img
-                src={notice.seal}
+                src={logo}
                 style={{ objectFit: 'contain', width: '100px', height: '50px' }} // Adjust size as required
                 alt="Company Seal"
                 className="company-seal"

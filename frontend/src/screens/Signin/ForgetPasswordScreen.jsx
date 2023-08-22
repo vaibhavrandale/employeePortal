@@ -12,12 +12,14 @@ import { getError } from '../../utils';
 const ForgetPasswordScreen = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false); // 1. Add a Loading State
 
   const { state } = useContext(Store);
   const { userInfo } = state;
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true before sending the email
 
     try {
       const { data } = await axios.post('/api/employees/forget-password', {
@@ -32,6 +34,8 @@ const ForgetPasswordScreen = () => {
       toast.error(getError(err), {
         position: 'bottom-right',
       });
+    } finally {
+      setLoading(false); // Set loading to false once the email is sent
     }
   };
 
@@ -76,7 +80,7 @@ const ForgetPasswordScreen = () => {
               <br />
 
               <button className="signin-button" type="submit">
-                Continue
+                {loading ? 'Sending...' : 'Continue'}
               </button>
               <Link to={`/signin`} className="mt-2  forgotLink">
                 continue signin?

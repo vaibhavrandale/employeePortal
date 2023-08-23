@@ -8,6 +8,13 @@ import axios from 'axios';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import logo from '../Signin/Taypro.png';
 import { Store } from '../../Store';
+import { toast } from 'react-hot-toast';
+import { getError } from '../../utils';
+import { FiEdit } from 'react-icons/fi';
+import { MdDeleteOutline } from 'react-icons/md';
+import { AiOutlineEye } from 'react-icons/ai';
+import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -19,6 +26,14 @@ const reducer = (state, action) => {
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+    case 'DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true };
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false, successDelete: false };
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
 
     default:
       return state;
@@ -26,11 +41,14 @@ const reducer = (state, action) => {
 };
 
 function NoticeHome() {
-  const [{ loading, error, notices }, dispatch] = useReducer(reducer, {
-    notices: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, notices, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      notices: [],
+      loading: true,
+      error: '',
+    });
+  // const [isPopupOpen, setPopupOpen] = useState(false);
+  const [popupNoticeId, setPopupNoticeId] = useState(null);
 
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -59,8 +77,12 @@ function NoticeHome() {
       }, 2000); // Simulating a 2-second delay
     };
 
-    fetchData();
-  }, []);
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [successDelete]);
 
   const [searchTerm, setSearchTerm] = useState(''); // Add state for searchTerm
 
@@ -69,20 +91,34 @@ function NoticeHome() {
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // const [loading, setIsLoading] = useState(true); // Add loading state
-
-  // useEffect(() => {
-  //   // Simulating a data fetch with a timeout
-  //   setTimeout(() => {
-  //    // Set loading to false after data is fetched
-  //   }, 1000); // For example, after 1 second
-  // }, []);
-
-  function noNotice() {
-    if (notices.length === 0) {
-      <div className="alert alert-danger">No Notices Found</div>;
+  const popupHandle = (id) => {
+    if (popupNoticeId === id) {
+      setPopupNoticeId(null);
+    } else {
+      setPopupNoticeId(id);
     }
-  }
+  };
+
+  const deleteHandler = async (_id) => {
+    setPopupNoticeId(null);
+    // if (window.confirm('Are you sure to delete?')) {
+    try {
+      await axios.delete(`/api/notice/${_id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      toast.success('notice deleted successfully');
+      dispatch({
+        type: 'DELETE_SUCCESS',
+      });
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'DELETE_FAIL',
+      });
+    }
+    // }
+  };
+
   return (
     <div className="container">
       <div className="mb-3 d-flex justify-content-end "></div>
@@ -109,7 +145,7 @@ function NoticeHome() {
       </div>
       <div className="d-flex justify-content-center align-items-start flex-wrap">
         {loading ? (
-          <LoadingBox2 />
+          <LoadingBox5 />
         ) : filteredNotices.length === 0 ? (
           <MsgBox className="alert alert-danger">No Notice Found</MsgBox>
         ) : (
@@ -119,6 +155,7 @@ function NoticeHome() {
             .map((item, index) => (
               <Element
                 name={`card-${index}`}
+                key={index}
                 onEnter={() =>
                   scroller.scrollTo(`card-${index}`, { duration: 0 })
                 }
@@ -127,6 +164,7 @@ function NoticeHome() {
                   className="card mx-2 my-2 animated" // Add 'animated' class
                   style={{
                     width: '18rem',
+                    minHeight: '285px',
                     animationDelay: `${index * 0.1}s`, // Delay animation for each card
                   }}
                 >
@@ -141,21 +179,57 @@ function NoticeHome() {
                       alignItems: 'start',
                       objectFit: 'contain',
                     }}
-                  />
+                  />{' '}
+                  <hr />
                   <div className="card-body">
                     <h5 className="card-title text-primary fw-bold">
                       {item.title}
                     </h5>
                     <p className="card-text">{item.date}</p>
-                    <p className="card-text">{item.description}</p>
+                    <p className="card-text">{item.subject}</p>
+                    <hr />
                     <Link
                       to={`/notice/${item._id}`}
-                      className="btn btn-sm btn-primary text-decoration-none"
+                      className="viewBtn text-decoration-none"
                     >
-                      View
+                      <AiOutlineEye />
+                    </Link>
+                    <Link
+                      to={`/edit-notice/${item._id}`}
+                      className="editBtn text-decoration-none"
+                    >
+                      <FiEdit />
+                    </Link>
+                    <Link
+                      onClick={() => popupHandle(item._id)}
+                      // to={`/notice/${item._id}`}
+                      className="deleteBtn   text-danger text-decoration-none"
+                    >
+                      <MdDeleteOutline />
                     </Link>
                   </div>
                 </div>{' '}
+                {popupNoticeId === item._id && (
+                  <div className="popup-container">
+                    <div className="popup">
+                      <p>Are you sure you want delete?</p>
+                      <div className="popup-buttons">
+                        <button
+                          className="popup-button verify"
+                          onClick={() => deleteHandler(item._id)}
+                        >
+                          {loadingDelete ? <LoadingBox3 /> : 'Delete'}
+                        </button>
+                        <button
+                          className="popup-button cancel"
+                          onClick={popupHandle}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </Element>
             ))
         )}

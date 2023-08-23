@@ -1,18 +1,6 @@
-// import React from 'react'
-
-// function NewNotice() {
-//   return (
-//     <div>
-
-//     </div>
-//   )
-// }
-
-// export default NewNotice
-
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import '../../App.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { toast } from 'react-hot-toast';
@@ -28,20 +16,26 @@ const reducer = (state, action) => {
 
     case 'CREATE_FAIL':
       return { ...state, error: action.payload, loadingCreate: false };
-
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return { ...state, loading: false };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
 };
 
-function NewNotice() {
-  const [{ loadingCreate }, dispatch] = useReducer(reducer, {
-    loadingCreate: false,
+function EditNotice() {
+  const [{ loadingCreate, loading }, dispatch] = useReducer(reducer, {
+    loading: true,
     error: '',
   });
 
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const { id } = useParams();
   const navigate = useNavigate();
   const [highlightPoints, setHighlightPoints] = useState(['']);
   const [title, setTitle] = useState('');
@@ -54,6 +48,29 @@ function NewNotice() {
     e.preventDefault();
     setHighlightPoints([...highlightPoints, '']);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/notice/${id}`);
+        console.log(data.notice);
+        setTitle(data.notice.title);
+        setHighlightPoints(data.notice.highlightPoints);
+        setDate(data.notice.date);
+        setSubject(data.notice.subject);
+        setDescription(data.notice.description);
+
+        dispatch({ type: 'FETCH_SUCCESS' });
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(err),
+        });
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
@@ -72,8 +89,8 @@ function NewNotice() {
     }
 
     try {
-      const { data } = await axios.post(
-        `/api/notice`,
+      const { data } = await axios.put(
+        `/api/notice/${id}`,
         {
           title,
           date,
@@ -90,7 +107,7 @@ function NewNotice() {
       dispatch({
         type: 'CREATE_SUCCESS',
       });
-      toast.success('Notice Created successfully', {
+      toast.success('Notice Updated successfully', {
         position: 'bottom-right',
       });
       navigate('/notice-home-page');
@@ -100,6 +117,13 @@ function NewNotice() {
       });
       dispatch({ type: 'CREATE_FAIL' });
     }
+  };
+
+  const handleDeleteHighlightPoint = (indexToDelete, e) => {
+    e.preventDefault();
+    setHighlightPoints((prevHighlightPoints) =>
+      prevHighlightPoints.filter((_, index) => index !== indexToDelete)
+    );
   };
 
   return (
@@ -129,21 +153,12 @@ function NewNotice() {
               </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Create New Notice
+              Update Notice
             </li>
           </ol>
         </nav>{' '}
-        <h2 className="text-center text-dark fw-bolder">New notice</h2>
+        <h2 className="text-center text-dark fw-bolder">Update notice</h2>
         <span className="underline"></span>
-        {/* <div className="col-md-12 d-flex justify-content-end mt-3 me-5">
-          <Link
-            className="historyBtn  bg-warning"
-            to={'/leaves-history'}
-            // onClick={historyHandler}
-          >
-            History <FaHistory />{' '}
-          </Link>
-        </div> */}
         <form onSubmit={SubmitHandler}>
           <div className="form-group mt-4">
             <div className="row d-flex flex-column justify-content-center align-items-center">
@@ -166,7 +181,6 @@ function NewNotice() {
                   className="form-control"
                   id="leaveDate"
                   value={date}
-                  required
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
@@ -179,7 +193,6 @@ function NewNotice() {
                   id="mobileNo"
                   placeholder="Enter subject"
                   value={subject}
-                  required
                   onChange={(e) => setSubject(e.target.value)}
                 />
               </div>
@@ -201,18 +214,26 @@ function NewNotice() {
                     <label htmlFor={`briefNotice-${index}`}>
                       {index + 1}) Highlight Points:
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`briefNotice-${index}`}
-                      placeholder="Enter brief Notice"
-                      value={briefNotice}
-                      onChange={(e) => {
-                        const newHighlightPoints = [...highlightPoints];
-                        newHighlightPoints[index] = e.target.value;
-                        setHighlightPoints(newHighlightPoints);
-                      }}
-                    />
+                    <div className="d-flex">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id={`briefNotice-${index}`}
+                        placeholder="Enter brief Notice"
+                        value={briefNotice}
+                        onChange={(e) => {
+                          const newHighlightPoints = [...highlightPoints];
+                          newHighlightPoints[index] = e.target.value;
+                          setHighlightPoints(newHighlightPoints);
+                        }}
+                      />{' '}
+                      <button
+                        className="btn deleteBtn fs-6"
+                        onClick={(e) => handleDeleteHighlightPoint(index, e)}
+                      >
+                        X
+                      </button>
+                    </div>
                   </div>
                 ))}
                 <button
@@ -229,7 +250,7 @@ function NewNotice() {
                 type="submit"
                 style={{ marginRight: '50px' }}
               >
-                {loadingCreate ? 'Creating..' : 'Create'}
+                {loadingCreate ? <LoadingBox4 /> : 'Update'}
               </button>
             </div>
           </div>
@@ -240,4 +261,4 @@ function NewNotice() {
   );
 }
 
-export default NewNotice;
+export default EditNotice;

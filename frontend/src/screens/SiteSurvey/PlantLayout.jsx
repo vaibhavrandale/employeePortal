@@ -9,6 +9,7 @@ import LoadingBox1 from '../../components/LoadingBox1';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import LoadingBox from '../../components/LoadingBox';
 import MsgBox from '../../components/MessageBox/MsgBox';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -72,7 +73,7 @@ function PlantLayout() {
         Plant Layout of {site.customerName}
       </h3>
       {loading ? (
-        <LoadingBox />
+        <LoadingBox5 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (

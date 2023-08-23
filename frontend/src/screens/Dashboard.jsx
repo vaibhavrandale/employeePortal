@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import '../App.css';
-// import Banner from '../components/Banner/Banner';
-// import VideoSection from '../components/Videosection/VideoSection';
-// import logo from './salarySleep/Taypro.png';
 import './dashboard.css';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
-import { SlCalender } from 'react-icons/sl';
 import axios from 'axios';
-import LoadingBox2 from '../components/LoadingBox/LoadingBox2';
+import LoadingBox5 from '../components/LoadingBox/LoadingBox5';
+import LoadingBox5White from '../components/LoadingBox/LoadingBox5White';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -54,11 +52,6 @@ function Dashboard() {
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
-
-      setTimeout(() => {
-        // setEmployees(result.data);
-        // setLoading(false);
-      }, 2000); // Simulating a 2-second delay
     };
 
     fetchData();
@@ -75,8 +68,11 @@ function Dashboard() {
         alignItems: 'center',
       }}
     >
+      <Helmet>
+        <title>Dashboard</title>
+      </Helmet>
       {loading ? (
-        <LoadingBox2 />
+        <LoadingBox5 />
       ) : (
         <div
           className=" row  col-6 m-1 pb-3 border  "
@@ -266,7 +262,7 @@ function Dashboard() {
             {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
               <div className="col">
                 <div className="card border border-0 quicklikCard">
-                  <Link to="" className="p-1 text-decoration-none">
+                  <Link to="/upcoming" className="p-1 text-decoration-none">
                     <img
                       src="/images/icons/soon_watch.png"
                       height={50}
@@ -279,7 +275,7 @@ function Dashboard() {
                         className="card-title"
                         style={{ color: '#2749f5', fontWeight: '500' }}
                       >
-                        comming..
+                        coming..
                       </span>
                     </div>
                   </Link>
@@ -297,9 +293,6 @@ function Dashboard() {
           </div>
         </div>
       )}
-
-      {/* 2nd row--------------------------- */}
-      {/* <LoadingBox4 /> */}
     </div>
   );
 }

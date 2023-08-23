@@ -7,7 +7,6 @@ const noticeSchema = new mongoose.Schema(
     date: { type: String },
     subject: { type: String },
     description: { type: String },
-    briefNotice: { type: String },
     highlightPoints: [],
     noticeBy: { type: String },
     seal: { type: String },

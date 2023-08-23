@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 export default function SurveyVersions({
   id,
-  onSelectVersion,
   selectedVersion,
+  setSelectedVersion,
 }) {
   const [versions, setVersions] = useState([]);
 
@@ -23,16 +23,19 @@ export default function SurveyVersions({
     fetchVersions();
   }, [id]);
 
-  const handleSelectChange = (event) => {
-    const selectedVersionId = event.target.value;
-    // Call the onSelectVersion function with the selected version id
-    onSelectVersion(selectedVersionId);
-  };
+  // const handleSelectChange = (event) => {
+  //   const selectedVersionId = event.target.value;
+  //   // Call the onSelectVersion function with the selected version id
+  //   onSelectVersion(selectedVersionId);
+  // };
 
   return (
     <div>
       <h3>Survey Versions</h3>
-      <select value={selectedVersion} onChange={handleSelectChange}>
+      <select
+        value={selectedVersion}
+        onChange={(e) => setSelectedVersion(e.target.value)}
+      >
         <option value="">Select a version</option>
         {versions.map((version) => (
           <option key={version._id} value={version._id}>

@@ -35,7 +35,7 @@ const Signin = () => {
         ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
         localStorage.setItem('userInfo', JSON.stringify(data));
         // navigate('/');
-        toast.success('Sign in Successfully', {
+        toast.success('Login Successfully', {
           position: 'top-right',
         });
         console.log(data);
@@ -61,9 +61,6 @@ const Signin = () => {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  const ShowPasswordHanfler = async (e) => {
-    setShowPassword(e.target.checked);
-  };
 
   return (
     <>
@@ -71,78 +68,84 @@ const Signin = () => {
         <title>LogIn </title>
 
         <div className="taypro-card ">
-          <div className="taypro-logo">
-            {
-              <img
-                src={logo}
-                alt=""
-                height={85}
-                width={200}
-                style={{ objectFit: 'contain' }}
-                // className="border rounded"
-              />
-            }
-          </div>
+          {' '}
+          <form action="" class="form_main" onSubmit={submitHandler}>
+            <div className="taypro-logo">
+              {
+                <img
+                  src={logo}
+                  alt=""
+                  height={85}
+                  width={150}
+                  style={{ objectFit: 'contain' }}
+                  // className="border rounded"
+                />
+              }
+            </div>
+            <p class="heading">Login</p>
+            <div class="inputContainer">
+              <svg
+                class="inputIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#2e2e2e"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2 2.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11zm.5-.5A1.5 1.5 0 0 0 1 3.5v9A1.5 1.5 0 0 0 2.5 14h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 13.5 2h-11z" />
+                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2z" />
+              </svg>
 
-          <form onSubmit={submitHandler}>
-            {' '}
-            <h5 className="text-center fw-bolder tayproHeading">
-              Welcome back, <br />
-              Please Login to continue
-            </h5>
-            <div className="taypro-from">
-              <label>Email </label>
-              <br />
               <input
-                onChange={(e) => setEmail(e.target.value)}
                 required
                 type="email"
-                className="input"
+                class="inputField"
+                id="username"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <br />
-              <label>Password</label>
-              <br />
-              <input
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                // type="password"
-                type={showPassword ? 'text' : 'password'}
-                className="input"
-              />
-              <br />
-              <div
-                className="d-flex justify-content-end align-items-center"
-                style={{ width: '270px' }}
+            </div>
+            <div class="inputContainer">
+              <svg
+                class="inputIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#2e2e2e"
+                viewBox="0 0 16 16"
               >
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+              </svg>
+              <div className="password-wrapper">
                 <input
-                  type="checkbox"
-                  className="input3"
-                  onChange={ShowPasswordHanfler}
+                  className="inputField"
+                  id="password"
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  type={showPassword ? 'text' : 'password'}
                 />
-                <span className="ms-1 text-light">show</span>{' '}
-              </div>
-              <button className="signin-button" type="submit">
-                {loading ? <LoadingBox4 /> : 'Continue'}
-              </button>
-              <Link to={`/forget-password`} className="mt-2  forgotLink">
-                Forgot Password?
-              </Link>
-            </div>
-          </form>
+                <span
+                  className="eye-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <i className="fas fa-eye"></i>
+                  ) : (
+                    <i className="fas fa-eye-slash"></i>
+                  )}
 
-          {/* <div className="break"></div>
-          <Link to={`/signin`}>
-            {' '}
-            <div>
-              <button
-                type="button"
-                className="mt-2 newacc btn btn-sm btn-light"
-              >
-                {' '}
-                create new account
-              </button>
-            </div>
-          </Link> */}
+                  {/* You can replace these emojis with your preferred icons */}
+                </span>
+              </div>
+            </div>{' '}
+            <button id="button" type="submit">
+              {loading ? <LoadingBox4 /> : 'Login'}
+            </button>
+            <Link to={`/forget-password`} class="forgotLink">
+              Forgot your password?
+            </Link>
+          </form>
         </div>
       </section>
     </>

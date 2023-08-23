@@ -4,9 +4,8 @@ import '../../App.css';
 import { Link, useParams } from 'react-router-dom';
 import SiteTable from './SitTable';
 import axios from 'axios';
-// import LoadingBox from '../../components/LoadingBox';
-// import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -58,8 +57,11 @@ function SiteDetails() {
   return (
     <div className="container1">
       {/* {projectCode} */}
+      <Helmet>
+        <title>{`Project Code : ${projectCode}`}</title>
+      </Helmet>
       {loading ? (
-        <LoadingBox3 />
+        <LoadingBox5 />
       ) : (
         <>
           <nav

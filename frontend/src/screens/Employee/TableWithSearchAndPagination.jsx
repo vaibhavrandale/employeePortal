@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -129,115 +130,117 @@ const TableWithSearchAndPagination = () => {
       )}
 
       <h2 className="text-center">Employees Details</h2>
-      <div className="form-group   mb-2 search-input">
-        {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
-          <Link
-            id="AddBtn"
-            className="bg-dark text-white"
-            onClick={popupHandle}
-          >
-            ADD
-          </Link>
-        )}
-        <input
-          type="text"
-          className="form-control search"
-          placeholder="Search Employee.."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
       {loading ? (
         // <LoadingBox />
 
-        <LoadingBox3 />
+        <LoadingBox5 />
       ) : error ? (
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
-        <div className="">
-          <table
-            className="table table-bordered table-responsive"
-            style={{ minWidth: '1100px' }}
-          >
-            <thead>
-              <tr>
-                <th className="col-md-2 text-center">Image</th>
-                <th className="col-md-4 text-center">Name</th>
-                <th className="col-md-2 text-center">Employee ID</th>
-                <th className="col-md-2 text-center">Designation</th>
-                <th className="col-md-5 text-center">Email</th>
-                <th className="col-md-4 text-center">Joining Date</th>
-                <th className="col-md-1 text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((item, index) => (
-                <tr
-                  key={index}
-                  className={index === hoveredRow ? 'hovered-row' : ''}
-                  onMouseEnter={() => handleRowHover(index)}
-                  onMouseLeave={() => handleRowHover(null)}
-                >
-                  <td className="text-center">
-                    <div className="table-image-container">
-                      <Link to={`/employeedetails/${item._id}`}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="table-image"
-                          // style={{ backgroundColor: 'transparent' }}
-                          onLoad={() => handleImageLoad(index)}
-                        />
-                      </Link>
-                    </div>
-                  </td>
-                  <td className="text-center">{item.name}</td>
-                  <td className="text-center">{item.employee_id}</td>
-                  <td className="text-center">{item.designation}</td>
-                  <td className="text-center">{item.email}</td>
-                  <td className="text-center">{item.joiningDate}</td>
-                  <td className="text-center">
-                    <button className="edit-button">
-                      <Link
-                        className="link"
-                        to={`/employeedetails/${item._id}`}
-                      >
-                        {' '}
-                        <BiEdit />
-                      </Link>
-                    </button>
-                  </td>
+        <>
+          <div className="form-group   mb-2 search-input">
+            {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
+              <Link
+                id="AddBtn"
+                className="bg-dark text-white"
+                onClick={popupHandle}
+              >
+                ADD
+              </Link>
+            )}
+            <input
+              type="text"
+              className="form-control search"
+              placeholder="Search Employee.."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          <div className="">
+            <table
+              className="table table-bordered table-responsive"
+              style={{ minWidth: '1100px' }}
+            >
+              <thead>
+                <tr>
+                  <th className="col-md-2 text-center">Image</th>
+                  <th className="col-md-4 text-center">Name</th>
+                  <th className="col-md-2 text-center">Employee ID</th>
+                  <th className="col-md-2 text-center">Designation</th>
+                  <th className="col-md-5 text-center">Email</th>
+                  <th className="col-md-4 text-center">Joining Date</th>
+                  <th className="col-md-1 text-center">Action</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {currentItems.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={index === hoveredRow ? 'hovered-row' : ''}
+                    onMouseEnter={() => handleRowHover(index)}
+                    onMouseLeave={() => handleRowHover(null)}
+                  >
+                    <td className="text-center">
+                      <div className="table-image-container">
+                        <Link to={`/employeedetails/${item._id}`}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="table-image"
+                            // style={{ backgroundColor: 'transparent' }}
+                            onLoad={() => handleImageLoad(index)}
+                          />
+                        </Link>
+                      </div>
+                    </td>
+                    <td className="text-center">{item.name}</td>
+                    <td className="text-center">{item.employee_id}</td>
+                    <td className="text-center">{item.designation}</td>
+                    <td className="text-center">{item.email}</td>
+                    <td className="text-center">{item.joiningDate}</td>
+                    <td className="text-center">
+                      <button className="edit-button">
+                        <Link
+                          className="link"
+                          to={`/employeedetails/${item._id}`}
+                        >
+                          {' '}
+                          <BiEdit />
+                        </Link>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
 
-      {/* {<LoadingBox /> && ( */}
-      <nav className="pagination-container">
-        <ul className="pagination">
-          {Array(Math.ceil(filteredData.length / itemsPerPage))
-            .fill()
-            .map((_, index) => (
-              <li
-                key={index}
-                className={`page-item  ${
-                  currentPage === index + 1 ? 'active ' : ''
-                }`}
-              >
-                <button
-                  className="page-link bg-dark border border-white"
-                  onClick={() => handlePageChange(index + 1)}
+      {<LoadingBox5 /> && (
+        <nav className="pagination-container">
+          <ul className="pagination">
+            {Array(Math.ceil(filteredData.length / itemsPerPage))
+              .fill()
+              .map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item  ${
+                    currentPage === index + 1 ? 'active ' : ''
+                  }`}
                 >
-                  {index + 1}
-                </button>
-              </li>
-            ))}
-        </ul>
-      </nav>
-      {/* )} */}
+                  <button
+                    className="page-link bg-dark border border-white"
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </nav>
+      )}
     </div>
   );
 };

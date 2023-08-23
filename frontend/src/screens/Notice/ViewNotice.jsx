@@ -96,7 +96,7 @@ function ViewNotice() {
             <hr />
           </div>
           <div className="notice-body">
-            <p>{notice.briefNotice}</p>
+            <p>{notice.description}</p>
             <h4>Key Points:</h4>
             <ul className="highlight-points">
               {notice &&

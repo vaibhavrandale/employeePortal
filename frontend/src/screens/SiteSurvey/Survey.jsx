@@ -14,8 +14,16 @@ import { toast } from 'react-hot-toast';
 import { Store } from '../../Store';
 import '../../App.css';
 import { TbExternalLink } from 'react-icons/tb';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
-import SurveyVersions from './SurveyVersions';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
+import ONEP from './surveyimg/1P.png';
+import TWOL from './surveyimg/2L.png';
+import TWOP from './surveyimg/2P.png';
+import THREEL from './surveyimg/3L.png';
+import THREEP from './surveyimg/3P.png';
+import FOURL from './surveyimg/4L.png';
+import FOURP from './surveyimg/4P.png';
+import SIXL from './surveyimg/6L.png';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -42,7 +50,7 @@ const reducer = (state, action) => {
   }
 };
 
-function Survey({ selectedVersion }) {
+function Survey() {
   const [{ loading, error, siteSurvey, loadingCreateReview }, dispatch] =
     useReducer(reducer, {
       siteSurvey: {},
@@ -56,7 +64,7 @@ function Survey({ selectedVersion }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const navigate = useNavigate();
-  const [selectedTable, setSelectedTable] = useState(0); // Defaults to the first table
+  const [selectedTable, setSelectedTable] = useState(0);
 
   const handleSelectVersion = (version) => {
     // Handle the version selection
@@ -125,6 +133,10 @@ function Survey({ selectedVersion }) {
 
   return (
     <div className="container1">
+      <Helmet>
+        <title>{`${siteSurvey.projectCode}-${siteSurvey._id}`}</title>
+      </Helmet>
+
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
@@ -149,18 +161,19 @@ function Survey({ selectedVersion }) {
       {loading ? (
         <div className="container1">
           {' '}
-          <LoadingBox3 />
+          <LoadingBox5 />
         </div>
       ) : error ? (
         <MsgBox className="alert alert-danger text-center">{error}</MsgBox>
       ) : (
         <>
           <h2 className="text-center">Survey Details</h2>
-          <SurveyVersions
+          {/* <SurveyVersions
+          
             id={id}
             onSelectVersion={handleSelectVersion} // Pass the function here
             selectedVersion={selectedVersion}
-          />
+          /> */}
 
           <div className="d-flex flex-wrap">
             <div className="fw-bolder ms-3 d-flex align-items-end">
@@ -258,11 +271,84 @@ function Survey({ selectedVersion }) {
 
           <div className="d-flex flex-wrap">
             <div className="d-flex border m-1" style={{ maxWidth: '51%' }}>
-              <img
+              {/* <img
                 src="/images/twopannel.png"
                 alt=""
                 style={{ maxWidth: '100%', height: 'auto' }}
-              />
+              /> */}
+
+              {siteSurvey.structure === '1P' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={ONEP} className="structureImg " alt=" 1P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '2L' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={TWOL} className="structureImg " alt=" 2P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '2P' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={TWOP} className="structureImg " alt=" 3P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '3L' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={THREEL} className="structureImg " alt=" 4L image" />
+                </div>
+              )}
+              {siteSurvey.structure === '3P' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={THREEP} className="structureImg " alt=" 1P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '4L' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={FOURL} className="structureImg " alt=" 2P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '4P' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={FOURP} className="structureImg " alt=" 3P image" />
+                </div>
+              )}
+              {siteSurvey.structure === '6L' && (
+                <div className="small-image-container">
+                  <span className="badge bg-success m-2">
+                    {' '}
+                    {siteSurvey.structure}
+                  </span>
+                  <img src={SIXL} className="structureImg " alt=" 4L image" />
+                </div>
+              )}
             </div>
             <div className="d-flex flex-column justify-content-start align-items-start p-1">
               <table className="table table-bordered">
@@ -386,26 +472,6 @@ function Survey({ selectedVersion }) {
                     <td className="text-center">{siteSurvey.G}</td>
                   </tr>
 
-                  {/* <tr>
-                    <td>
-                      INTER TABLE GAP DIMENSION - H{' '}
-                      <span>
-                        {siteSurvey.ImageH && (
-                          <Link
-                            className="ms-1 text-decoration-none fs-5"
-                            to={`/surveyImages/${id}`}
-                          >
-                            <TbExternalLink />
-                          </Link>
-                        )}
-                      </span>
-                      <span className="text-dark fw-bolder">
-                        ({siteSurvey.htablex} &amp; {siteSurvey.htabley})
-                      </span>
-                    </td>
-                    <td className="text-center">{siteSurvey.H}</td>
-                  </tr> */}
-
                   {siteSurvey.table >= 1 &&
                     siteSurvey.H &&
                     siteSurvey.H[selectedTable] && (
@@ -413,14 +479,16 @@ function Survey({ selectedVersion }) {
                         <td>
                           INTER TABLE GAP DIMENSION - H{selectedTable + 1}{' '}
                           <span>
-                            {siteSurvey.ImageH && (
-                              <Link
-                                className="ms-1 text-decoration-none fs-5"
-                                to={`/surveyImages/${id}`}
-                              >
-                                <TbExternalLink />
-                              </Link>
-                            )}
+                            {siteSurvey.ImageH &&
+                              siteSurvey.ImageH[selectedTable] && (
+                                <Link
+                                  className="ms-1 text-decoration-none fs-5"
+                                  target="_blank" // Corrected from target="blank" to target="_blank"
+                                  to={siteSurvey.ImageH[selectedTable]}
+                                >
+                                  <TbExternalLink />
+                                </Link>
+                              )}
                           </span>
                           <span className="text-dark fw-bolder">
                             ({siteSurvey.htablex[selectedTable]} &amp;{' '}

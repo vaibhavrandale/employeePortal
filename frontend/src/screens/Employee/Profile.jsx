@@ -1,15 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
-// import data from './data';
 import './Employee.css';
 import { Link, useParams } from 'react-router-dom';
-// import LoadingBox from '../../components/LoadingBox';
-// import AlertBox from '../../components/MessageBox/AlertBox';
 import axios from 'axios';
-// import { LuEdit } from 'react-icons/lu';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
-// import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 import { MdVerified } from 'react-icons/md';
+import { Helmet } from 'react-helmet';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -28,7 +24,7 @@ const reducer = (state, action) => {
 const Profile = () => {
   const { id } = useParams();
   const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employee: {},
+    employees: {},
     loading: true,
     error: '',
   });
@@ -58,6 +54,9 @@ const Profile = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>{`${employees.name} - ${employees.employee_id}`}</title>
+      </Helmet>
       {/* {id} */}
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">

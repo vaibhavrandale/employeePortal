@@ -9,6 +9,14 @@ import '../../App.css';
 import { FiExternalLink } from 'react-icons/fi';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import ONEP from './surveyimg/1P.png';
+import TWOL from './surveyimg/2L.png';
+import TWOP from './surveyimg/2P.png';
+import THREEL from './surveyimg/3L.png';
+import THREEP from './surveyimg/3P.png';
+import FOURL from './surveyimg/4L.png';
+import FOURP from './surveyimg/4P.png';
+import SIXL from './surveyimg/6L.png';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -74,7 +82,7 @@ function CreateNewSyrvey({ projectCode }) {
   const [G, setG] = useState('');
   const [ImageG, setImageG] = useState('');
   // const [H, setH] = useState('');
-  const [ImageH, setImageH] = useState('');
+  const [ImageH, setImageH] = useState([]);
   const [I, setI] = useState('');
   const [ImageI, setImageI] = useState('');
   const [J, setJ] = useState('');
@@ -227,6 +235,73 @@ function CreateNewSyrvey({ projectCode }) {
     }
   };
 
+  // const uploadFileHandler = async (e, forImages, fieldName) => {
+  //   const file = e.target.files[0];
+  //   const bodyFormData = new FormData();
+  //   bodyFormData.append('file', file);
+  //   try {
+  //     dispatch({ type: 'UPLOAD_REQUEST' });
+  //     const { data } = await axios.post('/api/upload', bodyFormData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         Authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //     });
+  //     dispatch({ type: 'UPLOAD_SUCCESS' });
+
+  //     // Update the corresponding state variable based on the field name
+  //     if (forImages) {
+  //       // Additional images
+  //       setImages([...images, data.secure_url]);
+  //     } else {
+  //       // A to J images
+  //       switch (fieldName) {
+  //         case 'A':
+  //           setImageA(data.secure_url);
+  //           break;
+  //         case 'B':
+  //           setImageB(data.secure_url);
+  //           break;
+  //         case 'C':
+  //           setImageC(data.secure_url);
+  //           break;
+  //         case 'D':
+  //           setImageD(data.secure_url);
+  //           break;
+  //         case 'E':
+  //           setImageE(data.secure_url);
+  //           break;
+  //         case 'F':
+  //           setImageF(data.secure_url);
+  //           break;
+  //         case 'G':
+  //           setImageG(data.secure_url);
+  //           break;
+  //         case 'H':
+  //           setImageH(data.secure_url);
+  //           break;
+  //         case 'I':
+  //           setImageI(data.secure_url);
+  //           break;
+  //         case 'J':
+  //           setImageJ(data.secure_url);
+  //           break;
+  //         // ... Add similar cases for images C to J
+  //         default:
+  //           break;
+  //       }
+
+  //     }
+
+  //     toast.success('Image uploaded successfully. ');
+  //   } catch (err) {
+  //     toast.success(getError(err), {
+  //       position: 'bottom-left',
+  //     });
+  //     dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+  //   }
+  // };
+
   const uploadFileHandler = async (e, forImages, fieldName) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -246,41 +321,45 @@ function CreateNewSyrvey({ projectCode }) {
         // Additional images
         setImages([...images, data.secure_url]);
       } else {
-        // A to J images
-        switch (fieldName) {
-          case 'A':
-            setImageA(data.secure_url);
-            break;
-          case 'B':
-            setImageB(data.secure_url);
-            break;
-          case 'C':
-            setImageC(data.secure_url);
-            break;
-          case 'D':
-            setImageD(data.secure_url);
-            break;
-          case 'E':
-            setImageE(data.secure_url);
-            break;
-          case 'F':
-            setImageF(data.secure_url);
-            break;
-          case 'G':
-            setImageG(data.secure_url);
-            break;
-          case 'H':
-            setImageH(data.secure_url);
-            break;
-          case 'I':
-            setImageI(data.secure_url);
-            break;
-          case 'J':
-            setImageJ(data.secure_url);
-            break;
-          // ... Add similar cases for images C to J
-          default:
-            break;
+        // Check if the fieldName is of the form H_0, H_1, etc.
+        if (fieldName.startsWith('H_')) {
+          let index = parseInt(fieldName.split('_')[1]);
+          let newImageHArray = [...ImageH];
+          newImageHArray[index] = data.secure_url;
+          setImageH(newImageHArray);
+        } else {
+          // A to J images (excluding H)
+          switch (fieldName) {
+            case 'A':
+              setImageA(data.secure_url);
+              break;
+            case 'B':
+              setImageB(data.secure_url);
+              break;
+            case 'C':
+              setImageC(data.secure_url);
+              break;
+            case 'D':
+              setImageD(data.secure_url);
+              break;
+            case 'E':
+              setImageE(data.secure_url);
+              break;
+            case 'F':
+              setImageF(data.secure_url);
+              break;
+            case 'G':
+              setImageG(data.secure_url);
+              break;
+            case 'I':
+              setImageI(data.secure_url);
+              break;
+            case 'J':
+              setImageJ(data.secure_url);
+              break;
+            default:
+              break;
+          }
         }
       }
 
@@ -430,6 +509,73 @@ function CreateNewSyrvey({ projectCode }) {
 
           {progress === 1 && (
             <div className="m-2  p-1 pb-2">
+              <div className="image-container">
+                {structure === '1P' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img src={ONEP} className="structureImg " alt=" 1P image" />
+                  </div>
+                )}
+                {structure === '2L' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img src={TWOL} className="structureImg " alt=" 2P image" />
+                  </div>
+                )}
+                {structure === '2P' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img src={TWOP} className="structureImg " alt=" 3P image" />
+                  </div>
+                )}
+                {structure === '3L' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img
+                      src={THREEL}
+                      className="structureImg "
+                      alt=" 4L image"
+                    />
+                  </div>
+                )}
+                {structure === '3P' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img
+                      src={THREEP}
+                      className="structureImg "
+                      alt=" 1P image"
+                    />
+                  </div>
+                )}
+                {structure === '4L' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img
+                      src={FOURL}
+                      className="structureImg "
+                      alt=" 2P image"
+                    />
+                  </div>
+                )}
+                {structure === '4P' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img
+                      src={FOURP}
+                      className="structureImg "
+                      alt=" 3P image"
+                    />
+                  </div>
+                )}
+                {structure === '6L' && (
+                  <div className="small-image-container">
+                    <span className="badge bg-success m-2"> {structure}</span>
+                    <img src={SIXL} className="structureImg " alt=" 4L image" />
+                  </div>
+                )}
+                {/* Add similar conditions for other options */}
+              </div>
               <div className="form-group mt-4">
                 <div className="row d-flex flex-column justify-content-center align-items-center">
                   <div className="col-md-12 row d-flex justify-content-center align-items-center">
@@ -1029,11 +1175,11 @@ function CreateNewSyrvey({ projectCode }) {
                           <div className="form-group col-md-2 mx-1">
                             <label htmlFor={`H_${index}`}>
                               H (for Table {index + 1}):
-                              {ImageH && (
+                              {ImageH[index] && (
                                 <Link
                                   className="text-decoration-none"
-                                  target="blank"
-                                  to={ImageH}
+                                  target="_blank" // Corrected from target="blank" to target="_blank"
+                                  to={ImageH[index]}
                                 >
                                   H{' '}
                                   <span>

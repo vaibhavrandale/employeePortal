@@ -1,25 +1,20 @@
 import React, { useEffect, useState, useReducer, useContext } from 'react';
 import '../../App.css';
 import { Link, useNavigate } from 'react-router-dom';
-// import { BiEdit } from 'react-icons/bi';
-// import data from '../Employee/data'; // Assuming data.js is in the same directory
 import { BiEdit } from 'react-icons/bi';
 import { AiOutlineEye } from 'react-icons/ai';
 import { HiShieldCheck } from 'react-icons/hi';
 import * as XLSX from 'xlsx';
 import './Sitetable.css';
 import { toast } from 'react-hot-toast';
-// import LoadingBox from '../../components/LoadingBox';
-// import logger from 'use-reducer-logger';
 import axios from 'axios';
-// import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
-// import LoadingBox1 from '../../components/LoadingBox1';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
-// import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -113,81 +108,6 @@ function SiteTable({ projectCode }) {
   const handleRowHover = (index) => {
     setHoveredRow(index);
   };
-
-  // const downloadDataAsExcel = (siteSurveys) => {
-  //   const selectedColumns = [
-  //     // 'surveyId',
-  //     'projectCode',
-  //     'block',
-  //     'row',
-  //     'table',
-  //     'A',
-  //     'B',
-  //     'C',
-  //     'D',
-  //     'E',
-  //     'F',
-  //     'G',
-  //     'H',
-  //     'I',
-  //     'J',
-  //     'htablex',
-  //     'htabley',
-  //     'submittedBy',
-  //     'submittedAt',
-  //     'verifiedBy',
-  //     'verifiededAt',
-  //     'remark',
-  //     'remarkBy',
-  //     'status',
-  //   ];
-
-  //   // Extract only the selected columns from each site survey
-  //   const filteredData = siteSurveys.map((survey) =>
-  //     selectedColumns.reduce((obj, key) => {
-  //       if (key in survey) {
-  //         obj[key] = survey[key];
-  //       }
-  //       return obj;
-  //     }, {})
-  //   );
-
-  //   const worksheet = XLSX.utils.json_to_sheet(filteredData);
-
-  //   const workbook = XLSX.utils.book_new();
-  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-
-  //   const excelFile = XLSX.write(workbook, {
-  //     bookType: 'xlsx',
-  //     type: 'binary',
-  //   });
-
-  //   const buffer = new ArrayBuffer(excelFile.length);
-  //   const view = new Uint8Array(buffer);
-  //   for (let i = 0; i < excelFile.length; i++) {
-  //     view[i] = excelFile.charCodeAt(i) & 0xff;
-  //   }
-
-  //   const blob = new Blob([buffer], { type: 'application/octet-stream' });
-
-  //   const downloadLink = document.createElement('a');
-  //   downloadLink.href = URL.createObjectURL(blob);
-  //   downloadLink.download = `${projectCode}.xlsx`;
-  //   downloadLink.click();
-  // };
-
-  // const handleDownloadButtonClick = () => {
-  //   const specificData = siteSurveys.filter(
-  //     (item) => item.projectCode === projectCode
-  //   );
-  //   if (specificData.length > 0) {
-  //     downloadDataAsExcel(specificData);
-  //   } else {
-  //     toast.error('No site surveys found for export.', {
-  //       position: 'bottom-right',
-  //     });
-  //   }
-  // };
 
   const downloadDataAsExcel = (siteSurveys, selectedColumns) => {
     // Extract only the selected columns from each site survey
@@ -348,7 +268,7 @@ function SiteTable({ projectCode }) {
       )}
       <div className="container mx-3">
         {loading ? (
-          <LoadingBox3 />
+          <LoadingBox5 />
         ) : error ? (
           <MsgBox className="alert alert-danger">{error}</MsgBox>
         ) : (
@@ -477,6 +397,7 @@ function SiteTable({ projectCode }) {
                         </button>
                       )}
                     </td>
+
                     {userInfo.isAdmin && userInfo.isSuperAdmin ? (
                       <td className="text-center">
                         {item.status === false ? (

@@ -2,7 +2,11 @@
 @import 'nprogress/nprogress.css';
 #nprogress .bar {
   height: 2px !important;
-  border-top: 4px solid #858fbb !important;
+  border-top: 4px solid rgb(238, 9, 147) !important;
+  z-index: 3100; /* Higher than the navbar */
+  position: fixed; /* Ensure it's positioned */
+  top: 0;
+  /* other styles... */
 }
 
 #nprogress .bar .peg {
@@ -130,6 +134,41 @@ input:focus {
   text-decoration: none;
 
   color: #ffffff;
+}
+
+.editBtn {
+  background: transparent;
+  border: none;
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 3px 5px 3px 5px;
+  margin: 5px;
+  text-decoration: none;
+  font-size: 19px;
+  color: #1934df;
+}
+.viewBtn {
+  background: transparent;
+  border: none;
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 3px 5px 3px 5px;
+  margin: 5px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #0be219;
+}
+
+.deleteBtn {
+  background: transparent;
+  border: none;
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 3px 5px 3px 5px;
+  margin: 5px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #f30909;
 }
 .submitBtn:hover {
   background: rgb(41, 40, 40);
@@ -307,4 +346,18 @@ input {
   border: 1px solid #a6a6a6;
 
   outline: none;
+}
+
+.small-image-container {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.structureImg {
+  width: 600px;
+  height: 400px;
+  object-fit: contain;
 }

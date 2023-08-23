@@ -2,6 +2,7 @@ import React from 'react';
 import './Employee.css';
 import Table from './Table';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 function Employee() {
   return (
     <>
@@ -23,6 +24,9 @@ function Employee() {
         </nav>{' '}
       </div>
       <div className="container">
+        <Helmet>
+          <title>Employees</title>
+        </Helmet>
         <Table />
       </div>
     </>

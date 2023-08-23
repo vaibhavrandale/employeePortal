@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import logo from './Taypro.png';
 import './Signin.css';
 import '../../App.css';
@@ -47,84 +47,88 @@ const ResetPasswoed = () => {
     }
   }, [navigate, userInfo, token]);
 
-  const ShowPasswordHanfler = async (e) => {
-    setShowPassword(e.target.checked);
-  };
-
   return (
     <>
       <section>
         <title>Forgot Password ! </title>
 
         <div className="taypro-card ">
-          <div className="taypro-logo">
-            {
-              <img
-                src={logo}
-                alt=""
-                height={85}
-                width={300}
-                // className="border rounded"
-              />
-            }
-          </div>
+          <form action="" class="form_main" onSubmit={submitHandler}>
+            <div className="taypro-logo">
+              {
+                <img
+                  src={logo}
+                  alt=""
+                  height={85}
+                  width={150}
+                  style={{ objectFit: 'contain' }}
+                  // className="border rounded"
+                />
+              }
+            </div>
+            <p class="" style={{ zIndex: '5', fontWeight: 'bold' }}>
+              Reset Password
+            </p>
+            <div class="inputContainer">
+              <svg
+                class="inputIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#2e2e2e"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2 2.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11zm.5-.5A1.5 1.5 0 0 0 1 3.5v9A1.5 1.5 0 0 0 2.5 14h11a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 13.5 2h-11z" />
+                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2z" />
+              </svg>
 
-          <form onSubmit={submitHandler}>
-            {' '}
-            <h2 className="text-center fw-bolder tayproHeading">L O G I N</h2>
-            <div className="taypro-from">
-              <label>Enter new password </label>
-              <br />
               <input
+                class="inputField"
+                id="username"
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 type="password"
-                className="input"
+                placeholder="Enter new Password"
               />
-              <br />
-
-              <label>Confirm new password </label>
-              <br />
-              <input
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                type={showPassword ? 'text' : 'password'}
-                className="input"
-              />
-              <br />
-              <div
-                className="d-flex justify-content-end align-items-center"
-                style={{ width: '270px' }}
+            </div>
+            <div class="inputContainer">
+              <svg
+                class="inputIcon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="#2e2e2e"
+                viewBox="0 0 16 16"
               >
-                {' '}
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+              </svg>
+              <div className="password-wrapper">
                 <input
-                  type="checkbox"
-                  className="input3"
-                  onChange={ShowPasswordHanfler}
-                  style={{}}
+                  className="inputField"
+                  id="password"
+                  placeholder="Confirm new Password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  type={showPassword ? 'text' : 'password'}
                 />
-                <span className="ms-1 text-light">show</span>{' '}
+                <span
+                  className="eye-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <i className="fas fa-eye"></i>
+                  ) : (
+                    <i className="fas fa-eye-slash"></i>
+                  )}
+
+                  {/* You can replace these emojis with your preferred icons */}
+                </span>
               </div>
-
-              <button className="signin-button" type="submit">
-                Continue
-              </button>
-            </div>
-          </form>
-
-          {/* <div className="break"></div>
-          <Link to={`/signin`}>
-            {' '}
-            <div>
-              <button
-                type="button"
-                className="mt-2 newacc btn btn-sm btn-light"
-              >
-                {' '}
-                create new account
-              </button>
-            </div>
-          </Link> */}
+            </div>{' '}
+            <button id="button" type="submit">
+              Reset
+            </button>
+          </form>{' '}
         </div>
       </section>
     </>

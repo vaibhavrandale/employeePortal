@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Store } from '../../Store';
 import LoadingBox1 from '../../components/LoadingBox1';
-
+import { Helmet } from 'react-helmet';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -189,6 +189,9 @@ function AddEmployee() {
 
   return (
     <div className="container d-flex flex-column justify-content-center">
+      <Helmet>
+        <title>Add New Employee</title>
+      </Helmet>
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">

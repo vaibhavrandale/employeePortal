@@ -130,15 +130,6 @@ function Leaves() {
         </nav>{' '}
         <h2 className="text-center text-dark fw-bolder">Leave Application</h2>
         <span className="underline"></span>
-        {/* <div className="col-md-12 d-flex justify-content-end mt-3 me-5">
-          <Link
-            className="historyBtn  bg-warning"
-            to={'/leaves-history'}
-            // onClick={historyHandler}
-          >
-            History <FaHistory />{' '}
-          </Link>
-        </div> */}
         <form onSubmit={SubmitHandler}>
           <div className="form-group mt-4">
             <div className="row d-flex flex-column justify-content-center align-items-center">

@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './Sitetable.css';
-// import data from '../Employee/data';
 import { Link, useNavigate } from 'react-router-dom';
 import { LuEdit2 } from 'react-icons/lu';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
-// import LoadingBox from '../../components/LoadingBox';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
 import { AiOutlineFilePdf } from 'react-icons/ai';
 import { BiShowAlt } from 'react-icons/bi';
 import { RiSurveyLine } from 'react-icons/ri';
-import LoadingBox1 from '../../components/LoadingBox1';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -55,9 +53,6 @@ function SiteList() {
       loading: true,
       error: '',
     });
-
-  // const [loading, setLoading] = useState(true);
-  // const [site, setSite] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -65,21 +60,6 @@ function SiteList() {
 
   const itemsPerPage = 10;
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   // Simulate API call or data fetching
-  //   const fetchData = () => {
-  //     // Replace this with your actual data fetching logic
-  //     // For demonstration purposes, we'll use a timeout
-  //     setTimeout(() => {
-  //       setSite(data.siteDetails);
-  //       setLoading(false);
-  //     }, 2000); // Simulating a 2-second delay
-  //   };
-
-  //   setLoading(true);
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -158,14 +138,6 @@ function SiteList() {
     setPopupOpen(!isPopupOpen);
   };
 
-  // const createSitehandler = () => {
-  //   popupHandle();
-  //   toast.success('New Site Added Successfully', {
-  //     position: 'bottom-right',
-  //   });
-  //   navigate(`/addNewSite`);
-  // };
-
   const SiteStatusShowHandler = async (id) => {
     try {
       dispatch({ type: 'UPDATE_STATUS_REQUEST' });
@@ -238,18 +210,25 @@ function SiteList() {
       )}
 
       <div className="table-container ">
+        <Helmet>
+          <title>Site List</title>
+        </Helmet>
         <div className="heading d-flex justify-content-between">
           <nav
             style={{ '--bs-breadcrumb-divider': "'>'" }}
             aria-label="breadcrumb"
           >
             <ol className="breadcrumb">
-              <li className="breadcrumb-item">
+              <li className="breadcrumb-item" style={{ fontSize: '20px' }}>
                 <Link to="/" className="text-decoration-none">
                   Home
                 </Link>{' '}
               </li>
-              <li className="breadcrumb-item active" aria-current="page">
+              <li
+                className="breadcrumb-item active"
+                aria-current="page"
+                style={{ fontSize: '20px' }}
+              >
                 Site List
               </li>
             </ol>
@@ -280,7 +259,7 @@ function SiteList() {
         </div>
 
         {loading ? (
-          <LoadingBox3 />
+          <LoadingBox5 />
         ) : error ? (
           <AlertBox className="alert alert-danger">{error}</AlertBox>
         ) : (
@@ -426,11 +405,7 @@ function SiteList() {
           </div>
         )}
 
-        {/* {loading && filteredData.length === 0 && (
-          <AlertBox className="alert alert-danger">{error}</AlertBox>
-        )} */}
-
-        {<LoadingBox1 /> && (
+        {<LoadingBox5 /> && (
           <nav className="pagination-container">
             <ul className="pagination">
               {Array(Math.ceil(filteredData.length / itemsPerPage))

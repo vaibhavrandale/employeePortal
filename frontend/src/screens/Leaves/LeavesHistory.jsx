@@ -13,6 +13,7 @@ import { AiOutlineReload } from 'react-icons/ai';
 import { getError } from '../../utils';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MsgBox from '../../components/MessageBox/MsgBox';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -300,7 +301,7 @@ function LeavesHistory() {
         </ol>
       </nav>{' '}
       {loading ? (
-        <LoadingBox3 />
+        <LoadingBox5 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (

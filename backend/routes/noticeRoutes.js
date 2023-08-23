@@ -22,7 +22,7 @@ NoticeRouter.post(
       date,
       subject,
       description,
-      briefNotice,
+
       highlightPoints,
       noticeBy,
       seal,
@@ -33,7 +33,6 @@ NoticeRouter.post(
       date,
       subject,
       description,
-      briefNotice,
       highlightPoints,
       noticeBy,
       seal: logo,
@@ -124,7 +123,7 @@ NoticeRouter.post(
       <h3>${title}</h3>
     </div>
     <div class="main-content">
-      <p>${briefNotice}</p>
+      <p>${description}</p>
       <ul>
         ${highlightPoints
           .map((point, index) => `<li key=${index}>${point}</li>`)
@@ -140,14 +139,6 @@ NoticeRouter.post(
     </body>
     `,
       },
-      //   (error, info) => {
-      //     if (error) {
-      //       console.error('Error sending email:', error);
-      //     } else {
-      //       console.log('Email sent:', info.response);
-      //     }
-      //   }
-      // );
 
       (error, info) => {
         if (error) {
@@ -186,7 +177,6 @@ NoticeRouter.put('/:id', async (req, res) => {
     date,
     subject,
     description,
-    briefNotice,
     highlightPoints,
     noticeBy,
     seal,
@@ -201,7 +191,6 @@ NoticeRouter.put('/:id', async (req, res) => {
   notice.date = date;
   notice.subject = subject;
   notice.description = description;
-  notice.briefNotice = briefNotice;
   notice.highlightPoints = highlightPoints;
   notice.noticeBy = noticeBy;
   notice.seal = seal;
@@ -211,5 +200,20 @@ NoticeRouter.put('/:id', async (req, res) => {
 
   res.send({ updatednotice, message: 'Notice updated' });
 });
+
+NoticeRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const notice = await Notice.findById(req.params.id);
+    if (notice) {
+      await notice.deleteOne();
+      res.send({ message: 'notice Deleted' });
+    } else {
+      res.status(404).send({ message: 'notice not found' });
+    }
+  })
+);
 
 export default NoticeRouter;

@@ -42,6 +42,8 @@ import NoticeHome from './screens/Notice/NoticeHome';
 import ViewNotice from './screens/Notice/ViewNotice';
 import NewNotice from './screens/Notice/NewNotice';
 import ProgressBar from './ProgressBar';
+import EditNotice from './screens/Notice/EditNotice';
+import Upcoming from './components/Upcoming';
 
 function App() {
   return (
@@ -59,19 +61,30 @@ function App() {
 
 function AppRouter() {
   const location = useLocation();
-  const isSigninPage = location.pathname === '/signin';
-  const forgetPassword = location.pathname === '/forget-password';
-  const resetetPassword = location.pathname === '/reset-password/:token';
+  // const isSigninPage = location.pathname === '/signin';
+  // const forgetPassword = location.pathname === '/forget-password';
+  // const resetetPassword = location.pathname === '/reset-password/:token';
 
-  const showSidebar = !(isSigninPage || forgetPassword || resetetPassword);
+  // const showSidebar = !(isSigninPage || forgetPassword || resetetPassword);
+  const shouldHideNavAndSidebar = () => {
+    const pathsToExclude = ['/signin', '/forget-password'];
+    return (
+      pathsToExclude.includes(location.pathname) ||
+      location.pathname.startsWith('/reset-password/')
+    );
+  };
+
+  const showNavAndSidebar = !shouldHideNavAndSidebar();
 
   return (
     <>
       {/* {!isSigninPage && <Navbar />}
       {!isSigninPage && <Sidebar />} */}
 
-      {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />}
-      {showSidebar && <Sidebar />}
+      {/* {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />} */}
+      {/* {showSidebar && <Sidebar />} */}
+      {showNavAndSidebar && <Navbar />}
+      {showNavAndSidebar && <Sidebar />}
       <ProgressBar />
       <Routes>
         <Route path="/forget-password" element={<ForgetPasswordScreen />} />
@@ -83,6 +96,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <NotFoundPage />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/upcoming"
+          element={
+            <ProtectedRoutes>
+              <Upcoming />
             </ProtectedRoutes>
           }
         />
@@ -202,6 +223,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <NewNotice />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/edit-notice/:id"
+          element={
+            <ProtectedRoutes>
+              <EditNotice />
             </ProtectedRoutes>
           }
         />

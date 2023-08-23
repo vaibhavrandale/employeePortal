@@ -53,7 +53,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="navbar  ">
       {isPopupOpen && (
         <div className="popup-container">
           <div className="popup">
@@ -78,10 +78,13 @@ const Navbar = () => {
           {userInfo ? (
             <div className="dropdown1" ref={dropdownRef}>
               <span>
-                Welcome,{' '}
-                <span className="text-dark pt-3 fw-bold">{userInfo.name}</span>
+                welcome,
+                <span className="text-dark pt-3 fw-bold typewriter-text">
+                  {userInfo.name}
+                </span>
                 &nbsp;
               </span>
+
               <img
                 src={userInfo.profileImage}
                 alt={userInfo.name}

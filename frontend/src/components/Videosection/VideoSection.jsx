@@ -5,7 +5,12 @@ import './VideSection.css';
 
 function VideoSection() {
   return (
-    <section className="section">
+    <section
+      className="section"
+      style={{
+        minHeight: '300px',
+      }}
+    >
       <video src={video} autoPlay muted></video>
       <h4 className="taypro">
         <span>T</span>

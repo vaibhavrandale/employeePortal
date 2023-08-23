@@ -10,6 +10,8 @@ import { LuEdit } from 'react-icons/lu';
 import { MdVerified } from 'react-icons/md';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MsgBox from '../../components/MessageBox/MsgBox';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -371,6 +373,9 @@ const EmployeeDetails = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>{`${employees.name} - ${employees.employee_id}`}</title>
+      </Helmet>
       {/* {id} */}
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
@@ -395,7 +400,7 @@ const EmployeeDetails = () => {
       {loading ? (
         // <LoadingBox />
 
-        <LoadingBox3 />
+        <LoadingBox5 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
@@ -419,15 +424,19 @@ const EmployeeDetails = () => {
                   >
                     activated
                   </span>
-                  <MdVerified
-                    className="fa fa-ban fs-5 ms-1 text-success "
-                    style={{ cursor: 'pointer' }}
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="click here to deactivate"
-                    onClick={DeactivateHandler}
-                  />
-                  {/* {loadingUpdate && <LoadingBox4 />} */}
+
+                  {loadingUpdate ? (
+                    <LoadingBox4 />
+                  ) : (
+                    <MdVerified
+                      className="fa fa-ban fs-5 ms-1 text-success "
+                      style={{ cursor: 'pointer' }}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="click here to deactivate"
+                      onClick={DeactivateHandler}
+                    />
+                  )}
                 </>
               ) : (
                 <>
@@ -437,18 +446,20 @@ const EmployeeDetails = () => {
                   >
                     deactivated
                   </span>
-                  <i
-                    className="fa fa-ban fs-5 ms-1 text-danger "
-                    style={{ cursor: 'pointer' }}
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="click here to Activate"
-                    onClick={ActivateHandler}
-                  ></i>
-                  {/* {loadingUpdate && <LoadingBox4 />} */}
+                  {loadingUpdate ? (
+                    <LoadingBox4 />
+                  ) : (
+                    <i
+                      className="fa fa-ban fs-5 ms-1 text-danger "
+                      style={{ cursor: 'pointer' }}
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      title="click here to Activate"
+                      onClick={ActivateHandler}
+                    ></i>
+                  )}
                 </>
               )}
-              {loadingUpdate && <LoadingBox4 />}
             </div>
           </div>
 

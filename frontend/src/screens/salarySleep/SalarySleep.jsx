@@ -12,7 +12,6 @@ import axios from 'axios';
 import { Store } from '../../Store';
 import './salarySleep.css';
 import toast from 'react-hot-toast';
-import LoadingBox from '../../components/LoadingBox';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox1 from '../../components/LoadingBox1';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';

@@ -198,14 +198,14 @@ function EditNotice() {
               </div>
               <div className="form-group col-md-5 m-2">
                 <label htmlFor="mobileNo">description :</label>
-                <input
+                <textarea
                   type="text"
                   className="form-control"
                   id="description"
                   placeholder="Enter description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                />
+                ></textarea>
               </div>
 
               <div className="form-group col-md-5 m-2">
@@ -215,7 +215,7 @@ function EditNotice() {
                       {index + 1}) Highlight Points:
                     </label>
                     <div className="d-flex">
-                      <input
+                      <textarea
                         type="text"
                         className="form-control"
                         id={`briefNotice-${index}`}
@@ -226,7 +226,7 @@ function EditNotice() {
                           newHighlightPoints[index] = e.target.value;
                           setHighlightPoints(newHighlightPoints);
                         }}
-                      />{' '}
+                      ></textarea>
                       <button
                         className="btn deleteBtn fs-6"
                         onClick={(e) => handleDeleteHighlightPoint(index, e)}

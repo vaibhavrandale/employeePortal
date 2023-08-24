@@ -120,7 +120,7 @@ function NoticeHome() {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ overflow: 'hidden' }}>
       <div className="mb-3 d-flex justify-content-end "></div>
       <div className="m-5 d-flex flex-column justify-content-center align-items-center">
         <h3 className="text-center">NOTICES</h3>
@@ -185,7 +185,9 @@ function NoticeHome() {
                     <h5 className="card-title text-primary fw-bold">
                       {item.title}
                     </h5>
-                    <p className="card-text">{item.date}</p>
+                    <p className="card-text">
+                      {new Date(item.date).toString().substring(0, 16)}
+                    </p>
                     <p className="card-text">{item.subject}</p>
                     <hr />
                     <Link

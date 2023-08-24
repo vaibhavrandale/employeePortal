@@ -44,7 +44,7 @@ import NewNotice from './screens/Notice/NewNotice';
 import ProgressBar from './ProgressBar';
 import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
-
+// import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
     <>
@@ -116,6 +116,14 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+        {/* <Route
+          path="/pdf/:name"
+          element={
+            <ProtectedRoutes>
+              <PdfViewer />
+            </ProtectedRoutes>
+          }
+        /> */}
         <Route
           path="/table"
           element={

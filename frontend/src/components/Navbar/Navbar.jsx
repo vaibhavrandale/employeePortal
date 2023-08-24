@@ -43,9 +43,7 @@ const Navbar = () => {
 
   const signoutHandler = () => {
     popupHandle();
-    toast.success('Sign out Successfully', {
-      position: 'bottom-right',
-    });
+    toast.success('Sign out Successfully');
 
     ctxDispatch({ type: 'EMP_SIGNOUT' });
     localStorage.removeItem('userInfo');

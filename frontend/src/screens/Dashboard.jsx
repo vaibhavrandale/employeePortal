@@ -208,7 +208,7 @@ function Dashboard() {
               </div>
             )}
 
-            {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+            {/* {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
               <div className="col">
                 <div className="card border border-0 quicklikCard">
                   <Link to="calendar" className="p-1 text-decoration-none">
@@ -230,7 +230,7 @@ function Dashboard() {
                   </Link>
                 </div>
               </div>
-            )}
+            )} */}
 
             {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
               <div className="col">

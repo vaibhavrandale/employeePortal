@@ -479,16 +479,15 @@ function Survey() {
                         <td>
                           INTER TABLE GAP DIMENSION - H{selectedTable + 1}{' '}
                           <span>
-                            {siteSurvey.ImageH &&
-                              siteSurvey.ImageH[selectedTable] && (
-                                <Link
-                                  className="ms-1 text-decoration-none fs-5"
-                                  target="_blank" // Corrected from target="blank" to target="_blank"
-                                  to={siteSurvey.ImageH[selectedTable]}
-                                >
-                                  <TbExternalLink />
-                                </Link>
-                              )}
+                            {siteSurvey.ImageH && siteSurvey.ImageH[0] && (
+                              <Link
+                                className="ms-1 text-decoration-none fs-5"
+                                target="_blank"
+                                to={`/surveyImages/${id}`}
+                              >
+                                <TbExternalLink />
+                              </Link>
+                            )}
                           </span>
                           <span className="text-dark fw-bolder">
                             ({siteSurvey.htablex[selectedTable]} &amp;{' '}

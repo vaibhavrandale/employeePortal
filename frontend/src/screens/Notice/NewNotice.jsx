@@ -185,14 +185,14 @@ function NewNotice() {
               </div>
               <div className="form-group col-md-5 m-2">
                 <label htmlFor="mobileNo">description :</label>
-                <input
+                <textarea
                   type="text"
                   className="form-control"
                   id="description"
                   placeholder="Enter description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                />
+                ></textarea>
               </div>
 
               <div className="form-group col-md-5 m-2">
@@ -201,18 +201,18 @@ function NewNotice() {
                     <label htmlFor={`briefNotice-${index}`}>
                       {index + 1}) Highlight Points:
                     </label>
-                    <input
+                    <textarea
                       type="text"
                       className="form-control"
                       id={`briefNotice-${index}`}
-                      placeholder="Enter brief Notice"
+                      placeholder={`Enter Highlighted points ${index + 1}`}
                       value={briefNotice}
                       onChange={(e) => {
                         const newHighlightPoints = [...highlightPoints];
                         newHighlightPoints[index] = e.target.value;
                         setHighlightPoints(newHighlightPoints);
                       }}
-                    />
+                    ></textarea>
                   </div>
                 ))}
                 <button

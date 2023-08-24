@@ -69,18 +69,18 @@ function SurveyGallery() {
     console.log('Updated selectedImage state and local storage');
   };
 
-  const imageNames = {
-    [siteSurvey.ImageA]: 'A',
-    [siteSurvey.ImageB]: 'B',
-    [siteSurvey.ImageC]: 'C',
-    [siteSurvey.ImageD]: 'D',
-    [siteSurvey.ImageE]: 'E',
-    [siteSurvey.ImageF]: 'F',
-    [siteSurvey.ImageG]: 'G',
-    [siteSurvey.ImageH]: 'H',
-    [siteSurvey.ImageI]: 'I',
-    [siteSurvey.ImageJ]: 'J',
-  };
+  // const imageNames = {
+  //   [siteSurvey.ImageA]: 'A',
+  //   [siteSurvey.ImageB]: 'B',
+  //   [siteSurvey.ImageC]: 'C',
+  //   [siteSurvey.ImageD]: 'D',
+  //   [siteSurvey.ImageE]: 'E',
+  //   [siteSurvey.ImageF]: 'F',
+  //   [siteSurvey.ImageG]: 'G',
+  //   [siteSurvey.ImageH]: 'H',
+  //   [siteSurvey.ImageI]: 'I',
+  //   [siteSurvey.ImageJ]: 'J',
+  // };
 
   const handleSelectedImageDownload = async (e) => {
     e.preventDefault();
@@ -99,6 +99,26 @@ function SurveyGallery() {
       console.error('Error downloading the image:', error);
     }
   };
+
+  const constructImageNames = (siteSurvey) => {
+    let imageNames = {};
+
+    Object.entries(siteSurvey).forEach(([key, value]) => {
+      if (key.startsWith('Image') && value) {
+        if (Array.isArray(value)) {
+          value.forEach((img, index) => {
+            imageNames[img] = key.slice(5) + (index + 1);
+          });
+        } else {
+          imageNames[value] = key.slice(5);
+        }
+      }
+    });
+
+    return imageNames;
+  };
+
+  const imageNames = constructImageNames(siteSurvey);
 
   return (
     <div className="">
@@ -194,6 +214,7 @@ function SurveyGallery() {
                 {Object.entries(siteSurvey).map(([key, value]) => {
                   if (key.startsWith('Image') && value) {
                     if (key === 'ImageH' && Array.isArray(value)) {
+                      // Handle the case where value is an array of image URLs
                       return value.map((img, index) => (
                         <div
                           className="d-flex justify-content-center flex-column"
@@ -212,6 +233,7 @@ function SurveyGallery() {
                         </div>
                       ));
                     } else {
+                      // Handle the normal case where value is a single image URL
                       return (
                         <div
                           className="d-flex justify-content-center flex-column"

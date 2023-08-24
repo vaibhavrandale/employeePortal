@@ -38,6 +38,7 @@ const Sidebar = () => {
               width: '120px',
               margin: 'auto',
               objectFit: 'contain',
+              zIndex: '200',
             }}
           />
         </h1>

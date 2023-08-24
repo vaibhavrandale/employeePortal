@@ -35,17 +35,12 @@ const Signin = () => {
         ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
         localStorage.setItem('userInfo', JSON.stringify(data));
         // navigate('/');
-        toast.success('Login Successfully', {
-          position: 'top-right',
-        });
+        toast.success('Login Successfully');
         console.log(data);
         navigate(redirect || '/');
       } else {
         toast.error(
-          'Your account has been blocked or is not yet activated. Please contact the admin.',
-          {
-            position: 'bottom-right',
-          }
+          'Your account has been blocked or is not yet activated. Please contact the admin.'
         );
       }
     } catch (err) {

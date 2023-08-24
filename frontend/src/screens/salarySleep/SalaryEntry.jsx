@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import img from './Taypro.png';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
 import './salarySleep.css';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -342,45 +342,49 @@ function SalaryEntry() {
         </form>
       </div>
 
-      {selectedEmployee && ( // Show the table only if an employee is selected
-        <div className="container d-flex justify-content-center">
-          <table className="table table-bordered col-md-6">
-            <thead>
-              <tr>
-                <th className="col-md-1 text-center">Image</th>
-                <th className="col-md-1 text-center">Name</th>
-                <th className="col-md-1 text-center">Salary</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((employee) => {
-                // Find the selected employee in the employees array
-                if (employee._id === selectedEmployee) {
-                  return (
-                    <tr key={employee._id}>
-                      <td className="text-center">
-                        <img
-                          src={employee.image}
-                          className="thumbnail rounded-5"
-                          alt=""
-                        />
-                      </td>
-                      <td className="text-center">
-                        <span>{employee.name}</span>
-                      </td>
-                      <td className="text-center">
-                        <span className="badge bg-success">
-                          {getLatestSalary()}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                }
-                return null; // Return null for other employees (not selected)
-              })}
-            </tbody>
-          </table>
-        </div>
+      {loading ? (
+        <LoadingBox5 />
+      ) : (
+        selectedEmployee && ( // Show the table only if an employee is selected
+          <div className=" d-flex justify-content-center">
+            <table className="table table-bordered col-md-6">
+              <thead>
+                <tr>
+                  <th className="col-md-1 text-center">Image</th>
+                  <th className="col-md-1 text-center">Name</th>
+                  <th className="col-md-1 text-center">Salary</th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((employee) => {
+                  // Find the selected employee in the employees array
+                  if (employee._id === selectedEmployee) {
+                    return (
+                      <tr key={employee._id}>
+                        <td className="text-center">
+                          <img
+                            src={employee.image}
+                            className="thumbnail rounded-5"
+                            alt=""
+                          />
+                        </td>
+                        <td className="text-center">
+                          <span>{employee.name}</span>
+                        </td>
+                        <td className="text-center">
+                          <span className="badge bg-success">
+                            {getLatestSalary()}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  }
+                  return null; // Return null for other employees (not selected)
+                })}
+              </tbody>
+            </table>
+          </div>
+        )
       )}
     </div>
   );

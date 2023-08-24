@@ -14,7 +14,7 @@ export default function ProgressBar() {
 
       setTimeout(() => {
         NProgress.done();
-      }, 500);
+      }, 1000);
     };
 
     handleRouteChange();

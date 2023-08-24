@@ -580,4 +580,20 @@ surveyRouter.get('/sitesurveys/get/:id', async (req, res) => {
   }
 });
 
+// ---------------------delete survey-------------------
+surveyRouter.delete(
+  '/sitesurveys/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const survey = await Survey.findById(req.params.id);
+    if (survey) {
+      await survey.deleteOne();
+      res.send({ message: 'survey Deleted' });
+    } else {
+      res.status(404).send({ message: 'survey not found' });
+    }
+  })
+);
+
 export default surveyRouter;

@@ -26,14 +26,10 @@ const ForgetPasswordScreen = () => {
         email,
       });
 
-      toast.success(data.message, {
-        position: 'bottom-right',
-      });
+      toast.success(data.message);
       console.log(data);
     } catch (err) {
-      toast.error(getError(err), {
-        position: 'bottom-right',
-      });
+      toast.error(getError(err));
     } finally {
       setLoading(false); // Set loading to false once the email is sent
     }

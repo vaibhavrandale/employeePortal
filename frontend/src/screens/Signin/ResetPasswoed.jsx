@@ -31,9 +31,7 @@ const ResetPasswoed = () => {
         token,
       });
       navigate('/signin');
-      toast.success('Password updated successfully', {
-        position: 'bottom-right',
-      });
+      toast.success('Password updated successfully');
     } catch (err) {
       toast.error(getError(err), {
         position: 'bottom-right',

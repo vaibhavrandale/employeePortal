@@ -329,7 +329,8 @@ function SiteList() {
                             {item.plantLayout ? (
                               <Link
                                 className="text-decoration-none"
-                                to={`/plantlayout/${item._id}`}
+                                target="blank"
+                                to={item.plantLayout}
                               >
                                 <AiOutlineFilePdf className="text-danger" />
                               </Link>
@@ -374,7 +375,6 @@ function SiteList() {
                             className="edit-button fs-5 "
                             onClick={() => SiteStatusHideHandler(item._id)}
                           >
-                            {' '}
                             <span className="badge bg-none text-info fs-5">
                               <BiShowAlt />
                               {loadingUpdate && <LoadingBox4 />}

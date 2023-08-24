@@ -375,14 +375,7 @@ function SiteTable({ projectCode }) {
                     <td className="text-center">
                       {!userInfo.isSuperAdmin && item.status ? (
                         <button className="edit-button" disabled>
-                          <Link
-                            className="fs-5"
-                            to="#"
-                            style={{ color: 'black' }}
-                          >
-                            {' '}
-                            <BiEdit />
-                          </Link>
+                          <BiEdit style={{ color: 'black' }} className="fs-5" />
                         </button>
                       ) : (
                         <button className="edit-button">

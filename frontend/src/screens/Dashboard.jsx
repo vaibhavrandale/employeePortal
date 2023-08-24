@@ -283,14 +283,16 @@ function Dashboard() {
               </div>
             )}
           </div>
-          <div className="marquee-container">
-            {latestNotice && (
-              <div className="marquee-content">
-                New notice from {latestNotice.noticeBy} regarding{' '}
-                {latestNotice.title} on {latestNotice.date}
-              </div>
-            )}
-          </div>
+          {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+            <div className="marquee-container">
+              {latestNotice && (
+                <div className="marquee-content">
+                  New notice from {latestNotice.noticeBy} regarding{' '}
+                  {latestNotice.title} on {latestNotice.date}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

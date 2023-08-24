@@ -3,7 +3,7 @@ import Survey from '../models/surveyModel.js';
 import Sites from '../models/siteDetailsModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 import expressAsyncHandler from 'express-async-handler';
-import { mailgun, baseUrl } from '../utils.js';
+import { baseUrl } from '../utils.js';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 const surveyRouter = express.Router();
@@ -30,6 +30,7 @@ surveyRouter.post(
       customerLogo: '/images/sample_logo.png',
       siteLocation: 'siteLocation',
       plantCapacity: 'plantCapacity',
+      plantLayout: '',
       status: false,
     });
     const site = await newSite.save();
@@ -59,6 +60,7 @@ surveyRouter.put(
       site.projectCode = req.body.projectCode;
       site.customerLogo = req.body.customerLogo;
       site.plantCapacity = req.body.plantCapacity;
+      site.plantLayout = req.body.plantLayout;
       site.status = req.body.status;
 
       await site.save();
@@ -195,21 +197,111 @@ surveyRouter.post(
           to: `<${email}>`,
           subject: 'A New Remark has been Added!',
           html: `
-          <div style="background-color: #f5f5f5; padding: 20px; ">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-    <img src="${logo}" alt="Company Logo" style="max-width: 100px;">
-    <div>
         
-            <p>Hello, <b>${creatorName}</b> A new Remark has been added to your survey by <b style="color: green;">${Name}</b>.</p>
-            <p>Project Code : ${projectCode}</p>
-            <p>Survey Id : ${id}</p>
-            <p>Remark: ${review.remark}</p>
-            <a href="${baseUrl()}/survey/${id}" style="background:black; color:white; padding:5px; text-decoration:none">View Survey</a>
-            <div style="margin-top: 20px; background-color: #333; color: #fff; padding: 5px; display: flex; justify-content: center; align-items: center;">
-            © Copyright  ${new Date().getFullYear()} Taypro Private Limited. 
-            </br> All Rights Reserved.
-            </div>
-          </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Content</title>
+        <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f5f5f5;
+        }
+        .container {
+          background-color: #ffffff;
+          padding-left: 70px;
+          padding-right: 70px;
+          border-radius: 10px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          text-align: start;
+        }
+        .image-content {
+          text-align: center;
+        }
+        img {
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          display: flex;
+          justify-content: start;
+        }
+        .main-content {
+          margin: 20px 0px;
+        }
+        
+        .main-content a {
+          display: flex;
+          justify-content: center;
+          padding: 10px;
+          text-decoration: none;
+          background: rgb(94, 223, 94);
+          width: 130px;
+          color: #f5f5f5;
+          border-radius: 3px;
+        
+          /* margin: auto; */
+         
+        }
+        
+        .main-content a:hover {
+          background: rgb(76, 214, 71);
+        }
+        .footer {
+          font-size: 12px;
+          text-align: center;
+        }
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          margin:10px;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+        
+        </style>
+    </head>
+    <body>
+    <div class="container">
+    <div class="header">
+      <h2>
+        <img src=${logo} alt="Notice Seal" />
+      </h2>
+      <p>Hello, <b>${creatorName}</b> A new Remark has been added to your survey by <b style="color: green;">${Name}</b>.</p>
+    </div>
+    <div class="main-content">
+    <table>
+  <tr>
+    <th>Project Code</th>
+    <th>Survey Id</th>
+    <th>Remark</th>
+  </tr>
+  <tr>
+    <td>${projectCode}</td>
+    <td> ${id}</td>
+    <td> ${review.remark}</td>
+  </tr>
+</table>
+    
+    <a href="${baseUrl()}/survey/${id}" style="background:lime; color:black; padding:5px; text-decoration:none ;margin-left:10px;">View Survey</a>
+    </div>
+    <div class="footer">
+      <p>This is an auto-generated email. Please do not reply.</p>
+    </div>
+  </div>
+    </body>
         `,
         },
         (error, info) => {

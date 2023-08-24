@@ -62,6 +62,7 @@ function AddNewSite() {
   const [plantCapacity, setPlantCapacity] = useState('');
   const [projectCode, setProjectCode] = useState('');
   const [customerLogo, setCustomerLogo] = useState('');
+  const [plantLayout, setPlantLayout] = useState('');
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -81,6 +82,7 @@ function AddNewSite() {
         setPlantCapacity(data.plantCapacity);
         setProjectCode(data.projectCode);
         setCustomerLogo(data.customerLogo);
+        setPlantLayout(data.plantLayout);
 
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
@@ -106,6 +108,7 @@ function AddNewSite() {
           projectCode,
           customerLogo,
           plantCapacity,
+          plantLayout,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -233,6 +236,17 @@ function AddNewSite() {
                     placeholder="Enter Project Code"
                     value={projectCode}
                     onChange={(e) => setProjectCode(e.target.value)}
+                  />
+                </div>
+                <div className="form-group col-md-10 m-2">
+                  <label htmlFor="lastName"> Plant Layout:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="lastName"
+                    placeholder="Enter plant Layout link"
+                    value={plantLayout}
+                    onChange={(e) => setPlantLayout(e.target.value)}
                   />
                 </div>
                 <div className="form-group col-md-5 m-2">

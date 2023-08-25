@@ -185,8 +185,12 @@ function NoticeHome() {
                     <h5 className="card-title text-primary fw-bold">
                       {item.title}
                     </h5>
-                    <p className="card-text">
-                      {new Date(item.date).toString().substring(0, 16)}
+                    <p
+                      className="card-text text-muted"
+                      style={{ fontSize: '16px' }}
+                    >
+                      posted on-{' '}
+                      {new Date(item.createdAt).toString().substring(0, 16)}
                     </p>
                     <p className="card-text">{item.subject}</p>
                     <hr />

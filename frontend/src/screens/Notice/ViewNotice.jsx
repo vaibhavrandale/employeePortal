@@ -91,7 +91,10 @@ function ViewNotice() {
             </h2>
             <div className="notice-subject">
               <strong>Date:</strong>{' '}
-              <span className="text-success">{notice.date}</span>
+              <span className="text-success">
+                {' '}
+                {new Date(notice.date).toString().substring(0, 16)}
+              </span>
             </div>
             <hr />
           </div>
@@ -110,6 +113,7 @@ function ViewNotice() {
               <p>
                 <strong>Notice by:</strong> {notice.noticeBy}
               </p>
+
               <img
                 src={logo}
                 style={{ objectFit: 'contain', width: '100px', height: '50px' }} // Adjust size as required

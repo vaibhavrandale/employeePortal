@@ -6,6 +6,7 @@ import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 
 import { MdVerified } from 'react-icons/md';
 import { Helmet } from 'react-helmet';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -73,7 +74,7 @@ const Profile = () => {
         </ol>
       </nav>{' '}
       {loading ? (
-        <LoadingBox3 />
+        <LoadingBox5 />
       ) : (
         <>
           <div className="d-flex justify-content-lg-between flex-wrap">

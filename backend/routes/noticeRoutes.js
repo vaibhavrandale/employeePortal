@@ -38,6 +38,7 @@ NoticeRouter.post(
       seal: logo,
     });
     await notice.save();
+
     // Create a transporter object using Yandex SMTP
     const transporter = nodemailer.createTransport({
       service: 'Yandex', // Use the Yandex service

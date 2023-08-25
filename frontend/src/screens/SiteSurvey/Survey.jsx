@@ -269,8 +269,8 @@ function Survey() {
             </div>
           </div>
 
-          <div className="d-flex flex-wrap">
-            <div className="d-flex border m-1" style={{ maxWidth: '51%' }}>
+          <div className="d-flex flex-wrap justify-content-center">
+            <div className="d-flex border  m-1" style={{ maxWidth: '52%' }}>
               {/* <img
                 src="/images/twopannel.png"
                 alt=""
@@ -283,7 +283,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={ONEP} className="structureImg " alt=" 1P image" />
+                  <img src={ONEP} className="structureImg " alt=" 1Pimage" />
                 </div>
               )}
               {siteSurvey.structure === '2L' && (
@@ -292,7 +292,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={TWOL} className="structureImg " alt=" 2P image" />
+                  <img src={TWOL} className="structureImg " alt=" 2Pimage" />
                 </div>
               )}
               {siteSurvey.structure === '2P' && (
@@ -301,7 +301,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={TWOP} className="structureImg " alt=" 3P image" />
+                  <img src={TWOP} className="structureImg " alt=" 3Pimage" />
                 </div>
               )}
               {siteSurvey.structure === '3L' && (
@@ -310,7 +310,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={THREEL} className="structureImg " alt=" 4L image" />
+                  <img src={THREEL} className="structureImg " alt=" 4Limage" />
                 </div>
               )}
               {siteSurvey.structure === '3P' && (
@@ -319,7 +319,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={THREEP} className="structureImg " alt=" 1P image" />
+                  <img src={THREEP} className="structureImg " alt=" 1Pimage" />
                 </div>
               )}
               {siteSurvey.structure === '4L' && (
@@ -328,7 +328,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={FOURL} className="structureImg " alt=" 2P image" />
+                  <img src={FOURL} className="structureImg " alt=" 2Pmage" />
                 </div>
               )}
               {siteSurvey.structure === '4P' && (
@@ -337,7 +337,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={FOURP} className="structureImg " alt=" 3P image" />
+                  <img src={FOURP} className="structureImg " alt=" 3Pimage" />
                 </div>
               )}
               {siteSurvey.structure === '6L' && (
@@ -346,7 +346,7 @@ function Survey() {
                     {' '}
                     {siteSurvey.structure}
                   </span>
-                  <img src={SIXL} className="structureImg " alt=" 4L image" />
+                  <img src={SIXL} className="structureImg " alt=" 4Limage" />
                 </div>
               )}
             </div>

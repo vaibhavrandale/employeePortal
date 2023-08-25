@@ -14,6 +14,7 @@ import bcrypt from 'bcryptjs';
 import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';
+import Attendance from '../models/AttendanceModel.js';
 const emplyeeRouter = express.Router();
 
 dotenv.config();
@@ -1156,5 +1157,27 @@ emplyeeRouter.put(
 );
 
 // ------------------------------reject leave-----------------------
+
+// ------------------------------------Attendence---------------------------
+emplyeeRouter.post('/checkin/:id', async (req, res) => {
+  // Authenticate user here (e.g., using bcrypt to compare hashed passwords)
+  // For simplicity, we're assuming the user is authenticated
+  const { id } = req.params;
+  const user = await Employee.findById(id);
+  if (!user) return res.status(404).send('User not found');
+
+  const attendance = new Attendance({
+    userId: user._id,
+    loginTime: new Date(),
+    checkin: true,
+    userEmail: user.email,
+    userName: user.name,
+  });
+
+  await attendance.save();
+
+  res.send('Logged in and attendance marked!');
+});
+// ------------------------------------Attendence---------------------------
 
 export default emplyeeRouter;

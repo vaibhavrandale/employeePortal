@@ -3,6 +3,7 @@ import '../App.css';
 import './dashboard.css';
 import { Store } from '../Store';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import LoadingBox5 from '../components/LoadingBox/LoadingBox5';
 import LoadingBox5White from '../components/LoadingBox/LoadingBox5White';
@@ -59,156 +60,177 @@ function Dashboard() {
 
   const latestNotice = notices[notices.length - 1];
 
+  const loginHandler = () => {
+    toast.success('Logged in');
+  };
+
   return (
-    <div
-      className="container"
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <Helmet>
-        <title>Dashboard</title>
-      </Helmet>
-      {loading ? (
-        <LoadingBox5 />
-      ) : (
-        <div
-          className=" row  col-6 m-1 pb-3 border  "
-          style={{ display: 'grid', placeItems: 'center' }}
-        >
-          <span className="bg-dark text-light ">Quick Links</span>
-          <div className="row row-cols-1 row-cols-md-4 g-2">
-            {userInfo && userInfo.isAccountant && (
-              <div className="col">
-                <div
-                  className="card border border-0 quicklikCard"
-                  id="quicklikCard"
-                >
-                  <Link to="employees" className="p-1 text-decoration-none">
-                    <img
-                      src="/images/icons/employee.png"
-                      height={50}
-                      width={100}
-                      alt=""
-                      style={{ objectFit: 'contain' }}
-                      className="card-img-top quicklikCardImg rounded-circle"
-                    />
-                    {/* <span className='card-img-top'></span> */}
-                    <div className="card-body text-center">
-                      <span
-                        className="card-title  "
-                        style={{ color: '#2749f5', fontWeight: '500' }}
-                      >
-                        Employees
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            )}
+    <div className="container ">
+      <span
+        className="d-flex flex-column justify-content-center align-items-center "
+        style={{ overflow: 'hidden' }}
+      >
+        <button className="mb-2 punchinBtn" onClick={() => loginHandler()}>
+          L O G O U T
+        </button>
+        <span>Logged in at: 15/08/2023 10.08 AM</span>
 
-            <div className="col">
-              <div className="card border border-0 quicklikCard">
-                <Link to="sitelist" className="p-1 text-decoration-none">
-                  <img
-                    src="/images/icons/survey.png"
-                    className="card-img-top quicklikCardImg"
-                    height={50}
-                    style={{ objectFit: 'contain' }}
-                    alt="..."
-                  />
-                  <div className="card-body text-center ">
-                    <span
-                      className="card-title"
-                      style={{ color: '#2749f5', fontWeight: '500' }}
-                    >
-                      {' '}
-                      Survey
-                    </span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-            {userInfo && !userInfo.isVisitor && (
-              <div className="col">
-                <div className="card border border-0 quicklikCard">
-                  <Link
-                    to="leaves-history"
-                    className="p-1 text-decoration-none"
+        {/* <button > L O G I N</button>
+        <span>Logged in at: 15/08/2023 10.08 AM</span> */}
+      </span>
+      <div
+        className=""
+        style={{
+          display: 'flex',
+
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Helmet>
+          <title>Dashboard</title>
+        </Helmet>
+        {loading ? (
+          <LoadingBox5 />
+        ) : (
+          <div
+            className=" row  col-6 m-1 pb-3 border  "
+            style={{ display: 'grid', placeItems: 'center' }}
+          >
+            <span className="bg-dark text-light ">Quick Links</span>
+            <div className="row row-cols-1 row-cols-md-4 g-2">
+              {userInfo && userInfo.isAccountant && (
+                <div className="col">
+                  <div
+                    className="card border border-0 quicklikCard"
+                    id="quicklikCard"
                   >
+                    <Link to="employees" className="p-1 text-decoration-none">
+                      <img
+                        src="/images/icons/employee.png"
+                        height={50}
+                        width={100}
+                        alt=""
+                        style={{ objectFit: 'contain' }}
+                        className="card-img-top quicklikCardImg rounded-circle"
+                      />
+                      {/* <span className='card-img-top'></span> */}
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title  "
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          Employees
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+
+              <div className="col">
+                <div className="card border border-0 quicklikCard">
+                  <Link to="sitelist" className="p-1 text-decoration-none">
                     <img
-                      src="/images/icons/leaves.png"
+                      src="/images/icons/survey.png"
+                      className="card-img-top quicklikCardImg"
                       height={50}
                       style={{ objectFit: 'contain' }}
-                      className="card-img-top quicklikCardImg"
-                      alt="i"
+                      alt="..."
                     />
-                    <div className="card-body text-center">
+                    <div className="card-body text-center ">
                       <span
                         className="card-title"
                         style={{ color: '#2749f5', fontWeight: '500' }}
                       >
-                        leaves
+                        {' '}
+                        Survey
                       </span>
                     </div>
                   </Link>
                 </div>
               </div>
-            )}
-            {userInfo && !userInfo.isVisitor && (
-              <div className="col">
-                <div className="card border border-0 quicklikCard">
-                  <Link to="pay-sleep" className="p-1 text-decoration-none">
-                    <img
-                      src="/images/icons/slip.png"
-                      height={50}
-                      style={{ objectFit: 'contain' }}
-                      className="card-img-top quicklikCardImg"
-                      alt="i"
-                    />
-                    <div className="card-body text-center">
-                      <span
-                        className="card-title"
-                        style={{ color: '#2749f5', fontWeight: '500' }}
-                      >
-                        Pay Slip
-                      </span>
-                    </div>
-                  </Link>
+              {userInfo && !userInfo.isVisitor && (
+                <div className="col">
+                  <div className="card border border-0 quicklikCard">
+                    <Link
+                      to="leaves-history"
+                      className="p-1 text-decoration-none"
+                    >
+                      <img
+                        src="/images/icons/leaves.png"
+                        height={50}
+                        style={{ objectFit: 'contain' }}
+                        className="card-img-top quicklikCardImg"
+                        alt="i"
+                      />
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title"
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          leaves
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+              {userInfo && !userInfo.isVisitor && (
+                <div className="col">
+                  <div className="card border border-0 quicklikCard">
+                    <Link to="pay-sleep" className="p-1 text-decoration-none">
+                      <img
+                        src="/images/icons/slip.png"
+                        height={50}
+                        style={{ objectFit: 'contain' }}
+                        className="card-img-top quicklikCardImg"
+                        alt="i"
+                      />
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title"
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          Pay Slip
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
 
-          {/* ---------------------2nd row ---------------------- */}
-          <div className="row row-cols-1 row-cols-md-4 g-2">
-            {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
-              <div className="col">
-                <div className="card border border-0 quicklikCard">
-                  <Link to="salary-Entry" className="p-1 text-decoration-none">
-                    <img
-                      src="/images/icons/salary.jpg"
-                      height={50}
-                      style={{ objectFit: 'contain' }}
-                      className="card-img-top quicklikCardImg"
-                      alt="i"
-                    />
-                    <div className="card-body text-center">
-                      <span
-                        className="card-title "
-                        style={{ color: '#2749f5', fontWeight: '500' }}
-                      >
-                        Entry
-                      </span>
-                    </div>
-                  </Link>
+            {/* ---------------------2nd row ---------------------- */}
+            <div className="row row-cols-1 row-cols-md-4 g-2">
+              {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+                <div className="col">
+                  <div className="card border border-0 quicklikCard">
+                    <Link
+                      to="salary-Entry"
+                      className="p-1 text-decoration-none"
+                    >
+                      <img
+                        src="/images/icons/salary.jpg"
+                        height={50}
+                        style={{ objectFit: 'contain' }}
+                        className="card-img-top quicklikCardImg"
+                        alt="i"
+                      />
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title "
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          Entry
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+              {/* {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
               <div className="col">
                 <div className="card border border-0 quicklikCard">
                   <Link to="calendar" className="p-1 text-decoration-none">
@@ -232,69 +254,70 @@ function Dashboard() {
               </div>
             )} */}
 
-            {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
-              <div className="col">
-                <div className="card border border-0 quicklikCard">
-                  <Link
-                    to="notice-home-page"
-                    className="p-1 text-decoration-none"
-                  >
-                    <img
-                      src="/images/icons/notice.png"
-                      height={50}
-                      style={{ objectFit: 'contain', background: '' }}
-                      className="card-img-top quicklikCardImg"
-                      alt="i"
-                    />
-                    <div className="card-body text-center">
-                      <span
-                        className="card-title "
-                        style={{ color: '#2749f5', fontWeight: '500' }}
-                      >
-                        Notice's
-                      </span>
-                    </div>
-                  </Link>
+              {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+                <div className="col">
+                  <div className="card border border-0 quicklikCard">
+                    <Link
+                      to="notice-home-page"
+                      className="p-1 text-decoration-none"
+                    >
+                      <img
+                        src="/images/icons/notice.png"
+                        height={50}
+                        style={{ objectFit: 'contain', background: '' }}
+                        className="card-img-top quicklikCardImg"
+                        alt="i"
+                      />
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title "
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          Notice's
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
-              <div className="col">
-                <div className="card border border-0 quicklikCard">
-                  <Link to="/upcoming" className="p-1 text-decoration-none">
-                    <img
-                      src="/images/icons/soon_watch.png"
-                      height={50}
-                      style={{ objectFit: 'contain' }}
-                      className="card-img-top quicklikCardImg"
-                      alt="i"
-                    />
-                    <div className="card-body text-center">
-                      <span
-                        className="card-title"
-                        style={{ color: '#2749f5', fontWeight: '500' }}
-                      >
-                        coming..
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-          {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
-            <div className="marquee-container">
-              {latestNotice && (
-                <div className="marquee-content">
-                  New notice from {latestNotice.noticeBy} regarding{' '}
-                  {latestNotice.title} on {latestNotice.date}
+              {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+                <div className="col">
+                  <div className="card border border-0 quicklikCard">
+                    <Link to="/upcoming" className="p-1 text-decoration-none">
+                      <img
+                        src="/images/icons/soon_watch.png"
+                        height={50}
+                        style={{ objectFit: 'contain' }}
+                        className="card-img-top quicklikCardImg"
+                        alt="i"
+                      />
+                      <div className="card-body text-center">
+                        <span
+                          className="card-title"
+                          style={{ color: '#2749f5', fontWeight: '500' }}
+                        >
+                          coming..
+                        </span>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
-          )}
-        </div>
-      )}
+            {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+              <div className="marquee-container">
+                {latestNotice && (
+                  <div className="marquee-content">
+                    New notice from {latestNotice.noticeBy} regarding{' '}
+                    {latestNotice.title} on {latestNotice.date}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

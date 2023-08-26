@@ -71,6 +71,7 @@ const Navbar = () => {
       <div className="navbar-brand">
         {/* <span className="logo">Logo</span> */}
       </div>
+
       <ul className="navbar-nav">
         <li className="nav-item">
           {userInfo ? (
@@ -89,6 +90,7 @@ const Navbar = () => {
                 onClick={toggleDropdown}
                 style={{ objectFit: 'contain', scale: '1' }}
               />
+
               {isDropdownOpen && (
                 <div className="dropdown-menu1">
                   {!userInfo.isVisitor && (

@@ -44,6 +44,7 @@ import NewNotice from './screens/Notice/NewNotice';
 import ProgressBar from './ProgressBar';
 import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
+import AttendanceHome from './screens/Attendance/AttendanceHome';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -243,6 +244,18 @@ function AppRouter() {
           }
         />
         {/* -----------------------Notice----------------------------- */}
+
+        {/* -------------------------------Attendance--------------------------------- */}
+        {/* attendance-home-page */}
+        <Route
+          path="/attendance-home-page"
+          element={
+            <SuperAdminRoutes>
+              <AttendanceHome />
+            </SuperAdminRoutes>
+          }
+        />
+        {/* -------------------------------Attendance--------------------------------- */}
 
         <Route
           path="/sitelist"

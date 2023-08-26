@@ -330,7 +330,6 @@ const EmployeeDetails = () => {
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
-
   const ActivateHandler = async (e) => {
     e.preventDefault();
 

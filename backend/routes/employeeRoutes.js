@@ -15,6 +15,8 @@ import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';
 import Attendance from '../models/AttendanceModel.js';
+// import emoji from '../welcome_image.jpg';
+
 const emplyeeRouter = express.Router();
 
 dotenv.config();
@@ -466,6 +468,7 @@ emplyeeRouter.put('/identitydetails/:id', async (req, res) => {
 
 const logo =
   'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
+
 // ------------------apply for leave-------------------------------
 emplyeeRouter.post(
   '/apply-leave/:id',
@@ -1160,24 +1163,369 @@ emplyeeRouter.put(
 
 // ------------------------------------Attendence---------------------------
 emplyeeRouter.post('/checkin/:id', async (req, res) => {
-  // Authenticate user here (e.g., using bcrypt to compare hashed passwords)
-  // For simplicity, we're assuming the user is authenticated
-  const { id } = req.params;
-  const user = await Employee.findById(id);
-  if (!user) return res.status(404).send('User not found');
+  try {
+    const { id } = req.params;
 
-  const attendance = new Attendance({
-    userId: user._id,
-    loginTime: new Date(),
-    checkin: true,
-    userEmail: user.email,
-    userName: user.name,
-  });
+    const user = await Employee.findById(id);
+    if (!user) return res.status(404).send('User not found');
 
-  await attendance.save();
+    const attendance = new Attendance({
+      userId: user._id,
+      employee_id: user.employee_id,
+      loginTime: new Date(),
+      checkin: true,
+      userEmail: user.email,
+      userName: user.name,
+    });
 
-  res.send('Logged in and attendance marked!');
+    await attendance.save();
+
+    function getGreeting() {
+      const currentHour = new Date().getHours();
+
+      if (currentHour >= 5 && currentHour < 12) {
+        return 'Good morning!';
+      } else if (currentHour >= 12 && currentHour < 17) {
+        return 'Good afternoon!';
+      } else if (currentHour >= 17 && currentHour < 21) {
+        return 'Good evening!';
+      } else {
+        return 'Good night!';
+      }
+    }
+
+    const formatDate = (dateStr) => {
+      const dateObj = new Date(dateStr);
+
+      // Extracting date and time components
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed in JavaScript
+      const year = dateObj.getFullYear();
+      const hours = String(dateObj.getHours() % 12 || 12); // Convert 24-hour format to 12-hour format
+      const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+      const period = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+      return `${day}/${month}/${year} ${hours}.${minutes} ${period}`;
+    };
+
+    const transporter = nodemailer.createTransport({
+      service: 'Yandex', // Use the Yandex service
+      auth: {
+        user: process.env.MAIL_USER, // Your Yandex email address
+        pass: process.env.MAIL_PASS, // Your Yandex email password
+      },
+    });
+    transporter.sendMail(
+      {
+        from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+        to: `<${attendance.userEmail}>`,
+        subject: `Login Successfull✅-${attendance.userName} `,
+        html: `
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Content</title>
+        <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f5f5f5;
+        }
+        .container {
+          background-color: #ffffff;
+          padding-left: 70px;
+          padding-right: 70px;
+          border-radius: 10px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          text-align: center;
+        }
+        .image-content {
+          text-align: center;
+        }
+        img {
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          display: flex;
+          justify-content: start;
+        }
+        .main-content {
+          margin: 10px 0px;
+        }
+        
+        .main-content a {
+          display: flex;
+          justify-content: center;
+          padding: 10px;
+          text-decoration: none;
+          background: rgb(94, 223, 94);
+          width: 130px;
+          color: #f5f5f5;
+          border-radius: 3px;
+        
+          /* margin: auto; */
+         
+        }
+        
+        .main-content a:hover {
+          background: rgb(76, 214, 71);
+        }
+        .footer {
+          font-size: 12px;
+          text-align: center;
+        }
+        
+        .welcome{
+          font-family: 'Arial', sans-serif;
+          font-size: 24px;
+          font-weight: bold;
+          color: #333;
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+        }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+    <div class="header">
+      <h3>
+        <img src=${logo} alt="Embedded Image" />
+      </h3>
+    </div>
+  
+    <h3 class='welcome'>Welcome</h3>
+   
+    <div class="main-content">
+    <p>Dear ${attendance.userName},  ${getGreeting()}</p>
+   
+    <p>
+      Your Login is Successfull and your login time is  <b>${formatDate(
+        attendance.loginTime
+      )}</b>.
+    </p>
+   <p> Thank you ! have a good Day😊</p>
+  
+    <div class="footer">
+      <p>This is an auto-generated email. Please do not reply.</p>
+    </div>
+  </div>
+    </body>
+    `,
+      },
+      (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent:', attendance.userName, info.response);
+        }
+      }
+    );
+
+    res.status(200).send({
+      message: `Logged in and attendance marked at ${attendance.loginTime}`,
+      attendanceDetails: attendance,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
 });
+
+emplyeeRouter.post('/checkout/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await Employee.findById(id);
+    if (!user) return res.status(404).send('User not found');
+    const checkinattendance = await Attendance.findOne({
+      userId: user._id,
+      logoutTime: null,
+    });
+    if (!checkinattendance)
+      return res.status(400).send('No active login found');
+    checkinattendance.logoutTime = new Date();
+    checkinattendance.checkin = false;
+    checkinattendance.totalHours =
+      (checkinattendance.logoutTime - checkinattendance.loginTime) /
+      (1000 * 60 * 60); // convert milliseconds to hours
+
+    await checkinattendance.save();
+    function getGreeting() {
+      const currentHour = new Date().getHours();
+
+      if (currentHour >= 5 && currentHour < 12) {
+        return 'Good morning!';
+      } else if (currentHour >= 12 && currentHour < 17) {
+        return 'Good afternoon!';
+      } else if (currentHour >= 17 && currentHour < 21) {
+        return 'Good evening!';
+      } else {
+        return 'Good night!';
+      }
+    }
+
+    const formatDate = (dateStr) => {
+      const dateObj = new Date(dateStr);
+
+      // Extracting date and time components
+      const day = String(dateObj.getDate()).padStart(2, '0');
+      const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed in JavaScript
+      const year = dateObj.getFullYear();
+      const hours = String(dateObj.getHours() % 12 || 12); // Convert 24-hour format to 12-hour format
+      const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+      const period = dateObj.getHours() >= 12 ? 'PM' : 'AM';
+
+      return `${day}/${month}/${year} ${hours}.${minutes} ${period}`;
+    };
+
+    const transporter = nodemailer.createTransport({
+      service: 'Yandex', // Use the Yandex service
+      auth: {
+        user: process.env.MAIL_USER, // Your Yandex email address
+        pass: process.env.MAIL_PASS, // Your Yandex email password
+      },
+    });
+    transporter.sendMail(
+      {
+        from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+        to: `<${checkinattendance.userEmail}>`,
+        subject: `Logout Successfull✅-${checkinattendance.userName} `,
+        html: `
+        <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Content</title>
+        <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f5f5f5;
+        }
+        .container {
+          background-color: #ffffff;
+          padding-left: 70px;
+          padding-right: 70px;
+          border-radius: 10px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+          text-align: center;
+        }
+        .image-content {
+          text-align: center;
+        }
+        img {
+          width: 100px;
+          height: 100px;
+          object-fit: contain;
+          display: flex;
+          justify-content: start;
+        }
+        .main-content {
+          margin: 10px 0px;
+        }
+        
+        .main-content a {
+          display: flex;
+          justify-content: center;
+          padding: 10px;
+          text-decoration: none;
+          background: rgb(94, 223, 94);
+          width: 130px;
+          color: #f5f5f5;
+          border-radius: 3px;
+        
+          /* margin: auto; */
+         
+        }
+        
+        .main-content a:hover {
+          background: rgb(76, 214, 71);
+        }
+        .footer {
+          font-size: 12px;
+          text-align: center;
+        }
+        
+        .welcome{
+          font-family: 'Arial', sans-serif;
+          font-size: 24px;
+          font-weight: bold;
+          color: #333;
+          text-align: center;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+        }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+    <div class="header">
+      <h3>
+        <img src=${logo} alt="Embedded Image" />
+      </h3>
+    </div>
+  
+    <h3 class='welcome'>THANK YOU</h3>
+   
+    <div class="main-content">
+    <p>Dear ${checkinattendance.userName},  ${getGreeting()}</p>
+   
+    <p>
+      Your Logout is Successfull and your logout time is  <b>${formatDate(
+        checkinattendance.logoutTime
+      )}</b>.
+    </p>
+   <p> Thank you ! have a good Day😊</p>
+  
+    <div class="footer">
+      <p>This is an auto-generated email. Please do not reply.</p>
+    </div>
+  </div>
+    </body>
+    `,
+      },
+      (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent:', checkinattendance.userName, info.response);
+        }
+      }
+    );
+    res.status(200).send({
+      message: `Logged out at ${checkinattendance.logoutTime}`,
+      attendanceDetails: checkinattendance,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+emplyeeRouter.get('/attendance/:id', async (req, res) => {
+  const id = req.params.id;
+  // const employee = await Employee.findById(id);
+  const attendance = await Attendance.find({ userId: id });
+
+  // Send the created employees as the response
+  res.send({ attendance });
+});
+
+emplyeeRouter.get('/attendance', async (req, res) => {
+  const id = req.params.id;
+  // const employee = await Employee.findById(id);
+  const attendance = await Attendance.find();
+
+  // Send the created employees as the response
+  res.send({ attendance });
+});
+
 // ------------------------------------Attendence---------------------------
 
 export default emplyeeRouter;

@@ -4,6 +4,7 @@ const AttendanceSchema = new mongoose.Schema(
   {
     checkin: { type: Boolean, default: false },
     userId: String,
+    employee_id: String,
     userEmail: String,
     userName: String,
     loginTime: Date,

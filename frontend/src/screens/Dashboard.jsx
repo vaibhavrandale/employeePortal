@@ -170,7 +170,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="container ">
+    <div className=" ">
       <span
         className="d-flex flex-column justify-content-center align-items-center "
         style={{ overflow: 'hidden' }}

@@ -4,6 +4,7 @@ import data from '../data.js';
 import Sites from '../models/siteDetailsModel.js';
 import Survey from '../models/surveyModel.js';
 import Notice from '../models/noticeModel.js';
+import Attendance from '../models/AttendanceModel.js';
 
 const seedRouter = express.Router();
 
@@ -19,12 +20,16 @@ seedRouter.get('/', async (req, res) => {
 
   await Notice.deleteMany({});
   const CreatedNotice = await Notice.insertMany(data.notices);
+
+  await Attendance.deleteMany({});
+  const CreatedAttendance = await Attendance.insertMany(data.notices);
   // Send the created employees as the response
   res.send({
     createdEmployees,
     creatdsiteDetails,
     creatdSiteSurvey,
     CreatedNotice,
+    CreatedAttendance,
   });
 });
 

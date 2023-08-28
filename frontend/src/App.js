@@ -45,6 +45,7 @@ import ProgressBar from './ProgressBar';
 import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
 import AttendanceHome from './screens/Attendance/AttendanceHome';
+import AttendanceDetails from './screens/Attendance/AttendanceDetails';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -85,7 +86,7 @@ function AppRouter() {
       {/* {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />} */}
       {/* {showSidebar && <Sidebar />} */}
       {showNavAndSidebar && <Navbar />}
-      {showNavAndSidebar && <Sidebar />}
+      {/* {showNavAndSidebar && <Sidebar />} */}
       <ProgressBar />
       <Routes>
         <Route path="/forget-password" element={<ForgetPasswordScreen />} />
@@ -246,12 +247,21 @@ function AppRouter() {
         {/* -----------------------Notice----------------------------- */}
 
         {/* -------------------------------Attendance--------------------------------- */}
-        {/* attendance-home-page */}
+
         <Route
           path="/attendance-home-page"
           element={
             <SuperAdminRoutes>
               <AttendanceHome />
+            </SuperAdminRoutes>
+          }
+        />
+
+        <Route
+          path="/attendenceDetails/:id"
+          element={
+            <SuperAdminRoutes>
+              <AttendanceDetails />
             </SuperAdminRoutes>
           }
         />

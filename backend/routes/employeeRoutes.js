@@ -1518,7 +1518,7 @@ emplyeeRouter.get('/attendance/:id', async (req, res) => {
 });
 
 emplyeeRouter.get('/attendance', async (req, res) => {
-  const id = req.params.id;
+  // const id = req.params.id;
   // const employee = await Employee.findById(id);
   const attendance = await Attendance.find();
 

@@ -4,15 +4,13 @@ import './index.css';
 import App from './App';
 import { StrictMode } from 'react';
 import { StoreProvider } from './Store';
-import { ChakraProvider } from '@chakra-ui/react';
+// import { ChakraProvider } from '@chakra-ui/react';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <StrictMode>
     <StoreProvider>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
+      <App />
     </StoreProvider>
   </StrictMode>
 );

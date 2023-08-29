@@ -86,7 +86,7 @@ function AppRouter() {
       {/* {!isSigninPage && !forgetPassword && !resetetPassword && <Navbar />} */}
       {/* {showSidebar && <Sidebar />} */}
       {showNavAndSidebar && <Navbar />}
-      {/* {showNavAndSidebar && <Sidebar />} */}
+      {showNavAndSidebar && <Sidebar />}
       <ProgressBar />
       <Routes>
         <Route path="/forget-password" element={<ForgetPasswordScreen />} />

@@ -1,235 +1,137 @@
-import React, { useContext } from 'react';
-import {
-  IconButton,
-  Avatar,
-  Box,
-  CloseButton,
-  Flex,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Text,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Image,
-  Link,
-} from '@chakra-ui/react';
-import {
-  FiHome,
-  FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
-  FiMenu,
-  FiBell,
-} from 'react-icons/fi';
-import logo from './logo.png';
-import { Store } from '../../Store';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import './Navbar.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-// import Dashboard from '../../screens/Dashboard';
-const LinkItems = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Trending', icon: FiTrendingUp },
-  { name: 'Explore', icon: FiCompass },
-  { name: 'Favourites', icon: FiStar },
-  { name: 'Settings', icon: FiSettings },
-];
-
-const SidebarContent = ({ onClose, ...rest }) => {
-  return (
-    <Box
-      transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
-      pos="fixed"
-      h="full"
-      {...rest}
-    >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          <Image src={logo} alt="" boxSize="150px" objectFit="contain" />
-        </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-      </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
-    </Box>
-  );
-};
-
-const NavItem = ({ icon, children, ...rest }) => {
-  return (
-    <Box
-      as="a"
-      href="#"
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: 'cyan.400',
-          color: 'white',
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
-            as={icon}
-          />
-        )}
-        {children}
-      </Flex>
-    </Box>
-  );
-};
-
-const MobileNav = ({ onOpen, ...rest }) => {
+import { Store } from '../../Store';
+import { BiLogOut } from 'react-icons/bi';
+import { BsFilePerson } from 'react-icons/bs';
+import { HiLink } from 'react-icons/hi';
+const Navbar = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const toggleDropdown = () => {
+    setDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const popupHandle = () => {
+    setPopupOpen(!isPopupOpen);
+  };
+
   const signoutHandler = () => {
-    // popupHandle();
+    popupHandle();
     toast.success('Sign out Successfully');
 
     ctxDispatch({ type: 'EMP_SIGNOUT' });
     localStorage.removeItem('userInfo');
-    navigate('/signin');
   };
-
   return (
-    <Flex
-      ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 4 }}
-      height="20"
-      alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
-      borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-      justifyContent={{ base: 'space-between', md: 'flex-end' }}
-      {...rest}
-    >
-      <IconButton
-        display={{ base: 'flex', md: 'none' }}
-        onClick={onOpen}
-        variant="outline"
-        aria-label="open menu"
-        icon={<FiMenu />}
-      />
+    <nav className="navbar  ">
+      {isPopupOpen && (
+        <div className="popup-container">
+          <div className="popup">
+            <p>Are you sure you want to Logout?</p>
+            <div className="popup-buttons">
+              <button className="popup-button verify" onClick={signoutHandler}>
+                YES
+              </button>
+              <button className="popup-button cancel" onClick={popupHandle}>
+                NO
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        <Image src={logo} alt="" boxSize="100px" objectFit="contain" />
-      </Text>
+      <div className="navbar-brand">
+        {/* <span className="logo">Logo</span> */}
+      </div>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
-        <Flex alignItems={'center'}>
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: 'none' }}
-            >
-              <HStack>
-                <Avatar
-                  size={'sm'}
-                  src={userInfo.profileImage}
-                  objectFit={'contain'}
-                />
-                <VStack
-                  display={{ base: 'none', md: 'flex' }}
-                  alignItems="flex-start"
-                  // spacing="1px"
-                  ml="2"
-                >
-                  <Text fontSize="sm">{userInfo.name}</Text>
-                  <Text fontSize="xs" color="gray.600">
-                    {userInfo.isSuperAdmin ? 'Admin' : 'Accountant'}
-                  </Text>
-                </VStack>
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          {userInfo ? (
+            <div className="dropdown1" ref={dropdownRef}>
+              <span>
+                welcome,
+                <span className="text-dark pt-3 fw-bold typewriter-text">
+                  {userInfo.name}
+                </span>
+                &nbsp;
+              </span>
 
-                {/* <Box display={{ base: 'none', md: 'flex' }}>
-                  <FiChevronDown />
-                </Box> */}
-              </HStack>
-            </MenuButton>
-            <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}
-            >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem>
-                {' '}
-                <Link onClick={signoutHandler}>Sign out</Link>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
-      </HStack>
-    </Flex>
-  );
-};
+              <img
+                src={userInfo.profileImage}
+                alt={userInfo.name}
+                onClick={toggleDropdown}
+                style={{ objectFit: 'contain', scale: '1' }}
+              />
 
-const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  return (
-    <Box bg={useColorModeValue('gray.100', 'gray.900')}>
-      <SidebarContent
-        onClose={onClose}
-        display={{ base: 'none', md: 'block' }}
-      />
-      <Drawer
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-    </Box>
+              {isDropdownOpen && (
+                <div className="dropdown-menu1">
+                  {!userInfo.isVisitor && (
+                    <>
+                      <Link to="#" className="dropdown-item1 d-flex">
+                        {/* <GoMail className="fs-5 pb-1" />{' '} */}
+                        <img
+                          id="dropimg"
+                          src={userInfo.profileImage}
+                          className="thumbnail "
+                          alt=""
+                        />
+                        <span
+                          className="fw-bolder text-dark d-flex justify-content-center align-items-center "
+                          style={{ fontSize: '13px' }}
+                        >
+                          {userInfo.email}
+                        </span>
+                      </Link>
+                      <Link
+                        to={`/profile/${userInfo._id}`}
+                        className=" dropdown-item1"
+                      >
+                        <BsFilePerson className="fs-5 pb-1 text-warning" />{' '}
+                        Profile
+                      </Link>
+                      <Link to="#" className=" dropdown-item1">
+                        <HiLink className="fs-5 pb-1 text-info" /> Link 1
+                      </Link>
+                      <Link to="#" className=" dropdown-item1">
+                        <HiLink className="fs-5 pb-1 text-info" /> Link 2
+                      </Link>
+                    </>
+                  )}
+                  <Link
+                    onClick={popupHandle}
+                    className="dropdown-item1 fw-bolder text-danger"
+                  >
+                    <BiLogOut className="fs-5 pb-1 me-1 text-danger fw-bolder" />
+                    Logout
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Link to={'/signin'}>Sing in</Link>
+          )}
+        </li>
+      </ul>
+    </nav>
   );
 };
 

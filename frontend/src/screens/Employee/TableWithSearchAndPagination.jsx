@@ -78,7 +78,7 @@ const TableWithSearchAndPagination = () => {
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.image.includes(searchTerm) ||
+      item.employee_id.includes(searchTerm) ||
       item.joiningDate.includes(searchTerm)
   );
 
@@ -170,7 +170,6 @@ const TableWithSearchAndPagination = () => {
                   <th className="col-md-2 text-center">Designation</th>
                   <th className="col-md-5 text-center">Email</th>
                   <th className="col-md-4 text-center">Joining Date</th>
-                  <th className="col-md-1 text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -195,21 +194,18 @@ const TableWithSearchAndPagination = () => {
                       </div>
                     </td>
                     <td className="text-center">{item.name}</td>
-                    <td className="text-center">{item.employee_id}</td>
+                    <td className="text-center">
+                      {' '}
+                      <Link
+                        className="text-decoration-none fw-bold"
+                        to={`/employeedetails/${item._id}`}
+                      >
+                        {item.employee_id}
+                      </Link>
+                    </td>
                     <td className="text-center">{item.designation}</td>
                     <td className="text-center">{item.email}</td>
                     <td className="text-center">{item.joiningDate}</td>
-                    <td className="text-center">
-                      <button className="edit-button">
-                        <Link
-                          className="link"
-                          to={`/employeedetails/${item._id}`}
-                        >
-                          {' '}
-                          <BiEdit />
-                        </Link>
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>

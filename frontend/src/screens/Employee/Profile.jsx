@@ -239,44 +239,52 @@ const Profile = () => {
               <h4>
                 <b>Available Pay-slips</b>
               </h4>
-              <div className="table-responsive">
-                <table
-                  className="table table-bordered "
-                  style={{ overflowX: 'auto' }}
-                >
-                  <thead>
-                    <tr>
-                      <th className="col-md-1 text-center">Month</th>
-                      <th className="col-md-1 text-center">Salary</th>
-                      <th className="col-md-1 text-center">Bonus</th>
-                      <th className="col-md-1 text-center">Deduction</th>
-                      <th className="col-md-1 text-center">Deduction Reason</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {employees.payslips
-                      .slice() // Create a copy of the array to avoid mutating the original array
-                      .reverse() // Reverse the array to show the latest payslips first
-                      .map((item, index) => (
-                        <tr key={index}>
-                          <td className=" text-center">
-                            <span className="badge bg-success">
-                              {item.month.toUpperCase()}-{item.year}
-                            </span>{' '}
-                          </td>
-                          <td className="text-center">{item.salary}</td>
-                          <td className="text-center">
-                            {item.bonuses === 0 ? `0` : `${item.bonuses}`}
-                          </td>
-                          <td className="text-center">{item.deductions}</td>
-                          <td className="text-center">
-                            {item.deductionReason}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
+              {employees.payslips && employees.payslips.length === 0 ? (
+                <div className="alert alert-warning" role="alert">
+                  No payslip available.
+                </div>
+              ) : (
+                <div className="table-responsive">
+                  <table
+                    className="table table-bordered "
+                    style={{ overflowX: 'auto' }}
+                  >
+                    <thead>
+                      <tr>
+                        <th className="col-md-1 text-center">Month</th>
+                        <th className="col-md-1 text-center">Salary</th>
+                        <th className="col-md-1 text-center">Bonus</th>
+                        <th className="col-md-1 text-center">Deduction</th>
+                        <th className="col-md-1 text-center">
+                          Deduction Reason
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {employees.payslips
+                        .slice()
+                        .reverse()
+                        .map((item, index) => (
+                          <tr key={index}>
+                            <td className=" text-center">
+                              <span className="badge bg-success">
+                                {item.month.toUpperCase()}-{item.year}
+                              </span>{' '}
+                            </td>
+                            <td className="text-center">{item.salary}</td>
+                            <td className="text-center">
+                              {item.bonuses === 0 ? `0` : `${item.bonuses}`}
+                            </td>
+                            <td className="text-center">{item.deductions}</td>
+                            <td className="text-center">
+                              {item.deductionReason}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         </>

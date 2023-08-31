@@ -22,7 +22,7 @@ seedRouter.get('/', async (req, res) => {
   const CreatedNotice = await Notice.insertMany(data.notices);
 
   await Attendance.deleteMany({});
-  const CreatedAttendance = await Attendance.insertMany(data.notices);
+  const CreatedAttendance = await Attendance.insertMany(data.attendanceData);
   // Send the created employees as the response
   res.send({
     createdEmployees,

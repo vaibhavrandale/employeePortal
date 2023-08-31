@@ -46,6 +46,7 @@ import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
 import AttendanceHome from './screens/Attendance/AttendanceHome';
 import AttendanceDetails from './screens/Attendance/AttendanceDetails';
+import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -252,7 +253,7 @@ function AppRouter() {
           path="/attendance-home-page"
           element={
             <SuperAdminRoutes>
-              <AttendanceHome />
+              <AttendanceHomecopy />
             </SuperAdminRoutes>
           }
         />

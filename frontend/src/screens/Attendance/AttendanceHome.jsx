@@ -22,6 +22,32 @@ const reducer = (state, action) => {
   }
 };
 function AttendanceHome() {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(
+    new Date().getMonth()
+  );
+
+  const prevMonth = () => {
+    setCurrentMonthIndex((prevIndex) => (prevIndex - 1 + 12) % 12);
+  };
+
+  const nextMonth = () => {
+    setCurrentMonthIndex((prevIndex) => (prevIndex + 1) % 12);
+  };
+
   const [{ loading, error, attendanceDetails }, dispatch] = useReducer(
     reducer,
     {
@@ -58,21 +84,6 @@ function AttendanceHome() {
     fetchData();
   }, []);
 
-  // function transformAttendanceData(attendance) {
-  //   const transformed = {};
-
-  //   attendance.forEach((entry) => {
-  //     if (!transformed[entry.userName]) {
-  //       transformed[entry.userName] = {};
-  //     }
-
-  //     const day = new Date(entry.loginTime).getDate();
-  //     transformed[entry.userName][day] = entry.checkin ? 'P' : 'A';
-  //   });
-
-  //   return transformed;
-  // }
-
   function transformAttendanceData(attendance) {
     const transformed = [];
 
@@ -86,6 +97,7 @@ function AttendanceHome() {
           userName: entry.userName,
           _id: entry._id,
           employee_id: entry.employee_id,
+          totalHours: entry.totalHours,
           days: {},
         };
 
@@ -93,8 +105,29 @@ function AttendanceHome() {
       }
 
       const day = new Date(entry.loginTime).getDate();
-      (existingEntry || transformed[transformed.length - 1]).days[day] =
-        entry.checkin ? 'P' : 'A';
+      const targetEntry = existingEntry || transformed[transformed.length - 1];
+
+      if (entry.checkin) {
+        // Check if there's a logout time
+        if (entry.logoutTime) {
+          // Compute total hours worked
+          const loginTime = new Date(entry.loginTime);
+          const logoutTime = new Date(entry.logoutTime);
+          const diffHours = (logoutTime - loginTime) / (1000 * 60 * 60);
+
+          // Check if total hours are more than 8.50
+          if (diffHours > 8.5) {
+            targetEntry.days[day] = 'P';
+          } else {
+            targetEntry.days[day] = 'A';
+          }
+        } else {
+          // No logout time
+          targetEntry.days[day] = '🕒'; // Timer icon
+        }
+      } else {
+        targetEntry.days[day] = 'A';
+      }
     });
 
     return transformed;
@@ -130,6 +163,7 @@ function AttendanceHome() {
       entry.userName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entry._id.includes(searchQuery)
   );
+
   return (
     <div className="container">
       <h4 className="month  w-100 d-flex justify-content-center">
@@ -167,34 +201,38 @@ function AttendanceHome() {
               </tr>
             </thead>
             <tbody>
-              {filteredData.map(({ userName, days, _id, employee_id }) => (
-                <tr key={userName}>
-                  <td>
-                    <Link
-                      className="text-decoration-none fw-bold"
-                      to={`/attendenceDetails/${_id}`}
-                    >
-                      {employee_id}
-                    </Link>
-                  </td>
-                  <td>{userName}</td>
-                  {Array.from({ length: daysInMonth }).map((_, i) => (
-                    <td key={i} className="text-center">
-                      {days[i + 1] === 'P' ? (
-                        <span className="badge bg-success">P</span>
-                      ) : days[i + 1] === 'A' ? (
-                        <span className="badge bg-danger">A</span>
-                      ) : (
-                        '-'
-                      )}
+              {filteredData.map(
+                ({ userName, days, _id, employee_id, totalHours }) => (
+                  <tr key={userName}>
+                    <td>
+                      <Link
+                        className="text-decoration-none fw-bold"
+                        to={`/attendenceDetails/${_id}`}
+                      >
+                        {employee_id}
+                      </Link>
                     </td>
-                  ))}
+                    <td>{userName} </td>
+                    {Array.from({ length: daysInMonth }).map((_, i) => (
+                      <td key={i} className="text-center">
+                        {days[i + 1] === 'P' ? (
+                          <span className="badge bg-success p-2">P</span>
+                        ) : days[i + 1] === 'A' ? (
+                          <span className="badge bg-danger p-2">A</span>
+                        ) : days[i + 1] === '🕒' ? ( // Handling the timer icon
+                          <span className="badge bg-warning p-2">🕒 </span>
+                        ) : (
+                          '-'
+                        )}
+                      </td>
+                    ))}
 
-                  <td className="text-center">
-                    {Object.values(days).filter((day) => day === 'P').length}
-                  </td>
-                </tr>
-              ))}
+                    <td className="text-center">
+                      {Object.values(days).filter((day) => day === 'P').length}
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </>

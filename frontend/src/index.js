@@ -9,8 +9,10 @@ import { StoreProvider } from './Store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <StrictMode>
+    {/* <ChakraProvider> */}
     <StoreProvider>
       <App />
     </StoreProvider>
+    {/* </ChakraProvider> */}
   </StrictMode>
 );

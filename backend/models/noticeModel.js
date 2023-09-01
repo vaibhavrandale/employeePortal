@@ -10,6 +10,13 @@ const noticeSchema = new mongoose.Schema(
     highlightPoints: [],
     noticeBy: { type: String },
     seal: { type: String },
+    mobile_no: { type: String },
+    attachments: [
+      {
+        url: { type: String, required: true },
+        label: { type: String, required: true },
+      },
+    ],
   },
   {
     timestamps: true,

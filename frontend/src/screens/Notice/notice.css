@@ -30,7 +30,7 @@
   list-style-type: square;
 }
 .notice-footer {
-  text-align: right;
+  text-align: left;
   margin-top: 20px;
 }
 .company-seal {
@@ -64,4 +64,35 @@
   animation: marquee 15s linear infinite;
   -webkit-animation: marquee 15s linear infinite;
   color: rgb(255, 0, 0);
+}
+
+.attachment {
+  margin-top: 15px;
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.attachment > .inner-attachment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 4px;
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.attachment > .inner-attachment > img {
+  height: 80px;
+  width: 80px;
+  /* margin-right: 10px; */
+  object-fit: contain;
+}
+.attachment > span {
+  text-decoration: none;
+  cursor: pointer;
 }

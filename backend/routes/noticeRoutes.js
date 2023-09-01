@@ -9,7 +9,7 @@ import Employee from '../models/employeeModel.js';
 const NoticeRouter = express.Router();
 dotenv.config();
 const logo =
-  'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693544767/bourvup3cg574xxuwjpm.png';
 
 NoticeRouter.post(
   '/',
@@ -17,15 +17,14 @@ NoticeRouter.post(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const {
-      img,
       title,
       date,
       subject,
       description,
-
+      mobile_no,
       highlightPoints,
+      attachments,
       noticeBy,
-      seal,
     } = req.body;
     const notice = new Notice({
       img: logo,
@@ -34,7 +33,9 @@ NoticeRouter.post(
       subject,
       description,
       highlightPoints,
+      attachments,
       noticeBy,
+      mobile_no,
       seal: logo,
     });
     await notice.save();
@@ -54,7 +55,7 @@ NoticeRouter.post(
         from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
         // to: `<${req.employee.email}>`,
         to: superAdminEmails.join(', '),
-        subject: `New Notice`,
+        subject: `Notice-${title}`,
         html: `
         <head>
         <meta charset="UTF-8">
@@ -66,6 +67,9 @@ NoticeRouter.post(
           margin: 0;
           padding: 20px;
           background-color: #f5f5f5;
+        }
+        a{
+          text-decoration: none;
         }
         .container {
           background-color: #ffffff;
@@ -91,27 +95,52 @@ NoticeRouter.post(
           margin: 20px 0px;
         }
         
-        .main-content a {
-          display: flex;
-          justify-content: center;
-          padding: 10px;
-          text-decoration: none;
-          background: rgb(94, 223, 94);
-          width: 130px;
-          color: #f5f5f5;
-          border-radius: 3px;
-        
-          /* margin: auto; */
-         
-        }
-        
-        .main-content a:hover {
-          background: rgb(76, 214, 71);
-        }
+       
         .footer {
           font-size: 12px;
           text-align: center;
         }
+
+        #imageFooter{
+          padding:0px;
+          margin:0px;
+          height:100px;
+          width:100px;
+          object-fit:contain;
+        }
+        
+
+.attachment {
+  margin-top: 15px;
+  display: flex;
+
+  flex-wrap: wrap;
+}
+
+.attachment > .inner-attachment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 4px;
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+}
+.attachment > .inner-attachment > img {
+  height: 80px;
+  width: 80px;
+
+  object-fit: contain;
+}
+.attachment > span {
+  text-decoration: none;
+  cursor: pointer;
+}
+
         
         </style>
     </head>
@@ -130,9 +159,28 @@ NoticeRouter.post(
           .map((point, index) => `<li key=${index}>${point}</li>`)
           .join('')}
       </ul>
-      <p>Notice By: ${noticeBy}</p>
-      <p>Date: ${date}</p>
+      <div className="attachment m-1  ">
+      
+      ${attachments.map(
+        (item, index) =>
+          `
+            <a key=${index}
+              href=${item.url}
+              class="text-decoration-none m-1 text-center"
+              target="blank"
+            >
+              ${item.label}
+            </a>
+          `
+      )}
     </div>
+      <br/>
+      <span>Best Regards,</span><br/>
+      <span>${noticeBy},</span><br/>
+      <span>TAYPRO PRIVATE LIMITED</span><br/>
+   <span><b>We make green energy greener!!</b></span><br/>
+   
+      </div>
     <div class="footer">
       <p>This is an auto-generated email. Please do not reply.</p>
     </div>
@@ -180,6 +228,7 @@ NoticeRouter.put('/:id', async (req, res) => {
     description,
     highlightPoints,
     noticeBy,
+    mobile_no,
     seal,
   } = req.body;
   // const employee = await Employee.findById(id);
@@ -194,6 +243,7 @@ NoticeRouter.put('/:id', async (req, res) => {
   notice.description = description;
   notice.highlightPoints = highlightPoints;
   notice.noticeBy = noticeBy;
+  notice.mobile_no = mobile_no;
   notice.seal = seal;
   // Save the updated employee to the database
   const updatednotice = await notice.save();

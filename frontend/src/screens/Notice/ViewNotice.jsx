@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 // import notice from './notice';
 import axios from 'axios';
 import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
-import logo from '../Signin/Taypro.png';
+import logo from './survey.png';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,35 +91,72 @@ function ViewNotice() {
             </h2>
             <div className="notice-subject">
               <strong>Date:</strong>{' '}
-              <span className="text-success">
-                {' '}
-                {new Date(notice.date).toString().substring(0, 16)}
-              </span>
+              <span className="text-success"> {notice.date}</span>
             </div>
             <hr />
           </div>
           <div className="notice-body">
             <p>{notice.description}</p>
-            <h4>Key Points:</h4>
+            <h4></h4>
             <ul className="highlight-points">
               {notice &&
                 notice.highlightPoints.map((point, index) => (
                   <li key={index}>{point}</li>
                 ))}
             </ul>
+
+            {/* <div className="highlight-points d-flex flex-column">
+              {notice &&
+                notice.attachments.map((item, index) => (
+                  <span className="" key={item._id}>
+                    {index + 1}
+                    {')'}
+                    <Link
+                      to={item.url}
+                      className="text-decoration-none m-1"
+                      target="blank"
+                    >
+                      {item.label}
+                    </Link>
+                  </span>
+                ))}
+            </div> */}
+
+            <h4>
+              <b> Attachments</b>
+            </h4>
+            <div className="attachment m-1  ">
+              {notice &&
+                notice.attachments.map((item, index) => (
+                  <div className=" inner-attachment  m-1" key={index}>
+                    <img src={logo} alt={logo} />
+                    <span>
+                      {' '}
+                      <Link
+                        to={item.url}
+                        className="text-decoration-none m-1 text-center"
+                        target="blank"
+                      >
+                        {item.label}
+                      </Link>
+                    </span>
+                  </div>
+                ))}
+            </div>
           </div>
           <div className="notice-footer">
-            <div className="footer-content">
-              <p>
-                <strong>Notice by:</strong> {notice.noticeBy}
-              </p>
-
-              <img
-                src={logo}
-                style={{ objectFit: 'contain', width: '100px', height: '50px' }} // Adjust size as required
-                alt="Company Seal"
-                className="company-seal"
-              />
+            <div className="footer-content  ">
+              <br />
+              <span>Best Regards,</span>
+              <br />
+              <span>{notice.noticeBy},</span>
+              <br />
+              <span>TAYPRO PRIVATE LIMITED</span>
+              <br />
+              <span>
+                <b>We make green energy greener!!</b>
+              </span>
+              <br />
             </div>
           </div>
         </div>

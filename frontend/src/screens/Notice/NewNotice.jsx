@@ -49,10 +49,16 @@ function NewNotice() {
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
   const [noticeBy, setNoticeBy] = useState(userInfo.name);
+  const [mobile_no, setMobile_no] = useState(userInfo.mobile_no);
+  const [attachments, setAttachments] = useState([{ url: '', label: '' }]);
 
   const addNewField = (e) => {
     e.preventDefault();
     setHighlightPoints([...highlightPoints, '']);
+  };
+  const addNewAttachment = (e) => {
+    e.preventDefault();
+    setAttachments([...attachments, { url: '', label: '' }]);
   };
 
   const SubmitHandler = async (e) => {
@@ -81,6 +87,8 @@ function NewNotice() {
           description,
           highlightPoints,
           noticeBy,
+          mobile_no,
+          attachments,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -197,11 +205,11 @@ function NewNotice() {
 
               <div className="form-group col-md-5 m-2">
                 {highlightPoints.map((briefNotice, index) => (
-                  <div key={index} className="form-group col-md-5 m-2">
+                  <div key={index} className="form-group col-md-12 m-2">
                     <label htmlFor={`briefNotice-${index}`}>
-                      {index + 1}) Highlight Points:
+                      Key Points:{index + 1}
                     </label>
-                    <textarea
+                    <input
                       type="text"
                       className="form-control"
                       id={`briefNotice-${index}`}
@@ -212,17 +220,61 @@ function NewNotice() {
                         newHighlightPoints[index] = e.target.value;
                         setHighlightPoints(newHighlightPoints);
                       }}
-                    ></textarea>
+                    />
                   </div>
                 ))}
                 <button
-                  className="btn btn-sm bg-dark text-white border-0"
+                  className="submitBtn bg-success p-1"
                   onClick={(e) => addNewField(e)}
                 >
-                  Add New
+                  Add
+                </button>
+              </div>
+              <div className="form-group col-md-5 m-2">
+                {attachments.map((attachment, index) => (
+                  <div key={index} className="attachment-inputs">
+                    <label htmlFor={`attachmentUrl-${index}`}>
+                      URL {index + 1}:
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id={`attachmentUrl-${index}`}
+                      placeholder={`Enter Attachment URL ${index + 1}`}
+                      value={attachment.url}
+                      onChange={(e) => {
+                        const newAttachments = [...attachments];
+                        newAttachments[index].url = e.target.value;
+                        setAttachments(newAttachments);
+                      }}
+                    />
+                    <label htmlFor={`attachmentLabel-${index}`}>
+                      Label {index + 1}:
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id={`attachmentLabel-${index}`}
+                      placeholder={`Enter Label ${index + 1}`}
+                      value={attachment.label}
+                      onChange={(e) => {
+                        const newAttachments = [...attachments];
+                        newAttachments[index].label = e.target.value;
+                        setAttachments(newAttachments);
+                      }}
+                    />
+                    <hr />
+                  </div>
+                ))}
+                <button
+                  className="submitBtn m-1"
+                  onClick={(e) => addNewAttachment(e)}
+                >
+                  Add
                 </button>
               </div>
             </div>
+
             <div className="d-flex  justify-content-end align-items-center me-5">
               <button
                 className="submitBtn px-2 pt-1 pb-1"

@@ -256,6 +256,8 @@ emplyeeRouter.post(
         _id: employee._id,
         name: employee.name,
         email: employee.email,
+        mobile_no: employee.mobile_no,
+        designation: employee.designation,
         isAdmin: employee.isAdmin,
         isSuperAdmin: employee.isSuperAdmin,
         isSales: employee.isSales,

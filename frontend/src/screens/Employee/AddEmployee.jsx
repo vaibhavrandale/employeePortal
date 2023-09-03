@@ -61,7 +61,7 @@ function AddEmployee() {
   const [aadhar_no, setAdharno] = useState('');
   const [mobile_no, setMobile_no] = useState('');
   const [activate, setActivate] = useState(false);
-  const [leaves, setLeaves] = useState(30);
+  const [leaves, setLeaves] = useState(18);
   const [pf_account_no, setPf_account_no] = useState('');
   const [bank_account_no, setBank_account_no] = useState('');
   const [uan_number, setUan_number] = useState('');

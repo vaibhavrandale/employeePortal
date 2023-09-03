@@ -14,6 +14,7 @@ import { getError } from '../../utils';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -122,7 +123,7 @@ function LeavesHistory() {
     (item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.expectedDateOfLeave.includes(searchTerm)
+      item.approvedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -286,6 +287,9 @@ function LeavesHistory() {
 
   return (
     <div className="container ">
+      <Helmet>
+        <title>Leaves</title>
+      </Helmet>
       {/* Approval Modal */}
       <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
@@ -366,8 +370,6 @@ function LeavesHistory() {
                   <th className="col-md-1 text-center">Approved By</th>
                   <th className="col-md-1 text-center">Remark</th>
                   <th className="col-md-1 text-center">Remark By</th>
-                  {/* <th className="col-md-1 text-center">Approve</th> */}
-                  {/* <th className="col-md-1 text-center">Decline</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -378,7 +380,6 @@ function LeavesHistory() {
                     onMouseEnter={() => handleRowHover(index)}
                     onMouseLeave={() => handleRowHover(null)}
                   >
-                    {/* {(index = index + 1)} */}
                     <td className="text-center fw-bold">
                       <Link
                         className="text-decoration-none"
@@ -388,7 +389,6 @@ function LeavesHistory() {
                       </Link>
                     </td>
                     <td className="text-center">
-                      {}{' '}
                       {new Date(item.createdAt).toLocaleDateString('en-GB', {
                         day: '2-digit',
                         month: '2-digit',
@@ -407,7 +407,6 @@ function LeavesHistory() {
                       )}
                     </td>
                     <td className="text-center">
-                      {}{' '}
                       {new Date(item.expectedDateOfreturn).toLocaleDateString(
                         'en-GB',
                         {
@@ -425,7 +424,7 @@ function LeavesHistory() {
                       ) : (
                         <span className="badge text-bg-warning">Pending</span>
                       )}
-                    </td>{' '}
+                    </td>
                     <td className="text-center">
                       {item.approvedAt !== '' ? (
                         <span className="badge p-2 text-bg-light">
@@ -456,8 +455,6 @@ function LeavesHistory() {
                         <span className="badge text-bg-warning">pending</span>
                       )}
                     </td>
-                    {/* <td className="">{item.remark}</td>
-                  <td className="text-center">{item.remarkBy}</td> */}
                     <td className="text-center">
                       {item.remark === '' ? (
                         <span className="badge text-bg-warning">pending</span>

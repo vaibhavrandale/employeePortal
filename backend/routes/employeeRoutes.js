@@ -1,6 +1,8 @@
 import express from 'express';
+import cron from 'node-cron';
 import Employee from '../models/employeeModel.js';
 import expressAsyncHandler from 'express-async-handler';
+
 // import bcrypt from 'bcryptjs';
 import {
   generateToken,
@@ -1613,5 +1615,138 @@ emplyeeRouter.get('/attendance', async (req, res) => {
 });
 
 // ------------------------------------Attendence---------------------------
+const birthday =
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
 
+cron.schedule('0 8 * * *', async function () {
+  try {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentDay = String(currentDate.getDate()).padStart(2, '0'); // ensures we have a two-digit day
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // ensures we have a two-digit month
+
+    // Fetch employees whose birthday is today
+    const birthdayEmployees = await Employee.find({
+      birth_date: `${currentDay}/${currentMonth}/${currentYear}`,
+    });
+
+    console.log(
+      `Found ${birthdayEmployees.length} employees with birthdays today.`
+    );
+    console.log(`Attempting to send email to ${birthdayEmployees.birth_date}`);
+
+    for (let employee of birthdayEmployees) {
+      const transporter = nodemailer.createTransport({
+        service: 'Yandex',
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+
+      transporter
+        .sendMail({
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: employee.email,
+          subject: 'Happy Birthday!',
+          html: ` <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Birthday Wish</title>
+              <style>
+                  @keyframes slideIn {
+                      0% {
+                          transform: translateY(-100%);
+                      }
+                      100% {
+                          transform: translateY(0);
+                      }
+                  }
+          
+                  @keyframes fadeIn {
+                      0% {
+                          opacity: 0;
+                      }
+                      100% {
+                          opacity: 1;
+                      }
+                  }
+          
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f7f9fc;
+                      padding: 20px;
+                  }
+          
+                  .container {
+                      max-width: 600px;
+                      margin: 0 auto;
+                      background-color: #ffffff;
+                      border-radius: 8px;
+                      overflow: hidden;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      animation: slideIn 1s ease-out, fadeIn 1.5s ease-out;
+                  }
+          
+                  .header {
+                      background-color: #ffb6c1;
+                      color: #ffffff;
+                      padding: 20px;
+                      text-align: center;
+                      font-size: 24px;
+                  }
+          
+                  .content {
+                      padding: 20px;
+                  }
+          
+                  .birthday-message {
+                      text-align: center;
+                      font-size: 18px;
+                      margin-bottom: 20px;
+                  }
+          
+                  .birthday-image {
+                      display: block;
+                      width: 100%;
+                      max-width: 300px;
+                      margin: 0 auto;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <div class="header">
+                    Happy Birthday!
+                  </div>
+                  <div class="content">
+                      <p class="birthday-message">Hii ${employee.name}, Wishing you a day filled with happiness and a year filled with joy. Happy Birthday!</p>
+                      <p class="birthday-message">May your special day be full of smiles, laughter, and love!</p>
+                      <img src=${birthday} alt="Birthday Celebration" class="birthday-image">
+                        </div>
+              </div>
+          </body>
+          </html>
+`,
+        })
+        .then((info) => {
+          if (info.envelope.to.includes(employee.email)) {
+            console.log(
+              `Birthday email successfully sent to ${employee.email}`
+            );
+          } else {
+            console.log(`Failed to send birthday email to ${employee.email}`);
+          }
+        })
+        .catch((error) => {
+          console.error(`Error sending email to ${employee.email}:`, error);
+        });
+    }
+  } catch (error) {
+    console.error('Error sending birthday emails:', error);
+  }
+});
+//-------------------------------------Birthday-----------------------
 export default emplyeeRouter;

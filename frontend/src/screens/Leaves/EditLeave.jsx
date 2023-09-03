@@ -17,6 +17,7 @@ import { Store } from '../../Store';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -163,6 +164,9 @@ function EditLeave() {
 
   return (
     <div className="container1  ">
+      <Helmet>
+        <title>Update Leave</title>
+      </Helmet>
       {/* {loadingUpdate ? (
         <loadingUpdateBox3 />
       ) : ( */}

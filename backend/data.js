@@ -18,7 +18,7 @@ const data = {
       isProduction: true,
       isAccountant: true,
       joiningDate: '1/03/2023',
-      birth_date: '04/09/2023',
+      birth_date: '05/09/2023',
       gender: 'male',
       designation: 'abc',
       state: 'maharashtra',

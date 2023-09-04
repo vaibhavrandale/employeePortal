@@ -2153,15 +2153,5 @@ const sendBirthdayEmails = async () => {
 // Schedule the job
 cron.schedule('0 8 * * *', sendBirthdayEmails);
 
-// Create an immediate trigger for testing purposes
-emplyeeRouter.get('/send-birthday-emails', async (req, res) => {
-  try {
-    await sendBirthdayEmails();
-    res.send('Birthday emails sent!');
-  } catch (error) {
-    console.error('Error sending birthday emails:', error);
-    res.status(500).send('Failed to send birthday emails.');
-  }
-});
 //-------------------------------------Birthday-----------------------
 export default emplyeeRouter;

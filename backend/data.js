@@ -18,7 +18,7 @@ const data = {
       isProduction: true,
       isAccountant: true,
       joiningDate: '1/03/2023',
-      birth_date: '04/09/2000',
+      birth_date: '06/09/2000',
       gender: 'male',
       designation: 'abc',
       state: 'maharashtra',
@@ -79,7 +79,7 @@ const data = {
       isProduction: true,
       isAccountant: true,
       joiningDate: '2/03/2023',
-      birth_date: '05/09/1993',
+      birth_date: '06/09/1993',
       gender: 'male1',
       designation: '1abc',
       state: '1maharashtra',
@@ -164,6 +164,7 @@ const data = {
     //   payslips: [],
     // },
   ],
+  birthdayWish: [],
 
   siteDetails: [
     {

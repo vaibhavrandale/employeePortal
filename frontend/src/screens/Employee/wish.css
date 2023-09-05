@@ -1,0 +1,22 @@
+.msgBox {
+  height: 30px;
+  width: 250px;
+  outline: none;
+  border: none;
+  background-color: azure;
+}
+
+.Submit {
+  background: #ff20ec;
+  /* font-size: 15px; */
+  border: none;
+  outline: none;
+  color: #fff;
+
+  padding: 3px 6px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}

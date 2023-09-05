@@ -76,6 +76,12 @@ a:hover {
   justify-content: center;
   overflow-x: auto;
 }
+.modal-container {
+  margin: 59px 0px 0px 52px;
+  z-index: 12;
+  opacity: 100;
+  background-color: #a6a6a6;
+}
 
 .small-container {
   /* margin-left: 52px;

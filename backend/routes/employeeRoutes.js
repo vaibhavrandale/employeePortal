@@ -3,6 +3,8 @@ import cron from 'node-cron';
 import Employee from '../models/employeeModel.js';
 import expressAsyncHandler from 'express-async-handler';
 import moment from 'moment-timezone';
+import { format } from 'date-fns'; // Import format from date-fns
+import BirthdayWish from '../models/BirthdayWish.js';
 
 // import bcrypt from 'bcryptjs';
 import {
@@ -42,40 +44,6 @@ emplyeeRouter.get('/details/:id', async (req, res) => {
 // --add employee-------------------
 emplyeeRouter.post('/', async (req, res) => {
   const {
-    // employee_id,
-    // name,
-    // image,
-    // email,
-    // password,
-    // isAdmin,
-    // isSuperAdmin,
-    // isSales,
-    // isScm,
-    // isDesign,
-    // isProject,
-    // isVisitor,
-    // isProduction,
-    // isAccountant,
-    // joiningDate,
-    // birth_date,
-    // gender,
-    // designation,
-    // state,
-    // address,
-    // mobile_no,
-    // age,
-    // experience,
-    // activate,
-    // leaves,
-    // sick,
-    // privilege,
-    // casual,
-    // pf_account_no,
-    // bank_account_no,
-    // uan_number,
-    // pan_number,
-    // aadhar_no,
-    // payslips,
     employee_id,
     email,
     name,
@@ -110,7 +78,7 @@ emplyeeRouter.post('/', async (req, res) => {
     pf_account_no,
     uan_number,
     resetToken,
-    password,
+
     image,
     joiningDate,
     designation,
@@ -136,14 +104,70 @@ emplyeeRouter.post('/', async (req, res) => {
     allLeaves,
   } = req.body;
 
+  const defaultPassword = employee_id;
+  const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
+  // const parseDate = (dateStr) => {
+  //   const [day, month, year] = dateStr.split('/').map(Number);
+  //   return new Date(year, month - 1, day);
+  // };
+
+  // const parsedBirthDate = parseDate(birth_date);
+  // const parsedJoiningDate = parseDate(joiningDate);
+
+  // // Function to format date as "DD/MM/YYYY"
+  // const formatDate = (date) => {
+  //   const day = date.getDate().toString().padStart(2, '0');
+  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const year = date.getFullYear();
+  //   return `${day}/${month}/${year}`;
+  // };
+
+  // const formattedBirthDate = formatDate(parsedBirthDate);
+  // const formattedJoiningDate = formatDate(parsedJoiningDate);
+
+  const parseDate = (dateStr) => {
+    let day, month, year;
+    if (dateStr.includes('-')) {
+      [day, month, year] = dateStr.split('-').map(Number);
+    } else if (dateStr.includes('/')) {
+      [day, month, year] = dateStr.split('/').map(Number);
+    } else {
+      return null; // Invalid date format
+    }
+    return new Date(year, month - 1, day);
+  };
+
+  const parsedBirthDate = parseDate(birth_date);
+  const parsedJoiningDate = parseDate(joiningDate);
+
+  if (!parsedBirthDate || !parsedJoiningDate) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'Invalid date format' });
+  }
+
+  // Function to format date as "DD/MM/YYYY"
+  const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const formattedBirthDate = formatDate(parsedBirthDate);
+  const formattedJoiningDate = formatDate(parsedJoiningDate);
+
   // Create a new Employee instance with the provided data
+
   const newEmployee = new Employee({
     employee_id,
     email,
     name,
     father_husband_name,
     gender,
-    birth_date,
+    // birth_date,
+    birth_date: formattedBirthDate,
+    joiningDate: formattedJoiningDate,
     marital_status,
     address,
     sub_locality,
@@ -172,9 +196,9 @@ emplyeeRouter.post('/', async (req, res) => {
     pf_account_no,
     uan_number,
     resetToken,
-    password,
+    password: hashedPassword,
     image,
-    joiningDate,
+    // joiningDate,
     designation,
     age,
     previous_company_name,
@@ -209,6 +233,7 @@ emplyeeRouter.post('/', async (req, res) => {
     res.status(500).json({ success: false, error: 'Failed to add employee' });
   }
 });
+
 // --add employee-------------------
 
 // -----------------activate employee------------
@@ -257,6 +282,7 @@ emplyeeRouter.post(
 
       res.send({
         _id: employee._id,
+        employee_id: employee.employee_id,
         name: employee.name,
         email: employee.email,
         mobile_no: employee.mobile_no,
@@ -1795,182 +1821,6 @@ emplyeeRouter.get('/attendance', async (req, res) => {
 // ------------------------------------Attendence---------------------------
 const birthday =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
-// cron.schedule('0 8 * * *', async function () {
-//   // cron.schedule('* * * * *', async function () {
-//   try {
-//     const currentDate = new Date();
-
-//     const currentDay = String(currentDate.getDate()).padStart(2, '0'); // ensures we have a two-digit day
-//     const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // ensures we have a two-digit month
-
-//     // Fetch employees whose birthday is today
-//     const birthdayEmployees = await Employee.find({
-//       birth_date: `${currentDay}/${currentMonth}`,
-//     });
-
-//     console.log(
-//       `Found ${birthdayEmployees.length} employees with birthdays today.`
-//     );
-
-//     for (let employee of birthdayEmployees) {
-//       const transporter = nodemailer.createTransport({
-//         service: 'Yandex',
-//         auth: {
-//           user: process.env.MAIL_USER,
-//           pass: process.env.MAIL_PASS,
-//         },
-//       });
-
-//       transporter
-//         .sendMail({
-//           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-//           to: employee.email,
-//           subject: 'Happy Birthday🥂🎂',
-//           html: ` <!DOCTYPE html>
-//           <html lang="en">
-//           <head>
-//               <meta charset="UTF-8">
-//               <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//               <title>Birthday Wish</title>
-//               <style>
-//                   @keyframes slideIn {
-//                       0% {
-//                           transform: translateY(-100%);
-//                       }
-//                       100% {
-//                           transform: translateY(0);
-//                       }
-//                   }
-
-//                   @keyframes fadeIn {
-//                       0% {
-//                           opacity: 0;
-//                       }
-//                       100% {
-//                           opacity: 1;
-//                       }
-//                   }
-
-//                   body {
-//                       font-family: Arial, sans-serif;
-//                       background-color: #f7f9fc;
-//                       padding: 20px;
-
-//                   }
-
-//                   .container {
-//                       max-width: 600px;
-//                       margin: 0 auto;
-//                       background-color: #ffffff;
-//                       border-radius: 8px;
-//                       overflow: hidden;
-//                       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//                       animation: slideIn 1s ease-out, fadeIn 1.5s ease-out;
-//                       border:1px solid #ff004f;
-//                   }
-
-//                   .header {
-//                       background-color: #ff004f;
-//                       color: #ffffff;
-//                       padding: 20px;
-//                       text-align: center;
-//                       font-size: 24px;
-//                   }
-
-//                   .content {
-//                       padding: 20px;
-//                   }
-
-//                   .birthday-message {
-//                       text-align: center;
-//                       font-size: 18px;
-//                       margin-bottom: 20px;
-//                   }
-//                   @keyframes flagWave {
-//                     0% {
-//                       transform: translateY(0px) skewX(20deg);
-//                   }
-//                   50% {
-//                       transform: translateY(5px) skewX(-20deg);
-//                   }
-//                   100% {
-//                       transform: translateY(0px) skewX(20deg);
-//                   }
-//                 }
-
-//                   .birthday-image {
-//                       display: block;
-//                       width: 100%;
-//                       max-width: 300px;
-//                       margin: 0 auto;
-//                       animation: flagWave 0.5s infinite alternate;
-//                   }
-
-//                   #name{
-//                     color:#ff004f;
-//                     font-weight:600;
-//                   }
-//                   #footer{
-//                     padding: 20px;
-//                   }
-//                   #logoImage{
-//                     display: block;
-//                     margin: 0 auto;
-//                     width: 100px;
-//                     height: 50px;
-//                     object-fit: contain;
-
-//                   }
-//                   #logoContainer{
-//                    display:flex;
-//                    justify-content:end;
-//                    align-items:end;
-//                   }
-//               </style>
-//           </head>
-//           <body>
-
-//               <div class="container">
-
-//                   <div class="header">
-//                     Happy Birthday!
-//                   </div>
-//                   <div class="content">
-//                   <div id="logoContainer">
-//                   <img src=${logo} id="logoImage"  alt="Embedded Image" /></div>
-//                       <p class="birthday-message">Hii <b id="name">${employee.name}</b>, Wishing you a day filled with happiness and a year filled with joy.</p>
-//                       <p class="birthday-message">May your special day be full of smiles, laughter, and love!</p>
-//                       <img src=${birthday} alt="Birthday Celebration" class="birthday-image">
-//                         </div>
-//                        <div id="footer">
-//                        <br/>
-//                        <span>Best Regards,</span><br/>
-
-//                        <span>TAYPRO Family</span><br/>
-//                     <span><b>We make green energy greener!!</b></span><br/>
-//                        </div>
-//               </div>
-//           </body>
-//           </html>
-// `,
-//         })
-//         .then((info) => {
-//           if (info.envelope.to.includes(employee.email)) {
-//             console.log(
-//               `Birthday email successfully sent to ${employee.email}`
-//             );
-//           } else {
-//             console.log(`Failed to send birthday email to ${employee.email}`);
-//           }
-//         })
-//         .catch((error) => {
-//           console.error(`Error sending email to ${employee.email}:`, error);
-//         });
-//     }
-//   } catch (error) {
-//     console.error('Error sending birthday emails:', error);
-//   }
-// });
 
 const sendBirthdayEmails = async () => {
   try {
@@ -1982,7 +1832,7 @@ const sendBirthdayEmails = async () => {
     const birthdayEmployees = await Employee.find();
 
     const todaysBirthdayEmployees = birthdayEmployees.filter((employee) => {
-      const [day, month, year] = employee.birth_date.split('/');
+      const [day, month] = employee.birth_date.split('/'); // Ignore the year
       return day === currentDay && month === currentMonth;
     });
 
@@ -2152,6 +2002,362 @@ const sendBirthdayEmails = async () => {
 
 // Schedule the job
 cron.schedule('0 8 * * *', sendBirthdayEmails);
+
+// cron.schedule('0 11 * * *', sendBirthdayEmails);
+
+// cron.schedule('* * * * *', async () => {
+cron.schedule('0 8 * * *', async () => {
+  try {
+    const currentDate = new Date();
+    const currentDay = String(currentDate.getDate()).padStart(2, '0');
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+
+    const birthdayEmployees = await Employee.find();
+
+    const todaysBirthdayEmployees = birthdayEmployees.filter((employee) => {
+      const [day, month] = employee.birth_date.split('/'); // Ignore the year
+      return day === currentDay && month === currentMonth;
+    });
+
+    // Check if there are employees with birthdays today
+    if (todaysBirthdayEmployees.length > 0) {
+      // Create records for each birthday boy with an empty array of wishes
+      const birthdayRecords = todaysBirthdayEmployees.map((employee) => ({
+        birthday_boy: `${employee.name}`,
+        birthday_date: `${employee.birth_date}`,
+        birthday_boy_email: employee.email,
+        birthday_boy_employee_id: employee.employee_id,
+        birthday_boy_image: employee.image,
+        wishes: [],
+      }));
+
+      // Insert the records into the BirthdayWish collection
+      await BirthdayWish.insertMany(birthdayRecords);
+
+      console.log(`Birthday records created.`);
+    } else {
+      console.log('No birthdays today.');
+    }
+  } catch (error) {
+    console.error('Error checking and creating birthday records:', error);
+  }
+});
+
+emplyeeRouter.get('/birthday-check', async (req, res) => {
+  try {
+    // Get the current date and month
+    const currentDate = new Date();
+    const currentDay = String(currentDate.getDate()).padStart(2, '0');
+    const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0');
+
+    const birthdayEmployees = await BirthdayWish.find();
+
+    const todaysBirthdayEmployees = birthdayEmployees.filter((employee) => {
+      const [day, month] = employee.birthday_date.split('/'); // Ignore the year
+      return day === currentDay && month === currentMonth;
+    });
+
+    if (todaysBirthdayEmployees) {
+      // Birthday object found
+
+      res.status(200).json(todaysBirthdayEmployees);
+    } else {
+      // No birthday object found
+      console.log('No Birthday Object Found');
+      res.status(404).json({ message: 'No birthday today.' });
+    }
+  } catch (error) {
+    console.error('Error fetching birthday object:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// get individual wishes
+emplyeeRouter.get('/birthday-check/:id', async (req, res) => {
+  const employee_id = req.params.id;
+
+  try {
+    // Find employees with birthdays today and matching employee_id
+    const todaysBirthdayEmployee = await BirthdayWish.findOne({
+      birthday_boy_employee_id: employee_id,
+    });
+
+    if (todaysBirthdayEmployee) {
+      // Birthday object found
+      res.status(200).json(todaysBirthdayEmployee);
+    } else {
+      // No matching birthday object found
+      console.log('No Matching Birthday Object Found');
+      res.status(404).json({ message: 'No birthday today for this employee.' });
+    }
+  } catch (error) {
+    console.error('Error fetching birthday object:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+emplyeeRouter.post('/post-wish', async (req, res) => {
+  try {
+    const {
+      birthdayBoyId,
+      wishername,
+      wisher_employee_id,
+      wisher_email,
+      wish,
+      wisher_image,
+    } = req.body;
+
+    // Find the birthday employee by ID
+    const birthdayEmployee = await BirthdayWish.findById(birthdayBoyId);
+
+    if (!birthdayEmployee) {
+      return res.status(404).json({ message: 'Birthday employee not found' });
+    }
+
+    // Add the wish to the birthday employee's wishes array
+    birthdayEmployee.wishes.push({
+      wishername,
+      wisher_employee_id,
+      wisher_email,
+      wish,
+      wisher_image,
+    });
+
+    // Save the updated birthday employee document
+    await birthdayEmployee.save();
+
+    res.status(201).json({ message: 'Wish posted successfully' });
+  } catch (error) {
+    console.error('Error posting birthday wish:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// wish reply
+
+// -------------------------reply to specific wish----------------------------
+// without email
+emplyeeRouter.put('/reply-wish/:employeeId/:wishId', async (req, res) => {
+  const employee_id = req.params.employeeId;
+  const wish_id = req.params.wishId;
+  const reply = req.body.reply; // Assuming the reply message is sent in the request body
+
+  try {
+    // Find the employee with the specified employee_id
+    const employee = await BirthdayWish.findOneAndUpdate({
+      birthday_boy_employee_id: employee_id,
+    });
+
+    if (!employee) {
+      // Employee not found
+      console.log('Employee not found');
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+
+    const specificWish = employee.wishes.find((wish) =>
+      wish._id.equals(wish_id)
+    );
+
+    if (specificWish) {
+      // Update the specific wish with the reply message
+      specificWish.reply = reply;
+
+      // Save the updated employee document
+      await employee.save();
+      const transporter = nodemailer.createTransport({
+        service: 'Yandex',
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
+        },
+      });
+
+      transporter
+        .sendMail({
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: specificWish.wisher_email,
+          subject: 'Thank you!🥂',
+          html: `
+                  <!DOCTYPE html>
+                  <html lang="en">
+                  <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Reply to Birthday Wish</title>
+                    <!-- Add your CSS styles here -->
+                  </head>
+                  <body>
+                    <div>
+                      <p>Hello ${specificWish.wishername},</p>
+                      <p>Here is your reply: ${specificWish.reply}</p>
+                      <!-- You can add more content here as needed -->
+                    </div>
+                  </body>
+                  </html>
+                `,
+        })
+        .then((info) => {
+          if (info.accepted.includes(specificWish.wisher_email)) {
+            console.log(
+              `Email successfully sent to ${specificWish.wisher_email}`
+            );
+          } else {
+            console.log(`Failed to send email to ${specificWish.wisher_email}`);
+          }
+        })
+        .catch((error) => {
+          console.error(
+            `Error sending email to ${specificWish.wisher_email}:`,
+            error
+          );
+        });
+
+      // Respond with the updated wish
+      res.status(200).json(specificWish);
+    } else {
+      // Wish with the given _id not found
+      console.log('Wish not found');
+      res.status(404).json({ message: 'Wish not found.' });
+    }
+  } catch (error) {
+    console.error('Error replying to wish:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+// without email
+
+// emplyeeRouter.put('/reply-wish/:employeeId/:wishId', async (req, res) => {
+//   const employee_id = req.params.employeeId;
+//   const wish_id = req.params.wishId;
+//   const reply = req.body.reply; // Assuming the reply message is sent in the request body
+
+//   try {
+//     // Find the employee with the specified employee_id
+//     const employee = await BirthdayWish.findOneAndUpdate({
+//       birthday_boy_employee_id: employee_id,
+//     });
+
+//     if (!employee) {
+//       // Employee not found
+//       console.log('Employee not found');
+//       return res.status(404).json({ message: 'Employee not found.' });
+//     }
+
+//     const specificWish = employee.wishes.find((wish) =>
+//       wish._id.equals(wish_id)
+//     );
+
+//     if (specificWish) {
+//       // Update the specific wish with the reply message
+//       specificWish.reply = reply;
+
+//       // Save the updated employee document
+//       await employee.save();
+//       const transporter = nodemailer.createTransport({
+//         service: 'Yandex',
+//         auth: {
+//           user: process.env.MAIL_USER,
+//           pass: process.env.MAIL_PASS,
+//         },
+//       });
+
+//       // Define the email content using the HTML template
+//       const emailContent = `
+//         <!DOCTYPE html>
+//         <html lang="en">
+//         <head>
+//           <meta charset="UTF-8">
+//           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//           <title>Reply to Birthday Wish</title>
+//           <!-- Add your CSS styles here -->
+//         </head>
+//         <body>
+//           <div>
+//             <p>Hello ${specificWish.wishername},</p>
+//             <p>Here is your reply: ${specificWish.reply}</p>
+//             <!-- You can add more content here as needed -->
+//           </div>
+//         </body>
+//         </html>
+//       `;
+
+//       // Send the email to the wisher
+//       transporter
+//         .sendMail({
+//           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+//           to: specificWish.wisher_email,
+//           subject: 'Thank you!🥂',
+//           html: emailContent,
+//         })
+//         .then((info) => {
+//           if (info.accepted.includes(specificWish.wisher_email)) {
+//             console.log(
+//               `Email successfully sent to ${specificWish.wisher_email}`
+//             );
+//           } else {
+//             console.log(`Failed to send email to ${specificWish.wisher_email}`);
+//           }
+//         })
+//         .catch((error) => {
+//           console.error(
+//             `Error sending email to ${specificWish.wisher_email}:`,
+//             error
+//           );
+//         });
+
+//       // Respond with the updated wish
+//       res.status(200).json(specificWish);
+//     } else {
+//       // Wish with the given _id not found
+//       console.log('Wish not found');
+//       res.status(404).json({ message: 'Wish not found.' });
+//     }
+//   } catch (error) {
+//     console.error('Error replying to wish:', error);
+//     res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+// -------------------------reply to specific wish----------------------------
+
+// -----------------get specific wish------------------------------------
+emplyeeRouter.get('/get-wish/:employeeId/:wishId', async (req, res) => {
+  const employee_id = req.params.employeeId;
+  const wish_id = req.params.wishId;
+
+  try {
+    console.log('Employee ID:', employee_id);
+    console.log('Wish ID:', wish_id);
+
+    // Find the employee with the specified employee_id
+    const employee = await BirthdayWish.findOne({
+      birthday_boy_employee_id: employee_id,
+    });
+
+    if (!employee) {
+      // Employee not found
+      console.log('Employee not found');
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+
+    // Find the specific wish by wish_id in the employee's wishes array
+    const specificWish = employee.wishes.find((wish) =>
+      wish._id.equals(wish_id)
+    );
+
+    if (specificWish) {
+      // Specific wish found
+      res.status(200).json(specificWish);
+    } else {
+      // Wish with the given _id not found
+      console.log('Wish not found');
+      res.status(404).json({ message: 'Wish not found.' });
+    }
+  } catch (error) {
+    console.error('Error fetching wish:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+// -----------------get specific wish------------------------------------
 
 //-------------------------------------Birthday-----------------------
 export default emplyeeRouter;

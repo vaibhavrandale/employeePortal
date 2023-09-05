@@ -42,3 +42,100 @@
 .punchinBtn:hover::before {
   width: 9em;
 }
+
+@keyframes floatUpDown {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.birthday-card {
+  /*border: 1px solid red;
+  */
+  z-index: 111111;
+  max-width: auto;
+  max-height: auto;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  /* animation: floatUpDown 2s ease-in-out infinite; */
+}
+.birthday-card:hover {
+  animation-play-state: paused; /* Pause the animation on hover */
+}
+
+.top-right-link {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #007bff;
+}
+/* Birthday message */
+.birthday-message {
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: #ff004f;
+}
+
+.birthday_image_container {
+  display: flex;
+  justify-content: center;
+}
+/* Birthday image */
+.birthday-image {
+  max-width: 120px;
+  max-height: 120px;
+
+  border-radius: 50%;
+}
+
+/* Footer text */
+.footer-text {
+  font-size: 13px;
+  color: #555;
+}
+.footer-text > .msgContainer {
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}
+.footer-text > .msgContainer > .Submit {
+  background: #ff20ec;
+  /* font-size: 15px; */
+  border: none;
+  outline: none;
+  color: #fff;
+
+  padding: 3px 6px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}
+
+.footer-text .msgBox {
+  height: 30px;
+  max-width: 220px;
+  margin: auto;
+  outline: none;
+  border: none;
+}
+
+.footer-text .msgBox:focus {
+  outline: none;
+  border: none;
+}

@@ -4,6 +4,8 @@ const data = {
   employees: [
     {
       employee_id: '19072023009',
+      firstName: 'Vaibhav',
+      lastName: 'Randale',
       name: 'Vaibhav Randale',
       image: '/images/Vaibhav_Randale.jpg',
       email: 'vaibhav.randale@taypro.in',
@@ -66,6 +68,8 @@ const data = {
     {
       employee_id: '20192025',
       name: 'Pooja Deshmane',
+      firstName: 'Pooja',
+      lastName: 'Deshmane',
       image: '/images/Pooja_Deshmane.png',
       email: 'pooja.deshmane@taypro.in',
       password: bcrypt.hashSync('20192025'),

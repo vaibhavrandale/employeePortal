@@ -48,6 +48,7 @@ import AttendanceHome from './screens/Attendance/AttendanceHome';
 import AttendanceDetails from './screens/Attendance/AttendanceDetails';
 import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 import Wishes from './screens/Employee/Wishes';
+import UpdateEmployee from './screens/Employee/UpdateEmployee';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -157,7 +158,7 @@ function AppRouter() {
           path="/employeedetails/:id"
           element={
             <ProtectedRoutes>
-              <EmployeeDetails />
+              <UpdateEmployee />
             </ProtectedRoutes>
           }
         />

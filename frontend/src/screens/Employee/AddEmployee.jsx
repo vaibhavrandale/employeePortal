@@ -121,6 +121,8 @@ function AddEmployee() {
         {
           employee_id,
           email,
+          firstName,
+          lastName,
           name: `${firstName} ${lastName}`,
           password: employee_id,
           state: State,

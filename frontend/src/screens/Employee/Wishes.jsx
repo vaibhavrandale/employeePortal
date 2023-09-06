@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Store } from '../../Store';
 import axios from 'axios';
 import image from './images.jpg';
-import { AiOutlineSend } from 'react-icons/ai';
 import './wish.css';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import AlertBox from '../../components/MessageBox/AlertBox';
@@ -22,17 +20,12 @@ const reducer = (state, action) => {
   }
 };
 function Wishes() {
-  const [{ loading, error, wishes, loadingCreate }, dispatch] = useReducer(
-    reducer,
-    {
-      wishes: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loading, error, wishes }, dispatch] = useReducer(reducer, {
+    wishes: [],
+    loading: true,
+    error: '',
+  });
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
   const { id } = useParams();
 
   useEffect(() => {
@@ -82,38 +75,44 @@ function Wishes() {
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
         <>
-          <table className="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th className="text-center col-md-1">Wisher Image</th>
-                <th className="text-center col-md-1">Wisher Name</th>
-                <th className="text-center col-md-1">Wish</th>
-                <th className="text-center col-md-1">Reply</th>
-              </tr>
-            </thead>
-            <tbody>
-              {wishes.map((item, index) => (
-                <tr key={index}>
-                  <td className="text-center">
-                    <div className="table-image-container">
-                      {item.wisher_image ? (
-                        <img
-                          src={item.wisher_image}
-                          alt={item.wishername}
-                          className="table-image object-fit-contain"
-                        />
-                      ) : (
-                        <img
-                          src={image}
-                          alt={item.wishername}
-                          className="table-image object-fit-contain"
-                        />
-                      )}
-                    </div>
-                  </td>
-                  <td className="text-center">{item.wishername}</td>
-                  <td className="text-center">{item.wish}</td>
-                  <td className="text-center">
+          <div class="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th className="text-center col-md-1">Sr</th>
+                  <th className="text-center col-md-1">Wisher Image</th>
+                  <th className="text-center col-md-1">Wisher Name</th>
+                  <th className="text-center col-md-1">Wish</th>
+                  {/* <th className="text-center col-md-1">Reply</th> */}
+                </tr>
+              </thead>
+              <tbody>
+                {wishes.map((item, index) => (
+                  <tr key={index}>
+                    <td className="text-center">{index + 1}</td>
+                    <td className="text-center">
+                      <div
+                        className="table-image-container"
+                        style={{ height: '35px' }}
+                      >
+                        {item.wisher_image ? (
+                          <img
+                            src={item.wisher_image}
+                            alt={item.wishername}
+                            className="table-image object-fit-contain"
+                          />
+                        ) : (
+                          <img
+                            src={image}
+                            alt={item.wishername}
+                            className="table-image object-fit-contain"
+                          />
+                        )}
+                      </div>
+                    </td>
+                    <td className="text-center">{item.wishername}</td>
+                    <td className="text-center">{item.wish}</td>
+                    {/* <td className="text-center">
                     {item.reply ? (
                       item.reply
                     ) : (
@@ -131,11 +130,12 @@ function Wishes() {
                         </span>
                       </form>
                     )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </div>

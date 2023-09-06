@@ -28,6 +28,15 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'FETCH_BIRTHDAY_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_BIRTHDAY_SUCCESS':
+      return { ...state, birthdayData: action.payload, loading: false };
+
+    case 'FETCH_BIRTHDAY_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
     case 'CREATE_REQUEST':
       return { ...state, loadingCreate: true };
 
@@ -42,14 +51,13 @@ const reducer = (state, action) => {
   }
 };
 function Dashboard() {
-  const [{ loading, error, notices, loadingCreate }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, error, notices, loadingCreate, birthdayData }, dispatch] =
+    useReducer(reducer, {
       notices: [],
+      birthdayData: [],
       loading: true,
       error: '',
-    }
-  );
+    });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [isAttendanceLoggedin, setIsAttendanceLoggedin] = useState(
@@ -75,14 +83,6 @@ function Dashboard() {
 
   const [isInputDisabled, setInputDisabled] = useState(false);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    afterChange: (current) => setCurrentSlide(current),
-  };
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
@@ -109,7 +109,7 @@ function Dashboard() {
       try {
         const response = await axios.get('/api/employees/birthday-check');
         const birthdayData = response.data;
-
+        console.log(response.data);
         if (birthdayData && birthdayData.length > 0) {
           setBirthdayEmployees(birthdayData);
         }
@@ -122,7 +122,15 @@ function Dashboard() {
   }, [state.attendance]);
 
   const latestNotice = notices[notices.length - 1];
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    afterChange: (current) => setCurrentSlide(current),
+  };
   const loginHandler = async (e) => {
     try {
       const { data } = await axios.post(
@@ -247,6 +255,18 @@ function Dashboard() {
     }
   };
 
+  const today = new Date();
+  const currentMonth = today.getMonth() + 1; // January is 0, so add 1
+  const currentDate = today.getDate();
+
+  // Filter employees whose birthday matches the current date and month
+  const birthdayEmployeesToday = birthdayEmployees.filter((employee) => {
+    const birthdateParts = employee.birthday_date.split('/'); // Split date by '/'
+    const birthMonth = parseInt(birthdateParts[1], 10); // Convert to integer
+    const birthDate = parseInt(birthdateParts[0], 10); // Convert to integer
+    return birthMonth === currentMonth && birthDate === currentDate;
+  });
+
   return (
     <div className=" container">
       <span
@@ -313,7 +333,8 @@ function Dashboard() {
           <LoadingBox5 />
         ) : (
           <>
-            {birthdayEmployees ? (
+            {birthdayEmployeesToday.length > 0 &&
+            birthdayEmployees.length > 0 ? (
               <div
                 style={{
                   height: 'auto',

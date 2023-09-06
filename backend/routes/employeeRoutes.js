@@ -47,6 +47,8 @@ emplyeeRouter.post('/', async (req, res) => {
     employee_id,
     email,
     name,
+    firstName,
+    lastName,
     father_husband_name,
     gender,
     birth_date,
@@ -78,7 +80,6 @@ emplyeeRouter.post('/', async (req, res) => {
     pf_account_no,
     uan_number,
     resetToken,
-
     image,
     joiningDate,
     designation,
@@ -106,24 +107,6 @@ emplyeeRouter.post('/', async (req, res) => {
 
   const defaultPassword = employee_id;
   const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
-  // const parseDate = (dateStr) => {
-  //   const [day, month, year] = dateStr.split('/').map(Number);
-  //   return new Date(year, month - 1, day);
-  // };
-
-  // const parsedBirthDate = parseDate(birth_date);
-  // const parsedJoiningDate = parseDate(joiningDate);
-
-  // // Function to format date as "DD/MM/YYYY"
-  // const formatDate = (date) => {
-  //   const day = date.getDate().toString().padStart(2, '0');
-  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const year = date.getFullYear();
-  //   return `${day}/${month}/${year}`;
-  // };
-
-  // const formattedBirthDate = formatDate(parsedBirthDate);
-  // const formattedJoiningDate = formatDate(parsedJoiningDate);
 
   const parseDate = (dateStr) => {
     let day, month, year;
@@ -163,6 +146,8 @@ emplyeeRouter.post('/', async (req, res) => {
     employee_id,
     email,
     name,
+    firstName,
+    lastName,
     father_husband_name,
     gender,
     // birth_date,
@@ -235,6 +220,218 @@ emplyeeRouter.post('/', async (req, res) => {
 });
 
 // --add employee-------------------
+
+// --------update employee-------------------------
+emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
+  const { id } = req.params;
+  const {
+    employee_id,
+    email,
+    name,
+    firstName,
+    lastName,
+    father_husband_name,
+    gender,
+    birth_date,
+    marital_status,
+    address,
+    sub_locality,
+    district,
+    state,
+    pinCode,
+    mobile_no,
+    nominee_name,
+    nominee_relationship,
+    nominee_address,
+    nominee_sub_locality,
+    nominee_district,
+    nominee_state,
+    nominee_mobile_no,
+    nominee_pinCode,
+    nominee_email,
+    no_of_family_members,
+    alternate_mobile_no,
+    personal_email,
+    aadhar_no,
+    pan_number,
+    bank_account_no,
+    aadhar_card_file,
+    pan_card_file,
+    bank_account_file,
+    pf_account_no,
+    uan_number,
+    resetToken,
+    password,
+    image,
+    joiningDate,
+    designation,
+    age,
+    previous_company_name,
+    experience,
+    experience_letter,
+    // leaves,
+    // sick,
+    // privilege,
+    // casual,
+    // activate,
+    isAdmin,
+    isSuperAdmin,
+    isSales,
+    isScm,
+    isDesign,
+    isProject,
+    isVisitor,
+    isProduction,
+    isAccountant,
+  } = req.body;
+
+  const defaultPassword = employee_id;
+  const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
+
+  const parseDate = (dateStr) => {
+    let day, month, year;
+    if (dateStr.includes('-')) {
+      [day, month, year] = dateStr.split('-').map(Number);
+    } else if (dateStr.includes('/')) {
+      [day, month, year] = dateStr.split('/').map(Number);
+    } else {
+      return null; // Invalid date format
+    }
+    return new Date(year, month - 1, day);
+  };
+
+  const parsedBirthDate = parseDate(birth_date);
+  const parsedJoiningDate = parseDate(joiningDate);
+
+  if (!parsedBirthDate || !parsedJoiningDate) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'Invalid date format' });
+  }
+
+  // Function to format date as "DD/MM/YYYY"
+  const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const formattedBirthDate = formatDate(parsedBirthDate);
+  const formattedJoiningDate = formatDate(parsedJoiningDate);
+  try {
+    // Find the employee by ID
+    const employee = await Employee.findById(id);
+
+    if (!employee) {
+      return res.status(404).json({ message: 'Employee not found.' });
+    }
+
+    employee.employee_id = employee_id;
+    employee.email = email;
+    employee.name = name;
+    employee.firstName = firstName;
+    employee.lastName = lastName;
+    employee.father_husband_name = father_husband_name;
+    employee.gender = gender;
+    employee.birth_date = formattedBirthDate;
+    employee.joiningDate = formattedJoiningDate;
+    employee.marital_status = marital_status;
+    employee.address = address;
+    employee.sub_locality = sub_locality;
+    employee.district = district;
+    employee.state = state;
+    employee.pinCode = pinCode;
+    employee.mobile_no = mobile_no;
+    employee.nominee_name = nominee_name;
+    employee.nominee_relationship = nominee_relationship;
+    employee.nominee_address = nominee_address;
+    employee.nominee_sub_locality = nominee_sub_locality;
+    employee.nominee_district = nominee_district;
+    employee.nominee_state = nominee_state;
+    employee.nominee_mobile_no = nominee_mobile_no;
+    employee.nominee_pinCode = nominee_pinCode;
+    employee.nominee_email = nominee_email;
+    employee.no_of_family_members = no_of_family_members;
+    employee.alternate_mobile_no = alternate_mobile_no;
+    employee.personal_email = personal_email;
+    employee.aadhar_no = aadhar_no;
+    employee.pan_number = pan_number;
+    employee.bank_account_no = bank_account_no;
+    employee.aadhar_card_file = aadhar_card_file;
+    employee.pan_card_file = pan_card_file;
+    employee.bank_account_file = bank_account_file;
+    employee.pf_account_no = pf_account_no;
+    employee.uan_number = uan_number;
+    employee.resetToken = resetToken;
+    employee.image = image;
+    employee.password = hashedPassword;
+    employee.designation = designation;
+    employee.age = age;
+    employee.previous_company_name = previous_company_name;
+    employee.experience = experience;
+    employee.experience_letter = experience_letter;
+    // employee.leaves = leaves;
+    // employee.sick = sick;
+    // employee.privilege = privilege;
+    // employee.casual = casual;
+    // employee.activate = activate;
+    employee.isAdmin = isAdmin;
+    employee.isSuperAdmin = isSuperAdmin;
+    employee.isSales = isSales;
+    employee.isScm = isScm;
+    employee.isDesign = isDesign;
+    employee.isProject = isProject;
+    employee.isVisitor = isVisitor;
+    employee.isProduction = isProduction;
+    employee.isAccountant = isAccountant;
+
+    // Save the updated employee document
+    await employee.save();
+
+    return res
+      .status(201)
+      .json({ message: `Employee updated successfully.`, employee });
+  } catch (error) {
+    console.error('Error while updating address:', error);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+// --------update employee-------------------------
+
+// ---------------delete employee------------
+emplyeeRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const employee = await Employee.findById(req.params.id);
+
+    if (!employee) {
+      res.status(404).send({ message: 'Employee not found' });
+      return;
+    }
+
+    // Check if the employee is in the list of protected employees
+    const protectedEmployees = [
+      'vaibhav.randale@taypro.in',
+      'yogesh@taypro.in', // Add the email addresses of protected employees here
+      // Add more protected employees as needed
+    ];
+
+    if (protectedEmployees.includes(employee.email)) {
+      res.status(403).send({ message: 'Cannot delete this employee' });
+      return;
+    }
+
+    // If the employee is not protected, delete them
+    await employee.deleteOne();
+    res.send({ message: 'Employee Deleted' });
+  })
+);
+
+// ---------------delete employee------------
 
 // -----------------activate employee------------
 emplyeeRouter.put('/activate/:id', async (req, res) => {
@@ -312,45 +509,6 @@ emplyeeRouter.post(
     res.status(401).send({ message: 'Invalid Credentials' });
   })
 );
-
-// emplyeeRouter.post(
-//   '/forget-password',
-//   expressAsyncHandler(async (req, res) => {
-//     const employee = await Employee.findOne({ email: req.body.email });
-
-//     if (employee) {
-//       const token = jwt.sign({ _id: employee._id }, process.env.JWT_SECRET, {
-//         expiresIn: '3h',
-//       });
-//       employee.resetToken = token;
-//       await employee.save();
-
-//       //reset link
-//       console.log(`${baseUrl()}/reset-password/${token}`);
-
-//       mailgun()
-//         .messages()
-//         .send(
-//           {
-//             from: 'TAYPRO <employee-lwbn@mg.yourdomain.com>',
-//             to: `${employee.name} <${employee.email}>`,
-//             subject: `Reset Password`,
-//             html: `
-//              <p>Please Click the following link to reset your password:</p>
-//              <a href="${baseUrl()}/reset-password/${token}"}>Reset Password</a>
-//              `,
-//           },
-//           (error, body) => {
-//             console.log(error);
-//             console.log(body);
-//           }
-//         );
-//       res.send({ message: 'We sent reset password link to your email.' });
-//     } else {
-//       res.status(404).send({ message: 'User not found' });
-//     }
-//   })
-// );
 
 emplyeeRouter.post(
   '/forget-password',
@@ -467,118 +625,6 @@ emplyeeRouter.post('/:id/payslips', async (req, res) => {
 });
 
 // ----------payslip------------------
-
-// 1
-// ----------edit employee adreess------------------
-
-// Route for edit emplopyee address
-emplyeeRouter.put('/address/:id', async (req, res) => {
-  const { id } = req.params;
-  const { address, state } = req.body;
-
-  try {
-    // Find the employee by ID
-    const employee = await Employee.findById(id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found.' });
-    }
-    (employee.address = address),
-      (employee.state = state),
-      // Save the updated employee document
-      await employee.save();
-
-    return res
-      .status(201)
-      .json({ message: `Address updated successfully.`, employee });
-  } catch (error) {
-    console.error('Error while updating address:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-});
-// ----------edit employee adreess------------------
-
-// 2
-// ----------edit personal Details------------------
-
-// Route for edit emplopyee personal details
-emplyeeRouter.put('/personaldetails/:id', async (req, res) => {
-  const { id } = req.params;
-  const {
-    name,
-    email,
-    joiningDate,
-    birth_date,
-    gender,
-    designation,
-    mobile_no,
-    age,
-    experience,
-  } = req.body;
-
-  try {
-    // Find the employee by ID
-    const employee = await Employee.findById(id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found.' });
-    }
-
-    (employee.name = name),
-      (employee.email = email),
-      (employee.joiningDate = joiningDate),
-      (employee.birth_date = birth_date),
-      (employee.gender = gender),
-      (employee.designation = designation),
-      (employee.age = age),
-      (employee.experience = experience),
-      (employee.mobile_no = mobile_no),
-      // Save the updated employee document
-      await employee.save();
-
-    return res
-      .status(201)
-      .json({ message: `Personal Details updated successfully.` });
-  } catch (error) {
-    console.error('Error while updating Personal Details:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-});
-// ----------edit employee personalDetails------------------
-
-// 3
-// ----------edit identity Details------------------
-
-// Route for edit emplopyee identity details
-emplyeeRouter.put('/identitydetails/:id', async (req, res) => {
-  const { id } = req.params;
-  const { pf_account_no, bank_account_no, uan_number, pan_number, aadhar_no } =
-    req.body;
-
-  try {
-    // Find the employee by ID
-    const employee = await Employee.findById(id);
-
-    if (!employee) {
-      return res.status(404).json({ message: 'Employee not found.' });
-    }
-    (employee.pf_account_no = pf_account_no),
-      (employee.bank_account_no = bank_account_no),
-      (employee.uan_number = uan_number),
-      (employee.pan_number = pan_number),
-      (employee.aadhar_no = aadhar_no),
-      // Save the updated employee document
-      await employee.save();
-
-    return res
-      .status(201)
-      .json({ message: `Identity details updated successfully.` });
-  } catch (error) {
-    console.error('Error while updating Identity Details:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
-  }
-});
-// ----------edit employee identity------------------
 
 const logo =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
@@ -2004,10 +2050,8 @@ const sendBirthdayEmails = async () => {
 cron.schedule('0 8 * * *', sendBirthdayEmails);
 // cron.schedule('0 12 * * *', sendBirthdayEmails);
 
-// cron.schedule('0 11 * * *', sendBirthdayEmails);
-
-cron.schedule('30 12 * * *', async () => {
-  // cron.schedule('50 11 * * *', async () => {
+cron.schedule('0 8 * * *', async () => {
+  // cron.schedule('* * * * *', async () => {
   try {
     const currentDate = new Date();
     const currentDay = String(currentDate.getDate()).padStart(2, '0');
@@ -2190,9 +2234,8 @@ emplyeeRouter.put('/reply-wish/:employeeId/:wishId', async (req, res) => {
                   <body>
                     <div>
                       <p>Hello ${specificWish.wishername},</p>
-                      <p>Here is your reply: ${specificWish.reply}</p>
-                      <!-- You can add more content here as needed -->
-                    </div>
+                      <p>${specificWish.reply}</p>
+                       </div>
                   </body>
                   </html>
                 `,

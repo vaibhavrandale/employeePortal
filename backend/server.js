@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import seedRouter from './routes/seedRouter.js';
 import path from 'path';
-
+import cron from 'node-cron';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
 import uploadRouter from './routes/uploadRoute.js';
@@ -38,6 +38,20 @@ app.use('/api/notice', NoticeRouter);
 app.get('/api/leaves', (req, res) => {
   res.send(data.Leaves);
 });
+
+// const websiteUrl = 'http://employee.taypro.in';
+
+// cron.schedule('*/5 * * * *', () => {
+//   // Make an HTTP GET request to the website
+//   axios
+//     .get(websiteUrl)
+//     .then((response) => {
+//       console.log(`Website ${websiteUrl} loaded successfully.`);
+//     })
+//     .catch((error) => {
+//       console.error(`Error loading website ${websiteUrl}:`, error);
+//     });
+// });
 
 // -----------------------------------------
 const __dirname = path.resolve();

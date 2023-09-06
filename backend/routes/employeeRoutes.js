@@ -2001,13 +2001,13 @@ const sendBirthdayEmails = async () => {
 };
 
 // Schedule the job
-// cron.schedule('0 8 * * *', sendBirthdayEmails);
-cron.schedule('0 12 * * *', sendBirthdayEmails);
+cron.schedule('0 8 * * *', sendBirthdayEmails);
+// cron.schedule('0 12 * * *', sendBirthdayEmails);
 
 // cron.schedule('0 11 * * *', sendBirthdayEmails);
 
-cron.schedule('0 12 * * *', async () => {
-  // cron.schedule('0 8 * * *', async () => {
+cron.schedule('30 12 * * *', async () => {
+  // cron.schedule('50 11 * * *', async () => {
   try {
     const currentDate = new Date();
     const currentDay = String(currentDate.getDate()).padStart(2, '0');

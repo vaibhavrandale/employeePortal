@@ -9,7 +9,6 @@ import {
   useLocation,
 } from 'react-router-dom';
 // import AdminRoute from './components/AdminRoute';
-import EmployeeDetails from './screens/Employee/EmployeeDetails';
 import Dashboard from './screens/Dashboard';
 import AddEmployee from './screens/Employee/AddEmployee';
 import Signin from './screens/Signin/Signin';

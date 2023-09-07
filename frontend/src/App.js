@@ -49,6 +49,7 @@ import AttendanceDetails from './screens/Attendance/AttendanceDetails';
 import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 import Wishes from './screens/Employee/Wishes';
 import UpdateEmployee from './screens/Employee/UpdateEmployee';
+import SalarySleepUpdated from './screens/salarySleep/SalarySleepUpdated';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -291,7 +292,7 @@ function AppRouter() {
           path="/pay-sleep"
           element={
             <ProtectedRoutes>
-              <SalarySleep />
+              <SalarySleepUpdated />
             </ProtectedRoutes>
           }
         />

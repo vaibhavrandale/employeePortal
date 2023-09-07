@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer, useContext } from 'react';
 import './Employee.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import { Store } from '../../Store';

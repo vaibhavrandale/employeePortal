@@ -5,11 +5,8 @@ import './Table.css'; // Import the CSS file for custom styling
 // import data from './data';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-
-import LoadingBox from '../../components/LoadingBox';
 import AlertBox from '../../components/MessageBox/AlertBox';
 import { Store } from '../../Store';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { getError } from '../../utils';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
@@ -61,7 +58,7 @@ const TableWithSearchAndPagination = () => {
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isdeletePopupOpen, setdeletePopupOpen] = useState(false);
-  const [loadedImages, setLoadedImages] = useState([]);
+  // const [loadedImages, setLoadedImages] = useState([]);
 
   // const [backEmployee, setBackEmployee] = useState([]);
 
@@ -128,13 +125,13 @@ const TableWithSearchAndPagination = () => {
     setdeletePopupOpen(!isdeletePopupOpen);
   };
 
-  const handleImageLoad = (index) => {
-    setLoadedImages((prevLoadedImages) => {
-      const newLoadedImages = [...prevLoadedImages];
-      newLoadedImages[index] = true;
-      return newLoadedImages;
-    });
-  };
+  // const handleImageLoad = (index) => {
+  //   setLoadedImages((prevLoadedImages) => {
+  //     const newLoadedImages = [...prevLoadedImages];
+  //     newLoadedImages[index] = true;
+  //     return newLoadedImages;
+  //   });
+  // };
 
   const saveSettings = async (settings) => {
     // Simulating a delay for API call
@@ -256,14 +253,17 @@ const TableWithSearchAndPagination = () => {
                     onMouseLeave={() => handleRowHover(null)}
                   >
                     <td className="text-center">
-                      <div className="table-image-container">
+                      <div
+                        className="table-image-container object-fit-contain"
+                        style={{ height: '35px' }}
+                      >
                         <Link to={`/employeedetails/${item._id}`}>
                           <img
                             src={item.image}
                             alt={item.name}
                             className="table-image"
                             // style={{ backgroundColor: 'transparent' }}
-                            onLoad={() => handleImageLoad(index)}
+                            // onLoad={() => handleImageLoad(index)}
                           />
                         </Link>
                       </div>

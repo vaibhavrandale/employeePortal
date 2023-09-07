@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './notice.css';
 import { Link } from 'react-router-dom';
-// import notice from './notice';
-import LoadingBox2 from '../../components/LoadingBox/LoadingBox2';
 import { Element, scroller } from 'react-scroll'; // Import Element
 import axios from 'axios';
 import MsgBox from '../../components/MessageBox/MsgBox';

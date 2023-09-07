@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './Sitetable.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { LuEdit2 } from 'react-icons/lu';
+import { LuEdit } from 'react-icons/lu';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import AlertBox from '../../components/MessageBox/AlertBox';
@@ -360,7 +360,7 @@ function SiteList() {
                         <button className="edit-button">
                           <Link className="link" to={`/editSite/${item._id}`}>
                             {' '}
-                            <LuEdit2 className="text-success fs-5" />
+                            <LuEdit className="text-success fs-5" />
                           </Link>
                         </button>
                       </td>

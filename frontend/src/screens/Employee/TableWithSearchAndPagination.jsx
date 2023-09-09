@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useReducer, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdDeleteOutline } from 'react-icons/md';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { BsPersonAdd } from 'react-icons/bs';
+import { RxCross2 } from 'react-icons/rx';
 import './Table.css'; // Import the CSS file for custom styling
 // import data from './data';
 import { toast } from 'react-hot-toast';
@@ -125,6 +128,14 @@ const TableWithSearchAndPagination = () => {
     setdeletePopupOpen(!isdeletePopupOpen);
   };
 
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
+  const closeDeletePopup = () => {
+    setdeletePopupOpen(false);
+  };
+
   // const handleImageLoad = (index) => {
   //   setLoadedImages((prevLoadedImages) => {
   //     const newLoadedImages = [...prevLoadedImages];
@@ -186,10 +197,10 @@ const TableWithSearchAndPagination = () => {
             <p>Are you sure you want to add new Employee?</p>
             <div className="popup-buttons">
               <button className="popup-button verify" onClick={createHandler}>
-                ADD
+                <BsPersonAdd />
               </button>
-              <button className="popup-button cancel" onClick={popupHandle}>
-                Cancel
+              <button className="popup-button cancel" onClick={closePopup}>
+                <RxCross2 />
               </button>
             </div>
           </div>
@@ -231,12 +242,12 @@ const TableWithSearchAndPagination = () => {
             >
               <thead>
                 <tr>
-                  <th className="col-md-2 text-center">Image</th>
-                  <th className="col-md-4 text-center">Name</th>
-                  <th className="col-md-2 text-center">Employee ID</th>
+                  <th className="col-md-2 text-center">ID</th>
+                  <th className="col-md-1 text-center">Image</th>
+                  <th className="col-md-3 text-center">Name</th>
                   <th className="col-md-2 text-center">Designation</th>
-                  <th className="col-md-5 text-center">Email</th>
-                  <th className="col-md-4 text-center">Joining Date</th>
+                  <th className="col-md-2 text-center">Email</th>
+                  <th className="col-md-5 text-center">Joining Date</th>
                   {userInfo.isSuperAdmin ? (
                     <th className="col-md-4 text-center">Remove</th>
                   ) : (
@@ -253,9 +264,18 @@ const TableWithSearchAndPagination = () => {
                     onMouseLeave={() => handleRowHover(null)}
                   >
                     <td className="text-center">
+                      {' '}
+                      <Link
+                        className="text-decoration-none  text-danger"
+                        to={`/employeedetails/${item._id}`}
+                      >
+                        {item.employee_id}
+                      </Link>
+                    </td>
+                    <td className="text-center">
                       <div
-                        className="table-image-container object-fit-contain"
-                        style={{ height: '35px' }}
+                        className="table-image-container "
+                        style={{ height: '45px' }}
                       >
                         <Link to={`/employeedetails/${item._id}`}>
                           <img
@@ -269,20 +289,12 @@ const TableWithSearchAndPagination = () => {
                       </div>
                     </td>
                     <td className="text-center">{item.name}</td>
-                    <td className="text-center">
-                      {' '}
-                      <Link
-                        className="text-decoration-none fw-bold"
-                        to={`/employeedetails/${item._id}`}
-                      >
-                        {item.employee_id}
-                      </Link>
-                    </td>
+
                     <td className="text-center">{item.designation}</td>
                     <td className="text-center">{item.email}</td>
                     <td className="text-center">{item.joiningDate}</td>
                     {userInfo.isSuperAdmin ? (
-                      <td className="text-center  fs-4">
+                      <td className="text-center  fs-5">
                         {loadingDelete ? (
                           <LoadingBox4 />
                         ) : (
@@ -306,13 +318,13 @@ const TableWithSearchAndPagination = () => {
                               className="popup-button verify"
                               onClick={(e) => DeleteHandler(e, item._id)}
                             >
-                              DELETE
+                              <AiOutlineDelete />
                             </button>
                             <button
                               className="popup-button cancel"
-                              onClick={popupHandle}
+                              onClick={closeDeletePopup}
                             >
-                              Cancel
+                              <RxCross2 />
                             </button>
                           </div>
                         </div>

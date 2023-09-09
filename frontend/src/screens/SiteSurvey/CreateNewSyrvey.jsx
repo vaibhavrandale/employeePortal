@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useReducer, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../../Store';
 import axios from 'axios';
@@ -7,7 +7,6 @@ import { getError } from '../../utils';
 import { GrClose } from 'react-icons/gr';
 import '../../App.css';
 import { FiExternalLink } from 'react-icons/fi';
-import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import ONEP from './surveyimg/1P.png';
 import TWOL from './surveyimg/2L.png';
@@ -62,7 +61,6 @@ function CreateNewSyrvey({ projectCode }) {
   // const [isLoading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [surveyId, setSurveyId] = useState('');
-  const [projectcode, setProjectcode] = useState('');
   const [block, setBlock] = useState('');
   const [structure, setStructure] = useState('');
   const [row, setRow] = useState('');
@@ -235,73 +233,6 @@ function CreateNewSyrvey({ projectCode }) {
     }
   };
 
-  // const uploadFileHandler = async (e, forImages, fieldName) => {
-  //   const file = e.target.files[0];
-  //   const bodyFormData = new FormData();
-  //   bodyFormData.append('file', file);
-  //   try {
-  //     dispatch({ type: 'UPLOAD_REQUEST' });
-  //     const { data } = await axios.post('/api/upload', bodyFormData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //     });
-  //     dispatch({ type: 'UPLOAD_SUCCESS' });
-
-  //     // Update the corresponding state variable based on the field name
-  //     if (forImages) {
-  //       // Additional images
-  //       setImages([...images, data.secure_url]);
-  //     } else {
-  //       // A to J images
-  //       switch (fieldName) {
-  //         case 'A':
-  //           setImageA(data.secure_url);
-  //           break;
-  //         case 'B':
-  //           setImageB(data.secure_url);
-  //           break;
-  //         case 'C':
-  //           setImageC(data.secure_url);
-  //           break;
-  //         case 'D':
-  //           setImageD(data.secure_url);
-  //           break;
-  //         case 'E':
-  //           setImageE(data.secure_url);
-  //           break;
-  //         case 'F':
-  //           setImageF(data.secure_url);
-  //           break;
-  //         case 'G':
-  //           setImageG(data.secure_url);
-  //           break;
-  //         case 'H':
-  //           setImageH(data.secure_url);
-  //           break;
-  //         case 'I':
-  //           setImageI(data.secure_url);
-  //           break;
-  //         case 'J':
-  //           setImageJ(data.secure_url);
-  //           break;
-  //         // ... Add similar cases for images C to J
-  //         default:
-  //           break;
-  //       }
-
-  //     }
-
-  //     toast.success('Image uploaded successfully. ');
-  //   } catch (err) {
-  //     toast.success(getError(err), {
-  //       position: 'bottom-left',
-  //     });
-  //     dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
-  //   }
-  // };
-
   const uploadFileHandler = async (e, forImages, fieldName) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -400,8 +331,141 @@ function CreateNewSyrvey({ projectCode }) {
     setH(newHValues);
   };
 
+  const styles = {
+    container: {
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      backgroundColor: '#f4f4f4',
+      padding: '20px',
+      margin: '65px 0px 0px 72px',
+      maxWidth: '90vmax',
+      overflowX: 'auto',
+      borderRadius: '8px',
+      boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.1)',
+    },
+    header: {
+      fontSize: '1.5rem',
+      marginBottom: '1rem',
+      color: '#333',
+      textAlign: 'center',
+    },
+    sectionHeader: {
+      borderBottom: '1px solid #ddd',
+      fontSize: '1.2rem',
+      margin: '10px 0',
+      paddingBottom: '10px',
+    },
+    table: {
+      width: '100%',
+      margin: '10px',
+    },
+    label: {
+      marginBottom: '8px',
+      paddingLeft: '10px',
+      fontSize: '1rem',
+      color: '#555',
+    },
+
+    input: {
+      width: '100%',
+      padding: '8px',
+      fontSize: '1rem',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      margin: '1px',
+      transition: 'border-color 0.3s ease-in-out',
+    },
+    inputFocus: {
+      borderColor: '#007BFF',
+    },
+    file: {
+      width: '100%',
+      height: '40px',
+      padding: '2px',
+      fontSize: '1rem',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      margin: '1px',
+    },
+    select: {
+      width: '100%',
+      padding: '8px',
+      fontSize: '1rem',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      margin: '1px',
+    },
+    button: {
+      padding: '10px 15px',
+      backgroundColor: '#007BFF',
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      transition: 'background-color 0.3s ease-in-out',
+      marginTop: '15px',
+      display: 'block',
+      marginLeft: 'auto',
+    },
+    image: {
+      height: '150px',
+      width: '150px',
+      borderRadius: '50%',
+      objectFit: 'fill',
+    },
+    imageContainer: {
+      display: 'flex',
+
+      justifyContent: 'end',
+      flexDirection: 'column',
+      alignItems: 'end',
+    },
+    imageDiv: {
+      height: '150px',
+      width: '150px',
+      borderRadius: '50%',
+      display: 'flex',
+      justifyContent: 'center',
+      border: '1px solid black',
+      alignItems: 'center',
+    },
+    responsiveContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+    },
+    responsiveItem: {
+      flex: '0 0 calc(50% - 10px)', // This gives a tiny margin
+      marginBottom: '20px',
+    },
+
+    '@media (max-width: 768px)': {
+      responsiveItem: {
+        flex: '0 0 100%',
+      },
+    },
+  };
+
+  // Add hover & focus effects
+  document.querySelectorAll('input').forEach((inputElem) => {
+    inputElem.addEventListener('focus', () => {
+      Object.assign(inputElem.style, styles.inputFocus);
+    });
+    inputElem.addEventListener('blur', () => {
+      Object.assign(inputElem.style, styles.input);
+    });
+  });
+
+  document.querySelectorAll('button').forEach((buttonElem) => {
+    buttonElem.addEventListener('mouseover', () => {
+      Object.assign(buttonElem.style, styles.buttonHover);
+    });
+    buttonElem.addEventListener('mouseout', () => {
+      Object.assign(buttonElem.style, styles.button);
+    });
+  });
+
   return (
-    <div className="container1">
+    <div style={styles.container}>
       <div className="m-2 card p-1 pb-2">
         <nav
           style={{ '--bs-breadcrumb-divider': "'>'" }}
@@ -436,7 +500,10 @@ function CreateNewSyrvey({ projectCode }) {
         <form onSubmit={submitHandler}>
           {progress === 0 && (
             <div className="form-group mt-4">
-              <div className="row d-flex flex-column justify-content-center align-items-center ">
+              <div
+                className="row d-flex flex-column justify-content-center align-items-center "
+                style={styles.table}
+              >
                 <div className="form-group col-md-2 m-1">
                   <label htmlFor="structure">Structure:</label>
                   <select
@@ -513,65 +580,49 @@ function CreateNewSyrvey({ projectCode }) {
                 {structure === '1P' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img src={ONEP} className="structureImg " alt=" 1P image" />
+                    <img src={ONEP} className="structureImg " alt=" 1P" />
                   </div>
                 )}
                 {structure === '2L' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img src={TWOL} className="structureImg " alt=" 2P image" />
+                    <img src={TWOL} className="structureImg " alt=" 2P" />
                   </div>
                 )}
                 {structure === '2P' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img src={TWOP} className="structureImg " alt=" 3P image" />
+                    <img src={TWOP} className="structureImg " alt=" 3P" />
                   </div>
                 )}
                 {structure === '3L' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img
-                      src={THREEL}
-                      className="structureImg "
-                      alt=" 4L image"
-                    />
+                    <img src={THREEL} className="structureImg " alt=" 4L" />
                   </div>
                 )}
                 {structure === '3P' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img
-                      src={THREEP}
-                      className="structureImg "
-                      alt=" 1P image"
-                    />
+                    <img src={THREEP} className="structureImg " alt=" 1P" />
                   </div>
                 )}
                 {structure === '4L' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img
-                      src={FOURL}
-                      className="structureImg "
-                      alt=" 2P image"
-                    />
+                    <img src={FOURL} className="structureImg " alt=" 2P" />
                   </div>
                 )}
                 {structure === '4P' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img
-                      src={FOURP}
-                      className="structureImg "
-                      alt=" 3P image"
-                    />
+                    <img src={FOURP} className="structureImg " alt=" 3P" />
                   </div>
                 )}
                 {structure === '6L' && (
                   <div className="small-image-container">
                     <span className="badge bg-success m-2"> {structure}</span>
-                    <img src={SIXL} className="structureImg " alt=" 4L image" />
+                    <img src={SIXL} className="structureImg " alt=" 4L" />
                   </div>
                 )}
                 {/* Add similar conditions for other options */}
@@ -904,251 +955,6 @@ function CreateNewSyrvey({ projectCode }) {
                       </div>
                     </div>
                     {/* -------------------------------------------------------- */}
-
-                    {/* <div className="row d-flex mb-2 m-1">
-                      <div className="form-group col-md-6 mx-1">
-                        <label htmlFor="lastName"> Table 1 :</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="lastName"
-                          placeholder="Enter table 1"
-                          value={htablex}
-                          required
-                          onChange={(e) => setHtablex(e.target.value)}
-                        />
-                      </div>
-                      <div className="form-group col-md-5  mx-1">
-                        <label htmlFor="lastName"> Table 2 :</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="lastName"
-                          placeholder="Enter table 2"
-                          value={htabley}
-                          required
-                          onChange={(e) => setHtabley(e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    <div className="row d-flex mb-2 m-1">
-                      <div className="form-group col-md-6 mx-1">
-                        <label htmlFor="lastName">
-                          {' '}
-                          H :{' '}
-                          {ImageH && (
-                            <Link
-                              className="text-decoration-none"
-                              target="blank"
-                              to={ImageH}
-                            >
-                              H{' '}
-                              <span>
-                                <FiExternalLink />
-                              </span>
-                            </Link>
-                          )}
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="lastName"
-                          placeholder="Enter H"
-                          value={H}
-                          required
-                          onChange={(e) => setH(e.target.value)}
-                        />
-                      </div>
-
-                      <div className="col-md-5">
-                        <div className="form-group mx-1">
-                          <label htmlFor="lastName ">Upload Image H:</label>
-                          <span className="text-muted"></span>
-                          {loadingUpload && <LoadingBox4 />}
-                          <input
-                            type="file"
-                            className="form-control"
-                            onChange={(e) => uploadFileHandler(e, false, 'H')}
-                          />
-                        </div>
-                      </div>
-                    </div> */}
-
-                    {/* ----------------------------new-------------------------- */}
-                    {/* {Array.from({ length: parseInt(table, 10) - 1 }).map(
-                      (_, index) => (
-                        <div
-                          className="row d-flex mb-2 m-1"
-                          key={`table_${index}`}
-                        >
-                          <div className="form-group col-md-6 mx-1">
-                            <label htmlFor={`htablex_${index}`}>
-                              {' '}
-                              Table {index + 1} - htablex:
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`htablex_${index}`}
-                              placeholder={`Enter htablex for table ${
-                                index + 1
-                              }`}
-                              required
-                              onChange={(e) => handleHtablexChange(e, index)}
-                            />
-                          </div>
-                          <div className="form-group col-md-5 mx-1">
-                            <label htmlFor={`htabley_${index}`}>
-                              {' '}
-                              Table {index + 1} - htabley:
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`htabley_${index}`}
-                              placeholder={`Enter htabley for table ${
-                                index + 1
-                              }`}
-                              required
-                              onChange={(e) => handleHtableyChange(e, index)}
-                            />
-                          </div>
-                        </div>
-                      )
-                    )}
-                    {Array.from({ length: parseInt(table, 10) - 1 }).map(
-                      (_, index) => (
-                        <div className="row d-flex mb-2 m-1" key={`h_${index}`}>
-                          <div className="form-group col-md-6 mx-1">
-                            <label htmlFor={`H_${index}`}>
-                              {' '}
-                              H (for Table {index + 1}):{' '}
-                              {ImageH && (
-                                <Link
-                                  className="text-decoration-none"
-                                  target="blank"
-                                  to={ImageH}
-                                >
-                                  H{' '}
-                                  <span>
-                                    <FiExternalLink />
-                                  </span>
-                                </Link>
-                              )}
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`H_${index}`}
-                              placeholder={`Enter H for Table ${index + 1}`}
-                              value={H[index]}
-                              required
-                              onChange={(e) => handleHChange(e, index)}
-                            />
-                          </div>
-                          <div className="col-md-5">
-                            <div className="form-group mx-1">
-                              <label htmlFor={`ImageH_${index}`}>
-                                Upload Image H (for Table {index + 1}):
-                              </label>
-                              <span className="text-muted"></span>
-                              {loadingUpload && <LoadingBox4 />}
-                              <input
-                                type="file"
-                                className="form-control"
-                                onChange={(e) =>
-                                  uploadFileHandler(e, false, `H_${index}`)
-                                }
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    )} */}
-
-                    {/* {Array.from({ length: parseInt(table, 10) - 1 }).map(
-                      (_, index) => (
-                        <div
-                          className="row d-flex mb-2 m-1"
-                          key={`table_row_${index}`}
-                        >
-                          <div className="form-group col-md-3 mx-1">
-                            <label htmlFor={`htablex_${index}`}>
-                              Table {index + 1} :
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`htablex_${index}`}
-                              placeholder={`Enter htablex for table ${
-                                index + 1
-                              }`}
-                              required
-                              onChange={(e) => handleHtablexChange(e, index)}
-                            />
-                          </div>
-
-                          <div className="form-group col-md-2 mx-1">
-                            <label htmlFor={`H_${index}`}>
-                              H (for Table {index + 1}):
-                              {ImageH && (
-                                <Link
-                                  className="text-decoration-none"
-                                  target="blank"
-                                  to={ImageH}
-                                >
-                                  H{' '}
-                                  <span>
-                                    <FiExternalLink />
-                                  </span>
-                                </Link>
-                              )}
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`H_${index}`}
-                              placeholder={`Enter H for Table ${index + 1}`}
-                              value={H[index]}
-                              required
-                              onChange={(e) => handleHChange(e, index)}
-                            />
-                          </div>
-
-                          <div className="col-md-3">
-                            <div className="form-group mx-1">
-                              <label htmlFor={`ImageH_${index}`}>
-                                Upload Image H (for Table {index + 1}):
-                              </label>
-                              {loadingUpload && <LoadingBox4 />}
-                              <input
-                                type="file"
-                                className="form-control"
-                                onChange={(e) =>
-                                  uploadFileHandler(e, false, `H_${index}`)
-                                }
-                              />
-                            </div>
-                          </div>
-
-                          <div className="form-group col-md-3 mx-1">
-                            <label htmlFor={`htabley_${index}`}>
-                              Table {index + 1} :
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id={`htabley_${index}`}
-                              placeholder={`Enter htabley for table ${
-                                index + 1
-                              }`}
-                              required
-                              onChange={(e) => handleHtableyChange(e, index)}
-                            />
-                          </div>
-                        </div>
-                      )
-                    )} */}
 
                     {Array.from({ length: parseInt(table, 10) - 1 }).map(
                       (_, index) => (

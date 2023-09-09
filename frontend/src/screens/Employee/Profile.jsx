@@ -591,6 +591,7 @@ const Profile = () => {
                 <td style={styles.label}>First Name:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="firstName"
@@ -605,6 +606,7 @@ const Profile = () => {
                 </td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="lastName"
@@ -618,6 +620,7 @@ const Profile = () => {
                 <td style={styles.label}>Age:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="number"
                     id="age"
@@ -630,6 +633,7 @@ const Profile = () => {
                 <td style={styles.label}>Gender:</td>
                 <td>
                   <select
+                    disabled
                     name=""
                     id=""
                     style={styles.select}
@@ -646,6 +650,7 @@ const Profile = () => {
                 <td style={styles.label}>Date of Birth:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="birth_date"
@@ -657,6 +662,7 @@ const Profile = () => {
                 <td style={styles.label}>Marital Status:</td>
                 <td>
                   <select
+                    disabled
                     name=""
                     id=""
                     style={styles.select}
@@ -673,6 +679,7 @@ const Profile = () => {
                 <td style={styles.label}>Father/Husband Name:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="father_husband_name"
@@ -683,7 +690,7 @@ const Profile = () => {
                 </td>
                 {/* <td style={styles.label}>Profile Image:</td>
                 <td>
-                  <input
+                  <input disabled
                     style={styles.file}
                     type="file"
                     id="profile"
@@ -702,6 +709,7 @@ const Profile = () => {
                 <td style={styles.label}>Personal Email:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="email"
                     id="email"
@@ -713,6 +721,7 @@ const Profile = () => {
                 <td style={styles.label}>Phone Number:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="tel"
                     id="mobile_no"
@@ -726,6 +735,7 @@ const Profile = () => {
                 <td style={styles.label}>Alternate Phone No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="tel"
                     id="alternate_mobile_no"
@@ -737,6 +747,7 @@ const Profile = () => {
                 <td style={styles.label}>Sub Locality:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="tel"
                     id="alternate_mobile_no"
@@ -750,6 +761,7 @@ const Profile = () => {
                 <td style={styles.label}>District:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="tel"
                     id="alternate_mobile_no"
@@ -761,6 +773,7 @@ const Profile = () => {
                 <td style={styles.label}>State:</td>
                 <td>
                   <select
+                    disabled
                     name="state"
                     id="state"
                     style={styles.select}
@@ -814,6 +827,7 @@ const Profile = () => {
                 <td style={styles.label}>Pin Code:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -825,6 +839,7 @@ const Profile = () => {
                 <td style={styles.label}>No Of family members:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -838,6 +853,7 @@ const Profile = () => {
                 <td style={styles.label}>Address:</td>
                 <td colSpan="3">
                   <textarea
+                    disabled
                     style={styles.input}
                     id="address"
                     placeholder="Enter address"
@@ -856,6 +872,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Name:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -868,6 +885,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Relationship:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -881,6 +899,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Mobile No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -892,6 +911,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Email:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -905,6 +925,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee sub locality:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="experience"
@@ -917,6 +938,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee district:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="joiningDate"
@@ -930,6 +952,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee State:</td>
                 <td>
                   <select
+                    disabled
                     name="state"
                     id="state"
                     style={styles.select}
@@ -981,6 +1004,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Pin Code:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -994,6 +1018,7 @@ const Profile = () => {
                 <td style={styles.label}>Nominee Address:</td>
                 <td colSpan="3">
                   <textarea
+                    disabled
                     style={styles.input}
                     id="address"
                     placeholder="Enter Nominee address"
@@ -1011,6 +1036,7 @@ const Profile = () => {
                 <td style={styles.label}>Employee ID:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -1023,6 +1049,7 @@ const Profile = () => {
                 <td style={styles.label}>Designation:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -1036,6 +1063,7 @@ const Profile = () => {
                 <td style={styles.label}>Company mail:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -1047,6 +1075,7 @@ const Profile = () => {
                 <td style={styles.label}>Experience:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="experience"
@@ -1060,6 +1089,7 @@ const Profile = () => {
                 <td style={styles.label}>Joining Date:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="joiningDate"
@@ -1070,6 +1100,7 @@ const Profile = () => {
                 <td style={styles.label}>Experience Letter:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="joiningDate"
@@ -1083,6 +1114,7 @@ const Profile = () => {
                 <td style={styles.label}>Previous Company :</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="joiningDate"
@@ -1101,6 +1133,7 @@ const Profile = () => {
                 <td style={styles.label}>Aadhar No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -1113,6 +1146,7 @@ const Profile = () => {
                 <td style={styles.label}>Pan Number:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -1126,6 +1160,7 @@ const Profile = () => {
                 <td style={styles.label}>Upload Aadhar File:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -1138,6 +1173,7 @@ const Profile = () => {
                 <td style={styles.label}>Upload PAN File:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -1151,6 +1187,7 @@ const Profile = () => {
                 <td style={styles.label}>Bank Account No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="employee_id"
@@ -1163,6 +1200,7 @@ const Profile = () => {
                 <td style={styles.label}>Upload Bank File:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="designation"
@@ -1176,6 +1214,7 @@ const Profile = () => {
                 <td style={styles.label}>PF Account No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="experience"
@@ -1188,6 +1227,7 @@ const Profile = () => {
                 <td style={styles.label}>UAN No:</td>
                 <td>
                   <input
+                    disabled
                     style={styles.input}
                     type="text"
                     id="joiningDate"
@@ -1205,6 +1245,7 @@ const Profile = () => {
               <div className="role-row">
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1216,6 +1257,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isSuperAdmin"
                     className="input3"
@@ -1226,6 +1268,7 @@ const Profile = () => {
                 </div>
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1237,6 +1280,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1248,6 +1292,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1259,6 +1304,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1270,6 +1316,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1281,6 +1328,7 @@ const Profile = () => {
 
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"
@@ -1291,6 +1339,7 @@ const Profile = () => {
                 </div>
                 <div className="role-item">
                   <input
+                    disabled
                     type="checkbox"
                     id="isAdmin"
                     className="input3"

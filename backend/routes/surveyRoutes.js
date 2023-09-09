@@ -688,4 +688,19 @@ surveyRouter.delete(
   })
 );
 
+surveyRouter.delete(
+  '/sites/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const site = await Sites.findById(req.params.id);
+    if (site) {
+      await site.deleteOne();
+      res.send({ message: 'Site Deleted' });
+    } else {
+      res.status(404).send({ message: 'site not found' });
+    }
+  })
+);
+
 export default surveyRouter;

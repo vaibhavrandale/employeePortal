@@ -31,7 +31,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const SalarySleep = ({ onClose, onSubmit }) => {
+const SalarySleep = () => {
   const [{ loading, error, employee }, dispatch] = useReducer(reducer, {
     employee: {},
     loading: true,

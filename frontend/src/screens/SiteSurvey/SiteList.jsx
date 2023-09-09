@@ -13,6 +13,7 @@ import { RiSurveyLine } from 'react-icons/ri';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { Helmet } from 'react-helmet';
+import { MdDeleteOutline } from 'react-icons/md';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,22 +42,45 @@ const reducer = (state, action) => {
     case 'UPDATE_STATUS_FAIL':
       return { ...state, loadingUpdate: false };
 
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+
+    case 'DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true };
+
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false };
+
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
+
     default:
       return state;
   }
 };
 
 function SiteList() {
-  const [{ loading, error, sitelist, loadingCreate, loadingUpdate }, dispatch] =
-    useReducer(reducer, {
-      sitelist: [],
-      loading: true,
-      error: '',
-    });
+  const [
+    {
+      loading,
+      error,
+      sitelist,
+      loadingCreate,
+      loadingUpdate,
+      loadingDelete,
+      successDelete,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    sitelist: [],
+    loading: true,
+    error: '',
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isdeletePopupOpen, setdeletePopupOpen] = useState(false);
 
   const itemsPerPage = 10;
   const navigate = useNavigate();
@@ -74,15 +98,15 @@ function SiteList() {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
 
-      setTimeout(() => {
-        // setEmployees(result.data);
-        // setLoading(false);
-      }, 2000); // Simulating a 2-second delay
+      setTimeout(() => {}, 2000); // Simulating a 2-second delay
     };
 
-    // setLoading(true);
-    fetchData();
-  }, []);
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+  }, [successDelete]);
 
   // ------------------------------------
 
@@ -148,6 +172,7 @@ function SiteList() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
+      console.log(result);
       toast.success('site hide successfully');
       dispatch({
         type: 'UPDATE_STATUS_SUCCESS',
@@ -185,6 +210,54 @@ function SiteList() {
       dispatch({
         type: 'UPDATE_STATUS_FAIL',
       });
+    }
+  };
+
+  const popupDeleteHandle = () => {
+    setdeletePopupOpen(!isdeletePopupOpen);
+  };
+  const saveSettings = async (settings) => {
+    // Simulating a delay for API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Normally, here you would make an API call to save the settings
+    // For the sake of this example, we're assuming it always succeeds
+
+    return 'Success'; // Return a success message or data
+  };
+
+  const DeleteHandler = async (e, id) => {
+    e.preventDefault();
+    popupDeleteHandle();
+    dispatch({
+      type: 'DELETE_REQUEST',
+    });
+
+    try {
+      const { data } = await axios.delete(
+        `/api/survey/sites/${id}`,
+
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      console.log(data);
+      dispatch({
+        type: 'DELETE_SUCCESS',
+        payload: data,
+      });
+
+      toast.promise(saveSettings({ action: 'approve', leaveId: id }), {
+        position: 'top-right',
+        loading: 'Processing...',
+        success: <b>Site Deleted Successfully!</b>,
+        error: <b>Could not Delete site data.</b>,
+      });
+
+      // navigate('/leaves-history');
+    } catch (error) {
+      toast.error(getError(error));
+      dispatch({ type: 'DELETE_FAIL' });
     }
   };
 
@@ -291,6 +364,8 @@ function SiteList() {
                   ) : (
                     ''
                   )}
+
+                  <th className="col-md-1 text-center">Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -397,6 +472,43 @@ function SiteList() {
                       </td>
                     ) : (
                       ''
+                    )}
+                    {userInfo.isSuperAdmin ? (
+                      <td className="text-center  fs-4">
+                        {loadingDelete ? (
+                          <LoadingBox4 />
+                        ) : (
+                          <Link
+                            onClick={popupDeleteHandle}
+                            className="text-danger"
+                          >
+                            <MdDeleteOutline />
+                          </Link>
+                        )}
+                      </td>
+                    ) : (
+                      ''
+                    )}
+                    {isdeletePopupOpen && (
+                      <div className="popup-container">
+                        <div className="popup">
+                          <p>Are you sure you want to delete Site?</p>
+                          <div className="popup-buttons">
+                            <button
+                              className="popup-button verify"
+                              onClick={(e) => DeleteHandler(e, item._id)}
+                            >
+                              DELETE
+                            </button>
+                            <button
+                              className="popup-button cancel"
+                              onClick={popupHandle}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </tr>
                 ))}

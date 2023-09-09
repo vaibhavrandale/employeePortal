@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox1 from '../../components/LoadingBox1';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,7 +32,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const SalarySleepUpdated = ({ onClose, onSubmit }) => {
+const SalarySleepUpdated = () => {
   const [{ loading, error, employee }, dispatch] = useReducer(reducer, {
     employee: {},
     loading: true,
@@ -43,13 +44,12 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
   const pdfPreviewRef = useRef(null);
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedMonth, setSelectedMonth] = useState('');
-  const totalDeduction = '3000';
 
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
+      // dispatch({ type: 'FETCH_REQUEST' });
       dispatch({ type: 'FETCH_REQUEST' });
-
       try {
         const result = await axios.get(
           `/api/employees/details/${userInfo._id}`
@@ -62,9 +62,8 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
       }
     };
 
-    // setLoading(true);
     fetchData();
-  }, [userInfo._id]);
+  }, [userInfo._id, ctxDispatch]);
 
   useEffect(() => {
     // Clean up the PDF URL when the component is unmounted
@@ -78,7 +77,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
   const generatePdf = (employeeData, selectedYear, selectedMonth) => {
     const doc = new jsPDF('landscape'); // Set landscape orientation
-    // const doc = new jsPDF();
 
     const pageWidth = doc.internal.pageSize.getWidth();
     const logoWidth = 40; // Width of the logo (adjust as needed)
@@ -89,8 +87,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         payslip.year.toString() === selectedYear &&
         payslip.month.toLowerCase() === selectedMonth.toLowerCase()
     );
-
-    // If no payslips are found for the selected month and year, you can handle it accordingly
     if (filteredPayslips.length === 0) {
       // Display an error message or handle the scenario as per your requirement
       console.log('No payslips found for the selected month and year.');
@@ -98,15 +94,12 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     }
 
     const payslipData = filteredPayslips[0];
-
-    // // Display the payslip data in the PDF
-    // doc.text(`Month: ${payslipData.month}, ${payslipData.year}`, 84, 45);
-    // doc.text(`Salary: ${payslipData.salary}`, 84, 50);
-    // doc.text(`Deductions: ${payslipData.deductions}`, 84, 55);
-    // doc.text(`Deduction Reason: ${payslipData.deductionReason}`, 84, 60);
-    // Add company logo to the PDF, moved to the right-most corner
     doc.addImage(logo, 'PNG', logoX, 10, 35, 10);
+    doc.setFont('helvetica', 'bold');
     doc.text(`TAYPRO PRIVATE LIMITED`, 15, 15);
+
+    // Reset the font style to normal for subsequent text
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.text(
       `Payslip for the month ${selectedMonth.toUpperCase()} - ${selectedYear}`,
@@ -134,7 +127,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     doc.line(45, 35, 45, 49);
 
     doc.setTextColor(0); // Reset text color to black
-    doc.text(`Vaibhav Randale`, 47, 40);
+    doc.text(`${employee.name}`, 47, 40);
 
     doc.line(15, 42, 105, 42);
 
@@ -162,7 +155,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     doc.text(`Designation`, 122, 40);
 
     doc.setTextColor(0); // Reset text color to black
-    doc.text(`Web Developer`, 152, 40);
+    doc.text(`${employee.designation}`, 152, 40);
 
     doc.setTextColor(0, 128, 255); // Set text color to blue
     doc.text(`Location`, 122, 47);
@@ -181,7 +174,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
 
     // ----------------info text table-----------------------------------------
     //vertical line
-    doc.line(120, 54, 120, 145);
+    doc.line(120, 54, 120, 152.5);
     doc.setFillColor(0, 0, 255); // Blue color
     doc.setTextColor(50, 153, 255); // White color
     doc.setFontSize(11);
@@ -220,25 +213,24 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     doc.line(120, 99.6, 286, 99.6);
 
     doc.line(120, 107.1, 286, 107.1);
-    doc.text(`Employee contribution of 12% of Base Pay`, 122, 112);
+    doc.text(`Employee contribution of 12% of Base Pay`, 122, 119.8);
     doc.line(120, 114.7, 286, 114.7);
-    doc.text(`Employee contribution of 1.75% of Gross Salary`, 122, 119.8);
+    doc.text(`Employee contribution of 1.75% of Gross Salary`, 122, 127.5);
     doc.line(120, 122.3, 286, 122.3);
     doc.text(
       `As per Article 276 of the Indian Constitution, professional tax as per the applicable rate`,
       122,
-      127.5
+      135
     );
     doc.line(120, 129.9, 286, 129.9);
-    doc.text(`Total Deduction`, 122, 135);
+    doc.text(`Total Deduction`, 122, 142.5);
     doc.line(120, 137.5, 286, 137.5);
-    doc.text(`Net Salaty of the Month`, 122, 142.5);
+    doc.text(`Net Salaty of the Month`, 122, 150);
     doc.line(120, 145, 286, 145);
-
-    // doc.line(120, 145, 286, 145);
+    doc.line(120, 152.5, 286, 152.5);
 
     //vertical line
-    doc.line(286, 54, 286, 145);
+    doc.line(286, 54, 286, 152.5);
     doc.setFont('helvetica', 'bold'); // Set font family to "helvetica" and style to "bold"
     doc.text(`Checked By`, 135, 195);
     doc.text(`Approved By`, 190, 195);
@@ -253,7 +245,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
     const columnData = [
       [
         { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
-        { content: `250.00`, halign: 'right' },
+        { content: `11,250.00`, halign: 'right' },
       ],
       [
         { content: 'House Rent Allowance', fontStyle: 'bold', halign: 'left' },
@@ -279,7 +271,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
           halign: 'left',
         },
         {
-          content: 'INR 25,000.00',
+          content: '25,000.00',
           halign: 'right',
           fillColor: '#3299FF', // Background color for the second cell
         },
@@ -335,7 +327,7 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
           halign: 'left',
         },
         {
-          content: 'INR 1550',
+          content: '1550',
           halign: 'right',
         },
       ],
@@ -346,13 +338,12 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
           halign: 'left',
         },
 
-        { content: 'INR 23450.00', halign: 'right' },
+        { content: '23450.00', halign: 'right' },
       ],
       // Add more rows as needed
     ];
 
-    doc.setDrawColor(0, 0, 0);
-    // Generate the table for the four columns
+    doc.setTextColor(0); // Reset text color to black
     doc.autoTable({
       startY: 54,
       startX: 0,
@@ -363,7 +354,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         fillColor: [50, 153, 255],
         textColor: '#fff',
         fontStyle: 'bold',
-        // halign: 'start', // Center the heading text horizontally
       },
 
       columnStyles: {
@@ -382,12 +372,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
           data.cell.styles.textColor = [50, 50, 50];
           data.cell.styles.fillColor = [50, 153, 255];
         }
-        // if (data.row.index === columnData.length - 7) {
-        //   // Make text in the last row bold
-        //   data.cell.styles.fontStyle = 'bold';
-        //   data.cell.styles.textColor = [255, 255, 255];
-        //   data.cell.styles.fillColor = [50, 153, 255];
-        // }
 
         if (data.row.index === columnData.length - 6) {
           // Make text in the last row bold
@@ -409,28 +393,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         }
       },
     });
-    // With this code, the alignment of cells in the body will be maintained, and the text in the last row of both columns will be bold with the specified background color.
-
-    // const calculateTotalEarnings = () => {
-    //   let totalEarnings = 0;
-
-    //   // Check if payslipData.salary is a valid number
-    //   if (!isNaN(parseInt(payslipData.salary, 10))) {
-    //     totalEarnings += parseInt(payslipData.salary, 10);
-    //   }
-
-    //   // Check if payslipData.bonuses is a valid number
-    //   if (!isNaN(parseInt(payslipData.bonuses, 10))) {
-    //     totalEarnings += parseInt(payslipData.bonuses, 10);
-    //   }
-
-    //   // Check if payslipData.deductions is a valid number
-    //   if (!isNaN(parseInt(payslipData.deductions, 10))) {
-    //     totalEarnings -= parseInt(payslipData.deductions, 10);
-    //   }
-
-    //   return totalEarnings;
-    // };
 
     const salaryData = [
       [{ content: 'Total Days', fontStyle: 'bold' }, '31'],
@@ -438,8 +400,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
 
       ['Absent Days', '0'],
       ['Paid Leave Taken', '0'],
-
-      // Add other salary components here
     ];
 
     // Generate the "Earning" table
@@ -455,13 +415,10 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
       body: salaryData,
       headStyles: {
         fillColor: [50, 153, 255],
-        // textColor: '#fff',
         fontStyle: 'bold',
-        // halign: 'right', // Center the heading text horizontally
       },
       didParseCell: function (data) {
         if (data.column.index !== 0) {
-          // Right-align cells in the body (excluding the header row)
           data.cell.styles.halign = 'right';
         }
 
@@ -483,23 +440,16 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         payslip.year.toString() === selectedYear &&
         payslip.month.toLowerCase() === selectedMonth.toLowerCase()
     );
-
-    // If no payslips are found for the selected month and year, you can handle it accordingly
     if (filteredPayslips.length === 0) {
-      // Display an error message or handle the scenario as per your requirement
       toast.error('No payslips found for the selected month and year.');
       return;
     }
-
-    // Proceed with generating the PDF
     const employeeId = employeeData._id;
     const salarySlipPdf = generatePdf(
       employeeData,
       selectedYear,
       selectedMonth
     );
-
-    // Check if the PDF generation is successful before proceeding
     if (salarySlipPdf) {
       const pdfBlob = salarySlipPdf.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
@@ -509,7 +459,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         pdfPreviewRef.current.id = `employee-${employeeId}`;
       }
     } else {
-      // Handle the scenario when PDF generation fails
       console.log('PDF generation failed.');
     }
   };
@@ -520,45 +469,36 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
         payslip.year.toString() === selectedYear &&
         payslip.month.toLowerCase() === selectedMonth.toLowerCase()
     );
-
-    // Check if payslips are available for the selected month and year
     if (filteredPayslips.length === 0) {
       toast.error('No payslips found for the selected month and year.');
       return;
     }
-
-    // Generate the PDF
     const salarySlipPdf = generatePdf(
       employeeData,
       selectedYear,
       selectedMonth
     );
-
-    // Check if the PDF generation is successful before proceeding
     if (salarySlipPdf) {
-      // Save the PDF to the user's device
       salarySlipPdf.save(
         `${employee.name}_${selectedMonth}_${selectedYear}.pdf`
       );
     } else {
-      // Handle the scenario when PDF generation fails
       console.log('PDF generation failed.');
     }
   };
 
   return (
     <div className="container1  d-flex  flex-column justify-content-center  p-1">
-      {/* Your existing salary slip content */}
+      <Helmet>
+        <title>Salary Sleep</title>
+      </Helmet>
       <h3 className="text-center">Download Pay Slip</h3>
       {loading ? (
         <LoadingBox3 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
-        <div
-          className=" m-auto d-flex flex-row form-group justify-content-center  flex-wrap "
-          // style={{ maxWidth: '200px' }}
-        >
+        <div className=" m-auto d-flex flex-row form-group justify-content-center  flex-wrap ">
           <div className="year m-1 ">
             <label className="headingOfPopup m-1 " htmlFor="year">
               Select Year:
@@ -576,8 +516,6 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
               <option value="2021">2021</option>
               <option value="2022">2022</option>
               <option value="2023">2023</option>
-
-              {/* Add more years if needed */}
             </select>
           </div>
           <div className="month m-1">
@@ -603,43 +541,39 @@ const SalarySleepUpdated = ({ onClose, onSubmit }) => {
               <option value="october">October</option>
               <option value="november">November</option>
               <option value="december">December</option>
-
-              {/* Add more years if needed */}
             </select>
           </div>
 
           <div className="preview m-1 d-flex flex-column">
-            {selectedYear &&
-              selectedMonth && ( // Check if both options are selected
-                <>
-                  <label htmlFor="" className="headingOfPopup m-1">
-                    Perview
-                  </label>
-                  <button
-                    className="btn btn-dark"
-                    onClick={generateAndPreviewPdf}
-                  >
-                    View
-                  </button>
-                </>
-              )}
+            {selectedYear && selectedMonth && (
+              <>
+                <label htmlFor="" className="headingOfPopup m-1">
+                  Perview
+                </label>
+                <button
+                  className="btn btn-dark"
+                  onClick={generateAndPreviewPdf}
+                >
+                  View
+                </button>
+              </>
+            )}
           </div>
-          {/* <hr /> */}
+
           <div className="preview m-1 d-flex flex-column">
-            {selectedYear &&
-              selectedMonth && ( // Check if both options are selected
-                <>
-                  <label htmlFor="" className="headingOfPopup m-1">
-                    Export
-                  </label>
-                  <button
-                    className="btn btn-success"
-                    onClick={generateAndDownloadPdf}
-                  >
-                    Export PDF
-                  </button>
-                </>
-              )}
+            {selectedYear && selectedMonth && (
+              <>
+                <label htmlFor="" className="headingOfPopup m-1">
+                  Export
+                </label>
+                <button
+                  className="btn btn-success"
+                  onClick={generateAndDownloadPdf}
+                >
+                  Export PDF
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

@@ -109,30 +109,207 @@ function SiteTable({ projectCode }) {
     setHoveredRow(index);
   };
 
+  // const downloadDataAsExcel = (siteSurveys, selectedColumns) => {
+  //   // Extract only the selected columns from each site survey
+  //   const filteredData = siteSurveys.map((survey) =>
+  //     selectedColumns.reduce((obj, key) => {
+  //       if (key in survey) {
+  //         if (Array.isArray(survey[key])) {
+  //           if (key === 'H') {
+  //             // Join "H" array with a comma if its length is greater than one
+  //             obj[key] =
+  //               survey[key].length > 1
+  //                 ? survey[key].join(', ')
+  //                 : survey[key][0];
+  //           } else if (key === 'htablex' || key === 'htabley') {
+  //             // Handle "htablex" and "htabley" differently
+  //             obj[key] =
+  //               survey[key].length > 1
+  //                 ? survey[key].join(', ')
+  //                 : survey[key][0];
+  //           } else {
+  //             // Join other array fields with a comma
+  //             obj[key] = survey[key].join(', ');
+  //           }
+  //         } else {
+  //           // Regular single-value field
+  //           obj[key] = survey[key];
+  //         }
+  //       }
+  //       return obj;
+  //     }, {})
+  //   );
+
+  //   const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  //   const excelFile = XLSX.write(workbook, {
+  //     bookType: 'xlsx',
+  //     type: 'binary',
+  //   });
+
+  //   const buffer = new ArrayBuffer(excelFile.length);
+  //   const view = new Uint8Array(buffer);
+  //   for (let i = 0; i < excelFile.length; i++) {
+  //     view[i] = excelFile.charCodeAt(i) & 0xff;
+  //   }
+
+  //   const blob = new Blob([buffer], { type: 'application/octet-stream' });
+
+  //   const downloadLink = document.createElement('a');
+  //   downloadLink.href = URL.createObjectURL(blob);
+  //   downloadLink.download = 'siteSurveys.xlsx';
+  //   downloadLink.click();
+  // };
+
+  // const handleDownloadButtonClick = () => {
+  //   const specificData = siteSurveys.filter(
+  //     (item) => item.projectCode === projectCode
+  //   );
+
+  //   if (specificData.length > 0) {
+  //     const selectedColumns = [
+  //       'projectCode',
+  //       'block',
+  //       'row',
+  //       'table',
+  //       'A',
+  //       'B',
+  //       'C',
+  //       'D',
+  //       'E',
+  //       'F',
+  //       'G',
+  //       'H',
+  //       'I',
+  //       'J',
+  //       'htablex',
+  //       'htabley',
+  //       'submittedBy',
+  //       'submittedAt',
+  //       'verifiedBy',
+  //       'verifiededAt',
+  //       'remark',
+  //       'remarkBy',
+  //       'status',
+  //     ];
+
+  //     downloadDataAsExcel(specificData, selectedColumns);
+  //   } else {
+  //     toast.error('No site surveys found for export.', {
+  //       position: 'bottom-right',
+  //     });
+  //   }
+  // };
+  // ---------------------------old-------------------------
+
+  // ---------------------------------new----------------------------
+  // const downloadDataAsExcel = (siteSurveys, selectedColumns) => {
+  //   // Create a function to handle array fields
+  //   const handleArrayField = (key, value) => {
+  //     if (Array.isArray(value)) {
+  //       if (key === 'H') {
+  //         // Separate 'H' array values into 'H1', 'H2', 'H3', etc.
+  //         return value
+  //           .map((item, index) => `${key}${index + 1}: ${item}`)
+  //           .join(', ');
+  //       } else if (key === 'htablex' || key === 'htabley') {
+  //         // Handle "htablex" and "htabley" differently
+  //         return value
+  //           .map((item, index) => `${key}${index + 1}: ${item}`)
+  //           .join(', ');
+  //       }
+  //     }
+  //     return value;
+  //   };
+
+  //   // Extract only the selected columns from each site survey and handle array fields
+  //   const filteredData = siteSurveys.map((survey) =>
+  //     selectedColumns.reduce((obj, key) => {
+  //       if (key in survey) {
+  //         obj[key] = handleArrayField(key, survey[key]);
+  //       }
+  //       return obj;
+  //     }, {})
+  //   );
+
+  //   const worksheet = XLSX.utils.json_to_sheet(filteredData);
+
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+  //   const excelFile = XLSX.write(workbook, {
+  //     bookType: 'xlsx',
+  //     type: 'binary',
+  //   });
+
+  //   const buffer = new ArrayBuffer(excelFile.length);
+  //   const view = new Uint8Array(buffer);
+  //   for (let i = 0; i < excelFile.length; i++) {
+  //     view[i] = excelFile.charCodeAt(i) & 0xff;
+  //   }
+
+  //   const blob = new Blob([buffer], { type: 'application/octet-stream' });
+
+  //   const downloadLink = document.createElement('a');
+  //   downloadLink.href = URL.createObjectURL(blob);
+  //   downloadLink.download = 'siteSurveys.xlsx';
+  //   downloadLink.click();
+  // };
+
+  // const handleDownloadButtonClick = () => {
+  //   const specificData = siteSurveys.filter(
+  //     (item) => item.projectCode === projectCode
+  //   );
+
+  //   if (specificData.length > 0) {
+  //     const selectedColumns = [
+  //       'projectCode',
+  //       'block',
+  //       'row',
+  //       'table',
+  //       'A',
+  //       'B',
+  //       'C',
+  //       'D',
+  //       'E',
+  //       'F',
+  //       'G',
+  //       'H',
+  //       'I',
+  //       'J',
+  //       'htablex',
+  //       'htabley',
+  //       'submittedBy',
+  //       'submittedAt',
+  //       'verifiedBy',
+  //       'verifiededAt',
+  //       'remark',
+  //       'remarkBy',
+  //       'status',
+  //     ];
+
+  //     downloadDataAsExcel(specificData, selectedColumns);
+  //   } else {
+  //     toast.error('No site surveys found for export.', {
+  //       position: 'bottom-right',
+  //     });
+  //   }
+  // };
+
   const downloadDataAsExcel = (siteSurveys, selectedColumns) => {
-    // Extract only the selected columns from each site survey
+    // Extract only the selected columns from each site survey and handle array fields
     const filteredData = siteSurveys.map((survey) =>
       selectedColumns.reduce((obj, key) => {
         if (key in survey) {
+          // Handle 'H', 'htablex', and 'htabley' array fields dynamically
           if (Array.isArray(survey[key])) {
-            if (key === 'H') {
-              // Join "H" array with a comma if its length is greater than one
-              obj[key] =
-                survey[key].length > 1
-                  ? survey[key].join(', ')
-                  : survey[key][0];
-            } else if (key === 'htablex' || key === 'htabley') {
-              // Handle "htablex" and "htabley" differently
-              obj[key] =
-                survey[key].length > 1
-                  ? survey[key].join(', ')
-                  : survey[key][0];
-            } else {
-              // Join other array fields with a comma
-              obj[key] = survey[key].join(', ');
-            }
+            survey[key].forEach((value, index) => {
+              obj[`${key}${index + 1}`] = value;
+            });
           } else {
-            // Regular single-value field
             obj[key] = survey[key];
           }
         }

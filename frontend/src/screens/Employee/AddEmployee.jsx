@@ -1,13 +1,12 @@
 import React, { useContext, useReducer, useState } from 'react';
 import '../../App.css';
 // import data from '../Employee/data';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getError } from '../../utils';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { Store } from '../../Store';
 import LoadingBox1 from '../../components/LoadingBox1';
-import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
 const reducer = (state, action) => {
   switch (action.type) {
@@ -188,9 +187,6 @@ function AddEmployee() {
         position: 'bottom-right',
       });
       navigate('/employees');
-
-      //   siteSurvey.rating = data.rating;
-      //   dispatch({ type: 'REFRESH_EMPLOYEE', payload: employees });
     } catch (error) {
       toast.error(getError(error), {
         position: 'bottom-right',
@@ -269,14 +265,7 @@ function AddEmployee() {
       fontSize: '1rem',
       color: '#555',
     },
-    // input: {
-    //   width: '100%',
-    //   padding: '8px',
-    //   fontSize: '1rem',
-    //   border: '1px solid #ccc',
-    //   borderRadius: '4px',
-    //   margin: '1px',
-    // },
+
     input: {
       width: '100%',
       padding: '8px',

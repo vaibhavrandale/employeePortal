@@ -107,6 +107,23 @@ const employeeSchema = new mongoose.Schema(
 
     payslips: [payslipSchema],
     allLeaves: [LeaveSchema],
+
+    ctc: { type: Number, required: true }, // Cost to Company
+    salarygroup: { type: String, required: true }, // Salary group (you can use the appropriate type)
+    basic: { type: Number }, // Basic salary
+    hra: { type: Number }, // House Rent Allowance
+    conveyance: { type: Number }, // Conveyance allowance
+    medical: { type: Number }, // Medical allowance
+    special: { type: Number }, // Special allowance
+    pt: { type: Number }, // Professional Tax
+    pf: { type: Number }, // Provident Fund
+    esi: { type: Number }, // Employee State Insurance
+    total_deduction: { type: Number }, // Total deductions
+    gross: { type: Number }, // Gross salary
+    netsalary: { type: Number }, // Net salary
+    employer_pf: { type: Number }, // Employer Provident Fund contribution
+    employer_esi: { type: Number }, // Employer Employee State Insurance contribution
+    bonus: { type: Number }, // Bonus
   },
   {
     timestamps: true,

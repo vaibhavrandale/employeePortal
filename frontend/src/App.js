@@ -48,6 +48,7 @@ import AttendanceDetails from './screens/Attendance/AttendanceDetails';
 import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 import Wishes from './screens/Employee/Wishes';
 import UpdateEmployee from './screens/Employee/UpdateEmployee';
+import SalarySleepNew from './screens/Attendance/SalarySleepNew';
 import SalarySleepUpdated from './screens/salarySleep/SalarySleepUpdated';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
@@ -292,6 +293,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SalarySleepUpdated />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/pay-slip?:id/:year/:month"
+          element={
+            <ProtectedRoutes>
+              <SalarySleepNew />
             </ProtectedRoutes>
           }
         />

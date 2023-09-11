@@ -100,6 +100,9 @@ function AddEmployee() {
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
   const [allLeaves, setAllLeaves] = useState([]);
+
+  const [ctc, setCtc] = useState('');
+  const [salarygroup, setSalarygroup] = useState('');
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -174,6 +177,8 @@ function AddEmployee() {
           isAccountant,
           payslips,
           allLeaves,
+          ctc,
+          salarygroup,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -809,6 +814,53 @@ function AddEmployee() {
         <h2 style={styles.sectionHeader}>Work Details</h2>
         <table style={styles.table}>
           <tbody>
+            <tr>
+              <td style={styles.label}>CTC[Cost to Company]:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter CTC"
+                  value={ctc}
+                  onChange={(e) => setCtc(e.target.value)}
+                />
+              </td>
+
+              <td style={styles.label}>Salary Salary Group:</td>
+              <td>
+                <select
+                  name="state"
+                  id="state"
+                  style={styles.select}
+                  value={salarygroup}
+                  onChange={(e) => setSalarygroup(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="Andhra Pradesh">1</option>
+                  <option value="Andhra Pradesh">2</option>
+                  <option value="Andhra Pradesh">3</option>
+                  <option value="Andhra Pradesh">4</option>
+                  <option value="Andhra Pradesh">5</option>
+                  <option value="Andhra Pradesh">6</option>
+                  <option value="Andhra Pradesh">7</option>
+                  <option value="Andhra Pradesh">8</option>
+                  <option value="Andhra Pradesh">9</option>
+                  <option value="Andhra Pradesh">10</option>
+                  <option value="Andhra Pradesh">11</option>
+                  <option value="Andhra Pradesh">12</option>
+                  <option value="Andhra Pradesh">13</option>
+                  <option value="Andhra Pradesh">14</option>
+                  <option value="Andhra Pradesh">15</option>
+                  <option value="Andhra Pradesh">16</option>
+                  <option value="Andhra Pradesh">17</option>
+                  <option value="Andhra Pradesh">18</option>
+                  <option value="Andhra Pradesh">19</option>
+                  <option value="Andhra Pradesh">20</option>
+                </select>
+              </td>
+            </tr>
+
             <tr>
               <td style={styles.label}>Employee ID:</td>
               <td>

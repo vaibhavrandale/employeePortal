@@ -20,7 +20,7 @@ const data = {
       isProduction: true,
       isAccountant: true,
       joiningDate: '1/03/2023',
-      birth_date: '06/09/2000',
+      birth_date: '11/09/2000',
       gender: 'male',
       designation: 'abc',
       state: 'maharashtra',
@@ -63,6 +63,8 @@ const data = {
       allLeaves: [],
 
       previous_company_name: 'Dummy Name',
+      ctc: 300000,
+      salarygroup: 5,
     },
 
     {
@@ -83,7 +85,7 @@ const data = {
       isProduction: true,
       isAccountant: true,
       joiningDate: '2/03/2023',
-      birth_date: '06/09/1993',
+      birth_date: '11/09/1993',
       gender: 'male1',
       designation: '1abc',
       state: '1maharashtra',
@@ -126,6 +128,8 @@ const data = {
       allLeaves: [],
 
       previous_company_name: '1Dummy Name',
+      ctc: 300000,
+      salarygroup: 5,
     },
 
     // {

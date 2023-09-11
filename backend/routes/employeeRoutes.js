@@ -42,182 +42,182 @@ emplyeeRouter.get('/details/:id', async (req, res) => {
 });
 
 // --add employee-------------------
-emplyeeRouter.post('/', async (req, res) => {
-  const {
-    employee_id,
-    email,
-    name,
-    firstName,
-    lastName,
-    father_husband_name,
-    gender,
-    birth_date,
-    marital_status,
-    address,
-    sub_locality,
-    district,
-    state,
-    pinCode,
-    mobile_no,
-    nominee_name,
-    nominee_relationship,
-    nominee_address,
-    nominee_sub_locality,
-    nominee_district,
-    nominee_state,
-    nominee_mobile_no,
-    nominee_pinCode,
-    nominee_email,
-    no_of_family_members,
-    alternate_mobile_no,
-    personal_email,
-    aadhar_no,
-    pan_number,
-    bank_account_no,
-    aadhar_card_file,
-    pan_card_file,
-    bank_account_file,
-    pf_account_no,
-    uan_number,
-    resetToken,
-    image,
-    joiningDate,
-    designation,
-    age,
-    previous_company_name,
-    experience,
-    experience_letter,
-    leaves,
-    sick,
-    privilege,
-    casual,
-    activate,
-    isAdmin,
-    isSuperAdmin,
-    isSales,
-    isScm,
-    isDesign,
-    isProject,
-    isVisitor,
-    isProduction,
-    isAccountant,
-    payslips,
-    allLeaves,
-  } = req.body;
+// emplyeeRouter.post('/', async (req, res) => {
+//   const {
+//     employee_id,
+//     email,
+//     name,
+//     firstName,
+//     lastName,
+//     father_husband_name,
+//     gender,
+//     birth_date,
+//     marital_status,
+//     address,
+//     sub_locality,
+//     district,
+//     state,
+//     pinCode,
+//     mobile_no,
+//     nominee_name,
+//     nominee_relationship,
+//     nominee_address,
+//     nominee_sub_locality,
+//     nominee_district,
+//     nominee_state,
+//     nominee_mobile_no,
+//     nominee_pinCode,
+//     nominee_email,
+//     no_of_family_members,
+//     alternate_mobile_no,
+//     personal_email,
+//     aadhar_no,
+//     pan_number,
+//     bank_account_no,
+//     aadhar_card_file,
+//     pan_card_file,
+//     bank_account_file,
+//     pf_account_no,
+//     uan_number,
+//     resetToken,
+//     image,
+//     joiningDate,
+//     designation,
+//     age,
+//     previous_company_name,
+//     experience,
+//     experience_letter,
+//     leaves,
+//     sick,
+//     privilege,
+//     casual,
+//     activate,
+//     isAdmin,
+//     isSuperAdmin,
+//     isSales,
+//     isScm,
+//     isDesign,
+//     isProject,
+//     isVisitor,
+//     isProduction,
+//     isAccountant,
+//     payslips,
+//     allLeaves,
+//   } = req.body;
 
-  const defaultPassword = employee_id;
-  const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
+//   const defaultPassword = employee_id;
+//   const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
 
-  const parseDate = (dateStr) => {
-    let day, month, year;
-    if (dateStr.includes('-')) {
-      [day, month, year] = dateStr.split('-').map(Number);
-    } else if (dateStr.includes('/')) {
-      [day, month, year] = dateStr.split('/').map(Number);
-    } else {
-      return null; // Invalid date format
-    }
-    return new Date(year, month - 1, day);
-  };
+//   const parseDate = (dateStr) => {
+//     let day, month, year;
+//     if (dateStr.includes('-')) {
+//       [day, month, year] = dateStr.split('-').map(Number);
+//     } else if (dateStr.includes('/')) {
+//       [day, month, year] = dateStr.split('/').map(Number);
+//     } else {
+//       return null; // Invalid date format
+//     }
+//     return new Date(year, month - 1, day);
+//   };
 
-  const parsedBirthDate = parseDate(birth_date);
-  const parsedJoiningDate = parseDate(joiningDate);
+//   const parsedBirthDate = parseDate(birth_date);
+//   const parsedJoiningDate = parseDate(joiningDate);
 
-  if (!parsedBirthDate || !parsedJoiningDate) {
-    return res
-      .status(400)
-      .json({ success: false, error: 'Invalid date format' });
-  }
+//   if (!parsedBirthDate || !parsedJoiningDate) {
+//     return res
+//       .status(400)
+//       .json({ success: false, error: 'Invalid date format' });
+//   }
 
-  // Function to format date as "DD/MM/YYYY"
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
+//   // Function to format date as "DD/MM/YYYY"
+//   const formatDate = (date) => {
+//     const day = date.getDate().toString().padStart(2, '0');
+//     const month = (date.getMonth() + 1).toString().padStart(2, '0');
+//     const year = date.getFullYear();
+//     return `${day}/${month}/${year}`;
+//   };
 
-  const formattedBirthDate = formatDate(parsedBirthDate);
-  const formattedJoiningDate = formatDate(parsedJoiningDate);
+//   const formattedBirthDate = formatDate(parsedBirthDate);
+//   const formattedJoiningDate = formatDate(parsedJoiningDate);
 
-  // Create a new Employee instance with the provided data
+//   // Create a new Employee instance with the provided data
 
-  const newEmployee = new Employee({
-    employee_id,
-    email,
-    name,
-    firstName,
-    lastName,
-    father_husband_name,
-    gender,
-    // birth_date,
-    birth_date: formattedBirthDate,
-    joiningDate: formattedJoiningDate,
-    marital_status,
-    address,
-    sub_locality,
-    district,
-    state,
-    pinCode,
-    mobile_no,
-    nominee_name,
-    nominee_relationship,
-    nominee_address,
-    nominee_sub_locality,
-    nominee_district,
-    nominee_state,
-    nominee_mobile_no,
-    nominee_pinCode,
-    nominee_email,
-    no_of_family_members,
-    alternate_mobile_no,
-    personal_email,
-    aadhar_no,
-    pan_number,
-    bank_account_no,
-    aadhar_card_file,
-    pan_card_file,
-    bank_account_file,
-    pf_account_no,
-    uan_number,
-    resetToken,
-    password: hashedPassword,
-    image,
-    // joiningDate,
-    designation,
-    age,
-    previous_company_name,
-    experience,
-    experience_letter,
-    leaves,
-    sick,
-    privilege,
-    casual,
-    activate,
-    isAdmin,
-    isSuperAdmin,
-    isSales,
-    isScm,
-    isDesign,
-    isProject,
-    isVisitor,
-    isProduction,
-    isAccountant,
-    payslips,
-    allLeaves,
-  });
+//   const newEmployee = new Employee({
+//     employee_id,
+//     email,
+//     name,
+//     firstName,
+//     lastName,
+//     father_husband_name,
+//     gender,
+//     // birth_date,
+//     birth_date: formattedBirthDate,
+//     joiningDate: formattedJoiningDate,
+//     marital_status,
+//     address,
+//     sub_locality,
+//     district,
+//     state,
+//     pinCode,
+//     mobile_no,
+//     nominee_name,
+//     nominee_relationship,
+//     nominee_address,
+//     nominee_sub_locality,
+//     nominee_district,
+//     nominee_state,
+//     nominee_mobile_no,
+//     nominee_pinCode,
+//     nominee_email,
+//     no_of_family_members,
+//     alternate_mobile_no,
+//     personal_email,
+//     aadhar_no,
+//     pan_number,
+//     bank_account_no,
+//     aadhar_card_file,
+//     pan_card_file,
+//     bank_account_file,
+//     pf_account_no,
+//     uan_number,
+//     resetToken,
+//     password: hashedPassword,
+//     image,
+//     // joiningDate,
+//     designation,
+//     age,
+//     previous_company_name,
+//     experience,
+//     experience_letter,
+//     leaves,
+//     sick,
+//     privilege,
+//     casual,
+//     activate,
+//     isAdmin,
+//     isSuperAdmin,
+//     isSales,
+//     isScm,
+//     isDesign,
+//     isProject,
+//     isVisitor,
+//     isProduction,
+//     isAccountant,
+//     payslips,
+//     allLeaves,
+//   });
 
-  try {
-    // Save the new employee to the database
-    const savedEmployee = await newEmployee.save();
+//   try {
+//     // Save the new employee to the database
+//     const savedEmployee = await newEmployee.save();
 
-    // Send the newly created employee as the response
-    res.status(201).json({ success: true, employee: savedEmployee });
-  } catch (error) {
-    // Handle any errors that may occur during employee creation
-    res.status(500).json({ success: false, error: 'Failed to add employee' });
-  }
-});
+//     // Send the newly created employee as the response
+//     res.status(201).json({ success: true, employee: savedEmployee,message:"Employee Created Successfully" });
+//   } catch (error) {
+//     // Handle any errors that may occur during employee creation
+//     res.status(500).json({ success: false, error: 'Failed to add employee' });
+//   }
+// });
 
 // --add employee-------------------
 
@@ -1348,10 +1348,8 @@ emplyeeRouter.post('/checkin/:id', async (req, res) => {
         return 'Good morning!';
       } else if (currentHour >= 12 && currentHour < 17) {
         return 'Good afternoon!';
-      } else if (currentHour >= 17 && currentHour < 21) {
-        return 'Good evening!';
       } else {
-        return 'Good night!';
+        return 'Good evening!';
       }
     }
 
@@ -1864,6 +1862,156 @@ emplyeeRouter.get('/attendance', async (req, res) => {
   res.send({ attendance });
 });
 
+// --------------------all attendence----------------------
+// Get attendance data for all employees for a specific year and month
+emplyeeRouter.get('/calculateattendance/:year/:month', async (req, res) => {
+  try {
+    const { year, month } = req.params;
+
+    // Parse the year and month values from the URL parameters
+    const yearInt = parseInt(year);
+    const monthInt = parseInt(month);
+
+    if (isNaN(yearInt) || isNaN(monthInt)) {
+      return res.status(400).send('Invalid year or month');
+    }
+
+    // Calculate the start and end dates for the specified month
+    const startDate = new Date(yearInt, monthInt - 1, 1); // Month is 0-indexed in JavaScript
+    const endDate = new Date(yearInt, monthInt, 0); // Day 0 of the next month is the last day of the current month
+
+    // Query the Attendance model to find records for all employees within the specified month
+    const attendanceRecords = await Attendance.find({
+      loginTime: { $gte: startDate, $lte: endDate },
+    });
+
+    // You now have the attendance records for all employees for the specified month
+    res.status(200).json({ success: true, attendance: attendanceRecords });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal server error');
+  }
+});
+
+emplyeeRouter.get('/attendance/:id/:year/:month', async (req, res) => {
+  try {
+    const { userId, year, month } = req.params;
+    const startOfMonth = new Date(year, month + 1, 1);
+    const endOfMonth = new Date(year, month + 1, 0);
+
+    const records = await Attendance.find({
+      userId,
+      loginTime: { $gte: startOfMonth, $lte: endOfMonth },
+    });
+
+    const presentDays = new Set();
+
+    records.forEach((record) => {
+      const loginDate = record.loginTime.getDate();
+      const logoutDate = record.logoutTime.getDate();
+
+      // Add login and logout dates to the set
+      presentDays.add(loginDate);
+      presentDays.add(logoutDate);
+
+      // You may want to consider other factors here, like partial days or weekends
+    });
+
+    const totalPresentDays = presentDays.size;
+
+    // Return the total present days in the response
+
+    // Return the calculated data in the response
+    res.json({ records, totalPresentDays });
+  } catch (error) {
+    res.status(500).json({ error: 'Unable to retrieve data' });
+  }
+});
+
+emplyeeRouter.get('/attendancecount/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await Attendance.aggregate([
+      {
+        $match: {
+          userId,
+          loginTime: { $exists: true },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: { $year: '$loginTime' },
+            month: { $month: '$loginTime' },
+          },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Map the result to include the month name
+    const monthsMap = new Map([
+      [1, 'January'],
+      [2, 'February'],
+      [3, 'March'],
+      [4, 'April'],
+      [5, 'May'],
+      [6, 'June'],
+      [7, 'July'],
+      [8, 'August'],
+      [9, 'September'],
+      [10, 'October'],
+      [11, 'November'],
+      [12, 'December'],
+    ]);
+
+    const daysPresentByMonth = result.map((item) => ({
+      month: monthsMap.get(item._id.month), // Include the month name
+      count: item.count,
+    }));
+
+    res.json({ daysPresentByMonth });
+  } catch (error) {
+    console.error('Error calculating attendance:', error);
+    res.status(500).json({ error: 'Unable to calculate attendance' });
+  }
+});
+
+emplyeeRouter.get(
+  '/calculateTotalDaysPresent/:year/:month',
+  async (req, res) => {
+    try {
+      const { year, month } = req.params;
+
+      const result = await Attendance.aggregate([
+        {
+          $match: {
+            loginTime: { $exists: true },
+            $expr: {
+              $eq: [{ $year: '$loginTime' }, parseInt(year)],
+              $eq: [{ $month: '$loginTime' }, parseInt(month)],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$employee_id',
+            totalDaysPresent: { $sum: 1 },
+          },
+        },
+      ]);
+
+      res.json({ totalDaysPresent: result });
+    } catch (error) {
+      console.error('Error calculating total days present:', error);
+      res.status(500).json({ error: 'Unable to calculate total days present' });
+    }
+  }
+);
+
+// --------------------all attendence----------------------------------
+
 // ------------------------------------Attendence---------------------------
 const birthday =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
@@ -2048,7 +2196,7 @@ const sendBirthdayEmails = async () => {
 
 // Schedule the job
 cron.schedule('0 8 * * *', sendBirthdayEmails);
-// cron.schedule('0 12 * * *', sendBirthdayEmails);
+// cron.schedule('* * * * *', sendBirthdayEmails);
 
 cron.schedule('0 8 * * *', async () => {
   // cron.schedule('* * * * *', async () => {
@@ -2404,4 +2552,378 @@ emplyeeRouter.get('/get-wish/:employeeId/:wishId', async (req, res) => {
 // -----------------get specific wish------------------------------------
 
 //-------------------------------------Birthday-----------------------
+
+// ------------------add employee new pf salary pt -------------------------------
+// --add employee-------------------
+emplyeeRouter.post('/', async (req, res) => {
+  const {
+    employee_id,
+    email,
+    name,
+    firstName,
+    lastName,
+    father_husband_name,
+    gender,
+    birth_date,
+    marital_status,
+    address,
+    sub_locality,
+    district,
+    state,
+    pinCode,
+    mobile_no,
+    nominee_name,
+    nominee_relationship,
+    nominee_address,
+    nominee_sub_locality,
+    nominee_district,
+    nominee_state,
+    nominee_mobile_no,
+    nominee_pinCode,
+    nominee_email,
+    no_of_family_members,
+    alternate_mobile_no,
+    personal_email,
+    aadhar_no,
+    pan_number,
+    bank_account_no,
+    aadhar_card_file,
+    pan_card_file,
+    bank_account_file,
+    pf_account_no,
+    uan_number,
+    resetToken,
+    image,
+    joiningDate,
+    designation,
+    age,
+    previous_company_name,
+    experience,
+    experience_letter,
+    leaves,
+    sick,
+    privilege,
+    casual,
+    activate,
+    isAdmin,
+    isSuperAdmin,
+    isSales,
+    isScm,
+    isDesign,
+    isProject,
+    isVisitor,
+    isProduction,
+    isAccountant,
+    payslips,
+    allLeaves,
+    ctc,
+    salarygroup,
+  } = req.body;
+
+  const defaultPassword = employee_id;
+  const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
+
+  const parseDate = (dateStr) => {
+    let day, month, year;
+    if (dateStr.includes('-')) {
+      [day, month, year] = dateStr.split('-').map(Number);
+    } else if (dateStr.includes('/')) {
+      [day, month, year] = dateStr.split('/').map(Number);
+    } else {
+      return null; // Invalid date format
+    }
+    return new Date(year, month - 1, day);
+  };
+
+  const parsedBirthDate = parseDate(birth_date);
+  const parsedJoiningDate = parseDate(joiningDate);
+
+  if (!parsedBirthDate || !parsedJoiningDate) {
+    return res
+      .status(400)
+      .json({ success: false, error: 'Invalid date format' });
+  }
+
+  // Function to format date as "DD/MM/YYYY"
+  const formatDate = (date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const formattedBirthDate = formatDate(parsedBirthDate);
+  const formattedJoiningDate = formatDate(parsedJoiningDate);
+
+  const basic = ((ctc / 12) * (45 / 100)).toFixed(2);
+  const hra = ((basic * 40) / 100).toFixed(2);
+  const conveyance = (1600).toFixed(2);
+  const medical = (1250).toFixed(2);
+  const special = (basic - hra - conveyance - medical).toFixed(2);
+
+  const esi =
+    salarygroup === 8 && gross <= 21000 ? ((gross * 1.75) / 100).toFixed(2) : 0;
+
+  const pf = (basic * 12) / 100;
+  const pt = 200;
+
+  // Ensure that pf and pt are numeric values before using toFixed
+  const isNumeric = (value) => !isNaN(parseFloat(value)) && isFinite(value);
+
+  const totaldeduction =
+    isNumeric(pf) && isNumeric(pt) ? (pf + pt).toFixed(2) : 'N/A';
+
+  const gross = (ctc / 12).toFixed(2);
+  const netsalary = (gross - totaldeduction).toFixed(2);
+  const employerpf = ((basic * 13) / 100).toFixed(2);
+  const employeresi = ((basic * 4.25) / 100).toFixed(2);
+  const bonus = ((basic * 8.33) / 100).toFixed(2);
+
+  // Create a new Employee instance with the provided data
+
+  const newEmployee = new Employee({
+    employee_id,
+    email,
+    name,
+    firstName,
+    lastName,
+    father_husband_name,
+    gender,
+    // birth_date,
+    birth_date: formattedBirthDate,
+    joiningDate: formattedJoiningDate,
+    marital_status,
+    address,
+    sub_locality,
+    district,
+    state,
+    pinCode,
+    mobile_no,
+    nominee_name,
+    nominee_relationship,
+    nominee_address,
+    nominee_sub_locality,
+    nominee_district,
+    nominee_state,
+    nominee_mobile_no,
+    nominee_pinCode,
+    nominee_email,
+    no_of_family_members,
+    alternate_mobile_no,
+    personal_email,
+    aadhar_no,
+    pan_number,
+    bank_account_no,
+    aadhar_card_file,
+    pan_card_file,
+    bank_account_file,
+    pf_account_no,
+    uan_number,
+    resetToken,
+    password: hashedPassword,
+    image,
+    // joiningDate,
+    designation,
+    age,
+    previous_company_name,
+    experience,
+    experience_letter,
+    leaves,
+    sick,
+    privilege,
+    casual,
+    activate,
+    isAdmin,
+    isSuperAdmin,
+    isSales,
+    isScm,
+    isDesign,
+    isProject,
+    isVisitor,
+    isProduction,
+    isAccountant,
+    payslips,
+    allLeaves,
+    basic,
+    ctc,
+    salarygroup,
+    hra: hra,
+    conveyance: conveyance,
+    medical: medical,
+    special: special,
+    pt: pt,
+    pf: pf,
+    esi: esi,
+    total_deduction: totaldeduction,
+    gross: gross,
+    netsalary: netsalary,
+    employer_pf: employerpf,
+    employer_esi: employeresi,
+    bonus: bonus,
+  });
+
+  try {
+    // Save the new employee to the database
+    const savedEmployee = await newEmployee.save();
+
+    // ----------------email---------------------------------
+    const transporter = nodemailer.createTransport({
+      service: 'Yandex',
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      },
+    });
+
+    transporter
+      .sendMail({
+        from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+        to: savedEmployee.email,
+        subject: 'Welcome Abroad !',
+        html: `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Welcome to Taypro</title>
+          <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+          }
+          .container {
+            background-color: #ffffff;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          .header {
+            text-align: center;
+          }
+          .image-content {
+            text-align: center;
+          }
+          img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            display: flex;
+            justify-content: start;
+          }
+        a{
+          text-decoration:"none"
+        }
+           
+        
+            p {
+              color: #333;
+              font-size: 16px;
+              margin-bottom: 20px;
+            }
+        
+            .footer {
+              font-size: 12px;
+              text-align: center;
+              padding:10px 0px 20px 10px;
+            }
+       
+            #name{
+              color:#ff004f;
+              font-weight:600;
+            }
+            #message{
+              color:#006600;
+              font-weight:600;
+            }
+          </style>
+        </head>
+        <body>
+
+       
+          <div class="container">
+          <div class="header">
+          <h2>
+            <img src=${logo} alt="Embedded Image" />
+          </h2>
+        
+            <p>Hii <b id="name">${savedEmployee.name}</b>,Welcome to Taypro! We are excited to have you on board.</p>
+        
+            <p><b id="message"><em>"Your journey with us begins now, and we're here to support you every step of the way."</em></b></p>
+       
+            <p>Here are some details about your account</p>
+
+            <table style=" border-collapse: collapse; width: 100%;">
+           
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Employee portal</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="https://employee.taypro.in" target="blank">https://employee.taypro.in</a></td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Employee ID</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.employee_id}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Name</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.name}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Email</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.email}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Designation</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.designation}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Date of joining</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.joiningDate}</td>
+            </tr>
+            <tr>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Default password</strong></td>
+              <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.employee_id}</td>
+            </tr>
+            <!-- Add more rows as needed -->
+          </table>
+          
+         <p> If you have any questions or need assistance, feel free to contact us.</p>
+          </div>
+          <div id="footer">
+          <br/>
+          <span>Best Regards,</span><br/>
+          <span>TAYPRO PRIVATE LIMITED</span><br/>
+       <span><b>We make green energy greener!!</b></span><br/>
+          </div>
+        </body>
+        </html>
+          `,
+      })
+      .then((info) => {
+        if (info.accepted.includes(savedEmployee.email)) {
+          console.log(`Email successfully sent to ${savedEmployee.email}`);
+        } else {
+          console.log(`Failed to send email to ${savedEmployee.email}`);
+        }
+      })
+      .catch((error) => {
+        console.error(`Error sending email to ${savedEmployee.email}:`, error);
+      });
+    // ----------------email---------------------------------
+
+    // Send the newly created employee as the response
+    res.status(201).json({
+      success: true,
+      employee: savedEmployee,
+      message: 'Employee Created Successfully',
+    });
+  } catch (error) {
+    // Handle any errors that may occur during employee creation
+    res.status(500).json({ success: false, error: 'Failed to add employee' });
+  }
+});
+// ------------------add employee new pf salary pt -------------------------------
+
 export default emplyeeRouter;

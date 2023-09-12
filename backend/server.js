@@ -10,6 +10,7 @@ import surveyRouter from './routes/surveyRoutes.js';
 import uploadRouter from './routes/uploadRoute.js';
 import EventRouter from './routes/eventRoutes.js';
 import NoticeRouter from './routes/noticeRoutes.js';
+import attendenceRouter from './routes/attendenceRoutes.js';
 
 dotenv.config();
 mongoose
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/seed', seedRouter);
 
 app.use('/api/employees', emplyeeRouter);
+app.use('/api/attendence', attendenceRouter);
 
 app.use('/api/survey', surveyRouter);
 app.use('/api/upload', uploadRouter);

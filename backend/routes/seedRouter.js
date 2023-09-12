@@ -6,6 +6,7 @@ import Survey from '../models/surveyModel.js';
 import Notice from '../models/noticeModel.js';
 import Attendance from '../models/AttendanceModel.js';
 import BirthdayWish from '../models/BirthdayWish.js';
+import AttendanceRecord from '../models/AttendanceRecord.js';
 
 const seedRouter = express.Router();
 
@@ -24,6 +25,10 @@ seedRouter.get('/', async (req, res) => {
 
   await Attendance.deleteMany({});
   const CreatedAttendance = await Attendance.insertMany(data.attendanceData);
+  await AttendanceRecord.deleteMany({});
+  const CreatedattendanceRecord = await AttendanceRecord.insertMany(
+    data.AttendanceRecord
+  );
 
   await BirthdayWish.deleteMany({});
   const CreatedBirthdayWish = await BirthdayWish.insertMany(data.birthdayWish);
@@ -35,6 +40,7 @@ seedRouter.get('/', async (req, res) => {
     CreatedNotice,
     CreatedAttendance,
     CreatedBirthdayWish,
+    CreatedattendanceRecord,
   });
 });
 

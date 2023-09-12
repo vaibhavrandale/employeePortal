@@ -12,10 +12,10 @@ import axios from 'axios';
 import { Store } from '../../Store';
 import './salarySleep.css';
 import toast from 'react-hot-toast';
+import { Helmet } from 'react-helmet';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox1 from '../../components/LoadingBox1';
 import LoadingBox3 from '../../components/LoadingBox/LoadingBox3';
-import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {

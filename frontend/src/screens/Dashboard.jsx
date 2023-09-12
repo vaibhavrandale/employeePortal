@@ -131,10 +131,17 @@ function Dashboard() {
     autoplay: true,
     afterChange: (current) => setCurrentSlide(current),
   };
+  const NewDate = new Date();
+
+  const Year = NewDate.getFullYear();
+  const Month = NewDate.getMonth() + 1; // Note that months are zero-based (January is 0, February is 1, etc.)
+  const ToDay = NewDate.getDate();
   const loginHandler = async (e) => {
     try {
+      // const { data } = await axios.post(
+      //   `/api/employees/checkin/${userInfo._id}`,
       const { data } = await axios.post(
-        `/api/employees/checkin/${userInfo._id}`,
+        `/api/attendence/checkin/${Year}/${Month}/${ToDay}/${userInfo._id}`,
 
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -167,7 +174,7 @@ function Dashboard() {
 
     try {
       const { data } = await axios.post(
-        `/api/employees/checkout/${userInfo._id}`,
+        `/api/attendence/checkout/${Year}/${Month}/${ToDay}/${userInfo._id}`,
 
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },

@@ -232,7 +232,7 @@ const AttendanceHomecopy = () => {
                     <td>{totalDaysPresent[entry.employee_id] || 0}</td>
                     <td>
                       <Link
-                        to={`/pay-slip?${entry.employee_id}/${currentYear}/${currentMonth}`}
+                        to={`/pay-slip/${entry.employee_id}/${currentYear}/${currentMonth}`}
                       >
                         Pay
                       </Link>

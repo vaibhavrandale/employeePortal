@@ -20,6 +20,7 @@ import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';
 import Attendance from '../models/AttendanceModel.js';
+import AttendanceRecord from '../models/AttendanceRecord.js';
 // import emoji from '../welcome_image.jpg';
 
 const emplyeeRouter = express.Router();
@@ -1847,168 +1848,18 @@ emplyeeRouter.post('/checkout/:id', async (req, res) => {
 emplyeeRouter.get('/attendance/:id', async (req, res) => {
   const id = req.params.id;
   // const employee = await Employee.findById(id);
-  const attendance = await Attendance.find({ userId: id });
+  const attendance = await AttendanceRecord.find({ user_id: id });
 
   // Send the created employees as the response
   res.send({ attendance });
 });
-
 emplyeeRouter.get('/attendance', async (req, res) => {
-  // const id = req.params.id;
   // const employee = await Employee.findById(id);
-  const attendance = await Attendance.find();
+  const attendance = await AttendanceRecord.find();
 
   // Send the created employees as the response
   res.send({ attendance });
 });
-
-// --------------------all attendence----------------------
-// Get attendance data for all employees for a specific year and month
-emplyeeRouter.get('/calculateattendance/:year/:month', async (req, res) => {
-  try {
-    const { year, month } = req.params;
-
-    // Parse the year and month values from the URL parameters
-    const yearInt = parseInt(year);
-    const monthInt = parseInt(month);
-
-    if (isNaN(yearInt) || isNaN(monthInt)) {
-      return res.status(400).send('Invalid year or month');
-    }
-
-    // Calculate the start and end dates for the specified month
-    const startDate = new Date(yearInt, monthInt - 1, 1); // Month is 0-indexed in JavaScript
-    const endDate = new Date(yearInt, monthInt, 0); // Day 0 of the next month is the last day of the current month
-
-    // Query the Attendance model to find records for all employees within the specified month
-    const attendanceRecords = await Attendance.find({
-      loginTime: { $gte: startDate, $lte: endDate },
-    });
-
-    // You now have the attendance records for all employees for the specified month
-    res.status(200).json({ success: true, attendance: attendanceRecords });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
-  }
-});
-
-emplyeeRouter.get('/attendance/:id/:year/:month', async (req, res) => {
-  try {
-    const { userId, year, month } = req.params;
-    const startOfMonth = new Date(year, month + 1, 1);
-    const endOfMonth = new Date(year, month + 1, 0);
-
-    const records = await Attendance.find({
-      userId,
-      loginTime: { $gte: startOfMonth, $lte: endOfMonth },
-    });
-
-    const presentDays = new Set();
-
-    records.forEach((record) => {
-      const loginDate = record.loginTime.getDate();
-      const logoutDate = record.logoutTime.getDate();
-
-      // Add login and logout dates to the set
-      presentDays.add(loginDate);
-      presentDays.add(logoutDate);
-
-      // You may want to consider other factors here, like partial days or weekends
-    });
-
-    const totalPresentDays = presentDays.size;
-
-    // Return the total present days in the response
-
-    // Return the calculated data in the response
-    res.json({ records, totalPresentDays });
-  } catch (error) {
-    res.status(500).json({ error: 'Unable to retrieve data' });
-  }
-});
-
-emplyeeRouter.get('/attendancecount/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-
-    const result = await Attendance.aggregate([
-      {
-        $match: {
-          userId,
-          loginTime: { $exists: true },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: '$loginTime' },
-            month: { $month: '$loginTime' },
-          },
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
-    // Map the result to include the month name
-    const monthsMap = new Map([
-      [1, 'January'],
-      [2, 'February'],
-      [3, 'March'],
-      [4, 'April'],
-      [5, 'May'],
-      [6, 'June'],
-      [7, 'July'],
-      [8, 'August'],
-      [9, 'September'],
-      [10, 'October'],
-      [11, 'November'],
-      [12, 'December'],
-    ]);
-
-    const daysPresentByMonth = result.map((item) => ({
-      month: monthsMap.get(item._id.month), // Include the month name
-      count: item.count,
-    }));
-
-    res.json({ daysPresentByMonth });
-  } catch (error) {
-    console.error('Error calculating attendance:', error);
-    res.status(500).json({ error: 'Unable to calculate attendance' });
-  }
-});
-
-emplyeeRouter.get(
-  '/calculateTotalDaysPresent/:year/:month',
-  async (req, res) => {
-    try {
-      const { year, month } = req.params;
-
-      const result = await Attendance.aggregate([
-        {
-          $match: {
-            loginTime: { $exists: true },
-            $expr: {
-              $eq: [{ $year: '$loginTime' }, parseInt(year)],
-              $eq: [{ $month: '$loginTime' }, parseInt(month)],
-            },
-          },
-        },
-        {
-          $group: {
-            _id: '$employee_id',
-            totalDaysPresent: { $sum: 1 },
-          },
-        },
-      ]);
-
-      res.json({ totalDaysPresent: result });
-    } catch (error) {
-      console.error('Error calculating total days present:', error);
-      res.status(500).json({ error: 'Unable to calculate total days present' });
-    }
-  }
-);
 
 // --------------------all attendence----------------------------------
 

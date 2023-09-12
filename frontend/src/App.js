@@ -43,7 +43,7 @@ import NewNotice from './screens/Notice/NewNotice';
 import ProgressBar from './ProgressBar';
 import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
-import AttendanceHome from './screens/Attendance/AttendanceHome';
+import AttedanceTable from './screens/Attendance/AttedanceTable';
 import AttendanceDetails from './screens/Attendance/AttendanceDetails';
 import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 import Wishes from './screens/Employee/Wishes';
@@ -264,10 +264,18 @@ function AppRouter() {
           path="/attendance-home-page"
           element={
             <SuperAdminRoutes>
-              <AttendanceHomecopy />
+              <AttedanceTable />
             </SuperAdminRoutes>
           }
         />
+        {/* <Route
+          path="/attendance-home-page"
+          element={
+            <SuperAdminRoutes>
+              <AttendanceHomecopy />
+            </SuperAdminRoutes>
+          }
+        /> */}
 
         <Route
           path="/attendenceDetails/:id"
@@ -298,7 +306,7 @@ function AppRouter() {
         />
 
         <Route
-          path="/pay-slip?:id/:year/:month"
+          path="/pay-slip/:id/:year/:month/:totaldays"
           element={
             <ProtectedRoutes>
               <SalarySleepNew />

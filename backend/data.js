@@ -65,6 +65,19 @@ const data = {
       previous_company_name: 'Dummy Name',
       ctc: 300000,
       salarygroup: 5,
+      hra: 4500,
+      conveyance: 1600,
+      medical: 1250,
+      special: 6400,
+      pt: 200,
+      pf: 1350,
+      esi: 0,
+      total_deduction: 1550,
+      gross: 25000,
+      netsalary: 23450,
+      employer_pf: 1462.5,
+      employer_esi: 0,
+      bonus: 937.12,
     },
 
     {
@@ -130,6 +143,19 @@ const data = {
       previous_company_name: '1Dummy Name',
       ctc: 300000,
       salarygroup: 5,
+      hra: 4500,
+      conveyance: 1600,
+      medical: 1250,
+      special: 6400,
+      pt: 200,
+      pf: 1350,
+      esi: 0,
+      total_deduction: 1550,
+      gross: 25000,
+      netsalary: 23450,
+      employer_pf: 1462.5,
+      employer_esi: 0,
+      bonus: 937.12,
     },
 
     // {
@@ -194,6 +220,7 @@ const data = {
   ],
   notices: [],
   attendanceData: [],
+  AttendanceRecord: [],
   SiteSurvey: [
     {
       projectCode: 'your_project_code',

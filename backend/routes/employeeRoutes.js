@@ -417,8 +417,7 @@ emplyeeRouter.delete(
     // Check if the employee is in the list of protected employees
     const protectedEmployees = [
       'vaibhav.randale@taypro.in',
-      'yogesh@taypro.in', // Add the email addresses of protected employees here
-      // Add more protected employees as needed
+      'yogesh@taypro.in',
     ];
 
     if (protectedEmployees.includes(employee.email)) {
@@ -427,8 +426,8 @@ emplyeeRouter.delete(
     }
 
     // If the employee is not protected, delete them
-    await employee.deleteOne();
-    res.send({ message: 'Employee Deleted' });
+    const deletedEmployee = await employee.deleteOne();
+    res.send({ message: 'Employee Deleted', deletedEmployee });
   })
 );
 

@@ -5,12 +5,11 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 // Import your company logo as a data URI or URL
 import axios from 'axios';
-import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet';
 import { Store } from '../../Store';
 
@@ -41,7 +40,7 @@ function SalarySleepNew() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const pdfPreviewRef = useRef(null);
-
+  const [name, setName] = useState('');
   useEffect(() => {
     console.log('Fetching data...');
 
@@ -50,18 +49,18 @@ function SalarySleepNew() {
       try {
         const result = await axios.get(`/api/employees/details/${id}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
-
+        setName(result.data.employee.name);
         console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
-
     fetchData2();
-  }, [id]);
+  }, [month, year, totaldays, id]);
 
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
+
   const generatePdf = (employee, year, month) => {
     const doc = new jsPDF('landscape'); // Set landscape orientation
 
@@ -74,10 +73,27 @@ function SalarySleepNew() {
     doc.setFont('helvetica', 'bold');
     doc.text(`TAYPRO PRIVATE LIMITED`, 15, 15);
 
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    const cuMonth = monthNames[new Date().getMonth()];
+
     // Reset the font style to normal for subsequent text
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
-    doc.text(`Payslip for the month ${month.toUpperCase()} - ${year}`, 16, 21);
+    doc.text(`Payslip for the month ${cuMonth} - ${year}`, 16, 21);
 
     doc.text(`Financial Period ${year}-${parseInt(year, 10) + 1}`, 16, 26);
 
@@ -95,13 +111,13 @@ function SalarySleepNew() {
     doc.line(45, 35, 45, 49);
 
     doc.setTextColor(0); // Reset text color to black
-    doc.text(`${employees.name}`, 47, 40);
+    doc.text(`${name}`, 47, 40);
 
     doc.line(15, 42, 105, 42);
 
     doc.setTextColor(0, 128, 255); // Set text color to blue
 
-    doc.text(`Salary Group`, 16, 47);
+    doc.text(`Employee id`, 16, 47);
 
     doc.line(15, 49, 105, 49);
     //vertical line
@@ -109,14 +125,14 @@ function SalarySleepNew() {
 
     doc.setTextColor(0); // Reset text color to black
 
-    doc.text(`${employees.salarygroup}`, 47, 47);
+    doc.text(`${employees.employee_id}`, 47, 47);
     //last vertical line
     doc.line(105, 35, 105, 49);
 
     //  ----------------------------------- 1st table end------------------------------
 
     //  ----------------------------------- 2nd table------------------------------
-    doc.line(120, 35, 286, 35);
+    doc.line(120, 35, 190, 35);
     //vertical line
     doc.line(120, 35, 120, 49);
     doc.setTextColor(0, 128, 255); // Set text color to blue
@@ -131,12 +147,31 @@ function SalarySleepNew() {
     doc.setTextColor(0); // Reset text color to black
     doc.text(`Pune`, 152, 47);
     //vertical line
-    doc.line(286, 35, 286, 49);
+    doc.line(190, 35, 190, 49);
 
+    doc.line(193, 35, 286, 35);
+    doc.line(193, 42, 286, 42);
+    doc.line(193, 49, 286, 49);
+    //vertical line
+    doc.line(193, 35, 193, 49);
+    doc.setTextColor(0, 135, 255); // Set text color to blue
+    doc.text(`PF No.`, 196, 40);
+    //vertical line
+    doc.line(225, 35, 225, 49);
+    doc.setTextColor(0); // Reset text color to black
+    doc.text(`${employees.pf_account_no}`, 228, 40);
+
+    doc.setTextColor(0, 135, 255); // Set text color to blue
+    doc.text(`UAN No.`, 196, 47);
+
+    doc.setTextColor(0); // Reset text color to black
+    doc.text(`${employees.uan_number}`, 228, 47);
+    //vertical line
+    doc.line(286, 35, 286, 49);
     doc.line(150, 35, 150, 49);
 
-    doc.line(120, 42, 286, 42);
-    doc.line(120, 49, 286, 49);
+    doc.line(120, 42, 190, 42);
+    doc.line(120, 49, 190, 49);
 
     //  ----------------------------------- 2nd table end ------------------------------
 
@@ -226,38 +261,48 @@ function SalarySleepNew() {
 
     // Get the day of the month (1-31) for the last day of the current month
     const numberOfDaysInCurrentMonth = lastDayOfCurrentMonth.getDate();
-    const total = 31;
+    // const total = 31;
     console.log(employees.ctc);
     console.log(employees.total_deduction);
     console.log(numberOfDaysInCurrentMonth);
     console.log(totaldays);
 
     const netSalary =
-      (total * (employees.ctc / 12)) / numberOfDaysInCurrentMonth -
+      (totaldays * (employees.ctc / 12)) / numberOfDaysInCurrentMonth -
       employees.total_deduction;
 
     console.log(netSalary);
 
+    const PF = employees.pf;
+    const TOTAL_DEDUCTION = employees.total_deduction;
+    const PT = employees.pt;
+    const SPECIAL = employees.special;
+    const MEDICAL = employees.medical;
+    const HRA = employees.hra;
+    const GROSS = employees.gross;
+    const CONVEYANCE = employees.conveyance;
+    const BASIC = employees.ctc / 12;
+
     const columnData = [
       [
         { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
-        { content: `11,250.00`, halign: 'right' },
+        { content: `${BASIC}.00`, halign: 'right' },
       ],
       [
         { content: 'House Rent Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: '4,500.00', halign: 'right' },
+        { content: `${HRA}.00`, halign: 'right' },
       ],
       [
         { content: 'Conveyance Allowances', fontStyle: 'bold', halign: 'left' },
-        { content: '1,600.00', halign: 'right' },
+        { content: `${CONVEYANCE}.00`, halign: 'right' },
       ],
       [
         { content: 'Medical Allowances', fontStyle: 'bold', halign: 'left' },
-        { content: '1,250.00', halign: 'right' },
+        { content: `${MEDICAL}.00`, halign: 'right' },
       ],
       [
         { content: 'Special Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: '6,400.00', halign: 'right' },
+        { content: `${SPECIAL}.00`, halign: 'right' },
       ],
       [
         {
@@ -267,7 +312,7 @@ function SalarySleepNew() {
           halign: 'left',
         },
         {
-          content: '25,000.00',
+          content: `${GROSS}.00`,
           halign: 'right',
           fillColor: '#3299FF', // Background color for the second cell
         },
@@ -290,7 +335,7 @@ function SalarySleepNew() {
           halign: 'left',
         },
         {
-          content: '1,350.00',
+          content: `${PF}.00`,
           halign: 'right',
         },
       ],
@@ -312,7 +357,7 @@ function SalarySleepNew() {
           halign: 'left',
         },
         {
-          content: '200.00',
+          content: `${PT}.00`,
           halign: 'right',
         },
       ],
@@ -323,7 +368,7 @@ function SalarySleepNew() {
           halign: 'left',
         },
         {
-          content: '1550',
+          content: `${TOTAL_DEDUCTION}.00`,
           halign: 'right',
         },
       ],
@@ -391,10 +436,14 @@ function SalarySleepNew() {
     });
 
     const salaryData = [
-      [{ content: 'Total Days', fontStyle: 'bold' }, '31'],
-      [{ content: 'Present Days', fontStyle: 'bold' }, '31'],
+      [
+        { content: 'Total Days', fontStyle: 'bold' },
+        numberOfDaysInCurrentMonth,
+      ],
+      [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
 
-      ['Absent Days', '0'],
+      ['Absent Days', numberOfDaysInCurrentMonth - totaldays],
+
       ['Paid Leave Taken', '0'],
     ];
 
@@ -457,31 +506,53 @@ function SalarySleepNew() {
 
   useEffect(() => {
     // Call generateAndPreviewPdf when the component mounts
-    generateAndPreviewPdf();
-  }, []);
+    generateAndPreviewPdf(employees, month, name, totaldays);
+  });
 
-  // const generateAndDownloadPdf = () => {
-  //   const filteredPayslips = employee.payslips.filter(
-  //     (payslip) =>
-  //       payslip.year.toString() === year &&
-  //       payslip.month.toLowerCase() === month.toLowerCase()
-  //   );
-  //   if (filteredPayslips.length === 0) {
-  //     toast.error('No payslips found for the selected month and year.');
-  //     return;
-  //   }
-  //   const salarySlipPdf = generatePdf(employee, year, month);
-  //   if (salarySlipPdf) {
-  //     salarySlipPdf.save(`${employee.name}_${month}_${year}.pdf`);
-  //   } else {
-  //     console.log('PDF generation failed.');
-  //   }
-  // };
+  const generateAndDownloadPdf = () => {
+    const salarySlipPdf = generatePdf(employees, year, month);
+    if (salarySlipPdf) {
+      salarySlipPdf.save(`${employees.name}_${month}_${year}.pdf`);
+    } else {
+      console.log('PDF generation failed.');
+    }
+  };
 
   return (
     <div className="container ">
-      totalDays={totaldays}
-      <div>
+      <Helmet>
+        <title>Payslip</title>
+      </Helmet>
+      <div className="d-flex justify-content-end align-items-end">
+        <div class="button downloadBtn " onClick={generateAndDownloadPdf}>
+          <div class="button-wrapper">
+            <div class="text1">Download</div>
+            <span class="icon1">
+              <svg
+                className="svg"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                role="img"
+                width="2em"
+                height="2em"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"
+                ></path>
+              </svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="d-flex justify-content-center align-items-center w-100 ">
         <iframe
           ref={pdfPreviewRef}
           title="PDF Preview"

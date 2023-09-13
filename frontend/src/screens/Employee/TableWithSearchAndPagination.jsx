@@ -155,6 +155,7 @@ const TableWithSearchAndPagination = () => {
   };
 
   const DeleteHandler = async (e, id) => {
+    console.log(id);
     e.preventDefault();
     popupDeleteHandle();
     dispatch({
@@ -175,7 +176,7 @@ const TableWithSearchAndPagination = () => {
         payload: data,
       });
 
-      toast.promise(saveSettings({ action: 'approve', leaveId: id }), {
+      toast.promise(saveSettings({ action: 'delete' }), {
         position: 'top-right',
         loading: 'Processing...',
         success: <b>Employee Deleted Successfully!</b>,
@@ -293,7 +294,7 @@ const TableWithSearchAndPagination = () => {
                     <td className="text-center">{item.designation}</td>
                     <td className="text-center">{item.email}</td>
                     <td className="text-center">{item.joiningDate}</td>
-                    {userInfo.isSuperAdmin ? (
+                    {/*{userInfo.isSuperAdmin ? (
                       <td className="text-center  fs-5">
                         {loadingDelete ? (
                           <LoadingBox4 />
@@ -308,7 +309,29 @@ const TableWithSearchAndPagination = () => {
                       </td>
                     ) : (
                       ''
+                    )} */}
+
+                    {userInfo.isSuperAdmin ? (
+                      <td className="text-center fs-5">
+                        {loadingDelete ? (
+                          <LoadingBox4 />
+                        ) : item.email === 'vaibhav.randale@taypro.in' ? (
+                          <div disabled className="text-danger">
+                            <MdDeleteOutline />
+                          </div>
+                        ) : (
+                          <Link
+                            onClick={popupDeleteHandle}
+                            className="text-danger"
+                          >
+                            <MdDeleteOutline />
+                          </Link>
+                        )}
+                      </td>
+                    ) : (
+                      ''
                     )}
+
                     {isdeletePopupOpen && (
                       <div className="popup-container">
                         <div className="popup">

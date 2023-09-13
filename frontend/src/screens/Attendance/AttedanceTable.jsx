@@ -2,6 +2,11 @@ import React, { useEffect, useReducer, useState } from 'react';
 import attendanceData from './attendence.js';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { LiaReceiptSolid } from 'react-icons/lia';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5.jsx';
+import AlertBox from '../../components/MessageBox/AlertBox.js';
+import MsgBox from '../../components/MessageBox/MsgBox.js';
+import { Helmet } from 'react-helmet';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_ATTEDANCE_REQUEST':
@@ -96,6 +101,9 @@ function AttendanceTable() {
   };
   return (
     <div className="container">
+      <Helmet>
+        <title>Attendance</title>
+      </Helmet>
       <div className="filter">
         <label htmlFor="yearFilter">Year:</label>
         <select
@@ -134,45 +142,77 @@ function AttendanceTable() {
         </select>
       </div>
 
-      {filteredData.length > 0 && (
-        <div className="table-responsive m-1">
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th className="col-md-1">User ID</th>
-                <th className="col-md-2">Name</th>
-                {uniqueDates.map((date) => (
-                  <th key={date}>{date}</th>
-                ))}
-                <th className="col-md-1">Total</th>
-                <th className="col-md-1">Payslip</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.values(attendanceByUserId).map((userAttendance) => (
-                <tr key={userAttendance.employee_id}>
-                  <td>{userAttendance.employee_id}</td>
-                  <td>{userAttendance.username}</td>
-                  {userAttendance.dates.map((status, index) => (
-                    <td key={index}>{status}</td>
+      {loadingAttedance ? (
+        <LoadingBox5 />
+      ) : error ? (
+        <MsgBox className="alert alert-danger">{error}</MsgBox>
+      ) : (
+        <>
+          {filteredData.length > 0 ? (
+            <div className="table-responsive m-1">
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th className="col-md-1 text-center">User ID</th>
+                    <th className="col-md-2 text-center">Name</th>
+                    {uniqueDates.map((date) => (
+                      <th className="col-md-1 text-center" key={date}>
+                        {date}
+                      </th>
+                    ))}
+                    <th className="col-md-1 text-center">Total</th>
+                    <th className="col-md-1 text-center">Payslip</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.values(attendanceByUserId).map((userAttendance) => (
+                    <tr key={userAttendance.employee_id}>
+                      <td className="col-md-1 text-center">
+                        {userAttendance.employee_id}
+                      </td>
+                      <td className="col-md-1 text-center">
+                        {userAttendance.username}
+                      </td>
+                      {userAttendance.dates.map((status, index) => (
+                        <td className="col-md-1 text-center" key={index}>
+                          {status}
+                        </td>
+                      ))}
+                      <td className="col-md-1 text-center">
+                        {calculateTotalDaysPresent(userAttendance)}
+                      </td>
+                      <td className="col-md-1 text-center">
+                        <Link
+                          target="blank"
+                          to={`/pay-slip/${userAttendance.user_id}/${
+                            selectedYear || Year
+                          }/${
+                            selectedMonth || Month
+                          }/${calculateTotalDaysPresent(userAttendance)}`}
+                        >
+                          <LiaReceiptSolid className="text-success fs-4" />
+                        </Link>
+                      </td>
+                    </tr>
                   ))}
-                  <td>{calculateTotalDaysPresent(userAttendance)}</td>
-                  <td>
-                    <Link
-                      to={`/pay-slip/${userAttendance.user_id}/${
-                        selectedYear || Year
-                      }/${selectedMonth || Month}/${calculateTotalDaysPresent(
-                        userAttendance
-                      )}`}
-                    >
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="no-data-found-message">
+              {selectedYear && selectedMonth ? (
+                <AlertBox className="alert alert-danger w-50">
+                  No data found for Year ${selectedYear} and Month $
+                  {selectedMonth}
+                </AlertBox>
+              ) : (
+                <AlertBox className="alert alert-danger w-50">
+                  No data found
+                </AlertBox>
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

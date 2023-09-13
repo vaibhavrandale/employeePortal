@@ -1,6 +1,7 @@
 import { useContext, useEffect, useReducer, useState } from 'react';
 import { getError } from '../../utils';
 import { toast } from 'react-hot-toast';
+import { BiLinkAlt } from 'react-icons/bi';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { Link, useParams } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { MdVerified } from 'react-icons/md';
 import LoadingBox1 from '../../components/LoadingBox1';
 import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
+import PdfModal from './PdfModal';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -99,6 +101,7 @@ const Profile = () => {
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -170,211 +173,90 @@ const Profile = () => {
     fetchData();
   }, [id]);
 
-  // const uploadFileHandler = async (e, forImages) => {
-  //   const file = e.target.files[0];
-  //   const bodyFormData = new FormData();
-  //   bodyFormData.append('file', file);
-  //   try {
-  //     dispatch({ type: 'UPLOAD_REQUEST' });
-  //     const { data } = await axios.post(
-  //       '/api/upload/profileImages',
-  //       bodyFormData,
-  //       {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           Authorization: `Bearer ${userInfo.token}`,
-  //         },
-  //       }
-  //     );
-  //     dispatch({ type: 'UPLOAD_SUCCESS' });
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
 
-  //     if (forImages) {
-  //       setImage([...image, data.secure_url]);
-  //     } else {
-  //       setImage(data.secure_url);
-  //     }
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
-  //     toast.success('Image uploaded successfully.', {
-  //       position: 'bottom-right',
-  //     });
-  //   } catch (err) {
-  //     toast.success(getError(err), {
-  //       position: 'bottom-right',
-  //     });
-  //     dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
-  //   }
-  // };
+  // const pdfUrl =
+  //   'https://drive.google.com/uc?id=1sxdUCwjVu0J22k0qWc_uF7l39OvN248s';
 
-  const SubmitHandler = async (e) => {
-    e.preventDefault();
-    dispatch({
-      type: 'UPDATE_REQUEST',
-    });
-    try {
-      const { data } = await axios.put(
-        `/api/employees/updateemployee/${id}`,
-        {
-          employee_id,
-          email,
-          name: `${firstName} ${lastName}`,
-          firstName,
-          lastName,
-          father_husband_name,
-          gender,
-          birth_date,
-          marital_status,
-          address,
-          sub_locality,
-          district,
+  // function extractFileIdFromGoogleDriveLink1(link) {
+  //   const match1 = link.match(/\/file\/d\/([^/]+)\//);
+  //   return match1 ? match1[1] : null;
+  // }
+  // function extractFileIdFromGoogleDriveLink2(link) {
+  //   const match2 = link.match(/\/file\/d\/([^/]+)\//);
+  //   return match2 ? match2[1] : null;
+  // }
+  // function extractFileIdFromGoogleDriveLink3(link) {
+  //   const match3 = link.match(/\/file\/d\/([^/]+)\//);
+  //   return match3 ? match3[1] : null;
+  // }
+  // function extractFileIdFromGoogleDriveLink4(link) {
+  //   const match4 = link.match(/\/file\/d\/([^/]+)\//);
+  //   return match4 ? match4[1] : null;
+  // }
+  // const googleAdharDriveLink = employees.aadhar_card_file;
+  // const googlePanDriveLink = employees.pan_card_file;
+  // const googleBankDriveLink = employees.bank_account_file;
+  // const googleExperienceDriveLink = employees.experience_letter;
+  // const AdharfileId = extractFileIdFromGoogleDriveLink1(googleAdharDriveLink);
+  // const PanfileId = extractFileIdFromGoogleDriveLink2(googlePanDriveLink);
+  // const BankfileId = extractFileIdFromGoogleDriveLink3(googleBankDriveLink);
+  // const ExperiencefileId = extractFileIdFromGoogleDriveLink4(
+  //   googleExperienceDriveLink
+  // );
 
-          pinCode,
-          mobile_no,
-          nominee_name,
-          nominee_relationship,
-          nominee_address,
-          nominee_sub_locality,
-          nominee_district,
-          nominee_state,
-          nominee_mobile_no,
-          nominee_pinCode,
-          nominee_email,
-          no_of_family_members,
-          alternate_mobile_no,
-          personal_email,
-          aadhar_no,
-          pan_number,
-          bank_account_no,
-          aadhar_card_file,
-          pan_card_file,
-          bank_account_file,
-          pf_account_no,
-          uan_number,
-          image,
-          joiningDate,
-          designation,
-          age,
-          previous_company_name,
-          experience,
-          experience_letter,
-          isAdmin,
-          isSuperAdmin,
-          isSales,
-          isScm,
-          isDesign,
-          isProject,
-          isVisitor,
-          isProduction,
-          isAccountant,
-          state: State,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      console.log(data);
+  // console.log(ExperiencefileId);
+  // const AdharFile = `https://drive.google.com/uc?id=${AdharfileId}`;
+  // const PanFile = `https://drive.google.com/uc?id=${PanfileId}`;
+  // const BankFile = `https://drive.google.com/uc?id=${BankfileId}`;
+  // const ExperienceFile = `https://drive.google.com/uc?id=${ExperiencefileId}`;
 
-      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
-      dispatch({
-        type: 'UPDATE_SUCCESS',
-        payload: data.employee,
-      });
-      setAddress(false);
-      const custommessage = data.message;
-
-      toast.success(custommessage, {
-        position: 'top-center',
-      });
-      // navigate(`/employees`);
-    } catch (err) {
-      toast.error(getError(err), {
-        position: 'top-center',
-      });
-      dispatch({ type: 'UPDATE_FAIL' });
+  function extractFileIdFromGoogleDriveLink(link) {
+    // Check if link is defined and not null before using match
+    if (link && link.match) {
+      const match = link.match(/\/file\/d\/([^/]+)\//);
+      return match ? match[1] : null;
     }
-  };
+    return null; // Return null if link is not defined
+  }
 
-  const DeactivateHandler = async (e) => {
-    e.preventDefault();
+  // Check if employees properties are defined before extracting file IDs
+  const googleAdharDriveLink = employees.aadhar_card_file;
+  const googlePanDriveLink = employees.pan_card_file;
+  const googleBankDriveLink = employees.bank_account_file;
+  const googleExperienceDriveLink = employees.experience_letter;
 
-    dispatch({ type: 'UPDATE_REQUEST' });
+  const AdharfileId = extractFileIdFromGoogleDriveLink(googleAdharDriveLink);
+  const PanfileId = extractFileIdFromGoogleDriveLink(googlePanDriveLink);
+  const BankfileId = extractFileIdFromGoogleDriveLink(googleBankDriveLink);
+  const ExperiencefileId = extractFileIdFromGoogleDriveLink(
+    googleExperienceDriveLink
+  );
 
-    try {
-      const { data } = await axios.put(
-        `/api/employees/activate/${id}`,
-        {
-          activate: 'false',
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      console.log(data);
-      dispatch({ type: 'UPDATE_SUCCESS', payload: data.employee });
+  // Create the file URLs with file IDs
+  const AdharFile = AdharfileId
+    ? `https://drive.google.com/uc?id=${AdharfileId}`
+    : null;
+  const PanFile = PanfileId
+    ? `https://drive.google.com/uc?id=${PanfileId}`
+    : null;
+  const BankFile = BankfileId
+    ? `https://drive.google.com/uc?id=${BankfileId}`
+    : null;
+  const ExperienceFile = ExperiencefileId
+    ? `https://drive.google.com/uc?id=${ExperiencefileId}`
+    : null;
 
-      const customMessage = data.message;
-
-      toast.success(customMessage, {
-        position: 'top-right',
-      });
-
-      // toast.success('Employee Deactivated successfully');
-    } catch (error) {
-      toast.error(getError(error));
-      dispatch({ type: 'UPDATE_FAIL' });
-    }
-  };
-  const ActivateHandler = async (e) => {
-    e.preventDefault();
-
-    dispatch({ type: 'UPDATE_REQUEST' });
-
-    try {
-      const { data } = await axios.put(
-        `/api/employees/activate/${id}`,
-        {
-          activate: 'true',
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      console.log(data);
-      dispatch({ type: 'UPDATE_SUCCESS', payload: data.employee });
-      const customMessage = data.message;
-
-      toast.success(customMessage, {
-        position: 'top-right',
-      });
-
-      // toast.success('Employee Deactivated successfully');
-    } catch (error) {
-      toast.error(getError(error));
-      dispatch({ type: 'UPDATE_FAIL' });
-    }
-  };
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const buttonStyle = {
-    padding: '5px 15px',
-    backgroundColor: isHovered ? '#fc129f' : '#ff20ec', // Change the background color on hover
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease-in-out',
-    marginTop: '15px',
-    display: 'block',
-    marginLeft: 'auto',
-  };
+  console.log('adhar', AdharFile);
+  console.log('Pan', PanFile);
+  console.log('bank', BankFile);
+  console.log('experience', ExperienceFile);
 
   const styles = {
     container: {
@@ -632,18 +514,15 @@ const Profile = () => {
 
                 <td style={styles.label}>Gender:</td>
                 <td>
-                  <select
+                  <input
                     disabled
+                    type="text"
                     name=""
                     id=""
-                    style={styles.select}
+                    style={styles.input}
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
-                  >
-                    <option value="">Select</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
+                  />
                 </td>
               </tr>
               <tr>
@@ -661,18 +540,13 @@ const Profile = () => {
 
                 <td style={styles.label}>Marital Status:</td>
                 <td>
-                  <select
+                  <input
                     disabled
-                    name=""
-                    id=""
-                    style={styles.select}
+                    style={styles.input}
+                    type="text"
                     value={marital_status}
                     onChange={(e) => setMarital_status(e.target.value)}
-                  >
-                    <option value="">Select</option>
-                    <option value="single">Single</option>
-                    <option value="married">Married</option>
-                  </select>
+                  />
                 </td>
               </tr>
               <tr>
@@ -697,9 +571,8 @@ const Profile = () => {
                     placeholder="profile"
                     
                   />
-                </td> */}
+                </td>  */}
               </tr>
-              {/* ... Add more fields as needed ... */}
             </tbody>
           </table>
           <h2 style={styles.sectionHeader}>Contact Information</h2>
@@ -772,55 +645,13 @@ const Profile = () => {
                 </td>
                 <td style={styles.label}>State:</td>
                 <td>
-                  <select
+                  <input
                     disabled
-                    name="state"
-                    id="state"
-                    style={styles.select}
+                    style={styles.input}
+                    type="text"
                     value={State}
                     onChange={(e) => setState(e.target.value)}
-                  >
-                    <option value="">select</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                    <option value="Assam">Assam</option>
-                    <option value="Bihar">Bihar</option>
-                    <option value="Chhattisgarh">Chhattisgarh</option>
-                    <option value="Goa">Goa</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Haryana">Haryana</option>
-                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                    <option value="Jharkhand">Jharkhand</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Kerala">Kerala</option>
-                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Manipur">Manipur</option>
-                    <option value="Meghalaya">Meghalaya</option>
-                    <option value="Mizoram">Mizoram</option>
-                    <option value="Nagaland">Nagaland</option>
-                    <option value="Odisha">Odisha</option>
-                    <option value="Punjab">Punjab</option>
-                    <option value="Rajasthan">Rajasthan</option>
-                    <option value="Sikkim">Sikkim</option>
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Telangana">Telangana</option>
-                    <option value="Tripura">Tripura</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                    <option value="Uttarakhand">Uttarakhand</option>
-                    <option value="West Bengal">West Bengal</option>
-                    <option value="Andaman and Nicobar Islands">
-                      Andaman and Nicobar Islands
-                    </option>
-                    <option value="Chandigarh">Chandigarh</option>
-                    <option value="Dadra and Nagar Haveli">
-                      Dadra and Nagar Haveli
-                    </option>
-                    <option value="Daman and Diu">Daman and Diu</option>
-                    <option value="Lakshadweep">Lakshadweep</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Puducherry">Puducherry</option>
-                  </select>
+                  />
                 </td>
               </tr>
               <tr>
@@ -951,55 +782,13 @@ const Profile = () => {
               <tr>
                 <td style={styles.label}>Nominee State:</td>
                 <td>
-                  <select
+                  <input
                     disabled
-                    name="state"
-                    id="state"
-                    style={styles.select}
+                    style={styles.input}
+                    type="text"
                     value={nominee_state}
                     onChange={(e) => setNominee_state(e.target.value)}
-                  >
-                    <option value="">Select</option>
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
-                    <option value="Assam">Assam</option>
-                    <option value="Bihar">Bihar</option>
-                    <option value="Chhattisgarh">Chhattisgarh</option>
-                    <option value="Goa">Goa</option>
-                    <option value="Gujarat">Gujarat</option>
-                    <option value="Haryana">Haryana</option>
-                    <option value="Himachal Pradesh">Himachal Pradesh</option>
-                    <option value="Jharkhand">Jharkhand</option>
-                    <option value="Karnataka">Karnataka</option>
-                    <option value="Kerala">Kerala</option>
-                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                    <option value="Maharashtra">Maharashtra</option>
-                    <option value="Manipur">Manipur</option>
-                    <option value="Meghalaya">Meghalaya</option>
-                    <option value="Mizoram">Mizoram</option>
-                    <option value="Nagaland">Nagaland</option>
-                    <option value="Odisha">Odisha</option>
-                    <option value="Punjab">Punjab</option>
-                    <option value="Rajasthan">Rajasthan</option>
-                    <option value="Sikkim">Sikkim</option>
-                    <option value="Tamil Nadu">Tamil Nadu</option>
-                    <option value="Telangana">Telangana</option>
-                    <option value="Tripura">Tripura</option>
-                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                    <option value="Uttarakhand">Uttarakhand</option>
-                    <option value="West Bengal">West Bengal</option>
-                    <option value="Andaman and Nicobar Islands">
-                      Andaman and Nicobar Islands
-                    </option>
-                    <option value="Chandigarh">Chandigarh</option>
-                    <option value="Dadra and Nagar Haveli">
-                      Dadra and Nagar Haveli
-                    </option>
-                    <option value="Daman and Diu">Daman and Diu</option>
-                    <option value="Lakshadweep">Lakshadweep</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Puducherry">Puducherry</option>
-                  </select>
+                  />
                 </td>
                 <td style={styles.label}>Nominee Pin Code:</td>
                 <td>
@@ -1157,33 +946,6 @@ const Profile = () => {
                 </td>
               </tr>
               <tr>
-                <td style={styles.label}>Upload Aadhar File:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter  Aadhar File"
-                    value={aadhar_card_file}
-                    onChange={(e) => setAadhar_card_file(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Upload PAN File:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Pan File"
-                    value={pan_card_file}
-                    onChange={(e) => setPan_card_file(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
                 <td style={styles.label}>Bank Account No:</td>
                 <td>
                   <input
@@ -1194,33 +956,6 @@ const Profile = () => {
                     placeholder="Enter bank account no"
                     value={bank_account_no}
                     onChange={(e) => setBank_account_no(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Upload Bank File:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Bank File"
-                    value={bank_account_file}
-                    onChange={(e) => setBank_account_file(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>PF Account No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="experience"
-                    placeholder="PF Account Number"
-                    value={pf_account_no}
-                    onChange={(e) => setPf_account_no(e.target.value)}
                   />
                 </td>
 
@@ -1237,8 +972,84 @@ const Profile = () => {
                   />
                 </td>
               </tr>
+              <tr>
+                <td style={styles.label}>PF Account No:</td>
+                <td>
+                  <input
+                    disabled
+                    style={styles.input}
+                    type="text"
+                    id="experience"
+                    placeholder="PF Account Number"
+                    value={pf_account_no}
+                    onChange={(e) => setPf_account_no(e.target.value)}
+                  />
+                </td>
+              </tr>
             </tbody>
           </table>
+          <h2 style={styles.sectionHeader}>Document Links</h2>
+          <div className="d-flex">
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Adhar</span>
+              <span>
+                {' '}
+                <Link onClick={openModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isModalOpen}
+                  closeModal={closeModal}
+                  pdfUrl={AdharFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Pan</span>
+              <span>
+                {' '}
+                <Link onClick={openModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isModalOpen}
+                  closeModal={closeModal}
+                  pdfUrl={PanFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Bank Account</span>
+              <span>
+                {' '}
+                <Link onClick={openModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isModalOpen}
+                  closeModal={closeModal}
+                  pdfUrl={BankFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Experience Letter</span>
+              <span>
+                {' '}
+                <Link onClick={openModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isModalOpen}
+                  closeModal={closeModal}
+                  pdfUrl={ExperienceFile}
+                />
+              </span>
+            </div>
+          </div>
           <div className="employee-form-container">
             <div className="form-section">
               <h4>Assign Role</h4>

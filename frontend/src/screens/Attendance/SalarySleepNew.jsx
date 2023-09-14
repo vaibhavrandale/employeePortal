@@ -259,17 +259,16 @@ function SalarySleepNew() {
     // Subtract 1 day from the next month's date to get the last day of the current month
     const lastDayOfCurrentMonth = new Date(nextMonthDate - 1);
 
-    // Get the day of the month (1-31) for the last day of the current month
+    // Get the day of the month (1-30) for the last day of the current month
     const numberOfDaysInCurrentMonth = lastDayOfCurrentMonth.getDate();
-    // const total = 31;
+    const total = 30;
     console.log(employees.ctc);
     console.log(employees.total_deduction);
     console.log(numberOfDaysInCurrentMonth);
     console.log(totaldays);
 
     const netSalary =
-      (totaldays * (employees.ctc / 12)) / numberOfDaysInCurrentMonth -
-      employees.total_deduction;
+      (total * (employees.ctc / 12)) / 30 - employees.total_deduction;
 
     console.log(netSalary);
 
@@ -434,17 +433,21 @@ function SalarySleepNew() {
         }
       },
     });
+    const totalPaidLeaveEntitlement = employees.leaves;
+
+    // Assuming totalLeavesTaken is the number of paid leave days taken by the employee
+    const totalLeavesAvailable = 18; // You should replace this with the actual calculation
+
+    const PaidLeaveTaken = totalLeavesAvailable - totalPaidLeaveEntitlement;
+
+    const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
 
     const salaryData = [
-      [
-        { content: 'Total Days', fontStyle: 'bold' },
-        numberOfDaysInCurrentMonth,
-      ],
-      [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
+      [{ content: 'Total Days', fontStyle: 'bold' }, 30],
+      [{ content: 'Present Days', fontStyle: 'bold' }, total],
 
-      ['Absent Days', numberOfDaysInCurrentMonth - totaldays],
-
-      ['Paid Leave Taken', '0'],
+      ['Paid Leave Taken', `${PaidLeaveTaken}`],
+      ['Remaining Paid Leave', `${remainingLeave}`],
     ];
 
     // Generate the "Earning" table

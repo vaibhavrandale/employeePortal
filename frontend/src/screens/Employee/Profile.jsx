@@ -258,6 +258,44 @@ const Profile = () => {
   console.log('bank', BankFile);
   console.log('experience', ExperienceFile);
 
+  const [isAdharModalOpen, setIsAdharModalOpen] = useState(false);
+  const [isPanModalOpen, setIsPanModalOpen] = useState(false);
+  const [isBankModalOpen, setIsBankModalOpen] = useState(false);
+  const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
+
+  // Separate open and close functions for each modal
+  const openAdharModal = () => {
+    setIsAdharModalOpen(true);
+  };
+
+  const closeAdharModal = () => {
+    setIsAdharModalOpen(false);
+  };
+
+  const openPanModal = () => {
+    setIsPanModalOpen(true);
+  };
+
+  const closePanModal = () => {
+    setIsPanModalOpen(false);
+  };
+
+  const openBankModal = () => {
+    setIsBankModalOpen(true);
+  };
+
+  const closeBankModal = () => {
+    setIsBankModalOpen(false);
+  };
+
+  const openExperienceModal = () => {
+    setIsExperienceModalOpen(true);
+  };
+
+  const closeExperienceModal = () => {
+    setIsExperienceModalOpen(false);
+  };
+
   const styles = {
     container: {
       fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
@@ -886,20 +924,7 @@ const Profile = () => {
                     onChange={(e) => setJoiningDate(e.target.value)}
                   />
                 </td>
-                <td style={styles.label}>Experience Letter:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="joiningDate"
-                    placeholder="Enter Experience Letter"
-                    value={experience_letter}
-                    onChange={(e) => setExperience_letter(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
+
                 <td style={styles.label}>Previous Company :</td>
                 <td>
                   <input
@@ -988,18 +1013,18 @@ const Profile = () => {
               </tr>
             </tbody>
           </table>
-          <h2 style={styles.sectionHeader}>Document Links</h2>
-          <div className="d-flex">
+          {/* <h2 style={styles.sectionHeader}>Document Links</h2>
+          <div className="d-flex justify-content-center align-items-center">
             <div className="d-flex m-1 badge bg-warning p-2">
               <span className="me-1 text-dark">Adhar</span>
               <span>
                 {' '}
-                <Link onClick={openModal}>
+                <Link onClick={openAdharModal}>
                   <BiLinkAlt className="text-info fw-bold" />
                 </Link>
                 <PdfModal
-                  isOpen={isModalOpen}
-                  closeModal={closeModal}
+                  isOpen={isAdharModalOpen}
+                  closeModal={closeAdharModal}
                   pdfUrl={AdharFile}
                 />
               </span>
@@ -1009,12 +1034,12 @@ const Profile = () => {
               <span className="me-1 text-dark">Pan</span>
               <span>
                 {' '}
-                <Link onClick={openModal}>
+                <Link onClick={openPanModal}>
                   <BiLinkAlt className="text-info fw-bold" />
                 </Link>
                 <PdfModal
-                  isOpen={isModalOpen}
-                  closeModal={closeModal}
+                  isOpen={isPanModalOpen}
+                  closeModal={closePanModal}
                   pdfUrl={PanFile}
                 />
               </span>
@@ -1024,12 +1049,12 @@ const Profile = () => {
               <span className="me-1 text-dark">Bank Account</span>
               <span>
                 {' '}
-                <Link onClick={openModal}>
+                <Link onClick={openBankModal}>
                   <BiLinkAlt className="text-info fw-bold" />
                 </Link>
                 <PdfModal
-                  isOpen={isModalOpen}
-                  closeModal={closeModal}
+                  isOpen={isBankModalOpen}
+                  closeModal={closeBankModal}
                   pdfUrl={BankFile}
                 />
               </span>
@@ -1039,17 +1064,80 @@ const Profile = () => {
               <span className="me-1 text-dark">Experience Letter</span>
               <span>
                 {' '}
-                <Link onClick={openModal}>
+                <Link onClick={openExperienceModal}>
                   <BiLinkAlt className="text-info fw-bold" />
                 </Link>
                 <PdfModal
-                  isOpen={isModalOpen}
-                  closeModal={closeModal}
+                  isOpen={isExperienceModalOpen}
+                  closeModal={closeExperienceModal}
+                  pdfUrl={ExperienceFile}
+                />
+              </span>
+            </div>
+          </div> */}
+          <h2 style={styles.sectionHeader}>Document Links</h2>
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Adhar</span>
+              <span>
+                {' '}
+                <Link onClick={openAdharModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isAdharModalOpen}
+                  closeModal={closeAdharModal}
+                  pdfUrl={AdharFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Pan</span>
+              <span>
+                {' '}
+                <Link onClick={openPanModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isPanModalOpen}
+                  closeModal={closePanModal}
+                  pdfUrl={PanFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Bank Account</span>
+              <span>
+                {' '}
+                <Link onClick={openBankModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isBankModalOpen}
+                  closeModal={closeBankModal}
+                  pdfUrl={BankFile}
+                />
+              </span>
+            </div>
+
+            <div className="d-flex m-1 badge bg-warning p-2">
+              <span className="me-1 text-dark">Experience Letter</span>
+              <span>
+                {' '}
+                <Link onClick={openExperienceModal}>
+                  <BiLinkAlt className="text-info fw-bold" />
+                </Link>
+                <PdfModal
+                  isOpen={isExperienceModalOpen}
+                  closeModal={closeExperienceModal}
                   pdfUrl={ExperienceFile}
                 />
               </span>
             </div>
           </div>
+          <h2 style={styles.sectionHeader}></h2>
           <div className="employee-form-container">
             <div className="form-section">
               <h4>Assign Role</h4>
@@ -1162,6 +1250,16 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <h2 style={styles.sectionHeader}></h2>
+          <h2
+            style={styles.sectionHeader}
+            className="d-flex justify-content-center"
+          >
+            Note:{' '}
+            <span className="text-muted">
+              If you want to update any details please contact to admin
+            </span>
+          </h2>
           {employees.payslips.length > 0 ? (
             <>
               {' '}

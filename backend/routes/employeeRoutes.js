@@ -2629,7 +2629,7 @@ emplyeeRouter.post('/', async (req, res) => {
       .sendMail({
         from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
         to: savedEmployee.email,
-        subject: 'Welcome Abroad !',
+        subject: 'Welcome Abroad🚀!',
         html: `
         <!DOCTYPE html>
         <html lang="en">

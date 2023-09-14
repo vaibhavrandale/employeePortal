@@ -10,6 +10,7 @@ const PdfModal = ({ isOpen, closeModal, pdfUrl }) => {
       onRequestClose={closeModal}
       contentLabel="PDF Modal"
       className="container"
+      style={{ padding: '10px', background: 'white', borderRadius: '10px' }}
     >
       <div
         className="d-flex  flex-column justify-content-center align-items-center"

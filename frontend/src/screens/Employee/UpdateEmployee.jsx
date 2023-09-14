@@ -12,6 +12,8 @@ import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { Helmet } from 'react-helmet';
 import LoadingBox1 from '../../components/LoadingBox1';
 import dummyimage from './images.jpg';
+import PdfModal from './PdfModal';
+import { BiLinkAlt } from 'react-icons/bi';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -526,6 +528,85 @@ const UpdateEmployee = () => {
     });
   });
 
+  function extractFileIdFromGoogleDriveLink(link) {
+    // Check if link is defined and not null before using match
+    if (link && link.match) {
+      const match = link.match(/\/file\/d\/([^/]+)\//);
+      return match ? match[1] : null;
+    }
+    return null; // Return null if link is not defined
+  }
+
+  // Check if employees properties are defined before extracting file IDs
+  const googleAdharDriveLink = employees.aadhar_card_file;
+  const googlePanDriveLink = employees.pan_card_file;
+  const googleBankDriveLink = employees.bank_account_file;
+  const googleExperienceDriveLink = employees.experience_letter;
+
+  const AdharfileId = extractFileIdFromGoogleDriveLink(googleAdharDriveLink);
+  const PanfileId = extractFileIdFromGoogleDriveLink(googlePanDriveLink);
+  const BankfileId = extractFileIdFromGoogleDriveLink(googleBankDriveLink);
+  const ExperiencefileId = extractFileIdFromGoogleDriveLink(
+    googleExperienceDriveLink
+  );
+
+  // Create the file URLs with file IDs
+  const AdharFile = AdharfileId
+    ? `https://drive.google.com/uc?id=${AdharfileId}`
+    : null;
+  const PanFile = PanfileId
+    ? `https://drive.google.com/uc?id=${PanfileId}`
+    : null;
+  const BankFile = BankfileId
+    ? `https://drive.google.com/uc?id=${BankfileId}`
+    : null;
+  const ExperienceFile = ExperiencefileId
+    ? `https://drive.google.com/uc?id=${ExperiencefileId}`
+    : null;
+
+  console.log('adhar', AdharFile);
+  console.log('Pan', PanFile);
+  console.log('bank', BankFile);
+  console.log('experience', ExperienceFile);
+
+  const [isAdharModalOpen, setIsAdharModalOpen] = useState(false);
+  const [isPanModalOpen, setIsPanModalOpen] = useState(false);
+  const [isBankModalOpen, setIsBankModalOpen] = useState(false);
+  const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
+
+  // Separate open and close functions for each modal
+  const openAdharModal = () => {
+    setIsAdharModalOpen(true);
+  };
+
+  const closeAdharModal = () => {
+    setIsAdharModalOpen(false);
+  };
+
+  const openPanModal = () => {
+    setIsPanModalOpen(true);
+  };
+
+  const closePanModal = () => {
+    setIsPanModalOpen(false);
+  };
+
+  const openBankModal = () => {
+    setIsBankModalOpen(true);
+  };
+
+  const closeBankModal = () => {
+    setIsBankModalOpen(false);
+  };
+
+  const openExperienceModal = () => {
+    setIsExperienceModalOpen(true);
+  };
+
+  const closeExperienceModal = () => {
+    setIsExperienceModalOpen(false);
+  };
+
   return (
     <div style={styles.container}>
       {loading ? (
@@ -620,15 +701,27 @@ const UpdateEmployee = () => {
                   <LoadingBox1 />{' '}
                 </div>
               ) : image ? (
-                <img src={image} alt="profile" style={styles.image} />
+                <span className="d-flex flex-column">
+                  <img src={image} alt="profile" style={styles.image} />
+                </span>
               ) : (
-                <img src={dummyimage} alt="dummy" style={styles.image} />
+                <span className="d-flex flex-column">
+                  <img src={dummyimage} alt="dummy" style={styles.image} />
+                </span>
               )}
             </>
-            {/* <p className="text-center"> Profile Image</p> */}
           </div>
           <form onSubmit={SubmitHandler}>
-            <h2 style={styles.sectionHeader}>Personal Details</h2>
+            <h2 style={styles.sectionHeader}>
+              Personal Details [{' '}
+              <Link
+                className="text-center   text-decoration-none "
+                to={`/leave-application/${id}`}
+              >
+                Leaves
+              </Link>{' '}
+              ]
+            </h2>
             <table style={styles.table}>
               <tbody>
                 <tr>
@@ -1147,7 +1240,17 @@ const UpdateEmployee = () => {
               </tbody>
             </table>
 
-            <h2 style={styles.sectionHeader}>Identification Documents</h2>
+            <h2 style={styles.sectionHeader}>
+              Identification Documents [
+              <Link
+                to="https://drive.google.com/drive/folders/1vJGTA8x9F0zHOK2BSFinTNUdVCEchJMR?usp=sharing"
+                target="blank"
+                className="m-1 text-decoration-none"
+              >
+                G-drive
+              </Link>
+              ]
+            </h2>
             <table style={styles.table}>
               <tbody>
                 <tr>
@@ -1252,6 +1355,70 @@ const UpdateEmployee = () => {
                 </tr>
               </tbody>
             </table>
+
+            <h2 style={styles.sectionHeader}>Document Links</h2>
+
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="d-flex m-1 badge bg-warning p-2">
+                <span className="me-1 text-dark">Adhar</span>
+                <span>
+                  {' '}
+                  <Link onClick={openAdharModal}>
+                    <BiLinkAlt className="text-info fw-bold" />
+                  </Link>
+                  <PdfModal
+                    isOpen={isAdharModalOpen}
+                    closeModal={closeAdharModal}
+                    pdfUrl={AdharFile}
+                  />
+                </span>
+              </div>
+
+              <div className="d-flex m-1 badge bg-warning p-2">
+                <span className="me-1 text-dark">Pan</span>
+                <span>
+                  {' '}
+                  <Link onClick={openPanModal}>
+                    <BiLinkAlt className="text-info fw-bold" />
+                  </Link>
+                  <PdfModal
+                    isOpen={isPanModalOpen}
+                    closeModal={closePanModal}
+                    pdfUrl={PanFile}
+                  />
+                </span>
+              </div>
+
+              <div className="d-flex m-1 badge bg-warning p-2">
+                <span className="me-1 text-dark">Bank Account</span>
+                <span>
+                  {' '}
+                  <Link onClick={openBankModal}>
+                    <BiLinkAlt className="text-info fw-bold" />
+                  </Link>
+                  <PdfModal
+                    isOpen={isBankModalOpen}
+                    closeModal={closeBankModal}
+                    pdfUrl={BankFile}
+                  />
+                </span>
+              </div>
+
+              <div className="d-flex m-1 badge bg-warning p-2">
+                <span className="me-1 text-dark">Experience Letter</span>
+                <span>
+                  {' '}
+                  <Link onClick={openExperienceModal}>
+                    <BiLinkAlt className="text-info fw-bold" />
+                  </Link>
+                  <PdfModal
+                    isOpen={isExperienceModalOpen}
+                    closeModal={closeExperienceModal}
+                    pdfUrl={ExperienceFile}
+                  />
+                </span>
+              </div>
+            </div>
 
             <div className="employee-form-container">
               <div className="form-section">

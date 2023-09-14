@@ -50,6 +50,7 @@ import Wishes from './screens/Employee/Wishes';
 import UpdateEmployee from './screens/Employee/UpdateEmployee';
 import SalarySleepNew from './screens/Attendance/SalarySleepNew';
 import SalarySleepUpdated from './screens/salarySleep/SalarySleepUpdated';
+import IndividualAttedance from './screens/Attendance/IndividualAttedance';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -268,14 +269,14 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-        {/* <Route
-          path="/attendance-home-page"
+        <Route
+          path="/myattendance/:id"
           element={
-            <SuperAdminRoutes>
-              <AttendanceHomecopy />
-            </SuperAdminRoutes>
+            <ProtectedRoutes>
+              <IndividualAttedance />
+            </ProtectedRoutes>
           }
-        /> */}
+        />
 
         <Route
           path="/attendenceDetails/:id"

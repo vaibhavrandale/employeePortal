@@ -320,38 +320,43 @@ const TableWithSearchAndPagination = () => {
                             <MdDeleteOutline />
                           </div>
                         ) : (
-                          <Link
-                            onClick={popupDeleteHandle}
-                            className="text-danger"
-                          >
-                            <MdDeleteOutline />
-                          </Link>
+                          <>
+                            <Link
+                              onClick={popupDeleteHandle}
+                              className="text-danger"
+                            >
+                              <MdDeleteOutline />
+                            </Link>
+                            {isdeletePopupOpen && (
+                              <div className="popup-container">
+                                <div className="popup">
+                                  <p>
+                                    Are you sure you want to delete Employee?
+                                  </p>
+                                  <div className="popup-buttons">
+                                    <button
+                                      className="popup-button verify"
+                                      onClick={(e) =>
+                                        DeleteHandler(e, item._id)
+                                      }
+                                    >
+                                      <AiOutlineDelete />
+                                    </button>
+                                    <button
+                                      className="popup-button cancel"
+                                      onClick={closeDeletePopup}
+                                    >
+                                      <RxCross2 />
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
                       </td>
                     ) : (
                       ''
-                    )}
-
-                    {isdeletePopupOpen && (
-                      <div className="popup-container">
-                        <div className="popup">
-                          <p>Are you sure you want to delete Employee?</p>
-                          <div className="popup-buttons">
-                            <button
-                              className="popup-button verify"
-                              onClick={(e) => DeleteHandler(e, item._id)}
-                            >
-                              <AiOutlineDelete />
-                            </button>
-                            <button
-                              className="popup-button cancel"
-                              onClick={closeDeletePopup}
-                            >
-                              <RxCross2 />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
                     )}
                   </tr>
                 ))}

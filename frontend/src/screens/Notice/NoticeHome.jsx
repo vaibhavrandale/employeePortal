@@ -198,19 +198,26 @@ function NoticeHome() {
                     >
                       <AiOutlineEye />
                     </Link>
-                    <Link
-                      to={`/edit-notice/${item._id}`}
-                      className="editBtn text-decoration-none"
-                    >
-                      <FiEdit />
-                    </Link>
-                    <Link
-                      onClick={() => popupHandle(item._id)}
-                      // to={`/notice/${item._id}`}
-                      className="deleteBtn   text-danger text-decoration-none"
-                    >
-                      <MdDeleteOutline />
-                    </Link>
+                    {userInfo.isSuperAdmin ? (
+                      <>
+                        {' '}
+                        <Link
+                          to={`/edit-notice/${item._id}`}
+                          className="editBtn text-decoration-none"
+                        >
+                          <FiEdit />
+                        </Link>
+                        <Link
+                          onClick={() => popupHandle(item._id)}
+                          // to={`/notice/${item._id}`}
+                          className="deleteBtn   text-danger text-decoration-none"
+                        >
+                          <MdDeleteOutline />
+                        </Link>
+                      </>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 </div>{' '}
                 {popupNoticeId === item._id && (

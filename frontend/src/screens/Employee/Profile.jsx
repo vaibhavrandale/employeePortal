@@ -1,6 +1,4 @@
 import { useContext, useEffect, useReducer, useState } from 'react';
-import { getError } from '../../utils';
-import { toast } from 'react-hot-toast';
 import { BiLinkAlt } from 'react-icons/bi';
 import axios from 'axios';
 import { Store } from '../../Store';
@@ -45,8 +43,7 @@ const Profile = () => {
     loading: true,
     error: '',
   });
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
+  const { dispatch: ctxDispatch } = useContext(Store);
   // const navigate = useNavigate();
 
   const [employee_id, setEmployee_id] = useState('');
@@ -101,7 +98,6 @@ const Profile = () => {
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -172,14 +168,6 @@ const Profile = () => {
     // setLoading(true);
     fetchData();
   }, [id]);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   // const pdfUrl =
   //   'https://drive.google.com/uc?id=1sxdUCwjVu0J22k0qWc_uF7l39OvN248s';

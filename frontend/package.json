@@ -13,6 +13,7 @@
     "aws-sdk": "^2.1448.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
+    "date-fns": "^2.30.0",
     "framer-motion": "^10.16.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

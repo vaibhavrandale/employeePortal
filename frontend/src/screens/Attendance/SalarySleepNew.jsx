@@ -261,14 +261,15 @@ function SalarySleepNew() {
 
     // Get the day of the month (1-30) for the last day of the current month
     const numberOfDaysInCurrentMonth = lastDayOfCurrentMonth.getDate();
-    const total = 30;
+    // const total = 30;
     console.log(employees.ctc);
     console.log(employees.total_deduction);
     console.log(numberOfDaysInCurrentMonth);
     console.log(totaldays);
 
     const netSalary =
-      (total * (employees.ctc / 12)) / 30 - employees.total_deduction;
+      (totaldays * (employees.ctc / 12)) / numberOfDaysInCurrentMonth -
+      employees.total_deduction;
 
     console.log(netSalary);
 
@@ -443,8 +444,11 @@ function SalarySleepNew() {
     const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
 
     const salaryData = [
-      [{ content: 'Total Days', fontStyle: 'bold' }, 30],
-      [{ content: 'Present Days', fontStyle: 'bold' }, total],
+      [
+        { content: 'Total Days', fontStyle: 'bold' },
+        numberOfDaysInCurrentMonth,
+      ],
+      [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
 
       ['Paid Leave Taken', `${PaidLeaveTaken}`],
       ['Remaining Paid Leave', `${remainingLeave}`],

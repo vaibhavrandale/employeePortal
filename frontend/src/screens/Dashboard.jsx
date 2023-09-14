@@ -16,6 +16,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import LoadingBox4 from '../components/LoadingBox/LoadingBox4';
+import { differenceInMonths } from 'date-fns';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -274,6 +275,35 @@ function Dashboard() {
     return birthMonth === currentMonth && birthDate === currentDate;
   });
 
+  const joiningDate = userInfo.joiningDate; // Assuming you have the joiningDate in a suitable format
+  console.log(joiningDate);
+
+  const formatDate2 = (dateStr) => {
+    const dateObj = new Date(dateStr);
+
+    // Extracting date and time components
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // +1 because months are 0-indexed in JavaScript
+    const year = dateObj.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const Today = formatDate2(new Date());
+
+  console.log(Today);
+
+  // const timeDifference = Today - joiningDate;
+  const monthsDifference =
+    (today.getFullYear() - new Date(joiningDate).getFullYear()) * 12 +
+    (today.getMonth() - new Date(joiningDate).getMonth());
+
+  console.log(`Today's date: ${Today}`);
+  console.log(`Joining date: ${joiningDate}`);
+  console.log(`Difference in months: ${monthsDifference}`);
+
+  const limitMonth = 6;
+  // const showLeavesLink = true;
   return (
     <div className=" container">
       <span
@@ -472,32 +502,37 @@ function Dashboard() {
                     </Link>
                   </div>
                 </div>
-                {userInfo && !userInfo.isVisitor && (
-                  <div className="col">
-                    <div className="card border border-0 quicklikCard">
-                      <Link
-                        to="leaves-history"
-                        className="p-1 text-decoration-none"
-                      >
-                        <img
-                          src="/images/icons/leaves.png"
-                          height={50}
-                          style={{ objectFit: 'contain' }}
-                          className="card-img-top quicklikCardImg"
-                          alt="i"
-                        />
-                        <div className="card-body text-center">
-                          <span
-                            className="card-title"
-                            style={{ color: '#2749f5', fontWeight: '500' }}
-                          >
-                            leaves
-                          </span>
-                        </div>
-                      </Link>
+                {userInfo &&
+                  !userInfo.isVisitor &&
+                  (monthsDifference >= limitMonth ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="leaves-history"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/leaves.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{ color: '#2749f5', fontWeight: '500' }}
+                            >
+                              leaves
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    ''
+                  ))}
+
                 {userInfo && !userInfo.isVisitor && (
                   <div className="col">
                     <div className="card border border-0 quicklikCard">

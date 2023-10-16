@@ -29,10 +29,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Schedule the job
-cron.schedule('* * * * *', sendBirthdayEmails);
+cron.schedule('30 2 * * *', sendBirthdayEmails);
 // cron.schedule('* * * * *', sendBirthdayEmails);
 
-cron.schedule('* * * * *', checkAndCreateBirthdayRecords);
+cron.schedule('30 2 * * *', checkAndCreateBirthdayRecords);
 
 app.use('/api/seed', seedRouter);
 

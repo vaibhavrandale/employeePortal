@@ -1217,9 +1217,9 @@ emplyeeRouter.put(
             (1000 * 60 * 60 * 24)
         ) + 1;
 
-      // Return the deducted leaves to the employee
-      employee[leaveEntry.type] += numberOfDays; // Return leaves of the specific type
-      employee.leaves += numberOfDays;
+      // // Return the deducted leaves to the employee
+      // employee[leaveEntry.type] += numberOfDays; // Return leaves of the specific type
+      // employee.leaves += numberOfDays;
 
       // Update the leave entry with rejection details
       leaveEntry.approved = false;

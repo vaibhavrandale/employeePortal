@@ -23,7 +23,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`sidebar ${hovered ? 'hovered' : ''}`}
+      className={`  sidebar ${hovered ? 'hovered' : ''}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

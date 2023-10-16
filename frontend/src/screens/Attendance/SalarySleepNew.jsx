@@ -132,7 +132,9 @@ function SalarySleepNew() {
     //  ----------------------------------- 1st table end------------------------------
 
     //  ----------------------------------- 2nd table------------------------------
-    doc.line(120, 35, 190, 35);
+    doc.line(120, 35, 223, 35);
+    doc.line(120, 42, 223, 42);
+    doc.line(120, 49, 223, 49);
     //vertical line
     doc.line(120, 35, 120, 49);
     doc.setTextColor(0, 128, 255); // Set text color to blue
@@ -147,31 +149,28 @@ function SalarySleepNew() {
     doc.setTextColor(0); // Reset text color to black
     doc.text(`Pune`, 152, 47);
     //vertical line
-    doc.line(190, 35, 190, 49);
+    doc.line(223, 35, 223, 49);
 
-    doc.line(193, 35, 286, 35);
-    doc.line(193, 42, 286, 42);
-    doc.line(193, 49, 286, 49);
+    doc.line(228, 35, 286, 35);
+    doc.line(228, 42, 286, 42);
+    doc.line(228, 49, 286, 49);
     //vertical line
-    doc.line(193, 35, 193, 49);
+    doc.line(228, 35, 228, 49);
     doc.setTextColor(0, 135, 255); // Set text color to blue
-    doc.text(`PF No.`, 196, 40);
+    doc.text(`PF No.`, 230, 40);
     //vertical line
-    doc.line(225, 35, 225, 49);
+    doc.line(245, 35, 245, 49);
     doc.setTextColor(0); // Reset text color to black
-    doc.text(`${employees.pf_account_no}`, 228, 40);
+    doc.text(`${employees.pf_account_no}`, 248, 40);
 
     doc.setTextColor(0, 135, 255); // Set text color to blue
-    doc.text(`UAN No.`, 196, 47);
+    doc.text(`UAN No.`, 230, 47);
 
     doc.setTextColor(0); // Reset text color to black
-    doc.text(`${employees.uan_number}`, 228, 47);
+    doc.text(`${employees.uan_number}`, 248, 47);
     //vertical line
     doc.line(286, 35, 286, 49);
     doc.line(150, 35, 150, 49);
-
-    doc.line(120, 42, 190, 42);
-    doc.line(120, 49, 190, 49);
 
     //  ----------------------------------- 2nd table end ------------------------------
 
@@ -235,10 +234,13 @@ function SalarySleepNew() {
     //vertical line
     doc.line(286, 54, 286, 152.5);
     doc.setFont('helvetica', 'bold'); // Set font family to "helvetica" and style to "bold"
-    doc.text(`Checked By`, 135, 195);
-    doc.text(`Approved By`, 190, 195);
+    doc.text(`Note*:`, 120, 160);
+    doc.setFont('helvetica', 'Normal'); // Set font family to "helvetica" and style to "bold"
 
-    doc.text(`Seal`, 245, 195);
+    doc.text(`This is auto-generated slip do no need any signature`, 132, 160);
+    // doc.text(`Approved By`, 190, 195);
+
+    // doc.text(`Seal`, 245, 195);
     //14
     // ----------------info text table-----------------------------------------
 
@@ -281,23 +283,24 @@ function SalarySleepNew() {
     const HRA = employees.hra;
     const GROSS = employees.gross;
     const CONVEYANCE = employees.conveyance;
-    const BASIC = employees.ctc / 12;
+    // const BASIC = employees.;
+    const BASIC = ((employees.ctc / 12) * (45 / 100)).toFixed(2);
 
     const columnData = [
       [
         { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
-        { content: `${BASIC}.00`, halign: 'right' },
+        { content: `${BASIC}`, halign: 'right' },
       ],
       [
         { content: 'House Rent Allowance', fontStyle: 'bold', halign: 'left' },
         { content: `${HRA}.00`, halign: 'right' },
       ],
       [
-        { content: 'Conveyance Allowances', fontStyle: 'bold', halign: 'left' },
+        { content: 'Conveyance Allowance', fontStyle: 'bold', halign: 'left' },
         { content: `${CONVEYANCE}.00`, halign: 'right' },
       ],
       [
-        { content: 'Medical Allowances', fontStyle: 'bold', halign: 'left' },
+        { content: 'Medical Allowance', fontStyle: 'bold', halign: 'left' },
         { content: `${MEDICAL}.00`, halign: 'right' },
       ],
       [
@@ -312,7 +315,7 @@ function SalarySleepNew() {
           halign: 'left',
         },
         {
-          content: `${GROSS}.00`,
+          content: `${GROSS}`,
           halign: 'right',
           fillColor: '#3299FF', // Background color for the second cell
         },
@@ -330,7 +333,7 @@ function SalarySleepNew() {
       ],
       [
         {
-          content: 'PF contribution by employee',
+          content: 'PF',
 
           halign: 'left',
         },
@@ -341,7 +344,7 @@ function SalarySleepNew() {
       ],
       [
         {
-          content: 'ESI contribution by employee',
+          content: 'ESI',
 
           halign: 'left',
         },

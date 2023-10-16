@@ -4,13 +4,14 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import seedRouter from './routes/seedRouter.js';
 import path from 'path';
-import cron from 'node-cron';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
 import uploadRouter from './routes/uploadRoute.js';
 import EventRouter from './routes/eventRoutes.js';
 import NoticeRouter from './routes/noticeRoutes.js';
 import attendenceRouter from './routes/attendenceRoutes.js';
+import { checkAndCreateBirthdayRecords, sendBirthdayEmails } from './cron.js';
+import cron from 'node-cron';
 
 dotenv.config();
 mongoose
@@ -26,6 +27,12 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Schedule the job
+cron.schedule('0 8 * * *', sendBirthdayEmails);
+// cron.schedule('* * * * *', sendBirthdayEmails);
+
+cron.schedule('0 8 * * *', checkAndCreateBirthdayRecords);
 
 app.use('/api/seed', seedRouter);
 

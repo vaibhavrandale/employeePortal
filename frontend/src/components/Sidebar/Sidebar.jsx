@@ -101,23 +101,6 @@ const Sidebar = () => {
             </li>
           )}
         </>
-        {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
-          <li>
-            <Link to="/salary-Entry">
-              <FcMoneyTransfer className="icon me-2" />
-              {hovered && <span>Salary Entry</span>}
-            </Link>
-          </li>
-        )}
-
-        {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
-          <li>
-            <Link to="/pay-sleep">
-              <MdOutlineReceiptLong className="icon me-2 text-success" />
-              {hovered && <span>Pay Sleep</span>}
-            </Link>
-          </li>
-        )}
       </ul>
     </div>
   );

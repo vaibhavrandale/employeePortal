@@ -533,7 +533,7 @@ function Dashboard() {
                     ''
                   ))}
 
-                {userInfo && !userInfo.isVisitor && (
+                {/* {userInfo && !userInfo.isVisitor && (
                   <div className="col">
                     <div className="card border border-0 quicklikCard">
                       <Link to="pay-sleep" className="p-1 text-decoration-none">
@@ -555,7 +555,7 @@ function Dashboard() {
                       </Link>
                     </div>
                   </div>
-                )}
+                )} */}
                 {userInfo && !userInfo.isVisitor && (
                   <div className="col">
                     <div className="card border border-0 quicklikCard">
@@ -583,7 +583,7 @@ function Dashboard() {
                   </div>
                 )}
 
-                {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+                {/* {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
                   <div className="col">
                     <div className="card border border-0 quicklikCard">
                       <Link
@@ -608,7 +608,7 @@ function Dashboard() {
                       </Link>
                     </div>
                   </div>
-                )}
+                )} */}
                 {userInfo && !userInfo.isVisitor && (
                   <div className="col">
                     <div className="card border border-0 quicklikCard">

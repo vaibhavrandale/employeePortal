@@ -69,6 +69,7 @@ const UpdateEmployee = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   // const navigate = useNavigate();
+  const [isPanModalLoading, setIsPanModalLoading] = useState(false);
 
   const [employee_id, setEmployee_id] = useState('');
   // const [name, setName] = useState('');
@@ -99,6 +100,9 @@ const UpdateEmployee = () => {
   const [isVisitor, setIsVisitor] = useState();
   const [isProduction, setIsProduction] = useState();
   const [isAccountant, setIsAccountant] = useState();
+  const [ctc, setCtc] = useState();
+  const [salarygroup, setSalarygroup] = useState();
+  const [netsalary, setNetsalary] = useState();
 
   const [father_husband_name, setFather_husband_name] = useState('');
   const [marital_status, setMarital_status] = useState('');
@@ -184,6 +188,9 @@ const UpdateEmployee = () => {
         setBank_account_file(result.data.employee.bank_account_file);
         setPrevious_company_name(result.data.employee.previous_company_name);
         setExperience_letter(result.data.employee.experience_letter);
+        setCtc(result.data.employee.ctc);
+        setSalarygroup(result.data.employee.salarygroup);
+        setNetsalary(result.data.employee.netsalary);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -249,7 +256,8 @@ const UpdateEmployee = () => {
           address,
           sub_locality,
           district,
-
+          ctc,
+          salarygroup,
           pinCode,
           mobile_no,
           nominee_name,
@@ -576,6 +584,7 @@ const UpdateEmployee = () => {
 
   // Separate open and close functions for each modal
   const openAdharModal = () => {
+    setIsPanModalLoading(true);
     setIsAdharModalOpen(true);
   };
 
@@ -584,6 +593,7 @@ const UpdateEmployee = () => {
   };
 
   const openPanModal = () => {
+    setIsPanModalLoading(true);
     setIsPanModalOpen(true);
   };
 
@@ -592,6 +602,7 @@ const UpdateEmployee = () => {
   };
 
   const openBankModal = () => {
+    setIsPanModalLoading(true);
     setIsBankModalOpen(true);
   };
 
@@ -600,6 +611,7 @@ const UpdateEmployee = () => {
   };
 
   const openExperienceModal = () => {
+    setIsPanModalLoading(true);
     setIsExperienceModalOpen(true);
   };
 
@@ -1177,6 +1189,33 @@ const UpdateEmployee = () => {
                     />
                   </td>
                 </tr>
+
+                <tr>
+                  <td style={styles.label}>CTC:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Update CTC"
+                      value={ctc}
+                      onChange={(e) => setCtc(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Net Salary :</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      disabled
+                      type="text"
+                      id="designation"
+                      placeholder="net salary"
+                      value={netsalary}
+                      onChange={(e) => setNetsalary(e.target.value)}
+                    />
+                  </td>
+                </tr>
                 <tr>
                   <td style={styles.label}>Company mail:</td>
                   <td>
@@ -1234,6 +1273,17 @@ const UpdateEmployee = () => {
                       placeholder="Enter Previous Company "
                       value={previous_company_name}
                       onChange={(e) => setPrevious_company_name(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Salary Group:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      placeholder="Update Salary Group "
+                      value={salarygroup}
+                      onChange={(e) => setSalarygroup(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -1524,59 +1574,6 @@ const UpdateEmployee = () => {
               </div>
             </div>
 
-            {employees.payslips.length > 0 ? (
-              <>
-                {' '}
-                <hr />
-                <div className=" p-1 m-1 ">
-                  <h4>
-                    <b>Available Pay-slips</b>
-                  </h4>
-                  <div className="table-responsive">
-                    <table
-                      className="table table-bordered "
-                      style={{ overflowX: 'auto' }}
-                    >
-                      <thead>
-                        <tr>
-                          <th className="col-md-1 text-center">Month</th>
-                          <th className="col-md-1 text-center">Salary</th>
-                          <th className="col-md-1 text-center">Bonus</th>
-                          <th className="col-md-1 text-center">Deduction</th>
-                          <th className="col-md-1 text-center">
-                            Deduction Reason
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {employees.payslips
-                          .slice() // Create a copy of the array to avoid mutating the original array
-                          .reverse() // Reverse the array to show the latest payslips first
-                          .map((item, index) => (
-                            <tr key={index}>
-                              <td className=" text-center">
-                                <span className="badge bg-success">
-                                  {item.month.toUpperCase()}-{item.year}
-                                </span>{' '}
-                              </td>
-                              <td className="text-center">{item.salary}</td>
-                              <td className="text-center">
-                                {item.bonuses === 0 ? `0` : `${item.bonuses}`}
-                              </td>
-                              <td className="text-center">{item.deductions}</td>
-                              <td className="text-center">
-                                {item.deductionReason}
-                              </td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </>
-            ) : (
-              ''
-            )}
             <button
               style={buttonStyle}
               onMouseEnter={handleMouseEnter}

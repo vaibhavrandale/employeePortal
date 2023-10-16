@@ -34,6 +34,7 @@
     "react-modal": "^3.16.1",
     "react-pagination": "^1.0.0",
     "react-pdf": "^7.2.0",
+    "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.13.0",
     "react-scripts": "5.0.1",

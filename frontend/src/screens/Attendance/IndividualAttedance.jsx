@@ -116,12 +116,14 @@ function IndividualAttedance() {
   const calculateTotalDaysPresent = (userAttendance) => {
     return userAttendance.dates.filter((status) => status === 'p').length;
   };
+  const currentDay = new Date().getDate();
+
   return (
     <div className="container">
       <Helmet>
         <title>Attendance</title>
       </Helmet>
-      <div className="filter">
+      <div className="">
         <label htmlFor="yearFilter">Year:</label>
         <select
           id="yearFilter"
@@ -178,7 +180,11 @@ function IndividualAttedance() {
                       </th>
                     ))}
                     <th className="col-md-1 text-center">Total</th>
-                    <th className="col-md-1 text-center">Payslip</th>
+                    {currentDay > 27 ? (
+                      <th className="col-md-1 text-center">Payslip</th>
+                    ) : (
+                      ''
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -198,18 +204,22 @@ function IndividualAttedance() {
                       <td className="col-md-1 text-center">
                         {calculateTotalDaysPresent(userAttendance)}
                       </td>
-                      <td className="col-md-1 text-center">
-                        <Link
-                          target="blank"
-                          to={`/pay-slip/${userAttendance.user_id}/${
-                            selectedYear || Year
-                          }/${
-                            selectedMonth || Month
-                          }/${calculateTotalDaysPresent(userAttendance)}`}
-                        >
-                          <LiaReceiptSolid className="text-success fs-4" />
-                        </Link>
-                      </td>
+                      {currentDay > 27 ? (
+                        <td className="col-md-1 text-center">
+                          <Link
+                            target="blank"
+                            to={`/pay-slip/${userAttendance.user_id}/${
+                              selectedYear || Year
+                            }/${
+                              selectedMonth || Month
+                            }/${calculateTotalDaysPresent(userAttendance)}`}
+                          >
+                            <LiaReceiptSolid className="text-success fs-4" />
+                          </Link>
+                        </td>
+                      ) : (
+                        ''
+                      )}
                     </tr>
                   ))}
                 </tbody>

@@ -1,7 +1,7 @@
 import React, { useContext, useReducer, useState } from 'react';
 import '../../App.css';
 // import data from '../Employee/data';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getError } from '../../utils';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
@@ -949,7 +949,17 @@ function AddEmployee() {
           </tbody>
         </table>
 
-        <h2 style={styles.sectionHeader}>Identification Documents</h2>
+        <h2 style={styles.sectionHeader}>
+          Identification Documents [
+          <Link
+            to="https://drive.google.com/drive/folders/1vJGTA8x9F0zHOK2BSFinTNUdVCEchJMR?usp=sharing"
+            target="blank"
+            className="m-1 text-decoration-none"
+          >
+            G-drive
+          </Link>
+          ]
+        </h2>
         <table style={styles.table}>
           <tbody>
             <tr>

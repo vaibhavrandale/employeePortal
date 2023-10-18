@@ -3,7 +3,7 @@ import attendanceData from './attendence.js';
 import './attendence.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { LiaReceiptSolid } from 'react-icons/lia';
+import { HiOutlineDocumentSearch } from 'react-icons/hi';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5.jsx';
 import AlertBox from '../../components/MessageBox/AlertBox.js';
 import MsgBox from '../../components/MessageBox/MsgBox.js';
@@ -66,117 +66,56 @@ function AttendanceTable() {
     // ... (previous code)
   }, [Year, Month]);
 
-  // Filter the attendance data based on the selected year and month
-  const filteredData = attendance
-    .filter((entry) => {
-      if (searchTerm) {
-        return (
-          entry.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          entry.employee_id.toString().includes(searchTerm)
-        );
-      }
-      return true;
-    })
-    .filter((entry) => {
-      if (selectedYear !== null && selectedMonth !== null) {
-        return entry.year === selectedYear && entry.month === selectedMonth;
-      } else if (selectedYear !== null) {
-        return entry.year === selectedYear;
-      } else if (selectedMonth !== null) {
-        return entry.month === selectedMonth;
-      }
-      return true; // No filters applied
-    });
-
-  // Generate an array of unique dates based on the filtered data
-  const uniqueDates = Array.from(
-    new Set(filteredData.map((entry) => entry.day))
-  );
-
-  // Create an object to store attendance data by user ID
-  const attendanceByUserId = {};
-
-  // Initialize the object with empty strings ('') for each date
-  filteredData.forEach((entry) => {
-    if (!attendanceByUserId[entry.user_id]) {
-      attendanceByUserId[entry.user_id] = {
-        user_id: entry.user_id,
-        username: entry.username,
-        employee_id: entry.employee_id,
-        loginTime: entry.loginTime,
-        logoutTime: entry.logoutTime,
-        dates: uniqueDates.map(() => ''),
-      };
+  const filteredData = attendance.filter((entry) => {
+    if (searchTerm) {
+      return (
+        entry.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        entry.employee_id.toString().includes(searchTerm)
+      );
     }
-    const dateIndex = uniqueDates.indexOf(entry.day);
-    attendanceByUserId[entry.user_id].dates[dateIndex] = 'p'; // Set 'p' for login and logout times
+    return (
+      (!selectedYear || entry.year === selectedYear) &&
+      (!selectedMonth || entry.month === selectedMonth)
+    );
   });
-  const calculateTotalDaysPresent = (userAttendance) => {
-    return userAttendance.dates.filter((status) => status === 'p').length;
+
+  const getAttendanceStatus = (attendanceForDay) => {
+    if (!attendanceForDay) return { status: 'A', style: {} };
+    const hours = attendanceForDay.totalHours;
+    const hasLoginTime = attendanceForDay.loginTime;
+    const hasLogoutTime = attendanceForDay.logoutTime;
+
+    if (!hasLoginTime) return { status: '', style: {} };
+    if (hasLoginTime && !hasLogoutTime)
+      return {
+        status: 'P',
+
+        className: 'badge bg-warning',
+      };
+    if (hours > 4.5 && hours < 8.5)
+      return { status: 'H', style: {}, className: 'badge bg-info' };
+    if (hours < 4.5)
+      return { status: 'A', style: {}, className: 'badge bg-danger' };
+    if (hours >= 8.5)
+      return { status: 'P', style: {}, className: 'badge bg-success' };
+    return { status: 'A', style: {} }; // default case
   };
 
-  function getMonthName(monthNumber) {
-    const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
-    ];
-    return monthNames[monthNumber - 1];
-  }
-
-  function exportToExcel(data) {
-    const formattedData = data.map((item) => {
-      const userAttendance = attendanceByUserId[item.user_id] || {};
-      const attendanceRecord = uniqueDates.map((date) => {
-        const loginTime = new Date(item.loginTime).toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-        });
-        const logoutTime = new Date(item.logoutTime).toLocaleTimeString(
-          'en-US',
-          { hour: '2-digit', minute: '2-digit' }
-        );
-        return `Login: ${loginTime}, Logout: ${logoutTime}`;
-      });
-
-      return [
-        item.employee_id,
-        item.username,
-        ...attendanceRecord,
-        calculateTotalDaysPresent(userAttendance),
-      ];
+  const getTotalDaysPresent = (attendanceEntries) => {
+    let total = 0;
+    attendanceEntries.forEach((entry) => {
+      const status = getAttendanceStatus(entry).status;
+      if (status === 'P') total += 1;
+      else if (status === 'H') total += 0.5;
     });
+    return total;
+  };
 
-    const header = [
-      'Employee ID',
-      'Name',
-      ...uniqueDates,
-      'Total Days Present',
-    ];
-    const ws = XLSX.utils.aoa_to_sheet([header, ...formattedData]);
+  const getDaysInMonth = (month, year) => {
+    return new Date(year, month, 0).getDate();
+  };
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Attendance Data');
-
-    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-    const blob = new Blob([excelBuffer], {
-      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
-    });
-    // saveAs(blob, `attendanceData-${selectedMonth}.xlsx`);
-
-    const monthName = getMonthName(selectedMonth || Month);
-    const year = selectedYear || Year;
-    saveAs(blob, `attendanceData-${monthName}(${year}).xlsx`);
-  }
+  const noDataForSelectedMonthAndYear = filteredData.length === 0;
 
   return (
     <div className="container">
@@ -195,7 +134,6 @@ function AttendanceTable() {
             }
           >
             <option value="">All</option>
-            {/* Generate options for available years */}
             {Array.from(new Set(attendanceData.map((entry) => entry.year))).map(
               (year) => (
                 <option key={year} value={year}>
@@ -215,7 +153,6 @@ function AttendanceTable() {
             }
           >
             <option value="">All</option>
-            {/* Generate options for months (1-12) */}
             {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
               <option key={month} value={month}>
                 {month}
@@ -230,132 +167,108 @@ function AttendanceTable() {
           onChange={(e) => setSearchTerm(e.target.value)}
           class="search-input "
         />
-        <div>
-          <button
-            className="exportBtn"
-            onClick={() => exportToExcel(filteredData)}
-          >
-            Export
-          </button>
-        </div>
       </div>
-
-      {loadingAttedance ? (
-        <LoadingBox5 />
-      ) : error ? (
-        <MsgBox className="alert alert-danger">{error}</MsgBox>
+      {noDataForSelectedMonthAndYear ? (
+        <AlertBox className="alert alert-danger" variant="danger">
+          No data found for Year-{selectedYear || Year} and Month-
+          {selectedMonth || Month}.
+        </AlertBox>
       ) : (
         <>
-          {filteredData.length > 0 ? (
-            <div className="table-responsive m-1">
-              <table className="table table-bordered">
-                <thead>
-                  <tr>
-                    <th className="col-md-1 text-center">User ID</th>
-                    <th className="col-md-2 text-center">Name</th>
-                    {uniqueDates.map((date) => (
-                      <th className="col-md-1 text-center" key={date}>
-                        {date}
+          <div className="table-responsive m-1 table-container">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th id="id-column" className="text-center id-column">
+                    User ID
+                  </th>
+                  <th
+                    id="name-column"
+                    className="col-md-3 text-center name-column"
+                  >
+                    Name
+                  </th>
+                  {Array.from(
+                    {
+                      length: getDaysInMonth(
+                        selectedMonth || Month,
+                        selectedYear || Year
+                      ),
+                    },
+                    (_, i) => (
+                      <th className="col-md-1 text-center days" key={i + 1}>
+                        {i + 1}
                       </th>
-                    ))}
-                    <th className="col-md-1 text-center">Total</th>
-
-                    <th className="col-md-1 text-center">Payslip</th>
+                    )
+                  )}
+                  <th className="col-md-1 text-center">Total</th>
+                  <th className="col-md-1 text-center">Payslip</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredData.map((employee) => (
+                  <tr key={employee.employee_id}>
+                    <td id="id-column" className="text-center">
+                      {employee.employee_id}
+                    </td>
+                    <td id="name-column" className="text-center">
+                      {employee.username}
+                    </td>
+                    {Array.from(
+                      {
+                        length: getDaysInMonth(
+                          selectedMonth || Month,
+                          selectedYear || Year
+                        ),
+                      },
+                      (_, i) => {
+                        const day = i + 1;
+                        const attendanceForDay = attendance.find(
+                          (entry) =>
+                            entry.employee_id === employee.employee_id &&
+                            entry.year === (selectedYear || Year) &&
+                            entry.month === (selectedMonth || Month) &&
+                            entry.day === day
+                        );
+                        const { status, className } =
+                          getAttendanceStatus(attendanceForDay);
+                        return (
+                          <td
+                            className={`col-md-1 text-center days ${className}`}
+                            key={day}
+                          >
+                            {status}
+                          </td>
+                        );
+                      }
+                    )}
+                    <td className="col-md-1 text-center">
+                      {getTotalDaysPresent(
+                        attendance.filter(
+                          (entry) => entry.employee_id === employee.employee_id
+                        )
+                      )}
+                    </td>
+                    <td className="col-md-1 text-center">
+                      <Link
+                        target="blank"
+                        to={`/pay-slip/${employee.user_id}/${
+                          selectedYear || Year
+                        }/${selectedMonth || Month}/${getTotalDaysPresent(
+                          attendance.filter(
+                            (entry) =>
+                              entry.employee_id === employee.employee_id
+                          )
+                        )}`}
+                      >
+                        <HiOutlineDocumentSearch className="text-success fs-4" />
+                      </Link>
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {Object.values(attendanceByUserId).map((userAttendance) => (
-                    <tr key={userAttendance.employee_id}>
-                      <td className="col-md-1 text-center">
-                        {userAttendance.employee_id}
-                      </td>
-                      <td className="col-md-1 text-center">
-                        {userAttendance.username}
-                      </td>
-                      {userAttendance.dates.map((status, index) => (
-                        <td className="col-md-1 text-center" key={index}>
-                          {status === null ? (
-                            'A'
-                          ) : (
-                            <div id="tooltip-container">
-                              P
-                              <span id="tooltip-text">
-                                Login:{' '}
-                                {userAttendance.loginTime
-                                  ? new Date(
-                                      userAttendance.loginTime
-                                    ).toLocaleTimeString('en-US', {
-                                      hour: '2-digit',
-                                      minute: '2-digit',
-                                    })
-                                  : 'N/A'}
-                                <br />
-                                Logout:{' '}
-                                {userAttendance.logoutTime
-                                  ? new Date(
-                                      userAttendance.logoutTime
-                                    ).toLocaleTimeString('en-US', {
-                                      hour: '2-digit',
-                                      minute: '2-digit',
-                                    })
-                                  : 'N/A'}
-                              </span>
-                            </div>
-                          )}
-                        </td>
-                      ))}
-
-                      <td className="col-md-1 text-center">
-                        {calculateTotalDaysPresent(userAttendance)}
-                      </td>
-                      {/* <td className="col-md-1 text-center">
-                        <Link
-                          target="blank"
-                          to={`/pay-slip/${userAttendance.user_id}/${
-                            selectedYear || Year
-                          }/${
-                            selectedMonth || Month
-                          }/${calculateTotalDaysPresent(userAttendance)}`}
-                        >
-                          <LiaReceiptSolid className="text-success fs-4" />
-                        </Link>
-                      </td> */}
-
-                      {/* {currentDay > 27 ? ( */}
-                      <td className="col-md-1 text-center">
-                        <Link
-                          target="blank"
-                          to={`/pay-slip/${userAttendance.user_id}/${
-                            selectedYear || Year
-                          }/${
-                            selectedMonth || Month
-                          }/${calculateTotalDaysPresent(userAttendance)}`}
-                        >
-                          <LiaReceiptSolid className="text-success fs-4" />
-                        </Link>
-                      </td>
-                      {/* ) : (
-                        ''
-                      )} */}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="no-data-found-message">
-              {selectedYear && selectedMonth ? (
-                <AlertBox className="alert alert-danger w-50">
-                  No data found for Year ${selectedYear} and Month $
-                  {selectedMonth}
-                </AlertBox>
-              ) : (
-                <AlertBox className="alert alert-danger w-50">
-                  No data found
-                </AlertBox>
-              )}
-            </div>
-          )}
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </div>

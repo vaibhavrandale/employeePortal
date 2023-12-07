@@ -568,7 +568,7 @@ emplyeeRouter.post(
 
       // Create a transporter object using Yandex SMTP
       const transporter = nodemailer.createTransport({
-        service: 'Yandex', // Use the Yandex service
+        service: 'Hostinger',
         auth: {
           user: process.env.MAIL_USER, // Your Yandex email address
           pass: process.env.MAIL_PASS, // Your Yandex email password
@@ -725,7 +725,7 @@ emplyeeRouter.post(
         };
         // Create a transporter object using Yandex SMTP
         const transporter = nodemailer.createTransport({
-          service: 'Yandex', // Use the Yandex service
+          service: 'Hostinger',
           auth: {
             user: process.env.MAIL_USER, // Your Yandex email address
             pass: process.env.MAIL_PASS, // Your Yandex email password
@@ -1046,7 +1046,7 @@ emplyeeRouter.put(
       // Save the updated employee document
       await employee.save();
       const transporter = nodemailer.createTransport({
-        service: 'Yandex', // Use the Yandex service
+        service: 'Hostinger',
         auth: {
           user: process.env.MAIL_USER, // Your Yandex email address
           pass: process.env.MAIL_PASS, // Your Yandex email password
@@ -1231,7 +1231,7 @@ emplyeeRouter.put(
       // Save the updated employee document
       await employee.save();
       const transporter = nodemailer.createTransport({
-        service: 'Yandex', // Use the Yandex service
+        service: 'Hostinger',
         auth: {
           user: process.env.MAIL_USER, // Your Yandex email address
           pass: process.env.MAIL_PASS, // Your Yandex email password
@@ -1414,12 +1414,13 @@ emplyeeRouter.post('/checkin/:id', async (req, res) => {
     const formattedLoginTime = moment(attendance.loginTime)
       .tz('Asia/Kolkata')
       .format('DD/MM/YYYY h:mm A');
-
     const transporter = nodemailer.createTransport({
-      service: 'Yandex', // Use the Yandex service
+      host: 'imap.hostinger.com',
+      port: 993, // IMAPS port
+      secure: true, // Use secure connection
       auth: {
-        user: process.env.MAIL_USER, // Your Yandex email address
-        pass: process.env.MAIL_PASS, // Your Yandex email password
+        user: process.env.MAIL_USER, // Your Hostinger email address
+        pass: process.env.MAIL_PASS, // Your Hostinger email password
       },
     });
     transporter.sendMail(
@@ -1763,10 +1764,12 @@ emplyeeRouter.post('/checkout/:id', async (req, res) => {
     };
 
     const transporter = nodemailer.createTransport({
-      service: 'Yandex', // Use the Yandex service
+      host: 'imap.hostinger.com',
+      port: 993, // IMAPS port
+      secure: true, // Use secure connection
       auth: {
-        user: process.env.MAIL_USER, // Your Yandex email address
-        pass: process.env.MAIL_PASS, // Your Yandex email password
+        user: process.env.MAIL_USER, // Your Hostinger email address
+        pass: process.env.MAIL_PASS, // Your Hostinger email password
       },
     });
     transporter.sendMail(

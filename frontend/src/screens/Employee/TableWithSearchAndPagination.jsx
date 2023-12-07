@@ -198,10 +198,17 @@ const TableWithSearchAndPagination = () => {
             <p>Are you sure you want to add new Employee?</p>
             <div className="popup-buttons">
               <button className="popup-button verify" onClick={createHandler}>
-                <BsPersonAdd />
+                <span className="d-flex justify-content-center align-items-center">
+                  ADD
+                  {/* <BsPersonAdd /> */}
+                </span>
               </button>
               <button className="popup-button cancel" onClick={closePopup}>
-                <RxCross2 />
+                <span className="d-flex justify-content-center align-items-center">
+                  {' '}
+                  CANCEL
+                  {/* <RxCross2 /> */}
+                </span>
               </button>
             </div>
           </div>
@@ -217,19 +224,15 @@ const TableWithSearchAndPagination = () => {
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
         <>
-          <div className="form-group   mb-2 search-input">
+          <div className="form-group   mb-2  d-flex w-100 justify-content-between">
             {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
-              <Link
-                id="AddBtn"
-                className="bg-dark text-white"
-                onClick={popupHandle}
-              >
+              <Link id="AddBtn" onClick={popupHandle}>
                 ADD
               </Link>
             )}
             <input
               type="text"
-              className="form-control search"
+              className="form-control search w-50"
               placeholder="Search Employee.."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -239,18 +242,18 @@ const TableWithSearchAndPagination = () => {
           <div className="">
             <table
               className="table table-bordered table-responsive"
-              style={{ minWidth: '1100px' }}
+              style={{ minWidth: '1050px' }}
             >
               <thead>
                 <tr>
-                  <th className="col-md-2 text-center">ID</th>
+                  <th className="col-md-1 text-center">ID</th>
                   <th className="col-md-1 text-center">Image</th>
                   <th className="col-md-3 text-center">Name</th>
                   <th className="col-md-2 text-center">Designation</th>
                   <th className="col-md-2 text-center">Email</th>
-                  <th className="col-md-5 text-center">Joining Date</th>
+                  <th className="col-md-1 text-center">Joining Date</th>
                   {userInfo.isSuperAdmin ? (
-                    <th className="col-md-4 text-center">Remove</th>
+                    <th className="col-md-1 text-center">Remove</th>
                   ) : (
                     ''
                   )}

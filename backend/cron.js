@@ -26,7 +26,7 @@ const sendBirthdayEmails = async () => {
 
     for (let employee of todaysBirthdayEmployees) {
       const transporter = nodemailer.createTransport({
-        service: 'Yandex',
+        service: 'Hostinger',
         auth: {
           user: process.env.MAIL_USER,
           pass: process.env.MAIL_PASS,

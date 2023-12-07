@@ -79,6 +79,17 @@ function AttendanceTable() {
     );
   });
 
+  const isEmployeeOnLeave = (employee, day, month, year) => {
+    return employee.allLeaves.some((leave) => {
+      const leaveDate = new Date(leave.expectedDateOfLeave);
+      return (
+        leaveDate.getDate() === day &&
+        leaveDate.getMonth() + 1 === month &&
+        leaveDate.getFullYear() === year
+      );
+    });
+  };
+
   const getAttendanceStatus = (attendanceForDay) => {
     if (!attendanceForDay) return { status: 'A', style: {} };
     const hours = attendanceForDay.totalHours;

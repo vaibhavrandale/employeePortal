@@ -567,13 +567,14 @@ emplyeeRouter.post(
       await employee.save();
 
       // Create a transporter object using Yandex SMTP
-      const transporter = nodemailer.createTransport({
-        service: 'Hostinger',
-        auth: {
-          user: process.env.MAIL_USER, // Your Yandex email address
-          pass: process.env.MAIL_PASS, // Your Yandex email password
-        },
-      });
+         const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
 
       // Send the email
       transporter.sendMail(
@@ -724,8 +725,9 @@ emplyeeRouter.post(
           remarkBy: '',
         };
         // Create a transporter object using Yandex SMTP
-        const transporter = nodemailer.createTransport({
-          service: 'Hostinger',
+           const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
           auth: {
             user: process.env.MAIL_USER, // Your Yandex email address
             pass: process.env.MAIL_PASS, // Your Yandex email password
@@ -1045,13 +1047,14 @@ emplyeeRouter.put(
 
       // Save the updated employee document
       await employee.save();
-      const transporter = nodemailer.createTransport({
-        service: 'Hostinger',
-        auth: {
-          user: process.env.MAIL_USER, // Your Yandex email address
-          pass: process.env.MAIL_PASS, // Your Yandex email password
-        },
-      });
+          const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
       transporter.sendMail(
         {
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
@@ -1230,13 +1233,14 @@ emplyeeRouter.put(
 
       // Save the updated employee document
       await employee.save();
-      const transporter = nodemailer.createTransport({
-        service: 'Hostinger',
-        auth: {
-          user: process.env.MAIL_USER, // Your Yandex email address
-          pass: process.env.MAIL_PASS, // Your Yandex email password
-        },
-      });
+         const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
       transporter.sendMail(
         {
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
@@ -2254,14 +2258,14 @@ emplyeeRouter.put('/reply-wish/:employeeId/:wishId', async (req, res) => {
 
       // Save the updated employee document
       await employee.save();
-      const transporter = nodemailer.createTransport({
-        service: 'Yandex',
-        auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
-        },
-      });
-
+         const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
       transporter
         .sendMail({
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
@@ -2665,13 +2669,14 @@ emplyeeRouter.post('/', async (req, res) => {
     const savedEmployee = await newEmployee.save();
 
     // ----------------email---------------------------------
-    const transporter = nodemailer.createTransport({
-      service: 'Yandex',
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS,
-      },
-    });
+       const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the  service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
 
     transporter
       .sendMail({

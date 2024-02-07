@@ -18,7 +18,7 @@
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 15px 0;
   position: absolute;
   z-index: 1;
   bottom: 100%;
@@ -141,4 +141,30 @@ label {
 
 .table-container::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Color of the scroll thumb on hover */
+}
+
+.leave-tooltip {
+  background-color: #007bff; /* Blue color for leave */
+}
+
+.login-tooltip {
+  background-color: #28a745; /* Green color for login */
+}
+
+.work-ongoing-tooltip {
+  background-color: #ffc107; /* Yellow color for work ongoing */
+}
+
+.absent-tooltip {
+  background-color: #dc3545; /* Red color for absent */
+}
+
+.custom-tooltip {
+  /* Common styling for all tooltips */
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px 5px;
+  color: #fff;
+  font-size: 14px;
+  background: #dc3545;
 }

@@ -84,8 +84,9 @@ function EditLeave() {
 
       try {
         const result = await axios.get(
-          `/api/employees/leave/${userInfo._id}/${id}`
+          `/api/leaves/${userInfo.employee_id}/${id}`
         );
+        console.log(result);
         setName(result.data.leave.name);
         setType(result.data.leave.type);
         setExpectedDateOfLeave(result.data.leave.expectedDateOfLeave);
@@ -107,7 +108,7 @@ function EditLeave() {
 
     // setLoading(true);
     fetchData();
-  }, [userInfo._id, id]);
+  }, [userInfo.employee_id, id]);
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
@@ -127,7 +128,7 @@ function EditLeave() {
 
     try {
       const { data } = await axios.put(
-        `/api/employees/leave/${userInfo._id}/${id}`,
+        `/api/leaves/${userInfo.employee_id}/${id}`,
         {
           employee_id,
           name,
@@ -142,7 +143,7 @@ function EditLeave() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      console.log(data);
+
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
@@ -249,7 +250,7 @@ function EditLeave() {
               <div className="form-group col-md-5 m-2">
                 <label htmlFor="leaveDate">Expected Date of Leave:</label>
                 <input
-                  type="date"
+                  type="text"
                   className="form-control"
                   id="leaveDate"
                   value={expectedDateOfLeave}
@@ -259,7 +260,7 @@ function EditLeave() {
               <div className="form-group col-md-5 m-2">
                 <label htmlFor="returnDate">Expected Date of Return:</label>
                 <input
-                  type="date"
+                  type="text"
                   className="form-control"
                   id="returnDate"
                   value={expectedDateOfreturn}

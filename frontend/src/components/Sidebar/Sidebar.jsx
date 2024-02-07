@@ -2,7 +2,8 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineDashboard } from 'react-icons/ai';
 import { FcMoneyTransfer } from 'react-icons/fc';
-import { MdOutlineReceiptLong } from 'react-icons/md';
+import { MdNotAccessible } from 'react-icons/md';
+import { FaChalkboardUser } from 'react-icons/fa6';
 
 import { FcLeave } from 'react-icons/fc';
 import './Sidebar.css';
@@ -44,7 +45,7 @@ const Sidebar = () => {
         </h1>
       </div>
       <ul>
-        {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
+        {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
           <li>
             <Link to="/">
               <img
@@ -59,26 +60,23 @@ const Sidebar = () => {
         )}
 
         <>
-          {userInfo && userInfo.isAccountant && userInfo.isSuperAdmin && (
-            <li>
-              <Link to="/employees">
-                <img
-                  src="/images/icons/employee.png"
-                  alt="employee"
-                  className="icon me-1"
-                  height={'23px'}
-                />
-                {hovered && <span>Employees</span>}
-              </Link>
-            </li>
-          )}
+          {userInfo &&
+            userInfo.isAccountant === 1 &&
+            userInfo.isSuperAdmin === 1 && (
+              <li>
+                <Link to="/employees">
+                  <img
+                    src="/images/icons/employee.png"
+                    alt="employee"
+                    className="icon me-1"
+                    height={'23px'}
+                  />
+                  {hovered && <span>Employees</span>}
+                </Link>
+              </li>
+            )}
 
-          {userInfo && userInfo.isAdmin && !userInfo.isVisitor && (
-            // userInfo.isSales &&
-            // userInfo.isScm &&
-            // userInfo.isDesign &&
-            // userInfo.isProject &&
-            // userInfo.isProduction &&
+          {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
             <li>
               <Link to="/leaves-history">
                 <FcLeave className="icon me-2" />
@@ -87,7 +85,16 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && userInfo.isAdmin && (
+          {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
+            <li>
+              <Link to="/notice-home-page">
+                <FaChalkboardUser color="red" className="icon me-2" />
+                {hovered && <span>Notice</span>}
+              </Link>
+            </li>
+          )}
+
+          {/* {userInfo && userInfo.isAdmin===1 && (
             <li>
               <Link to="sitelist">
                 <img
@@ -99,7 +106,21 @@ const Sidebar = () => {
                 {hovered && <span>Site Survey</span>}
               </Link>
             </li>
-          )}
+          )} */}
+
+          {/* {userInfo && userInfo.isAdmin === 1 && (
+            <li>
+              <Link to={`/myattendance/${userInfo.employee_id}`}>
+                <img
+                  src="/images/icons/slip.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Timeline</span>}
+              </Link>
+            </li>
+          )} */}
         </>
       </ul>
     </div>

@@ -28,7 +28,6 @@ import ForgetPasswordScreen from './screens/Signin/ForgetPasswordScreen';
 import ResetPasswoed from './screens/Signin/ResetPasswoed';
 import Dummypages from './screens/Dummypages';
 import PlantLayout from './screens/SiteSurvey/PlantLayout';
-import SalarySleep from './screens/salarySleep/SalarySleep';
 import SalaryEntry from './screens/salarySleep/SalaryEntry';
 import Table from './screens/Table';
 import CreateNewSyrvey from './screens/SiteSurvey/CreateNewSyrvey';
@@ -43,14 +42,20 @@ import NewNotice from './screens/Notice/NewNotice';
 import ProgressBar from './ProgressBar';
 import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
-import AttedanceTable from './screens/Attendance/AttedanceTable';
-import AttendanceDetails from './screens/Attendance/AttendanceDetails';
-import AttendanceHomecopy from './screens/Attendance/AttendanceHomecopy';
 import Wishes from './screens/Employee/Wishes';
 import UpdateEmployee from './screens/Employee/UpdateEmployee';
 import SalarySleepNew from './screens/Attendance/SalarySleepNew';
 import SalarySleepUpdated from './screens/salarySleep/SalarySleepUpdated';
 import IndividualAttedance from './screens/Attendance/IndividualAttedance';
+import Available from './screens/SiteInventory/Available';
+import AllSites from './screens/SiteInventory/AllSites';
+import AttendanceTableUpdated from './screens/Attendance/AttendanceTableUpdated';
+import LeaveStatus from './screens/Leaves/LeaveStatus';
+import SalarySlip from './screens/temp_salaryslip/SalarySlip';
+import Generateslip from './screens/temp_salaryslip/Generateslip';
+import UpdateSalary from './screens/Employee/UpdateSalary';
+import AddNewSalary from './screens/Employee/AddNewSalary';
+import NewAttendance from './screens/Attendance/NewAttendance';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -166,6 +171,24 @@ function AppRouter() {
         />
 
         <Route
+          path="/updateSalary/:employeeid/:id"
+          element={
+            <ProtectedRoutes>
+              <UpdateSalary />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/addnewSalary/:employeeid"
+          element={
+            <ProtectedRoutes>
+              <AddNewSalary />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
           path="/profile/:id"
           element={
             <ProtectedRoutes>
@@ -215,6 +238,15 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
+
+        <Route
+          path="/leave-status/:employeeId/:leaveId"
+          element={
+            <SuperAdminRoutes>
+              <LeaveStatus />
+            </SuperAdminRoutes>
+          }
+        />
         <Route
           path="/wishes/:id"
           element={
@@ -261,14 +293,36 @@ function AppRouter() {
 
         {/* -------------------------------Attendance--------------------------------- */}
 
+        {/*
+        // new
         <Route
           path="/attendance-home-page"
           element={
             <SuperAdminRoutes>
-              <AttedanceTable />
+              <AttendanceTableNew />
+            </SuperAdminRoutes>
+          }
+        /> */}
+
+        <Route
+          path="/new-attendancde"
+          element={
+            <SuperAdminRoutes>
+              <NewAttendance />
             </SuperAdminRoutes>
           }
         />
+
+        <Route
+          path="/attendance-home-page"
+          element={
+            <SuperAdminRoutes>
+              {/* <AttedanceTable /> */}
+              <AttendanceTableUpdated />
+            </SuperAdminRoutes>
+          }
+        />
+
         <Route
           path="/myattendance/:id"
           element={
@@ -278,14 +332,14 @@ function AppRouter() {
           }
         />
 
-        <Route
+        {/* <Route
           path="/attendenceDetails/:id"
           element={
             <SuperAdminRoutes>
               <AttendanceDetails />
             </SuperAdminRoutes>
           }
-        />
+        /> */}
         {/* -------------------------------Attendance--------------------------------- */}
 
         <Route
@@ -306,6 +360,7 @@ function AppRouter() {
           }
         />
 
+        {/* old */}
         <Route
           path="/pay-slip/:id/:year/:month/:totaldays"
           element={
@@ -314,6 +369,16 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+
+        {/* <Route
+          path="/pay-slip/:id/:year/:month/:totaldays"
+          element={
+            <ProtectedRoutes>
+              <SalarySlip />
+            </ProtectedRoutes>
+          }
+        /> */}
+
         <Route
           path="/salary-Entry"
           element={
@@ -415,6 +480,36 @@ function AppRouter() {
             <ProtectedRoutes>
               <PlantLayout />
             </ProtectedRoutes>
+          }
+        />
+
+        {/* site Inventory */}
+
+        <Route
+          path="/available-inventory"
+          element={
+            <ProtectedRoutes>
+              <Available />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/all-site-inventory"
+          element={
+            <ProtectedRoutes>
+              <AllSites />
+            </ProtectedRoutes>
+          }
+        />
+        {/* site Inventory */}
+
+        <Route
+          path="/temp-salaryslip"
+          element={
+            <SuperAdminRoutes>
+              {/* <AttedanceTable /> */}
+              <Generateslip />
+            </SuperAdminRoutes>
           }
         />
       </Routes>

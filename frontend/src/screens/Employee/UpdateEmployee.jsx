@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useReducer,
+  useContext,
+  useRef,
+} from 'react';
 import './Employee.css';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -13,7 +19,10 @@ import { Helmet } from 'react-helmet';
 import LoadingBox1 from '../../components/LoadingBox1';
 import dummyimage from './images.jpg';
 import PdfModal from './PdfModal';
-import { BiLinkAlt } from 'react-icons/bi';
+import { BiLinkAlt, BiSolidEdit } from 'react-icons/bi';
+import { AiOutlineEye } from 'react-icons/ai';
+import { RiDeleteBinLine } from 'react-icons/ri';
+import { PiLinkThin } from 'react-icons/pi';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +40,15 @@ const reducer = (state, action) => {
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+
+    case 'FETCH_SALARY_REQUEST':
+      return { ...state, loadingSalary: true };
+
+    case 'FETCH_SALARY_SUCCESS':
+      return { ...state, payslip: action.payload, loadingSalary: false };
+
+    case 'FETCH_SALARY_FAIL':
+      return { ...state, loadingSalary: false, error: action.payload };
 
     case 'UPDATE_REQUEST':
       return { ...state, loadingUpdate: true };
@@ -52,16 +70,38 @@ const reducer = (state, action) => {
     case 'UPLOAD_FAIL':
       return { ...state, loadingUpload: false, errorUpload: action.payload };
 
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+    case 'DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true };
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false, successDelete: false };
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
+
     default:
       return state;
   }
 };
 const UpdateEmployee = () => {
+  let salaryRef = useRef();
+
   const { id } = useParams();
   const [
-    { loading, error, employees, loadingUpdate, loadingUpload },
+    {
+      loading,
+      error,
+      employees,
+      payslip,
+      loadingSalary,
+      loadingUpdate,
+      loadingUpload,
+      loadingDelete,
+      successDelete,
+    },
     dispatch,
   ] = useReducer(reducer, {
+    payslip: [],
     employees: {},
     loading: true,
     error: '',
@@ -72,6 +112,7 @@ const UpdateEmployee = () => {
   const [isPanModalLoading, setIsPanModalLoading] = useState(false);
 
   const [employee_id, setEmployee_id] = useState('');
+  const [UID, setUID] = useState('');
   // const [name, setName] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -100,6 +141,7 @@ const UpdateEmployee = () => {
   const [isVisitor, setIsVisitor] = useState();
   const [isProduction, setIsProduction] = useState();
   const [isAccountant, setIsAccountant] = useState();
+  const [isHr, setIsHr] = useState();
   const [ctc, setCtc] = useState();
   const [salarygroup, setSalarygroup] = useState();
   const [netsalary, setNetsalary] = useState();
@@ -127,8 +169,26 @@ const UpdateEmployee = () => {
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
 
+  const [salaryMonth, setSalaryMonth] = useState('');
+  const [salaryyear, setSalaryYear] = useState('');
+  const [basic, setBasic] = useState('');
+  const [hra, setHRA] = useState('');
+  const [conveyance, setConveyance] = useState('');
+  const [special, setSpecial] = useState('');
+  const [medical, setMedical] = useState('');
+  const [pt, setPT] = useState('');
+  const [pf, setPF] = useState('');
+  const [esi, setESI] = useState('');
+  const [total_deduction, setTotalDeduction] = useState('');
+  const [gross, setGross] = useState('');
+  const [employer_pf, setEmployerPF] = useState('');
+  const [employer_esi, setEmployer_esi] = useState('');
+  const [bonus, setBonus] = useState('');
+  // employer_esi, bonus
+
   useEffect(() => {
     // Simulate API call or data fetching
+
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
@@ -138,6 +198,7 @@ const UpdateEmployee = () => {
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
         // console.log(result.data.employee.address);
         setEmployee_id(result.data.employee.employee_id);
+        setUID(result.data.employee.UID);
         setFirstName(result.data.employee.firstName);
         setLastName(result.data.employee.lastName);
         setImage(result.data.employee.image);
@@ -150,12 +211,7 @@ const UpdateEmployee = () => {
         setGender(result.data.employee.gender);
         setState(result.data.employee.state);
         setBirth_date(result.data.employee.birth_date);
-        setAdharno(result.data.employee.aadhar_no);
-        setMobile_no(result.data.employee.mobile_no);
-        setPf_account_no(result.data.employee.pf_account_no);
-        setBank_account_no(result.data.employee.bank_account_no);
-        setUan_number(result.data.employee.uan_number);
-        setPan_number(result.data.employee.pan_number);
+
         setIsAdmin(result.data.employee.isAdmin);
         setIsSuperAdmin(result.data.employee.isSuperAdmin);
         setIsSales(result.data.employee.isSales);
@@ -165,6 +221,7 @@ const UpdateEmployee = () => {
         setIsVisitor(result.data.employee.isVisitor);
         setIsProduction(result.data.employee.isProduction);
         setIsAccountant(result.data.employee.isAccountant);
+        setIsHr(result.data.employee.isHr);
 
         setFather_husband_name(result.data.employee.father_husband_name);
         setMarital_status(result.data.employee.marital_status);
@@ -188,17 +245,51 @@ const UpdateEmployee = () => {
         setBank_account_file(result.data.employee.bank_account_file);
         setPrevious_company_name(result.data.employee.previous_company_name);
         setExperience_letter(result.data.employee.experience_letter);
-        setCtc(result.data.employee.ctc);
-        setSalarygroup(result.data.employee.salarygroup);
-        setNetsalary(result.data.employee.netsalary);
+        setAdharno(result.data.employee.aadhar_no);
+        setMobile_no(result.data.employee.mobile_no);
+        setPf_account_no(result.data.employee.pf_account_no);
+        setBank_account_no(result.data.employee.bank_account_no);
+        setUan_number(result.data.employee.uan_number);
+        setPan_number(result.data.employee.pan_number);
+
+        // /api/payslip
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
 
-    // setLoading(true);
-    fetchData();
-  }, [id]);
+    const SalaryData = async () => {
+      dispatch({ type: 'FETCH_SALARY_REQUEST' });
+      try {
+        const salaryResult = await axios.get(`/api/payslip/${id}`);
+        console.log(salaryResult.data);
+        dispatch({
+          type: 'FETCH_SALARY_SUCCESS',
+          payload: salaryResult.data.payslip,
+        });
+
+        setCtc(salaryResult.data.payslip.ctc);
+        setSalarygroup(salaryResult.data.payslip.salarygroup);
+        setNetsalary(salaryResult.data.payslip.netsalary);
+
+        setSalaryMonth(salaryResult.data.payslip.month);
+        setSalaryYear(salaryResult.data.payslip.year);
+        setBasic(salaryResult.data.payslip.basic);
+        setHRA(salaryResult.data.payslip.hra);
+      } catch (err) {
+        dispatch({ type: 'FETCH_SALARY_FAIL', payload: err.message });
+      }
+    };
+
+    // fetchData();
+
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else {
+      fetchData();
+    }
+    SalaryData();
+  }, [id, successDelete]);
 
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
@@ -245,6 +336,7 @@ const UpdateEmployee = () => {
         `/api/employees/updateemployee/${id}`,
         {
           employee_id,
+          UID,
           email,
           name: `${firstName} ${lastName}`,
           firstName,
@@ -256,8 +348,7 @@ const UpdateEmployee = () => {
           address,
           sub_locality,
           district,
-          ctc,
-          salarygroup,
+
           pinCode,
           mobile_no,
           nominee_name,
@@ -296,6 +387,7 @@ const UpdateEmployee = () => {
           isVisitor,
           isProduction,
           isAccountant,
+          isHr,
           state: State,
         },
         {
@@ -333,7 +425,7 @@ const UpdateEmployee = () => {
       const { data } = await axios.put(
         `/api/employees/activate/${id}`,
         {
-          activate: 'false',
+          activate: 0,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -363,7 +455,7 @@ const UpdateEmployee = () => {
       const { data } = await axios.put(
         `/api/employees/activate/${id}`,
         {
-          activate: 'true',
+          activate: 1,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -440,14 +532,7 @@ const UpdateEmployee = () => {
       fontSize: '1rem',
       color: '#555',
     },
-    // input: {
-    //   width: '100%',
-    //   padding: '8px',
-    //   fontSize: '1rem',
-    //   border: '1px solid #ccc',
-    //   borderRadius: '4px',
-    //   margin: '1px',
-    // },
+
     input: {
       width: '100%',
       padding: '8px',
@@ -456,6 +541,17 @@ const UpdateEmployee = () => {
       borderRadius: '4px',
       margin: '1px',
       transition: 'border-color 0.3s ease-in-out',
+    },
+
+    input2: {
+      width: '120px',
+      padding: '8px',
+      fontSize: '1rem',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      margin: '1px',
+      transition: 'border-color 0.3s ease-in-out',
+      disabled: true,
     },
     inputFocus: {
       borderColor: '#007BFF',
@@ -481,8 +577,8 @@ const UpdateEmployee = () => {
     image: {
       height: '150px',
       width: '150px',
-      borderRadius: '50%',
-      objectFit: 'fill',
+      borderRadius: '',
+      objectFit: 'contain',
     },
     imageContainer: {
       display: 'flex',
@@ -515,8 +611,11 @@ const UpdateEmployee = () => {
         flex: '0 0 100%',
       },
     },
-  };
 
+    link: {
+      fontWeight: '900',
+    },
+  };
   // Add hover & focus effects
   document.querySelectorAll('input').forEach((inputElem) => {
     inputElem.addEventListener('focus', () => {
@@ -559,17 +658,30 @@ const UpdateEmployee = () => {
   );
 
   // Create the file URLs with file IDs
+  // const AdharFile = AdharfileId
+  //   ? `https://drive.google.com/uc?id=${AdharfileId}`
+  //   : null;
+  // const PanFile = PanfileId
+  //   ? `https://drive.google.com/uc?id=${PanfileId}`
+  //   : null;
+  // const BankFile = BankfileId
+  //   ? `https://drive.google.com/uc?id=${BankfileId}`
+  //   : null;
+  // const ExperienceFile = ExperiencefileId
+  //   ? `https://drive.google.com/uc?id=${ExperiencefileId}`
+  //   : null;
+
   const AdharFile = AdharfileId
-    ? `https://drive.google.com/uc?id=${AdharfileId}`
+    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${AdharfileId}`
     : null;
   const PanFile = PanfileId
-    ? `https://drive.google.com/uc?id=${PanfileId}`
+    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${PanfileId}`
     : null;
   const BankFile = BankfileId
-    ? `https://drive.google.com/uc?id=${BankfileId}`
+    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${BankfileId}`
     : null;
   const ExperienceFile = ExperiencefileId
-    ? `https://drive.google.com/uc?id=${ExperiencefileId}`
+    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${ExperiencefileId}`
     : null;
 
   console.log('adhar', AdharFile);
@@ -584,7 +696,6 @@ const UpdateEmployee = () => {
 
   // Separate open and close functions for each modal
   const openAdharModal = () => {
-    setIsPanModalLoading(true);
     setIsAdharModalOpen(true);
   };
 
@@ -619,6 +730,55 @@ const UpdateEmployee = () => {
     setIsExperienceModalOpen(false);
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const filteredData = payslip.filter(
+    (item) =>
+      item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.employee_id.includes(searchTerm) ||
+      item.joiningDate.includes(searchTerm)
+  );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const sortedItems = currentItems.slice().sort((a, b) => {
+    // Sort by year in descending order
+    if (b.year !== a.year) {
+      return b.year - a.year;
+    }
+
+    // If years are the same, sort by ID in descending order
+    return b.id - a.id;
+  });
+  const [showModal, setShowModal] = useState(false);
+
+  const deleteHandler = async (item) => {
+    try {
+      await axios.delete(`/api/payslip/${item.id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      toast.success('Payslip deleted successfully');
+      dispatch({
+        type: 'DELETE_SUCCESS',
+      });
+      window.scrollTo({
+        behavior: 'smooth',
+        top: salaryRef.current.offsetTop,
+      });
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({
+        type: 'DELETE_FAIL',
+      });
+    } finally {
+      setShowModal(false);
+    }
+  };
+
   return (
     <div style={styles.container}>
       {loading ? (
@@ -646,23 +806,23 @@ const UpdateEmployee = () => {
                 Employees Details
               </li>
               <li className="breadcrumb-item active" aria-current="page">
-                <span className="text-success">{employees.name}</span>
+                <span className="text-success">{employees.NAME}</span>
               </li>
             </ol>
           </nav>{' '}
           <h1 style={styles.header}>Update Employee Details</h1>
           <div className="m-1 p-1 text-center ">
-            <span className="fw-bolder">{employees.name}</span>-
+            <span className="fw-bolder">{employees.NAME}</span>-
             <span>{employees.employee_id}</span>
           </div>
           <Helmet>
-            <title>{`${employees.name} - ${employees.employee_id}`}</title>
+            <title>{`${employees.NAME} - ${employees.employee_id}`}</title>
           </Helmet>
           <div style={styles.imageContainer}>
             <>
               <div className="m-2 p-1 text-center">
                 {' '}
-                {employees.activate === 'true' ? (
+                {employees.activate === 1 ? (
                   <>
                     <span
                       className={`badge bg-success `}
@@ -728,7 +888,7 @@ const UpdateEmployee = () => {
               Personal Details [{' '}
               <Link
                 className="text-center   text-decoration-none "
-                to={`/leave-application/${id}`}
+                to={`/leave-application/${employee_id}`}
               >
                 Leaves
               </Link>{' '}
@@ -1176,7 +1336,20 @@ const UpdateEmployee = () => {
                       onChange={(e) => setEmployee_id(e.target.value)}
                     />
                   </td>
+                  <td style={styles.label}>Employee UID:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="UID"
+                      placeholder="Employee UID"
+                      value={UID}
+                      onChange={(e) => setUID(e.target.value)}
+                    />
+                  </td>
+                </tr>
 
+                <tr>
                   <td style={styles.label}>Designation:</td>
                   <td>
                     <input
@@ -1188,35 +1361,7 @@ const UpdateEmployee = () => {
                       onChange={(e) => setDesignation(e.target.value)}
                     />
                   </td>
-                </tr>
 
-                <tr>
-                  <td style={styles.label}>CTC:</td>
-                  <td>
-                    <input
-                      style={styles.input}
-                      type="text"
-                      id="employee_id"
-                      placeholder="Update CTC"
-                      value={ctc}
-                      onChange={(e) => setCtc(e.target.value)}
-                    />
-                  </td>
-
-                  <td style={styles.label}>Net Salary :</td>
-                  <td>
-                    <input
-                      style={styles.input}
-                      disabled
-                      type="text"
-                      id="designation"
-                      placeholder="net salary"
-                      value={netsalary}
-                      onChange={(e) => setNetsalary(e.target.value)}
-                    />
-                  </td>
-                </tr>
-                <tr>
                   <td style={styles.label}>Company mail:</td>
                   <td>
                     <input
@@ -1228,6 +1373,9 @@ const UpdateEmployee = () => {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </td>
+                </tr>
+
+                <tr>
                   <td style={styles.label}>Experience:</td>
                   <td>
                     <input
@@ -1239,8 +1387,6 @@ const UpdateEmployee = () => {
                       onChange={(e) => setExperience(e.target.value)}
                     />
                   </td>
-                </tr>
-                <tr>
                   <td style={styles.label}>Joining Date:</td>
                   <td>
                     <input
@@ -1251,7 +1397,24 @@ const UpdateEmployee = () => {
                       onChange={(e) => setJoiningDate(e.target.value)}
                     />
                   </td>
-                  <td style={styles.label}>Experience Letter:</td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>
+                    Experience Letter{' '}
+                    {experience_letter === 'fresher' ? (
+                      ''
+                    ) : (
+                      <Link
+                        target="blank"
+                        to={`${experience_letter}`}
+                        className="fs-4"
+                        style={styles.link}
+                      >
+                        <PiLinkThin />
+                      </Link>
+                    )}
+                    :
+                  </td>
                   <td>
                     <input
                       style={styles.input}
@@ -1262,8 +1425,7 @@ const UpdateEmployee = () => {
                       onChange={(e) => setExperience_letter(e.target.value)}
                     />
                   </td>
-                </tr>
-                <tr>
+
                   <td style={styles.label}>Previous Company :</td>
                   <td>
                     <input
@@ -1273,17 +1435,6 @@ const UpdateEmployee = () => {
                       placeholder="Enter Previous Company "
                       value={previous_company_name}
                       onChange={(e) => setPrevious_company_name(e.target.value)}
-                    />
-                  </td>
-                  <td style={styles.label}>Salary Group:</td>
-                  <td>
-                    <input
-                      style={styles.input}
-                      type="text"
-                      id="joiningDate"
-                      placeholder="Update Salary Group "
-                      value={salarygroup}
-                      onChange={(e) => setSalarygroup(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -1329,7 +1480,18 @@ const UpdateEmployee = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td style={styles.label}>Upload Aadhar File:</td>
+                  <td style={styles.label}>
+                    Upload Aadhar File
+                    <Link
+                      target="blank"
+                      to={`${aadhar_card_file}`}
+                      className="fs-4"
+                      style={styles.link}
+                    >
+                      <PiLinkThin />
+                    </Link>{' '}
+                    :
+                  </td>
                   <td>
                     <input
                       style={styles.input}
@@ -1341,7 +1503,18 @@ const UpdateEmployee = () => {
                     />
                   </td>
 
-                  <td style={styles.label}>Upload PAN File:</td>
+                  <td style={styles.label}>
+                    Upload PAN File{' '}
+                    <Link
+                      target="blank"
+                      to={`${pan_card_file}`}
+                      className="fs-4"
+                      style={styles.link}
+                    >
+                      <PiLinkThin />
+                    </Link>{' '}
+                    :
+                  </td>
                   <td>
                     <input
                       style={styles.input}
@@ -1366,7 +1539,18 @@ const UpdateEmployee = () => {
                     />
                   </td>
 
-                  <td style={styles.label}>Upload Bank File:</td>
+                  <td style={styles.label}>
+                    Upload Bank File{' '}
+                    <Link
+                      target="blank"
+                      to={`${bank_account_file}`}
+                      className="fs-4"
+                      style={styles.link}
+                    >
+                      <PiLinkThin />
+                    </Link>{' '}
+                    :
+                  </td>
                   <td>
                     <input
                       style={styles.input}
@@ -1405,7 +1589,7 @@ const UpdateEmployee = () => {
                 </tr>
               </tbody>
             </table>
-
+            {/* 
             <h2 style={styles.sectionHeader}>Document Links</h2>
 
             <div className="d-flex justify-content-center align-items-center">
@@ -1468,7 +1652,7 @@ const UpdateEmployee = () => {
                   />
                 </span>
               </div>
-            </div>
+            </div> */}
 
             <div className="employee-form-container">
               <div className="form-section">
@@ -1493,7 +1677,17 @@ const UpdateEmployee = () => {
                       checked={isSuperAdmin}
                       onChange={(e) => setIsSuperAdmin(e.target.checked)}
                     />
-                    <label htmlFor="isSuperAdmin">Super</label>
+                    <label htmlFor="isSuperAdmin">HR</label>
+                  </div>
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="hr"
+                      className="input3"
+                      checked={isHr}
+                      onChange={(e) => setIsHr(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Account</label>
                   </div>
                   <div className="role-item">
                     <input
@@ -1590,6 +1784,411 @@ const UpdateEmployee = () => {
               )}
             </button>
           </form>
+          <h2 style={styles.sectionHeader} ref={salaryRef}>
+            Salary Details
+          </h2>
+          <div className="d-flex justify-content-end">
+            <Link
+              to={`/addnewSalary/${employee_id}`}
+              className="btn btn-sm btn-success m-1"
+            >
+              ADD
+            </Link>
+          </div>
+          <div style={{ overflowX: 'scroll' }}>
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th className="text-center">month</th>
+                  <th className="text-center">year</th>
+                  <th className="text-center">CTC</th>
+                  <th className="text-center">Net Salary</th>
+                  <th className="text-center">Salary Group</th>
+
+                  <th className="text-center">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedItems.map((item, index) => (
+                  <tr key={index}>
+                    <td className="text-center">{item.month}</td>
+                    <td className="text-center">{item.year}</td>
+                    <td className="text-center">{item.ctc}</td>
+                    <td className="text-center">{item.netsalary}</td>
+                    <td className="text-center">{item.salarygroup}</td>
+                    <td className="text-center d-flex justify-content-center">
+                      <Link
+                        className="btn btn-sm btn-warning mx-1"
+                        to={`/updateSalary/${item.employee_id}/${item.id}`}
+                      >
+                        <BiSolidEdit />
+                      </Link>
+
+                      <button
+                        className="btn btn-sm btn-success mx-1"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#viewSalary${item.id}`}
+                        type="button"
+                      >
+                        <AiOutlineEye />
+                      </button>
+
+                      {/* ------------------------------view salary breakup-------------------------- */}
+                      <div
+                        class="modal fade"
+                        id={`viewSalary${item.id}`}
+                        tabindex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                      >
+                        <div class="modal-dialog modal-xl">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">
+                                <b className="text-success"> {item.NAME}</b>{' '}
+                                Salary Structure
+                              </h5>
+                              <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                              ></button>
+                            </div>
+                            <div class="modal-body">
+                              <div style={{ overflowX: 'scroll' }}>
+                                <table className="table table-bordered">
+                                  <thead>
+                                    <tr>
+                                      <th className="text-center">month</th>
+                                      <th className="text-center">year</th>
+                                      <th className="text-center">CTC</th>
+                                      <th className="text-center">
+                                        Net Salary
+                                      </th>
+                                      <th className="text-center">
+                                        Salary group
+                                      </th>
+                                      <th className="text-center">BASIC</th>
+                                      <th className="text-center">HRA</th>
+                                      <th className="text-center">
+                                        Conveyance
+                                      </th>
+                                      <th className="text-center">Medical</th>
+                                      <th className="text-center">Special</th>
+                                      <th className="text-center">PT</th>
+                                      <th className="text-center">PF</th>
+                                      <th className="text-center">ESI</th>
+                                      <th className="text-center">
+                                        Total Deduction
+                                      </th>
+
+                                      <th className="text-center">Gross</th>
+                                      <th className="text-center">
+                                        Employer PF
+                                      </th>
+                                      <th className="text-center">
+                                        Employer ESI
+                                      </th>
+                                      <th className="text-center">Bonus</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td className=" text-center">
+                                        {' '}
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="month"
+                                          value={item.month}
+                                          onChange={(e) =>
+                                            setSalaryMonth(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        {' '}
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="year"
+                                          value={item.year}
+                                          onChange={(e) =>
+                                            setSalaryYear(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td className=" text-center">
+                                        {' '}
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="ctc"
+                                          value={item.ctc}
+                                          onChange={(e) =>
+                                            setCtc(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="netsalary"
+                                          value={item.netsalary}
+                                          onChange={(e) =>
+                                            setNetsalary(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="salarygroup"
+                                          value={item.salarygroup}
+                                          onChange={(e) =>
+                                            setSalarygroup(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="basic"
+                                          value={item.basic}
+                                          onChange={(e) =>
+                                            setBasic(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="hra"
+                                          value={item.hra}
+                                          onChange={(e) =>
+                                            setHRA(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="conveyance"
+                                          value={item.conveyance}
+                                          onChange={(e) =>
+                                            setConveyance(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="medical"
+                                          value={item.medical}
+                                          onChange={(e) =>
+                                            setMedical(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="special"
+                                          value={item.special}
+                                          onChange={(e) =>
+                                            setSpecial(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="pt"
+                                          value={item.pt}
+                                          onChange={(e) =>
+                                            setPT(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="pf"
+                                          value={item.pf}
+                                          onChange={(e) =>
+                                            setPF(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="pf"
+                                          value={item.esi}
+                                          onChange={(e) =>
+                                            setESI(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="total_deduction"
+                                          value={item.total_deduction}
+                                          onChange={(e) =>
+                                            setTotalDeduction(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="gross"
+                                          value={item.gross}
+                                          onChange={(e) =>
+                                            setGross(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="employer_pf"
+                                          value={item.employer_pf}
+                                          onChange={(e) =>
+                                            setEmployerPF(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="employer_esi"
+                                          value={item.employer_esi}
+                                          onChange={(e) =>
+                                            setEmployer_esi(e.target.value)
+                                          }
+                                        />
+                                      </td>
+
+                                      <td className=" text-center">
+                                        <input
+                                          style={styles.input2}
+                                          type="text"
+                                          id="bonus"
+                                          value={item.bonus}
+                                          onChange={(e) =>
+                                            setBonus(e.target.value)
+                                          }
+                                        />
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* ------------------------------view salary breakup-------------------------- */}
+
+                      <Link
+                        className="btn btn-sm btn-danger mx-1"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <RiDeleteBinLine />
+                      </Link>
+                      <div
+                        className={`modal fade ${showModal ? 'show' : ''}`}
+                        style={{ display: showModal ? 'block' : 'none' }}
+                        tabIndex="-1"
+                        role="dialog"
+                        aria-labelledby="deleteModal"
+                        aria-hidden={!showModal}
+                      >
+                        <div className="modal-dialog modal-dialog-centered modal-sm">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="deleteModalLabel">
+                                Confirmation
+                              </h5>
+                              <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                                onClick={() => setShowModal(false)}
+                              ></button>
+                            </div>
+                            <div className="modal-body">
+                              Are you sure to delete?
+                            </div>
+                            <div className="modal-footer">
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => setShowModal(false)}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={(e) => deleteHandler(item)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* <button
+              style={buttonStyle}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              type="submit"
+            >
+              {loadingUpdate ? (
+                <>
+                  updating Salary Detials
+                  <LoadingBox4 />
+                </>
+              ) : (
+                'Update Salary Details'
+              )}
+            </button> */}
         </>
       )}
     </div>

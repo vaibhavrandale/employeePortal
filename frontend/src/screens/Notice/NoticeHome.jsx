@@ -97,11 +97,11 @@ function NoticeHome() {
     }
   };
 
-  const deleteHandler = async (_id) => {
+  const deleteHandler = async (id) => {
     setPopupNoticeId(null);
     // if (window.confirm('Are you sure to delete?')) {
     try {
-      await axios.delete(`/api/notice/${_id}`, {
+      await axios.delete(`/api/notice/${id}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       toast.success('notice deleted successfully');
@@ -131,7 +131,7 @@ function NoticeHome() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
         />
-        {userInfo && userInfo.isAccountant && !userInfo.isVisitor && (
+        {userInfo && userInfo.isSuperAdmin === 1 && !userInfo.isVisitor && (
           <Link
             className="btn btn-sm btn-warning mt-2"
             to="/new-notice"
@@ -141,7 +141,7 @@ function NoticeHome() {
           </Link>
         )}
       </div>
-      <div className="d-flex justify-content-center align-items-start flex-wrap">
+      <div className="d-flex justify-content-start align-items-start flex-wrap">
         {loading ? (
           <LoadingBox5 />
         ) : filteredNotices.length === 0 ? (
@@ -162,11 +162,11 @@ function NoticeHome() {
                   className="card mx-2 my-2 animated" // Add 'animated' class
                   style={{
                     width: '18rem',
-                    minHeight: '285px',
+                    minHeight: '200px',
                     animationDelay: `${index * 0.1}s`, // Delay animation for each card
                   }}
                 >
-                  <img
+                  {/* <img
                     src={logo}
                     className="card-img-top"
                     alt="..."
@@ -177,23 +177,28 @@ function NoticeHome() {
                       alignItems: 'start',
                       objectFit: 'contain',
                     }}
-                  />{' '}
-                  <hr />
+                  />{' '} */}
+
                   <div className="card-body">
-                    <h5 className="card-title text-primary fw-bold">
+                    <h5
+                      className="card-title text-primary fw-bold"
+                      style={{ fontSize: '15px' }}
+                    >
                       {item.title}
                     </h5>
                     <p
                       className="card-text text-muted"
-                      style={{ fontSize: '16px' }}
+                      style={{ fontSize: '15px' }}
                     >
                       posted on-{' '}
                       {new Date(item.createdAt).toString().substring(0, 16)}
                     </p>
-                    <p className="card-text">{item.subject}</p>
+                    <p className="card-text " style={{ fontSize: '13px' }}>
+                      {item.subject}
+                    </p>
                     <hr />
                     <Link
-                      to={`/notice/${item._id}`}
+                      to={`/notice/${item.id}`}
                       className="viewBtn text-decoration-none"
                     >
                       <AiOutlineEye />
@@ -202,13 +207,13 @@ function NoticeHome() {
                       <>
                         {' '}
                         <Link
-                          to={`/edit-notice/${item._id}`}
+                          to={`/edit-notice/${item.id}`}
                           className="editBtn text-decoration-none"
                         >
                           <FiEdit />
                         </Link>
                         <Link
-                          onClick={() => popupHandle(item._id)}
+                          onClick={() => popupHandle(item.id)}
                           // to={`/notice/${item._id}`}
                           className="deleteBtn   text-danger text-decoration-none"
                         >
@@ -220,14 +225,14 @@ function NoticeHome() {
                     )}
                   </div>
                 </div>{' '}
-                {popupNoticeId === item._id && (
+                {popupNoticeId === item.id && (
                   <div className="popup-container">
                     <div className="popup">
                       <p>Are you sure you want delete?</p>
                       <div className="popup-buttons">
                         <button
                           className="popup-button verify"
-                          onClick={() => deleteHandler(item._id)}
+                          onClick={() => deleteHandler(item.id)}
                         >
                           {loadingDelete ? <LoadingBox3 /> : 'Delete'}
                         </button>

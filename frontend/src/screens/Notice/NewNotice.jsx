@@ -48,17 +48,12 @@ function NewNotice() {
   const [date, setDate] = useState('');
   const [subject, setSubject] = useState('');
   const [description, setDescription] = useState('');
-  const [noticeBy, setNoticeBy] = useState(userInfo.name);
+  const [noticeBy, setNoticeBy] = useState(userInfo.NAME);
   const [mobile_no, setMobile_no] = useState(userInfo.mobile_no);
-  const [attachments, setAttachments] = useState([{ url: '', label: '' }]);
 
   const addNewField = (e) => {
     e.preventDefault();
     setHighlightPoints([...highlightPoints, '']);
-  };
-  const addNewAttachment = (e) => {
-    e.preventDefault();
-    setAttachments([...attachments, { url: '', label: '' }]);
   };
 
   const SubmitHandler = async (e) => {
@@ -88,7 +83,6 @@ function NewNotice() {
           highlightPoints,
           noticeBy,
           mobile_no,
-          attachments,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -226,49 +220,6 @@ function NewNotice() {
                 <button
                   className="submitBtn bg-success p-1"
                   onClick={(e) => addNewField(e)}
-                >
-                  Add
-                </button>
-              </div>
-              <div className="form-group col-md-5 m-2">
-                {attachments.map((attachment, index) => (
-                  <div key={index} className="attachment-inputs">
-                    <label htmlFor={`attachmentUrl-${index}`}>
-                      URL {index + 1}:
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`attachmentUrl-${index}`}
-                      placeholder={`Enter Attachment URL ${index + 1}`}
-                      value={attachment.url}
-                      onChange={(e) => {
-                        const newAttachments = [...attachments];
-                        newAttachments[index].url = e.target.value;
-                        setAttachments(newAttachments);
-                      }}
-                    />
-                    <label htmlFor={`attachmentLabel-${index}`}>
-                      Label {index + 1}:
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`attachmentLabel-${index}`}
-                      placeholder={`Enter Label ${index + 1}`}
-                      value={attachment.label}
-                      onChange={(e) => {
-                        const newAttachments = [...attachments];
-                        newAttachments[index].label = e.target.value;
-                        setAttachments(newAttachments);
-                      }}
-                    />
-                    <hr />
-                  </div>
-                ))}
-                <button
-                  className="submitBtn m-1"
-                  onClick={(e) => addNewAttachment(e)}
                 >
                   Add
                 </button>

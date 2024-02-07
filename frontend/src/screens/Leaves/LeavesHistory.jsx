@@ -31,7 +31,7 @@ const reducer = (state, action) => {
       return { ...state, loadingLeaveStatus: true };
 
     case 'LEAVE_STATUS_SUCCESS':
-      return { ...state, leaves: action.payload, loadingLeaveStatus: false };
+      return { ...state, leave: action.payload, loadingLeaveStatus: false };
 
     case 'LEAVE_STATUS_FAIL':
       return { ...state, loadingLeaveStatus: false, error: action.payload };
@@ -82,23 +82,28 @@ function LeavesHistory() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(
-          `/api/employees/details/${userInfo._id}`
-        );
-        console.log(result.data.employee.allLeaves);
-        if (result.data.employee) {
-          // Your current logic here
+        const result = await axios.get(`/api/leaves/${userInfo.employee_id}`);
+        // console.log('leave result' + result);
+        if (result) {
+          // console.log(result.data.AllLeaves);
         } else {
-          console.warn('Employee data not found.');
+          console.log('Leave data not found.');
           // Handle this scenario, maybe dispatch an action to indicate no employee data.
         }
         dispatch({
           type: 'FETCH_SUCCESS',
-          payload: result.data.employee.allLeaves,
+          payload: result.data.AllLeaves,
         });
 
+        const Employeeresult = await axios.get(
+          `/api/employees/details/${userInfo.employee_id}`
+        );
+        // console.log(Employeeresult.data.employee);
         // Get the leave counts from the fetched data
-        const { leaves, sick, privilege, casual } = result.data.employee;
+        // const { leaves, sick, privilege, casual } = Employeeresult;
+
+        const { leaves, sick, privilege, casual } =
+          Employeeresult.data.employee;
         setRemainingLeaves({
           totalleaves: leaves,
           sick: sick,
@@ -117,11 +122,11 @@ function LeavesHistory() {
     };
 
     fetchData();
-  }, [userInfo._id]);
+  }, [userInfo.employee_id]);
 
   const filteredData = leaves.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.NAME ||
       item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.approvedBy.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -138,10 +143,10 @@ function LeavesHistory() {
     setHoveredRow(index);
   };
 
-  const openApprovalModal = (_id) => {
-    setIsPopupOpenApprove(_id);
+  const openApprovalModal = (id) => {
+    setIsPopupOpenApprove(id);
   };
-  const approveLeave = leaves.find((leave) => leave._id === isPopupOpenApprove);
+  const approveLeave = leaves.find((leave) => leave.id === isPopupOpenApprove);
 
   const popupHandleApprove = () => {
     setIsPopupOpenApprove(null);
@@ -153,7 +158,7 @@ function LeavesHistory() {
 
   const navigate = useNavigate();
 
-  const LeaveApproveHandler = async (_id) => {
+  const LeaveApproveHandler = async (id) => {
     // e.preventDefault();
     popupHandleApprove();
     const missingFields = [];
@@ -172,7 +177,7 @@ function LeavesHistory() {
     });
     try {
       const { data } = await axios.put(
-        `api/employees/leaves/${userInfo._id}/${_id}/approve`,
+        `api/leaves/${userInfo.id}/${id}/approve`,
         {
           approved: true,
           remark,
@@ -181,15 +186,15 @@ function LeavesHistory() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      console.log(data);
+      // console.log(data);
       dispatch({
         type: 'LEAVE_STATUS_SUCCESS',
-        payload: data.employee.allLeaves,
+        payload: data.AllLeave,
       });
       // toast.success('Leave Approved Successfully', {
       //   position: 'bottom-right',
       // });
-      toast.promise(saveSettings({ action: 'approve', leaveId: _id }), {
+      toast.promise(saveSettings({ action: 'approve', leaveId: id }), {
         position: 'top-right',
         loading: 'Approving leave...',
         success: <b>Leave Approved Successfully!</b>,
@@ -207,12 +212,12 @@ function LeavesHistory() {
     }
   };
 
-  const openDeclineModal = (_id) => {
-    setIsPopupOpenDecline(_id);
+  const openDeclineModal = (id) => {
+    setIsPopupOpenDecline(id);
   };
-  const declineLeave = leaves.find((leave) => leave._id === isPopupOpenDecline);
+  const declineLeave = leaves.find((leave) => leave.id === isPopupOpenDecline);
 
-  const LeaveDeclineHandler = async (_id) => {
+  const LeaveDeclineHandler = async (id) => {
     // e.preventDefault();
     openDeclineModal();
     const missingFields = [];
@@ -230,7 +235,7 @@ function LeavesHistory() {
     });
     try {
       const { data } = await axios.put(
-        `api/employees/leaves/${userInfo._id}/${_id}/reject`,
+        `api/leaves/${userInfo.employee_id}/${id}/reject`,
         {
           approved: false,
           remark,
@@ -239,15 +244,15 @@ function LeavesHistory() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      console.log(data);
+      // console.log(data);
       dispatch({
         type: 'LEAVE_STATUS_SUCCESS',
-        payload: data.employee.allLeaves,
+        payload: data.employee.AllLeaves,
       });
       // toast.success('Leave Rejected Successfully', {
       //   position: 'top-right',
       // });
-      toast.promise(saveSettings({ action: 'approve', leaveId: _id }), {
+      toast.promise(saveSettings({ action: 'approve', leaveId: id }), {
         position: 'top-right',
         loading: 'Rejecting leave...',
         success: <b>Leave Rejected Successfully!</b>,
@@ -283,6 +288,16 @@ function LeavesHistory() {
   };
   const reload = () => {
     window.location.reload();
+  };
+
+  const styles = {
+    input2: {
+      width: '120px',
+      padding: '8px',
+    },
+    inputFocus: {
+      borderColor: '#007BFF',
+    },
   };
 
   return (
@@ -383,7 +398,7 @@ function LeavesHistory() {
                     <td className="text-center fw-bold">
                       <Link
                         className="text-decoration-none"
-                        to={`/edit-leave/${item._id}`}
+                        to={`/edit-leave/${item.id}`}
                       >
                         {index + 1}
                       </Link>
@@ -417,9 +432,9 @@ function LeavesHistory() {
                       )}
                     </td>
                     <td className="text-center">
-                      {item.approved === true ? (
+                      {item.approved === 1 ? (
                         <span className="badge text-bg-success">Approved</span>
-                      ) : item.approved === false && item.remark !== '' ? (
+                      ) : item.approved === 0 && item.remark !== '' ? (
                         <span className="badge text-bg-danger">Rejected</span>
                       ) : (
                         <span className="badge text-bg-warning">Pending</span>
@@ -455,7 +470,7 @@ function LeavesHistory() {
                         <span className="badge text-bg-warning">pending</span>
                       )}
                     </td>
-                    <td className="text-center">
+                    <td className="text-center" style={{ minWidth: '180px' }}>
                       {item.remark === '' ? (
                         <span className="badge text-bg-warning">pending</span>
                       ) : (

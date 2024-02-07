@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import attendanceData from './attendence.js';
+// import attendanceData from './attendence.js';
 import './attendence.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -145,7 +145,7 @@ function AttendanceTable() {
             }
           >
             <option value="">All</option>
-            {Array.from(new Set(attendanceData.map((entry) => entry.year))).map(
+            {Array.from(new Set(attendance.map((entry) => entry.year))).map(
               (year) => (
                 <option key={year} value={year}>
                   {year}

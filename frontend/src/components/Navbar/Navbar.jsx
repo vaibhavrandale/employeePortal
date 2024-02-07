@@ -70,14 +70,14 @@ const Navbar = () => {
               <span>
                 welcome,
                 <span className="text-dark pt-3 fw-bold typewriter-text">
-                  {userInfo.name}
+                  {userInfo.NAME}
                 </span>
                 &nbsp;
               </span>
 
               <img
                 src={userInfo.profileImage}
-                alt={userInfo.name}
+                alt={userInfo.NAME}
                 onClick={toggleDropdown}
                 style={{ objectFit: 'contain', scale: '1' }}
               />
@@ -102,7 +102,7 @@ const Navbar = () => {
                         </span>
                       </Link>
                       <Link
-                        to={`/profile/${userInfo._id}`}
+                        to={`/profile/${userInfo.employee_id}`}
                         className=" dropdown-item1"
                       >
                         <BsFilePerson className="fs-5 pb-1 text-warning" />{' '}

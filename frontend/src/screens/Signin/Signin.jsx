@@ -31,7 +31,7 @@ const Signin = () => {
         password,
       });
 
-      if (data.activate === 'true') {
+      if (data.activate === 1) {
         ctxDispatch({ type: 'EMP_SIGNIN', payload: data });
         localStorage.setItem('userInfo', JSON.stringify(data));
         // navigate('/');

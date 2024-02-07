@@ -44,15 +44,10 @@ function EditNotice() {
   const [description, setDescription] = useState('');
   const [noticeBy, setNoticeBy] = useState(userInfo.name);
   const [mobile_no, setMobile_no] = useState(userInfo.mobile_no);
-  const [attachments, setAttachments] = useState([{ url: '', label: '' }]);
 
   const addNewField = (e) => {
     e.preventDefault();
     setHighlightPoints([...highlightPoints, '']);
-  };
-  const addNewAttachment = (e) => {
-    e.preventDefault();
-    setAttachments([...attachments, { url: '', label: '' }]);
   };
 
   useEffect(() => {
@@ -66,7 +61,7 @@ function EditNotice() {
         setDate(data.notice.date);
         setSubject(data.notice.subject);
         setDescription(data.notice.description);
-        setAttachments(data.notice.attachments);
+
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -105,7 +100,6 @@ function EditNotice() {
           highlightPoints,
           noticeBy,
           mobile_no,
-          attachments,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -134,18 +128,8 @@ function EditNotice() {
     );
   };
 
-  const handleDeleteAttachment = (indexToDelete, e) => {
-    e.preventDefault();
-    setAttachments((preAttachment) =>
-      preAttachment.filter((_, index) => index !== indexToDelete)
-    );
-  };
-
   return (
-    <div className="container1  ">
-      {/* {loadingCreate ? (
-        <loadingCreateBox3 />
-      ) : ( */}
+    <div className="container1">
       <div className="m-2 card p-1 pb-2">
         <nav
           style={{ '--bs-breadcrumb-divider': "'>'" }}
@@ -155,15 +139,10 @@ function EditNotice() {
             <li className="breadcrumb-item">
               <Link to="/" className="text-decoration-none">
                 Home
-              </Link>{' '}
+              </Link>
             </li>
-
             <li className="breadcrumb-item active" aria-current="page">
-              <Link
-                className="text-decoration-none"
-                to={'/notice-home-page'}
-                // onClick={historyHandler}
-              >
+              <Link to="/notice-home-page" className="text-decoration-none">
                 Notices
               </Link>
             </li>
@@ -171,14 +150,14 @@ function EditNotice() {
               Update Notice
             </li>
           </ol>
-        </nav>{' '}
+        </nav>
         <h2 className="text-center text-dark fw-bolder">Update notice</h2>
         <span className="underline"></span>
         <form onSubmit={SubmitHandler}>
           <div className="form-group mt-4">
             <div className="row d-flex flex-column justify-content-center align-items-center">
               <div className="form-group col-md-5 m-2">
-                <label htmlFor="firstName"> Title:</label>
+                <label htmlFor="title">Title:</label>
                 <input
                   type="text"
                   className="form-control"
@@ -188,7 +167,6 @@ function EditNotice() {
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
-
               <div className="form-group col-md-5 m-2">
                 <label htmlFor="leaveDate">Date:</label>
                 <input
@@ -199,20 +177,19 @@ function EditNotice() {
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
-
               <div className="form-group col-md-5 m-2">
-                <label htmlFor="mobileNo">subject:</label>
+                <label htmlFor="subject">Subject:</label>
                 <input
                   type="text"
                   className="form-control"
-                  id="mobileNo"
+                  id="subject"
                   placeholder="Enter subject"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                 />
               </div>
               <div className="form-group col-md-5 m-2">
-                <label htmlFor="mobileNo">description :</label>
+                <label htmlFor="description">Description :</label>
                 <textarea
                   type="text"
                   className="form-control"
@@ -222,12 +199,11 @@ function EditNotice() {
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
               </div>
-
               <div className="form-group col-md-5 m-2">
                 {highlightPoints.map((briefNotice, index) => (
                   <div key={index} className="form-group col-md-12 m-2">
                     <label htmlFor={`briefNotice-${index}`}>
-                      {index + 1}) Highlight Points:
+                      {index + 1}] Highlight Points:
                     </label>
                     <div className="d-flex">
                       <textarea
@@ -251,65 +227,16 @@ function EditNotice() {
                     </div>
                   </div>
                 ))}
-                <button
-                  className="btn btn-sm bg-dark text-white border-0"
-                  onClick={(e) => addNewField(e)}
-                >
-                  Add New
-                </button>
-
-                <div className="form-group col-md-5 m-2">
-                  {attachments.map((attachment, index) => (
-                    <div key={index} className="attachment-inputs">
-                      <label htmlFor={`attachmentUrl-${index}`}>
-                        URL {index + 1}:
-                      </label>{' '}
-                      <button
-                        className="btn deleteBtn fs-6"
-                        onClick={(e) => handleDeleteAttachment(index, e)}
-                      >
-                        X
-                      </button>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id={`attachmentUrl-${index}`}
-                        placeholder={`Enter Attachment URL ${index + 1}`}
-                        value={attachment.url}
-                        onChange={(e) => {
-                          const newAttachments = [...attachments];
-                          newAttachments[index].url = e.target.value;
-                          setAttachments(newAttachments);
-                        }}
-                      />
-                      <label htmlFor={`attachmentLabel-${index}`}>
-                        Label {index + 1}:
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id={`attachmentLabel-${index}`}
-                        placeholder={`Enter Label ${index + 1}`}
-                        value={attachment.label}
-                        onChange={(e) => {
-                          const newAttachments = [...attachments];
-                          newAttachments[index].label = e.target.value;
-                          setAttachments(newAttachments);
-                        }}
-                      />
-                      <hr />
-                    </div>
-                  ))}
-                  <button
-                    className="submitBtn m-1"
-                    onClick={(e) => addNewAttachment(e)}
-                  >
-                    Add
-                  </button>
-                </div>
               </div>
+              <button
+                className="btn btn-sm bg-dark text-white border-0"
+                style={{ maxWidth: '120px' }}
+                onClick={addNewField}
+              >
+                Add New
+              </button>
             </div>
-            <div className="d-flex  justify-content-end align-items-center me-5">
+            <div className="d-flex justify-content-end align-items-center me-5">
               <button
                 className="submitBtn px-2 pt-1 pb-1"
                 type="submit"
@@ -321,7 +248,6 @@ function EditNotice() {
           </div>
         </form>
       </div>
-      {/* )} */}
     </div>
   );
 }

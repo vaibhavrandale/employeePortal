@@ -46,6 +46,7 @@ function AddEmployee() {
   const { userInfo } = state;
 
   const [employee_id, setEmployee_id] = useState('');
+  const [UID, setUID] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [image, setImage] = useState('');
@@ -99,10 +100,10 @@ function AddEmployee() {
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
-  const [allLeaves, setAllLeaves] = useState([]);
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');
+
   const SubmitHandler = async (e) => {
     e.preventDefault();
 
@@ -122,10 +123,11 @@ function AddEmployee() {
         `api/employees`,
         {
           employee_id,
+          UID,
           email,
           firstName,
           lastName,
-          name: `${firstName} ${lastName}`,
+          NAME: `${firstName} ${lastName}`,
           password: employee_id,
           state: State,
           father_husband_name,
@@ -164,7 +166,7 @@ function AddEmployee() {
           previous_company_name,
           experience,
           experience_letter,
-          leaves,
+
           activate,
           isAdmin,
           isSuperAdmin,
@@ -175,8 +177,6 @@ function AddEmployee() {
           isVisitor,
           isProduction,
           isAccountant,
-          payslips,
-          allLeaves,
           ctc,
           salarygroup,
         },
@@ -742,7 +742,7 @@ function AddEmployee() {
                   value={nominee_state}
                   onChange={(e) => setNominee_state(e.target.value)}
                 >
-                  <option value="">Select</option>
+                  <option value="default">Select</option>
                   <option value="Andhra Pradesh">Andhra Pradesh</option>
                   <option value="Arunachal Pradesh">Arunachal Pradesh</option>
                   <option value="Assam">Assam</option>
@@ -830,33 +830,22 @@ function AddEmployee() {
               <td style={styles.label}>Salary Salary Group:</td>
               <td>
                 <select
-                  name="state"
                   id="state"
                   style={styles.select}
                   value={salarygroup}
                   onChange={(e) => setSalarygroup(e.target.value)}
                 >
-                  <option value="">Select</option>
-                  <option value="Andhra Pradesh">1</option>
-                  <option value="Andhra Pradesh">2</option>
-                  <option value="Andhra Pradesh">3</option>
-                  <option value="Andhra Pradesh">4</option>
-                  <option value="Andhra Pradesh">5</option>
-                  <option value="Andhra Pradesh">6</option>
-                  <option value="Andhra Pradesh">7</option>
-                  <option value="Andhra Pradesh">8</option>
-                  <option value="Andhra Pradesh">9</option>
-                  <option value="Andhra Pradesh">10</option>
-                  <option value="Andhra Pradesh">11</option>
-                  <option value="Andhra Pradesh">12</option>
-                  <option value="Andhra Pradesh">13</option>
-                  <option value="Andhra Pradesh">14</option>
-                  <option value="Andhra Pradesh">15</option>
-                  <option value="Andhra Pradesh">16</option>
-                  <option value="Andhra Pradesh">17</option>
-                  <option value="Andhra Pradesh">18</option>
-                  <option value="Andhra Pradesh">19</option>
-                  <option value="Andhra Pradesh">20</option>
+                  <option value="default">Select</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
                 </select>
               </td>
             </tr>
@@ -874,6 +863,19 @@ function AddEmployee() {
                 />
               </td>
 
+              <td style={styles.label}> UID:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="uid"
+                  placeholder="UID"
+                  value={UID}
+                  onChange={(e) => setUID(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
               <td style={styles.label}>Designation:</td>
               <td>
                 <input
@@ -885,8 +887,7 @@ function AddEmployee() {
                   onChange={(e) => setDesignation(e.target.value)}
                 />
               </td>
-            </tr>
-            <tr>
+
               <td style={styles.label}>Company mail:</td>
               <td>
                 <input
@@ -898,6 +899,8 @@ function AddEmployee() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </td>
+            </tr>
+            <tr>
               <td style={styles.label}>Experience:</td>
               <td>
                 <input
@@ -909,8 +912,6 @@ function AddEmployee() {
                   onChange={(e) => setExperience(e.target.value)}
                 />
               </td>
-            </tr>
-            <tr>
               <td style={styles.label}>Joining Date:</td>
               <td>
                 <input
@@ -921,6 +922,8 @@ function AddEmployee() {
                   onChange={(e) => setJoiningDate(e.target.value)}
                 />
               </td>
+            </tr>
+            <tr>
               <td style={styles.label}>Experience Letter:</td>
               <td>
                 <input
@@ -932,8 +935,6 @@ function AddEmployee() {
                   onChange={(e) => setExperience_letter(e.target.value)}
                 />
               </td>
-            </tr>
-            <tr>
               <td style={styles.label}>Previous Company :</td>
               <td>
                 <input

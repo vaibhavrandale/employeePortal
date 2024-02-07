@@ -2,7 +2,6 @@ import React, { useState, useEffect, useReducer, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MdDeleteOutline } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
-import { BsPersonAdd } from 'react-icons/bs';
 import { RxCross2 } from 'react-icons/rx';
 import './Table.css'; // Import the CSS file for custom styling
 // import data from './data';
@@ -98,7 +97,7 @@ const TableWithSearchAndPagination = () => {
 
   const filteredData = employees.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.employee_id.includes(searchTerm) ||
       item.joiningDate.includes(searchTerm)
@@ -136,20 +135,9 @@ const TableWithSearchAndPagination = () => {
     setdeletePopupOpen(false);
   };
 
-  // const handleImageLoad = (index) => {
-  //   setLoadedImages((prevLoadedImages) => {
-  //     const newLoadedImages = [...prevLoadedImages];
-  //     newLoadedImages[index] = true;
-  //     return newLoadedImages;
-  //   });
-  // };
-
   const saveSettings = async (settings) => {
     // Simulating a delay for API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Normally, here you would make an API call to save the settings
-    // For the sake of this example, we're assuming it always succeeds
 
     return 'Success'; // Return a success message or data
   };
@@ -267,24 +255,25 @@ const TableWithSearchAndPagination = () => {
                     onMouseEnter={() => handleRowHover(index)}
                     onMouseLeave={() => handleRowHover(null)}
                   >
-                    <td className="text-center">
+                    <td className="text-center" style={{ minWidth: '200px' }}>
                       {' '}
                       <Link
                         className="text-decoration-none  text-danger"
-                        to={`/employeedetails/${item._id}`}
+                        to={`/employeedetails/${item.employee_id}`}
                       >
                         {item.employee_id}
                       </Link>
                     </td>
-                    <td className="text-center">
+                    <td className="text-center" style={{ minWidth: '200px' }}>
+                      {' '}
                       <div
                         className="table-image-container "
                         style={{ height: '45px' }}
                       >
-                        <Link to={`/employeedetails/${item._id}`}>
+                        <Link to={`/employeedetails/${item.employee_id}`}>
                           <img
                             src={item.image}
-                            alt={item.name}
+                            alt={item.NAME}
                             className="table-image"
                             // style={{ backgroundColor: 'transparent' }}
                             // onLoad={() => handleImageLoad(index)}
@@ -292,11 +281,23 @@ const TableWithSearchAndPagination = () => {
                         </Link>
                       </div>
                     </td>
-                    <td className="text-center">{item.name}</td>
+                    <td className="text-center" style={{ minWidth: '200px' }}>
+                      {' '}
+                      {item.NAME}
+                    </td>
 
-                    <td className="text-center">{item.designation}</td>
-                    <td className="text-center">{item.email}</td>
-                    <td className="text-center">{item.joiningDate}</td>
+                    <td className="text-center" style={{ minWidth: '200px' }}>
+                      {' '}
+                      {item.designation}
+                    </td>
+                    <td className="text-center" style={{ minWidth: '200px' }}>
+                      {' '}
+                      {item.email}
+                    </td>
+                    <td className="text-center" style={{ minWidth: '200px' }}>
+                      {' '}
+                      {item.joiningDate}
+                    </td>
                     {/*{userInfo.isSuperAdmin ? (
                       <td className="text-center  fs-5">
                         {loadingDelete ? (
@@ -339,9 +340,7 @@ const TableWithSearchAndPagination = () => {
                                   <div className="popup-buttons">
                                     <button
                                       className="popup-button verify"
-                                      onClick={(e) =>
-                                        DeleteHandler(e, item._id)
-                                      }
+                                      onClick={(e) => DeleteHandler(e, item.id)}
                                     >
                                       <AiOutlineDelete />
                                     </button>

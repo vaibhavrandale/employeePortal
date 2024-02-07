@@ -1,0 +1,4 @@
+DB_HOST=srv940.hstgr.io
+DB_USER=u928229723_vaibhav
+DB_PASSWORD=Taypro@2019
+DB_NAME=u928229723_internal

@@ -66,7 +66,7 @@ function Leaves() {
 
     try {
       const { data } = await axios.post(
-        `/api/employees/apply-leave/${userInfo._id}`,
+        `/api/leaves/apply-leave/${userInfo.employee_id}`,
         {
           employee_id,
           name,
@@ -132,8 +132,8 @@ function Leaves() {
         <span className="underline"></span>
         <form onSubmit={SubmitHandler}>
           <div className="form-group mt-4">
-            <div className="row d-flex flex-column justify-content-center align-items-center">
-              <div className="form-group col-md-5 m-2">
+            <div className="row col-md-12 d-flex justify-content-center align-items-center">
+              <div className="form-group col-md-5 ">
                 <label htmlFor="firstName"> Name:</label>
                 <input
                   type="text"
@@ -155,7 +155,7 @@ function Leaves() {
                   <option value="">Select</option>
                   <option value="sick">Sick</option>
                   <option value="privilege">Privilege</option>
-                  <option value="casual">casual</option>
+                  <option value="casual">Casual</option>
                 </select>
                 {type === 'other' && (
                   <input
@@ -166,28 +166,32 @@ function Leaves() {
                     onChange={(e) => setOther(e.target.value)}
                   />
                 )}
-              </div>{' '}
-              <div className="form-group col-md-5 m-2">
-                <label htmlFor="leaveDate">Expected Date of Leave:</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="leaveDate"
-                  value={expectedDateOfLeave}
-                  onChange={(e) => setExpectedDateOfLeave(e.target.value)}
-                />
               </div>
-              <div className="form-group col-md-5 m-2">
-                <label htmlFor="returnDate">Expected Date of Return:</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  id="returnDate"
-                  value={expectedDateOfreturn}
-                  onChange={(e) => setExpectedDateOfreturn(e.target.value)}
-                />
+
+              <div className="col-md-5 d-flex justify-content-center flex-wrap">
+                <div className="form-group col-md-5">
+                  <label htmlFor="leaveDate">From:</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="leaveDate"
+                    value={expectedDateOfLeave}
+                    onChange={(e) => setExpectedDateOfLeave(e.target.value)}
+                  />
+                </div>{' '}
+                &nbsp;
+                <div className="form-group col-md-5">
+                  <label htmlFor="returnDate">To:</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="returnDate"
+                    value={expectedDateOfreturn}
+                    onChange={(e) => setExpectedDateOfreturn(e.target.value)}
+                  />
+                </div>
               </div>
-              <div className="form-group col-md-5 m-2">
+              <div className="form-group col-md-5">
                 <label htmlFor="mobileNo">Reason of Leave in Deatil :</label>
                 <textarea
                   type="text"
@@ -198,16 +202,18 @@ function Leaves() {
                   onChange={(e) => setReasonInDetail(e.target.value)}
                 ></textarea>
               </div>
-              <div className="form-group col-md-5 m-2">
-                <label htmlFor="mobileNo">Mobile No :</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="mobileNo"
-                  placeholder="Enter Mobile No."
-                  value={mobileNo}
-                  onChange={(e) => setMobileNo(e.target.value)}
-                />
+              <div className="form-group  col-md-10 ">
+                <div className="col-md-5">
+                  <label htmlFor="mobileNo">Mobile No :</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="mobileNo"
+                    placeholder="Enter Mobile No."
+                    value={mobileNo}
+                    onChange={(e) => setMobileNo(e.target.value)}
+                  />
+                </div>
                 <input
                   type="hidden"
                   className="form-control"
@@ -218,7 +224,7 @@ function Leaves() {
                 />
               </div>
             </div>
-            <div className="d-flex  justify-content-end align-items-center me-5">
+            <div className="d-flex justify-content-end align-items-center me-5">
               <button
                 className="submitBtn px-2 pt-1 pb-1"
                 type="submit"

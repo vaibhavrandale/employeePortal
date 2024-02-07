@@ -17,7 +17,9 @@ import bcrypt from 'bcryptjs';
 import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';
-import AttendanceRecord from '../models/AttendanceRecord.js';
+import AttendanceRecord from '../models/RfidCkeck.js';
+import RfidCkeck from '../models/RfidCkeck.js';
+import { Op } from 'sequelize';
 
 const attendenceRouter = express.Router();
 
@@ -25,335 +27,914 @@ dotenv.config();
 
 const logo =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
-attendenceRouter.post('/checkin/:year/:month/:day/:id', async (req, res) => {
+
+attendenceRouter.get('/:id', async (req, res) => {
   try {
-    const { year, month, day, id } = req.params;
+    const { id } = req.params;
 
-    const user = await Employee.findById(id);
-    if (!user) return res.status(404).send('User not found');
-
-    const attendance = new AttendanceRecord({
-      user_id: user._id,
-      employee_id: user.employee_id,
-      username: user.name,
-      loginTime: new Date(),
-      user_email: user.email,
-      year: parseInt(year),
-      month: parseInt(month),
-      day: parseInt(day),
-      logoutTime: null, // Set logoutTime to null during check-in
-      totalHours: 0, // Initialize totalHours to 0 during check-in
-    });
-
-    await attendance.save();
-
-    function getGreeting() {
-      const currentHour = new Date().getHours();
-
-      if (currentHour >= 5 && currentHour < 12) {
-        return 'Good morning!';
-      } else if (currentHour >= 12 && currentHour < 17) {
-        return 'Good afternoon!';
-      } else {
-        return 'Good evening!';
-      }
+    const attendance = await RfidCkeck.findOne(id);
+    if (!attendance) return res.status(404).send('attendance not found');
+    else {
+      res.status(200).send({ attendance });
     }
-
-    const formattedLoginTime = moment(
-      attendance.loginTime,
-      'YYYY-MM-DDTHH:mm:ss'
-    )
-      .tz('Asia/Kolkata')
-      .format('DD/MM/YYYY h:mm A');
-
-    const transporter = nodemailer.createTransport({
-      service: 'Yandex', // Use the Yandex service
-      auth: {
-        user: process.env.MAIL_USER, // Your Yandex email address
-        pass: process.env.MAIL_PASS, // Your Yandex email password
-      },
-    });
-    transporter.sendMail(
-      {
-        from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-        to: `<${attendance.user_email}>`,
-        subject: `Login Successfull✅-${attendance.username} `,
-        html: `
-          <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Email Content</title>
-          <style>
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-          }
-          .container {
-            background-color: #ffffff;
-            padding-left: 70px;
-            padding-right: 70px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          }
-          .header {
-            text-align: center;
-          }
-          .image-content {
-            text-align: center;
-          }
-          img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            display: flex;
-            justify-content: start;
-          }
-          .main-content {
-            margin: 10px 0px;
-          }
-  
-          .main-content a {
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-            text-decoration: none;
-            background: rgb(94, 223, 94);
-            width: 130px;
-            color: #f5f5f5;
-            border-radius: 3px;
-  
-            /* margin: auto; */
-  
-          }
-  
-          .main-content a:hover {
-            background: rgb(76, 214, 71);
-          }
-          .footer {
-            font-size: 12px;
-            text-align: center;
-          }
-  
-          .welcome{
-            font-family: 'Arial', sans-serif;
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-          }
-          </style>
-      </head>
-      <body>
-      <div class="container">
-      <div class="header">
-        <h3>
-          <img src=${logo} alt="Embedded Image" />
-        </h3>
-      </div>
-  
-      <h3 class='welcome'>Welcome</h3>
-  
-      <div class="main-content">
-      <p>Dear ${attendance.username},  ${getGreeting()}</p>
-  
-      <p>
-        Your Login is Successfull and your login time is  <b>${formattedLoginTime}</b>.
-      </p>
-     <p> Thank you ! have a good Day😊</p>
-  
-      <div class="footer">
-        <p>This is an auto-generated email. Please do not reply.</p>
-      </div>
-    </div>
-      </body>
-      `,
-      },
-      (error, info) => {
-        if (error) {
-          console.error('Error sending email:', error);
-        } else {
-          console.log('Email sent:', attendance.user_email, info.response);
-        }
-      }
-    );
-
-    res.status(200).send({
-      message: `Logged in and attendance marked at ${attendance.loginTime}`,
-      attendanceDetails: attendance,
-    });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal server error');
   }
 });
 
-attendenceRouter.post('/checkout/:year/:month/:day/:id', async (req, res) => {
+attendenceRouter.get('/getDaysInMonth/:month/:year', (req, res) => {
+  const { month, year } = req.params;
+
+  // Your logic to calculate days in a month (replace this with your own logic)
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  res.json({ daysInMonth });
+});
+
+attendenceRouter.get('/:id/:day/:month/:year', async (req, res) => {
   try {
-    const { year, month, day, id } = req.params;
+    const { id, day, month, year } = req.params;
 
-    // Find the corresponding attendance record for the user on the given date
-    const attendance = await AttendanceRecord.findOne({
-      year: parseInt(year),
-      month: parseInt(month),
-      day: parseInt(day),
-      user_id: id,
-    });
-
-    if (!attendance) return res.status(404).send('Attendance record not found');
-
-    // Update the logoutTime and calculate totalHours during check-out
-    attendance.logoutTime = new Date();
-    attendance.totalHours =
-      (attendance.logoutTime - attendance.loginTime) / (1000 * 60 * 60); // convert milliseconds to hours
-    // Save the updated attendance record
-    await attendance.save();
-
-    function getGreeting() {
-      const currentHour = new Date().getHours();
-
-      if (currentHour >= 5 && currentHour < 12) {
-        return 'Good morning!';
-      } else if (currentHour >= 12 && currentHour < 17) {
-        return 'Good afternoon!';
-      } else {
-        return 'Good evening!';
-      }
-    }
-
-    const formattedLogoutTime = moment(
-      attendance.logoutTime,
-      'YYYY-MM-DDTHH:mm:ss'
-    )
-      .tz('Asia/Kolkata')
-      .format('DD/MM/YYYY h:mm A');
-
-    const transporter = nodemailer.createTransport({
-      service: 'Yandex', // Use the Yandex service
-      auth: {
-        user: process.env.MAIL_USER, // Your Yandex email address
-        pass: process.env.MAIL_PASS, // Your Yandex email password
+    const attendance = await RfidCkeck.findOne({
+      where: {
+        employee_id: id,
+        day: day,
+        month: month,
+        year: year,
       },
     });
-    transporter.sendMail(
-      {
-        from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-        to: `<${attendance.user_email}>`,
-        subject: `Logout Successfull✅-${attendance.username} `,
-        html: `
+
+    if (!attendance) {
+      return res.status(404).json({ error: 'Attendance not found' });
+    } else {
+      return res.status(200).json({ attendance });
+    }
+  } catch (error) {
+    console.error('Error fetching attendance:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+attendenceRouter.get('/', async (req, res) => {
+  // const employee = await Employee.findByPk(id);
+  const attendance = await RfidCkeck.findAll();
+
+  // Send the created employees as the response
+  res.send({ attendance });
+});
+
+// Route for the first entry
+attendenceRouter.post('/submit-entry-1', async (req, res) => {
+  try {
+    const {
+      UID,
+      IN_LATTITUDE_1,
+      IN_LONGITUDE_1,
+      IN_TIME_1,
+      month,
+      year,
+      day,
+      Name,
+      employee_id,
+      isLeave,
+      totalHours,
+      LeaveType,
+    } = req.body;
+
+    // Assuming you have some validation here
+
+    // Check if employee with the given UID and employee_id exists
+    const existingEmployee = await Employee.findOne({
+      where: {
+        UID: UID,
+        employee_id: employee_id,
+      },
+    });
+
+    if (!existingEmployee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    } else {
+      // If entry for the day does not exist, create a new entry with the first entry details
+      await RfidCkeck.create({
+        UID,
+        IN_LATTITUDE_1,
+        IN_LONGITUDE_1,
+        IN_TIME_1,
+        month,
+        year,
+        day,
+        Name,
+        employee_id,
+        isLeave,
+        totalHours,
+        LeaveType,
+        // Add other necessary fields here
+      });
+
+      res.status(201).json({ message: 'First entry submitted successfully' });
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch In Successfull✅',
+          html: `<!DOCTYPE html>
+          <html lang="en">
             <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Email Content</title>
-            <style>
-            body {
-              font-family: Arial, sans-serif;
-              margin: 0;
-              padding: 20px;
-              background-color: #f5f5f5;
-            }
-            .container {
-              background-color: #ffffff;
-              padding-left: 70px;
-              padding-right: 70px;
-              border-radius: 10px;
-              box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            .header {
-              text-align: center;
-            }
-            .image-content {
-              text-align: center;
-            }
-            img {
-              width: 100px;
-              height: 100px;
-              object-fit: contain;
-              display: flex;
-              justify-content: start;
-            }
-            .main-content {
-              margin: 10px 0px;
-            }
-    
-            .main-content a {
-              display: flex;
-              justify-content: center;
-              padding: 10px;
-              text-decoration: none;
-              background: rgb(94, 223, 94);
-              width: 130px;
-              color: #f5f5f5;
-              border-radius: 3px;
-    
-              /* margin: auto; */
-    
-            }
-    
-            .main-content a:hover {
-              background: rgb(76, 214, 71);
-            }
-            .footer {
-              font-size: 12px;
-              text-align: center;
-            }
-    
-            .welcome{
-              font-family: 'Arial', sans-serif;
-              font-size: 24px;
-              font-weight: bold;
-              color: #333;
-              text-align: center;
-              text-transform: uppercase;
-              letter-spacing: 2px;
-            }
-            </style>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>punch Email</title>
+            </head>
+            <body>
+              <div
+                class="container"
+                style="
+                  background-color: #ffffff;
+                  height: 270px;
+                  font-family: system-ui;
+                  width: 600px;
+                  margin: 2px auto;
+                  margin-top: 10px;
+                  border-radius: 5px;
+                  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+                "
+              >
+                <div id="logo" style="display: flex; justify-content: end">
+                  <img
+                    src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                    alt="logo"
+                    style="
+                      width: 100px;
+                      height: 120px;
+                      margin-right: 30px;
+                      object-fit: contain;
+                    "
+                  />
+                </div>
+                <div style="margin-left: 49px">
+                  <section style="font-size: 18px">
+                    Dear <b>${existingEmployee.NAME},</b><br /><br />
+          
+                    Your Punch In Successfully at
+                    <span
+                      style="
+                        background: rgb(66, 233, 48);
+                        padding: 4px 14px;
+                        color: #ffffff;
+                        border-radius: 3px;
+                      "
+                      >${IN_TIME_1}</span
+                    >
+                    <br />
+                  </section>
+          
+                  <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+                    Thank You.
+                  </p>
+                </div>
+              </div>
+            </body>
+          </html>
+          
+          
+          `,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
+    }
+  } catch (error) {
+    console.error('Error submitting first entry:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//ROUTE FOR FISRT EXIT
+attendenceRouter.put(
+  '/submit-exit-1/:employee_id/:day/:month/:year',
+  async (req, res) => {
+    try {
+      const { OUT_LATTITUDE_1, OUT_LONGITUDE_1, OUT_TIME_1 } = req.body;
+
+      const { employee_id, month, year, day } = req.params;
+
+      // Check if entry for the given day exists
+      const existingEntry = await RfidCkeck.findOne({
+        where: {
+          employee_id,
+          year,
+          month,
+          day,
+          IN_TIME_1: { [Op.not]: null },
+        },
+      });
+
+      if (!existingEntry) {
+        return res.status(404).json({ message: 'First Entry not found.' });
+      }
+
+      existingEntry.OUT_LATTITUDE_1 = OUT_LATTITUDE_1;
+      existingEntry.OUT_LONGITUDE_1 = OUT_LONGITUDE_1;
+      existingEntry.OUT_TIME_1 = OUT_TIME_1;
+
+      // Save the updated employee document
+      await existingEntry.save();
+
+      res
+        .status(200)
+        .json({ message: 'First Exit details updated successfully' });
+
+      // Check if employee with the given UID and employee_id exists
+      const existingEmployee = await Employee.findOne({
+        where: {
+          employee_id: employee_id,
+        },
+      });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch out Successfull✅',
+          html: `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>punch Email</title>
         </head>
         <body>
-        <div class="container">
-        <div class="header">
-          <h3>
-            <img src=${logo} alt="Embedded Image" />
-          </h3>
-        </div>
-    
-        <h3 class='welcome'>Welcome</h3>
-    
-        <div class="main-content">
-        <p>Dear ${attendance.username},  ${getGreeting()}</p>
-    
-        <p>
-          Your Logout is Successfull and your logout time is  <b>${formattedLogoutTime}</b>.
-        </p>
-       <p> Thank you ! have a good Day😊</p>
-    
-        <div class="footer">
-          <p>This is an auto-generated email. Please do not reply.</p>
-        </div>
-      </div>
+          <div
+            class="container"
+            style="
+              background-color: #ffffff;
+              height: 270px;
+              font-family: system-ui;
+              width: 600px;
+              margin: 2px auto;
+              margin-top: 10px;
+              border-radius: 5px;
+              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+            "
+          >
+            <div id="logo" style="display: flex; justify-content: end">
+              <img
+                src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                alt="logo"
+                style="
+                  width: 100px;
+                  height: 120px;
+                  margin-right: 30px;
+                  object-fit: contain;
+                "
+              />
+            </div>
+            <div style="margin-left: 49px">
+              <section style="font-size: 18px">
+                Dear <b>${existingEmployee.NAME},</b><br /><br />
+      
+                Your Punch Out Successfully at
+                <span
+                  style="
+                    background: rgb(66, 233, 48);
+                    padding: 4px 14px;
+                    color: #ffffff;
+                    border-radius: 3px;
+                  "
+                  >${OUT_TIME_1}</span
+                >
+                <br />
+              </section>
+      
+              <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+                Thank You.
+              </p>
+            </div>
+          </div>
         </body>
-        `,
-      },
-      (error, info) => {
-        if (error) {
-          console.error('Error sending email:', error);
-        } else {
-          console.log('Email sent:', attendance.user_email, info.response);
+      </html>
+      
+      
+      `,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
         }
-      }
-    );
-
-    res.status(200).send({
-      message: `Logged out Successfully`,
-      attendanceDetails: attendance,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal server error');
+      );
+    } catch (error) {
+      console.error('Error submitting second entry:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
-});
+);
+
+//ROUTE FOR 2ND ENTRY
+attendenceRouter.put(
+  '/submit-entry-2/:employee_id/:day/:month/:year',
+  async (req, res) => {
+    try {
+      const { IN_LATTITUDE_2, IN_LONGITUDE_2, IN_TIME_2 } = req.body;
+
+      const { employee_id, month, year, day } = req.params;
+
+      // Check if entry for the given day exists
+      const existingEntry = await RfidCkeck.findOne({
+        where: {
+          employee_id,
+          year,
+          month,
+          day,
+          IN_TIME_1: { [Op.not]: null },
+          OUT_TIME_1: { [Op.not]: null },
+        },
+      });
+
+      if (!existingEntry) {
+        return res
+          .status(404)
+          .json({ message: 'First Entry and First Exit not found.' });
+      }
+
+      existingEntry.IN_LATTITUDE_2 = IN_LATTITUDE_2;
+      existingEntry.IN_LONGITUDE_2 = IN_LONGITUDE_2;
+      existingEntry.IN_TIME_2 = IN_TIME_2;
+
+      // Save the updated employee document
+      await existingEntry.save();
+
+      res
+        .status(200)
+        .json({ message: 'Second Entry details updated successfully' });
+
+      // Check if employee with the given UID and employee_id exists
+      const existingEmployee = await Employee.findOne({
+        where: {
+          employee_id: employee_id,
+        },
+      });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch In Successfull✅',
+          html: `<!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>punch Email</title>
+        </head>
+        <body>
+          <div
+            class="container"
+            style="
+              background-color: #ffffff;
+              height: 270px;
+              font-family: system-ui;
+              width: 600px;
+              margin: 2px auto;
+              margin-top: 10px;
+              border-radius: 5px;
+              box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+            "
+          >
+            <div id="logo" style="display: flex; justify-content: end">
+              <img
+                src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                alt="logo"
+                style="
+                  width: 100px;
+                  height: 120px;
+                  margin-right: 30px;
+                  object-fit: contain;
+                "
+              />
+            </div>
+            <div style="margin-left: 49px">
+              <section style="font-size: 18px">
+                Dear <b>${existingEmployee.NAME},</b><br /><br />
+      
+                Your second Punch In Successfully at
+                <span
+                  style="
+                    background: rgb(66, 233, 48);
+                    padding: 4px 14px;
+                    color: #ffffff;
+                    border-radius: 3px;
+                  "
+                  >${IN_TIME_2}</span
+                >
+                <br />
+              </section>
+      
+              <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+                Thank You.
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>`,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error submitting second entry:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
+//ROUTE FOR 2ND EXIT
+attendenceRouter.put(
+  '/submit-exit-2/:employee_id/:day/:month/:year',
+  async (req, res) => {
+    try {
+      const { OUT_LATTITUDE_2, OUT_LONGITUDE_2, OUT_TIME_2 } = req.body;
+
+      const { employee_id, month, year, day } = req.params;
+
+      // Check if entry for the given day exists
+      const existingEntry = await RfidCkeck.findOne({
+        where: {
+          employee_id,
+          year,
+          month,
+          day,
+          IN_TIME_1: { [Op.not]: null },
+          OUT_TIME_1: { [Op.not]: null },
+          IN_TIME_2: { [Op.not]: null },
+        },
+      });
+
+      if (!existingEntry) {
+        return res.status(404).json({
+          message: 'First Entry or First Exit or Second Entry not found.',
+        });
+      }
+
+      existingEntry.OUT_LATTITUDE_2 = OUT_LATTITUDE_2;
+      existingEntry.OUT_LONGITUDE_2 = OUT_LONGITUDE_2;
+      existingEntry.OUT_TIME_2 = OUT_TIME_2;
+
+      // Save the updated employee document
+      await existingEntry.save();
+
+      res
+        .status(200)
+        .json({ message: 'Second Exit details updated successfully' });
+
+      // Check if employee with the given UID and employee_id exists
+      const existingEmployee = await Employee.findOne({
+        where: {
+          employee_id: employee_id,
+        },
+      });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch out Successfull✅',
+          html: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>punch Email</title>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="
+        background-color: #ffffff;
+        height: 270px;
+        font-family: system-ui;
+        width: 600px;
+        margin: 2px auto;
+        margin-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+      "
+    >
+      <div id="logo" style="display: flex; justify-content: end">
+        <img
+          src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+          alt="logo"
+          style="
+            width: 100px;
+            height: 120px;
+            margin-right: 30px;
+            object-fit: contain;
+          "
+        />
+      </div>
+      <div style="margin-left: 49px">
+        <section style="font-size: 18px">
+          Dear <b>${existingEmployee.NAME},</b><br /><br />
+
+          Your second Punch out Successfully at
+          <span
+            style="
+              background: rgb(66, 233, 48);
+              padding: 4px 14px;
+              color: #ffffff;
+              border-radius: 3px;
+            "
+            >${OUT_TIME_2}</span
+          >
+          <br />
+        </section>
+
+        <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+          Thank You.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error submitting second entry:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
+//ROUTE FOR 3RD ENTRY
+attendenceRouter.put(
+  '/submit-entry-3/:employee_id/:day/:month/:year',
+  async (req, res) => {
+    try {
+      const { IN_LATTITUDE_3, IN_LONGITUDE_3, IN_TIME_3 } = req.body;
+
+      const { employee_id, month, year, day } = req.params;
+
+      // Check if entry for the given day exists
+      const existingEntry = await RfidCkeck.findOne({
+        where: {
+          employee_id,
+          year,
+          month,
+          day,
+          IN_TIME_1: { [Op.not]: null },
+          OUT_TIME_1: { [Op.not]: null },
+          IN_TIME_2: { [Op.not]: null },
+          OUT_TIME_2: { [Op.not]: null },
+        },
+      });
+
+      if (!existingEntry) {
+        return res.status(404).json({
+          message:
+            'First Entry or First Exit or Second Entry or Second Exit not found.',
+        });
+      }
+
+      existingEntry.IN_LATTITUDE_3 = IN_LATTITUDE_3;
+      existingEntry.IN_LONGITUDE_3 = IN_LONGITUDE_3;
+      existingEntry.IN_TIME_3 = IN_TIME_3;
+
+      // Save the updated employee document
+      const entry = await existingEntry.save();
+
+      res
+        .status(200)
+        .json({ message: 'Third Entry details updated successfully', entry });
+
+      // Check if employee with the given UID and employee_id exists
+      const existingEmployee = await Employee.findOne({
+        where: {
+          employee_id: employee_id,
+        },
+      });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch in Successfull✅',
+          html: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>punch Email</title>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="
+        background-color: #ffffff;
+        height: 270px;
+        font-family: system-ui;
+        width: 600px;
+        margin: 2px auto;
+        margin-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+      "
+    >
+      <div id="logo" style="display: flex; justify-content: end">
+        <img
+          src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+          alt="logo"
+          style="
+            width: 100px;
+            height: 120px;
+            margin-right: 30px;
+            object-fit: contain;
+          "
+        />
+      </div>
+      <div style="margin-left: 49px">
+        <section style="font-size: 18px">
+          Dear <b>${existingEmployee.NAME},</b><br /><br />
+
+          Your Third Punch in Successfully at
+          <span
+            style="
+              background: rgb(66, 233, 48);
+              padding: 4px 14px;
+              color: #ffffff;
+              border-radius: 3px;
+            "
+            >${IN_TIME_3}</span
+          >
+          <br />
+        </section>
+
+        <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+          Thank You.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error submitting second entry:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
+//ROUTE FOR 3RD EXIT
+attendenceRouter.put(
+  '/submit-exit-3/:employee_id/:day/:month/:year',
+  async (req, res) => {
+    try {
+      const { OUT_LATTITUDE_3, OUT_LONGITUDE_3, OUT_TIME_3 } = req.body;
+      const { employee_id, month, year, day } = req.params;
+
+      // Check if entry for the given day exists
+      const existingEntry = await RfidCkeck.findOne({
+        where: {
+          employee_id,
+          year,
+          month,
+          day,
+          IN_TIME_1: { [Op.not]: null },
+          OUT_TIME_1: { [Op.not]: null },
+          IN_TIME_2: { [Op.not]: null },
+          OUT_TIME_2: { [Op.not]: null },
+          IN_TIME_3: { [Op.not]: null },
+        },
+      });
+
+      if (!existingEntry) {
+        return res.status(404).json({
+          message:
+            'First Entry or First Exit or Second Entry or Second Exit or Third Entry not found.',
+        });
+      }
+
+      existingEntry.OUT_LATTITUDE_3 = OUT_LATTITUDE_3;
+      existingEntry.OUT_LONGITUDE_3 = OUT_LONGITUDE_3;
+      existingEntry.OUT_TIME_3 = OUT_TIME_3;
+
+      // Calculate time differences
+      const timeDiff1 =
+        new Date(existingEntry.OUT_TIME_1) - new Date(existingEntry.IN_TIME_1);
+      const timeDiff2 =
+        new Date(existingEntry.OUT_TIME_2) - new Date(existingEntry.IN_TIME_2);
+      const timeDiff3 =
+        new Date(existingEntry.OUT_TIME_3) - new Date(existingEntry.IN_TIME_3);
+
+      // Calculate total hours in milliseconds
+      const totalMilliseconds = timeDiff1 + timeDiff2 + timeDiff3;
+
+      const totalHours = totalMilliseconds / (1000 * 60 * 60);
+
+      existingEntry.totalHours = parseFloat(totalHours.toFixed(2));
+
+      const entry = await existingEntry.save();
+
+      res
+        .status(200)
+        .json({ message: 'Third Exit details updated successfully', entry });
+
+      // Check if employee with the given UID and employee_id exists
+      const existingEmployee = await Employee.findOne({
+        where: {
+          employee_id: employee_id,
+        },
+      });
+
+      if (!existingEmployee) {
+        return res.status(404).json({ error: 'Employee not found' });
+      }
+
+      // Create a transporter object using Yandex SMTP
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the  service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter.sendMail(
+        {
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: `<${existingEmployee.email}>`,
+          subject: 'Punch out Successfull✅',
+          html: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>punch Email</title>
+  </head>
+  <body>
+    <div
+      class="container"
+      style="
+        background-color: #ffffff;
+        height: 270px;
+        font-family: system-ui;
+        width: 600px;
+        margin: 2px auto;
+        margin-top: 10px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+      "
+    >
+      <div id="logo" style="display: flex; justify-content: end">
+        <img
+          src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+          alt="logo"
+          style="
+            width: 100px;
+            height: 120px;
+            margin-right: 30px;
+            object-fit: contain;
+          "
+        />
+      </div>
+      <div style="margin-left: 49px">
+        <section style="font-size: 18px">
+          Dear <b>${existingEmployee.NAME},</b><br /><br />
+
+          Your Third Punch out Successfully at
+          <span
+            style="
+              background: rgb(66, 233, 48);
+              padding: 4px 14px;
+              color: #ffffff;
+              border-radius: 3px;
+            "
+            >${OUT_TIME_3}</span
+          >
+          <br />
+        </section>
+
+        <p style="font-size: 18px; margin-top: 18px; padding: 10px">
+          Thank You.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`,
+        },
+        (error, info) => {
+          if (error) {
+            console.error('Error sending email:', error);
+            res.status(500).send({ message: 'Error sending email' });
+          } else {
+            console.log('Email sent:', info.response);
+          }
+        }
+      );
+    } catch (error) {
+      console.error('Error submitting third exit:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
 
 export default attendenceRouter;

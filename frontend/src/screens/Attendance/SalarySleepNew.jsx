@@ -24,6 +24,15 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'FETCH_PAYSLIP_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_PAYSLIP_SUCCESS':
+      return { ...state, payslip: action.payload, loading: false };
+
+    case 'FETCH_PAYSLIP_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
     default:
       return state;
   }
@@ -32,27 +41,52 @@ const reducer = (state, action) => {
 function SalarySleepNew() {
   const { id, month, year, totaldays } = useParams();
 
-  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employees: {},
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, employees, payslip }, dispatch] = useReducer(
+    reducer,
+    {
+      employees: {},
+      payslip: {},
+      loading: true,
+      error: '',
+    }
+  );
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const pdfPreviewRef = useRef(null);
   const [name, setName] = useState('');
+  const [daysInMonth, setDaysInMonth] = useState(0);
+
   useEffect(() => {
     console.log('Fetching data...');
 
     const fetchData2 = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
+      dispatch({ type: 'FETCH_PAYSLIP_REQUEST' });
       try {
         const result = await axios.get(`/api/employees/details/${id}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
-        setName(result.data.employee.name);
+        setName(result.data.employee.NAME);
         console.log(result.data);
+
+        const Payslipresult = await axios.get(
+          `/api/payslip/${id}/${year}/${month}`
+        );
+        dispatch({
+          type: 'FETCH_PAYSLIP_SUCCESS',
+          payload: Payslipresult.data.payslip,
+        });
+        // setName(result.data.Payslipresult.NAME);
+        console.log(Payslipresult.data);
+
+        // Update the number of days in the month
+        const daysResponse = await axios.get(
+          `/api/attendence/getDaysInMonth/${month}/${year}`
+        );
+        const daysData = daysResponse.data.daysInMonth;
+        setDaysInMonth(daysData);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
+        dispatch({ type: 'FETCH_PAYSLIP_FAIL', payload: err.message });
       }
     };
     fetchData2();
@@ -234,10 +268,10 @@ function SalarySleepNew() {
     //vertical line
     doc.line(286, 54, 286, 152.5);
     doc.setFont('helvetica', 'bold'); // Set font family to "helvetica" and style to "bold"
-    doc.text(`Note*:`, 120, 160);
-    doc.setFont('helvetica', 'Normal'); // Set font family to "helvetica" and style to "bold"
+    // doc.text(`Note*:`, 120, 160);
+    // doc.setFont('helvetica', 'Normal'); // Set font family to "helvetica" and style to "bold"
 
-    doc.text(`This is auto-generated slip do no need any signature`, 132, 160);
+    // doc.text(`This is auto-generated slip do no need any signature`, 132, 160);
     // doc.text(`Approved By`, 190, 195);
 
     // doc.text(`Seal`, 245, 195);
@@ -264,227 +298,469 @@ function SalarySleepNew() {
     // Get the day of the month (1-30) for the last day of the current month
     const numberOfDaysInCurrentMonth = lastDayOfCurrentMonth.getDate();
     // const total = 30;
-    console.log(employees.ctc);
-    console.log(employees.total_deduction);
+    console.log(payslip.ctc);
+    console.log(payslip.total_deduction);
     console.log(numberOfDaysInCurrentMonth);
     console.log(totaldays);
+    // const daysInMonth = getDaysInMonth(year, month); // You need a function to get the days in a month
+    let averagedays = 31;
 
-    const netSalary =
-      (totaldays * (employees.ctc / 12)) / numberOfDaysInCurrentMonth -
-      employees.total_deduction;
+    if (employee.isProbation === 0) {
+      const netSalary = Math.floor(
+        (totaldays * (payslip.ctc / 12)) / averagedays - payslip.total_deduction
+      );
+      console.log(`net salary ${netSalary}`);
 
-    console.log(netSalary);
+      // const netSalary = payslip.netsalary;
 
-    const PF = employees.pf;
-    const TOTAL_DEDUCTION = employees.total_deduction;
-    const PT = employees.pt;
-    const SPECIAL = employees.special;
-    const MEDICAL = employees.medical;
-    const HRA = employees.hra;
-    const GROSS = employees.gross;
-    const CONVEYANCE = employees.conveyance;
-    // const BASIC = employees.;
-    const BASIC = ((employees.ctc / 12) * (45 / 100)).toFixed(2);
+      const PF = payslip.pf;
+      const TOTAL_DEDUCTION = payslip.total_deduction;
+      const PT = payslip.pt;
+      const SPECIAL = payslip.special;
+      const MEDICAL = payslip.medical;
+      const HRA = payslip.hra;
+      const GROSS = payslip.gross;
+      const CONVEYANCE = payslip.conveyance;
+      // const BASIC = employees.;
+      const BASIC = payslip.basic;
 
-    const columnData = [
-      [
-        { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
-        { content: `${BASIC}`, halign: 'right' },
-      ],
-      [
-        { content: 'House Rent Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: `${HRA}.00`, halign: 'right' },
-      ],
-      [
-        { content: 'Conveyance Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: `${CONVEYANCE}.00`, halign: 'right' },
-      ],
-      [
-        { content: 'Medical Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: `${MEDICAL}.00`, halign: 'right' },
-      ],
-      [
-        { content: 'Special Allowance', fontStyle: 'bold', halign: 'left' },
-        { content: `${SPECIAL}.00`, halign: 'right' },
-      ],
-      [
-        {
-          content: 'Total Gross Salary',
+      const columnData = [
+        [
+          { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
+          { content: `${BASIC}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'House Rent Allowance',
+            fontStyle: 'bold',
+            halign: 'left',
+          },
+          { content: `${HRA}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'Conveyance Allowance',
+            fontStyle: 'bold',
+            halign: 'left',
+          },
+          { content: `${CONVEYANCE}.00`, halign: 'right' },
+        ],
+        [
+          { content: 'Medical Allowance', fontStyle: 'bold', halign: 'left' },
+          { content: `${MEDICAL}.00`, halign: 'right' },
+        ],
+        [
+          { content: 'Special Allowance', fontStyle: 'bold', halign: 'left' },
+          { content: `${SPECIAL}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'Total Gross Salary',
+            fontStyle: 'bold',
+            fillColor: '#3299FF', // Background color for the first cell
+            halign: 'left',
+          },
+          {
+            content: `${GROSS}.00`,
+            halign: 'right',
+            fillColor: '#3299FF', // Background color for the second cell
+          },
+        ],
+        [
+          {
+            content: 'Deductions',
+
+            halign: 'left',
+          },
+          {
+            content: '',
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'PF',
+
+            halign: 'left',
+          },
+          {
+            content: `${PF}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'ESI',
+
+            halign: 'left',
+          },
+          {
+            content: '-',
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Professional Tax (PT)',
+
+            halign: 'left',
+          },
+          {
+            content: `${PT}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Total deductions (PF+ESI+PT) ',
+
+            halign: 'left',
+          },
+          {
+            content: `${TOTAL_DEDUCTION}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Net Salary',
+
+            halign: 'left',
+          },
+
+          { content: `${netSalary}.00`, halign: 'right' },
+        ],
+        // Add more rows as needed
+      ];
+
+      doc.setTextColor(0); // Reset text color to black
+      doc.autoTable({
+        startY: 54,
+        startX: 0,
+        head: [['Salary Components', 'Amount']],
+        body: columnData,
+        theme: 'grid', // 'striped', 'grid', 'plain'
+        headStyles: {
+          fillColor: [50, 153, 255],
+          textColor: '#fff',
           fontStyle: 'bold',
-          fillColor: '#3299FF', // Background color for the first cell
-          halign: 'left',
-        },
-        {
-          content: `${GROSS}`,
-          halign: 'right',
-          fillColor: '#3299FF', // Background color for the second cell
-        },
-      ],
-      [
-        {
-          content: 'Deductions',
-
-          halign: 'left',
-        },
-        {
-          content: '',
-          halign: 'right',
-        },
-      ],
-      [
-        {
-          content: 'PF',
-
-          halign: 'left',
-        },
-        {
-          content: `${PF}.00`,
-          halign: 'right',
-        },
-      ],
-      [
-        {
-          content: 'ESI',
-
-          halign: 'left',
-        },
-        {
-          content: '-',
-          halign: 'right',
-        },
-      ],
-      [
-        {
-          content: 'Professional Tax (PT)',
-
-          halign: 'left',
-        },
-        {
-          content: `${PT}.00`,
-          halign: 'right',
-        },
-      ],
-      [
-        {
-          content: 'Total deductions (PF+ESI+PT) ',
-
-          halign: 'left',
-        },
-        {
-          content: `${TOTAL_DEDUCTION}.00`,
-          halign: 'right',
-        },
-      ],
-      [
-        {
-          content: 'Net Salary',
-
-          halign: 'left',
         },
 
-        { content: netSalary.toFixed(2), halign: 'right' },
-      ],
-      // Add more rows as needed
-    ];
+        columnStyles: {
+          0: { cellWidth: 55 },
+          1: { cellWidth: 36 },
+        },
+        didParseCell: function (data) {
+          if (data.column.index !== 0) {
+            // Right-align cells in the body (excluding the header row)
+            data.cell.styles.halign = 'right';
+          }
 
-    doc.setTextColor(0); // Reset text color to black
-    doc.autoTable({
-      startY: 54,
-      startX: 0,
-      head: [['Salary Components', 'Amount']],
-      body: columnData,
-      theme: 'grid', // 'striped', 'grid', 'plain'
-      headStyles: {
-        fillColor: [50, 153, 255],
-        textColor: '#fff',
-        fontStyle: 'bold',
-      },
+          if (data.row.index === columnData.length - 7) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [50, 50, 50];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
 
-      columnStyles: {
-        0: { cellWidth: 55 },
-        1: { cellWidth: 36 },
-      },
-      didParseCell: function (data) {
-        if (data.column.index !== 0) {
-          // Right-align cells in the body (excluding the header row)
-          data.cell.styles.halign = 'right';
-        }
+          if (data.row.index === columnData.length - 6) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [255, 255, 255];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+          if (data.row.index === columnData.length - 2) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [50, 50, 50];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+          if (data.row.index === columnData.length - 1) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [255, 255, 255];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+        },
+      });
 
-        if (data.row.index === columnData.length - 7) {
-          // Make text in the last row bold
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [50, 50, 50];
-          data.cell.styles.fillColor = [50, 153, 255];
-        }
+      const totalPaidLeaveEntitlement = employees.leaves;
 
-        if (data.row.index === columnData.length - 6) {
-          // Make text in the last row bold
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [255, 255, 255];
-          data.cell.styles.fillColor = [50, 153, 255];
-        }
-        if (data.row.index === columnData.length - 2) {
-          // Make text in the last row bold
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [50, 50, 50];
-          data.cell.styles.fillColor = [50, 153, 255];
-        }
-        if (data.row.index === columnData.length - 1) {
-          // Make text in the last row bold
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [255, 255, 255];
-          data.cell.styles.fillColor = [50, 153, 255];
-        }
-      },
-    });
-    const totalPaidLeaveEntitlement = employees.leaves;
+      // Assuming totalLeavesTaken is the number of paid leave days taken by the employee
+      const totalLeavesAvailable = 18; // You should replace this with the actual calculation
 
-    // Assuming totalLeavesTaken is the number of paid leave days taken by the employee
-    const totalLeavesAvailable = 18; // You should replace this with the actual calculation
+      const PaidLeaveTaken = totalLeavesAvailable - totalPaidLeaveEntitlement;
 
-    const PaidLeaveTaken = totalLeavesAvailable - totalPaidLeaveEntitlement;
+      const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
 
-    const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
+      const salaryData = [
+        [
+          { content: 'Total Days', fontStyle: 'bold' },
+          numberOfDaysInCurrentMonth,
+        ],
+        [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
 
-    const salaryData = [
-      [
-        { content: 'Total Days', fontStyle: 'bold' },
-        numberOfDaysInCurrentMonth,
-      ],
-      [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
+        ['Paid Leave Taken', `${PaidLeaveTaken}`],
+        // ['Remaining Paid Leave', `${remainingLeave}`],
+      ];
 
-      ['Paid Leave Taken', `${PaidLeaveTaken}`],
-      ['Remaining Paid Leave', `${remainingLeave}`],
-    ];
+      // Generate the "Earning" table
+      doc.autoTable({
+        startY: doc.previousAutoTable.finalY + 5, // Start the table below the first table
+        startX: 10,
+        head: [['Description', 'Count']],
+        theme: 'grid', // 'striped', 'grid', 'plain'
+        columnStyles: {
+          0: { cellWidth: 55 },
+          1: { cellWidth: 36 },
+        },
+        body: salaryData,
+        headStyles: {
+          fillColor: [50, 153, 255],
+          fontStyle: 'bold',
+        },
+        didParseCell: function (data) {
+          if (data.column.index !== 0) {
+            data.cell.styles.halign = 'right';
+          }
 
-    // Generate the "Earning" table
-    doc.autoTable({
-      startY: doc.previousAutoTable.finalY + 5, // Start the table below the first table
-      startX: 10,
-      head: [['Description', 'Count']],
-      theme: 'grid', // 'striped', 'grid', 'plain'
-      columnStyles: {
-        0: { cellWidth: 55 },
-        1: { cellWidth: 36 },
-      },
-      body: salaryData,
-      headStyles: {
-        fillColor: [50, 153, 255],
-        fontStyle: 'bold',
-      },
-      didParseCell: function (data) {
-        if (data.column.index !== 0) {
-          data.cell.styles.halign = 'right';
-        }
+          if (data.row.index === columnData.length - 4) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [0, 0, 0];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+        },
+      });
+    } else {
+      const netSalary = Math.floor(
+        (averagedays * (payslip.ctc / 12)) / averagedays -
+          payslip.total_deduction
+      );
+      console.log(`net salary ${netSalary}`);
 
-        if (data.row.index === columnData.length - 4) {
-          // Make text in the last row bold
-          data.cell.styles.fontStyle = 'bold';
-          data.cell.styles.textColor = [0, 0, 0];
-          data.cell.styles.fillColor = [50, 153, 255];
-        }
-      },
-    });
+      // const netSalary = payslip.netsalary;
+
+      const PF = payslip.pf;
+      const TOTAL_DEDUCTION = payslip.total_deduction;
+      const PT = payslip.pt;
+      const SPECIAL = payslip.special;
+      const MEDICAL = payslip.medical;
+      const HRA = payslip.hra;
+      const GROSS = payslip.gross;
+      const CONVEYANCE = payslip.conveyance;
+      // const BASIC = employees.;
+      const BASIC = payslip.basic;
+
+      const columnData = [
+        [
+          { content: 'Basic Pay', fontStyle: 'bold', halign: 'left' },
+          { content: `${BASIC}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'House Rent Allowance',
+            fontStyle: 'bold',
+            halign: 'left',
+          },
+          { content: `${HRA}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'Conveyance Allowance',
+            fontStyle: 'bold',
+            halign: 'left',
+          },
+          { content: `${CONVEYANCE}.00`, halign: 'right' },
+        ],
+        [
+          { content: 'Medical Allowance', fontStyle: 'bold', halign: 'left' },
+          { content: `${MEDICAL}.00`, halign: 'right' },
+        ],
+        [
+          { content: 'Special Allowance', fontStyle: 'bold', halign: 'left' },
+          { content: `${SPECIAL}.00`, halign: 'right' },
+        ],
+        [
+          {
+            content: 'Total Gross Salary',
+            fontStyle: 'bold',
+            fillColor: '#3299FF', // Background color for the first cell
+            halign: 'left',
+          },
+          {
+            content: `${GROSS}.00`,
+            halign: 'right',
+            fillColor: '#3299FF', // Background color for the second cell
+          },
+        ],
+        [
+          {
+            content: 'Deductions',
+
+            halign: 'left',
+          },
+          {
+            content: '',
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'PF',
+
+            halign: 'left',
+          },
+          {
+            content: `${PF}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'ESI',
+
+            halign: 'left',
+          },
+          {
+            content: '-',
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Professional Tax (PT)',
+
+            halign: 'left',
+          },
+          {
+            content: `${PT}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Total deductions (PF+ESI+PT) ',
+
+            halign: 'left',
+          },
+          {
+            content: `${TOTAL_DEDUCTION}.00`,
+            halign: 'right',
+          },
+        ],
+        [
+          {
+            content: 'Net Salary',
+
+            halign: 'left',
+          },
+
+          { content: `${netSalary}.00`, halign: 'right' },
+        ],
+        // Add more rows as needed
+      ];
+
+      doc.setTextColor(0); // Reset text color to black
+      doc.autoTable({
+        startY: 54,
+        startX: 0,
+        head: [['Salary Components', 'Amount']],
+        body: columnData,
+        theme: 'grid', // 'striped', 'grid', 'plain'
+        headStyles: {
+          fillColor: [50, 153, 255],
+          textColor: '#fff',
+          fontStyle: 'bold',
+        },
+
+        columnStyles: {
+          0: { cellWidth: 55 },
+          1: { cellWidth: 36 },
+        },
+        didParseCell: function (data) {
+          if (data.column.index !== 0) {
+            // Right-align cells in the body (excluding the header row)
+            data.cell.styles.halign = 'right';
+          }
+
+          if (data.row.index === columnData.length - 7) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [50, 50, 50];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+
+          if (data.row.index === columnData.length - 6) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [255, 255, 255];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+          if (data.row.index === columnData.length - 2) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [50, 50, 50];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+          if (data.row.index === columnData.length - 1) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [255, 255, 255];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+        },
+      });
+
+      const totalPaidLeaveEntitlement = employees.leaves;
+
+      // Assuming totalLeavesTaken is the number of paid leave days taken by the employee
+      const totalLeavesAvailable = 18; // You should replace this with the actual calculation
+
+      const PaidLeaveTaken = totalLeavesAvailable - totalPaidLeaveEntitlement;
+
+      const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
+
+      const salaryData = [
+        [
+          { content: 'Total Days', fontStyle: 'bold' },
+          numberOfDaysInCurrentMonth,
+        ],
+        [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
+
+        ['Paid Leave Taken', `${PaidLeaveTaken}`],
+        // ['Remaining Paid Leave', `${remainingLeave}`],
+      ];
+
+      // Generate the "Earning" table
+      doc.autoTable({
+        startY: doc.previousAutoTable.finalY + 5, // Start the table below the first table
+        startX: 10,
+        head: [['Description', 'Count']],
+        theme: 'grid', // 'striped', 'grid', 'plain'
+        columnStyles: {
+          0: { cellWidth: 55 },
+          1: { cellWidth: 36 },
+        },
+        body: salaryData,
+        headStyles: {
+          fillColor: [50, 153, 255],
+          fontStyle: 'bold',
+        },
+        didParseCell: function (data) {
+          if (data.column.index !== 0) {
+            data.cell.styles.halign = 'right';
+          }
+
+          if (data.row.index === columnData.length - 4) {
+            // Make text in the last row bold
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [0, 0, 0];
+            data.cell.styles.fillColor = [50, 153, 255];
+          }
+        },
+      });
+    }
 
     return doc;
   };
@@ -522,7 +798,7 @@ function SalarySleepNew() {
   const generateAndDownloadPdf = () => {
     const salarySlipPdf = generatePdf(employees, year, month);
     if (salarySlipPdf) {
-      salarySlipPdf.save(`${employees.name}_${month}_${year}.pdf`);
+      salarySlipPdf.save(`${employees.NAME}_${month}_${year}.pdf`);
     } else {
       console.log('PDF generation failed.');
     }

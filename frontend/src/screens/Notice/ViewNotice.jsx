@@ -97,51 +97,18 @@ function ViewNotice() {
           </div>
           <div className="notice-body">
             <p>{notice.description}</p>
-            <h4></h4>
-            <ul className="highlight-points">
-              {notice &&
-                notice.highlightPoints.map((point, index) => (
-                  <li key={index}>{point}</li>
-                ))}
-            </ul>
 
-            {/* <div className="highlight-points d-flex flex-column">
-              {notice &&
-                notice.attachments.map((item, index) => (
-                  <span className="" key={item._id}>
-                    {index + 1}
-                    {')'}
-                    <Link
-                      to={item.url}
-                      className="text-decoration-none m-1"
-                      target="blank"
-                    >
-                      {item.label}
-                    </Link>
-                  </span>
-                ))}
-            </div> */}
-
-            <h4>
-              <b> Attachments</b>
-            </h4>
-            <div className="attachment m-1  ">
-              {notice &&
-                notice.attachments.map((item, index) => (
-                  <div className=" inner-attachment  m-1" key={index}>
-                    <img src={logo} alt={logo} />
-                    <span>
-                      {' '}
-                      <Link
-                        to={item.url}
-                        className="text-decoration-none m-1 text-center"
-                        target="blank"
-                      >
-                        {item.label}
-                      </Link>
-                    </span>
-                  </div>
-                ))}
+            {/* <h6>
+              <b> Highlighted Points</b>
+            </h6> */}
+            <div className="attachment-container m-1">
+              {notice.highlightPoints.map((item, index) => (
+                <div className="highlight-item " key={index}>
+                  <ul style={{ listStyleType: 'square' }}>
+                    <li>{item}</li>
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
           <div className="notice-footer">

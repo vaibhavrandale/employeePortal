@@ -1,8 +1,8 @@
 import express from 'express';
 import data from './data.js';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import mysql from 'mysql2';
+// import mongoose from 'mongoose';
+// import mysql from 'mysql2';
 import sequelize from './config/database.js';
 
 import seedRouter from './routes/seedRouter.js';
@@ -17,7 +17,7 @@ import {
   checkAndCreateBirthdayRecords,
   sendBirthdayEmails,
   AnniversaryEmails,
-  Intern,
+  // Intern,
   PayslipGenerator,
   ProbationChecker,
 } from './cron.js';

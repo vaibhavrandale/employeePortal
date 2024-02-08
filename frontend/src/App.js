@@ -56,6 +56,8 @@ import Generateslip from './screens/temp_salaryslip/Generateslip';
 import UpdateSalary from './screens/Employee/UpdateSalary';
 import AddNewSalary from './screens/Employee/AddNewSalary';
 import NewAttendance from './screens/Attendance/NewAttendance';
+import SalarCalculator from './screens/Attendance/SalarCalculator';
+import Location from './components/Location';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -352,6 +354,15 @@ function AppRouter() {
         />
 
         <Route
+          path="/location"
+          element={
+            <ProtectedRoutes>
+              <Location />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
           path="/pay-sleep"
           element={
             <ProtectedRoutes>
@@ -366,6 +377,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SalarySleepNew />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/salary-calculator"
+          element={
+            <ProtectedRoutes>
+              <SalarCalculator />
             </ProtectedRoutes>
           }
         />

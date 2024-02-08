@@ -291,10 +291,18 @@ const NewAttendance = () => {
                                         <tr>
                                           <td className="col">Punch 1</td>
                                           <td className="col-3">
-                                            {attendance.IN_TIME_1}
+                                            {attendance.IN_TIME_1
+                                              ? attendance.IN_TIME_1.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-3">
-                                            {attendance.OUT_TIME_1}
+                                            {attendance.OUT_TIME_1
+                                              ? attendance.OUT_TIME_1.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-1">
                                             <span className="d-flex">
@@ -308,12 +316,7 @@ const NewAttendance = () => {
                                                   IN
                                                 </Link>
                                               ) : (
-                                                <Link
-                                                  className="text-decoration-none badge bg-success mx-1 text-white"
-                                                  disabled
-                                                >
-                                                  IN
-                                                </Link>
+                                                ''
                                               )}
                                               {attendance.OUT_LATTITUDE_1 &&
                                               attendance.OUT_LONGITUDE_1 ? (
@@ -325,12 +328,7 @@ const NewAttendance = () => {
                                                   OUT
                                                 </Link>
                                               ) : (
-                                                <Link
-                                                  className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                  disabled
-                                                >
-                                                  OUT
-                                                </Link>
+                                                ''
                                               )}
                                             </span>
                                           </td>
@@ -339,10 +337,18 @@ const NewAttendance = () => {
                                         <tr>
                                           <td className="col">Punch 2</td>
                                           <td className="col-3">
-                                            {attendance.IN_TIME_2}
+                                            {attendance.IN_TIME_2
+                                              ? attendance.IN_TIME_2.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-3">
-                                            {attendance.OUT_TIME_2}
+                                            {attendance.OUT_TIME_2
+                                              ? attendance.OUT_TIME_2.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-1">
                                             <span className="d-flex">
@@ -387,10 +393,18 @@ const NewAttendance = () => {
                                         <tr>
                                           <td className="col">Punch 3</td>
                                           <td className="col-3">
-                                            {attendance.IN_TIME_3}
+                                            {attendance.IN_TIME_3
+                                              ? attendance.IN_TIME_3.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-3">
-                                            {attendance.OUT_TIME_3}
+                                            {attendance.OUT_TIME_3
+                                              ? attendance.OUT_TIME_3.split(
+                                                  ' '
+                                                )[1]
+                                              : ''}
                                           </td>
                                           <td className="col-1">
                                             <span className="d-flex">

@@ -297,19 +297,42 @@ function SalarySleepNew() {
 
     // Get the day of the month (1-30) for the last day of the current month
     const numberOfDaysInCurrentMonth = lastDayOfCurrentMonth.getDate();
-    // const total = 30;
-    console.log(payslip.ctc);
-    console.log(payslip.total_deduction);
-    console.log(numberOfDaysInCurrentMonth);
-    console.log(totaldays);
-    // const daysInMonth = getDaysInMonth(year, month); // You need a function to get the days in a month
-    let averagedays = 31;
 
-    if (employee.isProbation === 0) {
+    console.log(`ctc :${payslip.ctc}`);
+    console.log(`total Days :${totaldays}`);
+
+    let parsedMonth = parseInt(month, 10);
+    let parsedYear = parseInt(year, 10);
+    let parsedTotalDays = parseInt(totaldays, 10);
+    let parsedCtc = parseInt(payslip.ctc, 10);
+    let parsedTotalDeduction = parseInt(payslip.total_deduction, 10);
+
+    if (employees.isProbation === 0) {
+      let averagedays = 31;
+      console.log(`month ${month}`);
+
+      if (parsedMonth === 2) {
+        // If the month is February, adjust the days and handle leap years
+        if (
+          (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
+          parsedYear % 400 === 0
+        ) {
+          // Leap year, February has 29 days
+          averagedays = 29;
+        } else {
+          // Non-leap year, February has 28 days
+          averagedays = 28;
+        }
+      } else if ([4, 6, 9, 11].includes(parsedMonth)) {
+        // Months with 30 days
+        averagedays = 30;
+      }
+      console.log(`average days ${averagedays}`);
       const netSalary = Math.floor(
-        (totaldays * (payslip.ctc / 12)) / averagedays - payslip.total_deduction
+        [(parsedTotalDays * (parsedCtc / 12)) / averagedays] -
+          parsedTotalDeduction
       );
-      console.log(`net salary ${netSalary}`);
+      console.log(`Net Salary ${netSalary}`);
 
       // const netSalary = payslip.netsalary;
 
@@ -494,10 +517,7 @@ function SalarySleepNew() {
       const remainingLeave = totalLeavesAvailable - PaidLeaveTaken;
 
       const salaryData = [
-        [
-          { content: 'Total Days', fontStyle: 'bold' },
-          numberOfDaysInCurrentMonth,
-        ],
+        [{ content: 'Total Days', fontStyle: 'bold' }, daysInMonth],
         [{ content: 'Present Days', fontStyle: 'bold' }, totaldays],
 
         ['Paid Leave Taken', `${PaidLeaveTaken}`],
@@ -533,11 +553,7 @@ function SalarySleepNew() {
         },
       });
     } else {
-      const netSalary = Math.floor(
-        (averagedays * (payslip.ctc / 12)) / averagedays -
-          payslip.total_deduction
-      );
-      console.log(`net salary ${netSalary}`);
+      const netSalary = Math.floor(payslip.ctc / 12 - payslip.total_deduction);
 
       // const netSalary = payslip.netsalary;
 
@@ -809,6 +825,8 @@ function SalarySleepNew() {
       <Helmet>
         <title>Payslip</title>
       </Helmet>
+
+      <Link to={'/salary-calculator'}>Salary Calculator</Link>
       <div className="d-flex justify-content-end align-items-end">
         <div class="button downloadBtn " onClick={generateAndDownloadPdf}>
           <div class="button-wrapper">

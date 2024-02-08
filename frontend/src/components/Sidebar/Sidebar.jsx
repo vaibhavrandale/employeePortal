@@ -4,6 +4,7 @@ import { AiOutlineDashboard } from 'react-icons/ai';
 import { FcMoneyTransfer } from 'react-icons/fc';
 import { MdNotAccessible } from 'react-icons/md';
 import { FaChalkboardUser } from 'react-icons/fa6';
+import { FcDataSheet } from 'react-icons/fc';
 
 import { FcLeave } from 'react-icons/fc';
 import './Sidebar.css';
@@ -93,6 +94,18 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
+
+          {userInfo &&
+            userInfo.isHr === 1 &&
+            userInfo.isSuperAdmin === 1 &&
+            userInfo.isVisitor === 0 && (
+              <li>
+                <Link to="/notice-home-page">
+                  <FcDataSheet color="red" className="icon me-2" />
+                  {hovered && <span>Attendance</span>}
+                </Link>
+              </li>
+            )}
 
           {/* {userInfo && userInfo.isAdmin===1 && (
             <li>

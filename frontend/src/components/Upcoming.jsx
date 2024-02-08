@@ -19,7 +19,7 @@ function Upcoming() {
   useEffect(() => {
     // Use useEffect to call Typewriter after DOM renders
     new Typewriter('#typewriter', {
-      strings: ['  I am working on new features stay tuned....!'],
+      strings: ['stay tuned for new features....!'],
       autoStart: true,
       loop: true,
     });

@@ -2678,6 +2678,7 @@ const UpdateEmployee = () => {
                   <th className="text-center">CTC</th>
                   <th className="text-center">Net Salary</th>
                   <th className="text-center">Salary Group</th>
+                  <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>

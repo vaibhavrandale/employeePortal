@@ -96,20 +96,39 @@ function ViewNotice() {
             <hr />
           </div>
           <div className="notice-body">
+            {notice.subject ? (
+              <p>
+                <span className="text-danger">Subject</span> :&nbsp;
+                {notice.subject}
+              </p>
+            ) : (
+              ''
+            )}
             <p>{notice.description}</p>
 
             {/* <h6>
               <b> Highlighted Points</b>
             </h6> */}
-            <div className="attachment-container m-1">
-              {notice.highlightPoints.map((item, index) => (
-                <div className="highlight-item " key={index}>
-                  <ul style={{ listStyleType: 'square' }}>
-                    <li>{item}</li>
-                  </ul>
-                </div>
-              ))}
-            </div>
+            {notice.highlightPoints.length === 0 ? (
+              <div className="attachment-container m-1">
+                {notice.highlightPoints.map((item, index) => (
+                  <div className="highlight-item " key={index}>
+                    <ul
+                      style={{
+                        listStyleType:
+                          notice.highlightPoints.length === 0
+                            ? 'square'
+                            : 'none',
+                      }}
+                    >
+                      <li>{item}</li>
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              ''
+            )}
           </div>
           <div className="notice-footer">
             <div className="footer-content  ">

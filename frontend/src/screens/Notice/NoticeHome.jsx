@@ -131,15 +131,18 @@ function NoticeHome() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
         />
-        {userInfo && userInfo.isSuperAdmin === 1 && !userInfo.isVisitor && (
-          <Link
-            className="btn btn-sm btn-warning mt-2"
-            to="/new-notice"
-            style={{ width: '250px' }}
-          >
-            Post Notice
-          </Link>
-        )}
+        {userInfo &&
+          userInfo.isHr === 1 &&
+          userInfo.isSuperAdmin === 1 &&
+          userInfo.isVisitor === 0 && (
+            <Link
+              className="btn btn-sm btn-warning mt-2"
+              to="/new-notice"
+              style={{ width: '250px' }}
+            >
+              Post Notice
+            </Link>
+          )}
       </div>
       <div className="d-flex justify-content-start align-items-start flex-wrap">
         {loading ? (
@@ -190,39 +193,51 @@ function NoticeHome() {
                       className="card-text text-muted"
                       style={{ fontSize: '15px' }}
                     >
-                      posted on-{' '}
+                      posted on -{' '}
                       {new Date(item.createdAt).toString().substring(0, 16)}
                     </p>
-                    <p className="card-text " style={{ fontSize: '13px' }}>
-                      {item.subject}
+                    <p
+                      className="card-text text-danger"
+                      style={{ fontSize: '13px' }}
+                    >
+                      subject :{' '}
+                      <span className="card-text text-dark">
+                        {item.subject}
+                      </span>
                     </p>
                     <hr />
-                    <Link
-                      to={`/notice/${item.id}`}
-                      className="viewBtn text-decoration-none"
-                    >
-                      <AiOutlineEye />
-                    </Link>
-                    {userInfo.isSuperAdmin ? (
-                      <>
-                        {' '}
-                        <Link
-                          to={`/edit-notice/${item.id}`}
-                          className="editBtn text-decoration-none"
-                        >
-                          <FiEdit />
-                        </Link>
-                        <Link
-                          onClick={() => popupHandle(item.id)}
-                          // to={`/notice/${item._id}`}
-                          className="deleteBtn   text-danger text-decoration-none"
-                        >
-                          <MdDeleteOutline />
-                        </Link>
-                      </>
-                    ) : (
-                      ''
-                    )}
+                    <div className="d-flex justify-content-center">
+                      <Link
+                        to={`/notice/${item.id}`}
+                        className="viewBtn text-decoration-none"
+                      >
+                        <AiOutlineEye />
+                      </Link>
+
+                      {userInfo &&
+                      userInfo.isHr === 1 &&
+                      userInfo.isSuperAdmin === 1 &&
+                      userInfo.isVisitor === 0 ? (
+                        <>
+                          {' '}
+                          <Link
+                            to={`/edit-notice/${item.id}`}
+                            className="editBtn text-decoration-none text-center"
+                          >
+                            <FiEdit />
+                          </Link>
+                          <Link
+                            onClick={() => popupHandle(item.id)}
+                            // to={`/notice/${item._id}`}
+                            className="deleteBtn   text-danger text-decoration-none"
+                          >
+                            <MdDeleteOutline />
+                          </Link>
+                        </>
+                      ) : (
+                        ''
+                      )}
+                    </div>
                   </div>
                 </div>{' '}
                 {popupNoticeId === item.id && (

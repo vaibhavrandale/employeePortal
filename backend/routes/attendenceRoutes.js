@@ -116,6 +116,7 @@ attendenceRouter.post('/submit-entry-1', async (req, res) => {
       return res.status(404).json({ error: 'Employee not found' });
     } else {
       // If entry for the day does not exist, create a new entry with the first entry details
+
       await RfidCkeck.create({
         UID,
         IN_LATTITUDE_1,
@@ -253,6 +254,17 @@ attendenceRouter.put(
       existingEntry.OUT_LATTITUDE_1 = OUT_LATTITUDE_1;
       existingEntry.OUT_LONGITUDE_1 = OUT_LONGITUDE_1;
       existingEntry.OUT_TIME_1 = OUT_TIME_1;
+
+      // Calculate time differences
+      const timeDiff1 =
+        new Date(existingEntry.OUT_TIME_1) - new Date(existingEntry.IN_TIME_1);
+
+      // Calculate total hours in milliseconds
+      const totalMilliseconds = timeDiff1;
+
+      const totalHours = totalMilliseconds / (1000 * 60 * 60);
+
+      existingEntry.totalHours = parseFloat(totalHours.toFixed(2));
 
       // Save the updated employee document
       await existingEntry.save();
@@ -534,12 +546,25 @@ attendenceRouter.put(
       existingEntry.OUT_LONGITUDE_2 = OUT_LONGITUDE_2;
       existingEntry.OUT_TIME_2 = OUT_TIME_2;
 
+      // Calculate time differences
+      const timeDiff1 =
+        new Date(existingEntry.OUT_TIME_1) - new Date(existingEntry.IN_TIME_1);
+      const timeDiff2 =
+        new Date(existingEntry.OUT_TIME_2) - new Date(existingEntry.IN_TIME_2);
+
+      // Calculate total hours in milliseconds
+      const totalMilliseconds = timeDiff1 + timeDiff2;
+
+      const totalHours = totalMilliseconds / (1000 * 60 * 60);
+
+      existingEntry.totalHours = parseFloat(totalHours.toFixed(2));
+
       // Save the updated employee document
       await existingEntry.save();
 
-      res
-        .status(200)
-        .json({ message: 'Second Exit details updated successfully' });
+      res.status(200).json({
+        message: `Second Exit details updated successfully  and total hours are ${existingEntry.totalHours}`,
+      });
 
       // Check if employee with the given UID and employee_id exists
       const existingEmployee = await Employee.findOne({

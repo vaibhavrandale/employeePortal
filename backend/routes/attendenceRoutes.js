@@ -28,12 +28,17 @@ dotenv.config();
 const logo =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
 
-attendenceRouter.get('/:id', async (req, res) => {
+attendenceRouter.get('/:employeeid', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { employeeid } = req.params;
 
-    const attendance = await RfidCkeck.findOne(id);
-    if (!attendance) return res.status(404).send('attendance not found');
+    const attendance = await RfidCkeck.findAll({
+      where: {
+        employee_id: employeeid,
+      },
+    });
+
+    if (!attendance) return res.status(404).send('Attendance not found');
     else {
       res.status(200).send({ attendance });
     }

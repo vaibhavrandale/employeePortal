@@ -373,7 +373,7 @@ function AppRouter() {
 
         {/* old */}
         <Route
-          path="/pay-slip/:id/:year/:month/:totaldays"
+          path="/pay-slip/:id/:year/:month/:token/:totaldays/:token"
           element={
             <ProtectedRoutes>
               <SalarySleepNew />

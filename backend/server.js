@@ -62,8 +62,6 @@ app.use(express.urlencoded({ extended: true }));
 // Schedule the job
 cron.schedule('30 2 * * *', sendBirthdayEmails);
 
-//after one minute
-
 cron.schedule('30 2 * * *', checkAndCreateBirthdayRecords);
 
 cron.schedule('30 2 * * *', AnniversaryEmails);
@@ -71,6 +69,8 @@ cron.schedule('30 2 * * *', AnniversaryEmails);
 cron.schedule('0 0 2 * *', PayslipGenerator);
 
 cron.schedule('30 2 * * *', ProbationChecker);
+
+//after one minute
 
 // cron.schedule('* * * * *', ProbationChecker);
 // cron.schedule('* * * * *', PayslipGenerator);

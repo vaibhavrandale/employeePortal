@@ -904,15 +904,48 @@ const ProbationChecker = async () => {
     // Calculate the date 6 months ago
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+    // Find employees with isProbation equal to 0 and joiningDate less than six months ago
 
-    // Update isProbation to 1 for employees who joined more than 6 months ago and are not on probation
+    const employeesToUpdate = await Employee.findAll({
+      where: {
+        isProbation: 0,
+        // Convert VARCHAR date to JavaScript Date object for comparison
+        joiningDate: {
+          [Op.and]: [
+            sequelize.literal(
+              `STR_TO_DATE(joiningDate, '%d/%m/%Y') <= '${
+                sixMonthsAgo.toISOString().split('T')[0]
+              }'`
+            ),
+            sequelize.literal(
+              `STR_TO_DATE(joiningDate, '%d/%m/%Y') < '${
+                currentDate.toISOString().split('T')[0]
+              }'`
+            ),
+          ],
+        },
+      },
+    });
+
     const updatedEmployees = await Employee.update(
       { isProbation: 1 },
       {
         where: {
           isProbation: 0,
+          // Convert VARCHAR date to JavaScript Date object for comparison
           joiningDate: {
-            [Op.lte]: sixMonthsAgo, // Use Op.eq for equal to
+            [Op.and]: [
+              sequelize.literal(
+                `STR_TO_DATE(joiningDate, '%d/%m/%Y') <= '${
+                  sixMonthsAgo.toISOString().split('T')[0]
+                }'`
+              ),
+              sequelize.literal(
+                `STR_TO_DATE(joiningDate, '%d/%m/%Y') < '${
+                  currentDate.toISOString().split('T')[0]
+                }'`
+              ),
+            ],
           },
         },
       }
@@ -921,6 +954,115 @@ const ProbationChecker = async () => {
     console.log(
       `${updatedEmployees} employee(s) completed their probation period today and their status from probation to permenant employee is updated.`
     );
+    if (updatedEmployees) {
+      for (let employee of employeesToUpdate) {
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.hostinger.com', // Use the Yandex service
+          port: 465,
+          auth: {
+            user: process.env.MAIL_USER, // Your Yandex email address
+            pass: process.env.MAIL_PASS, // Your Yandex email password
+          },
+        });
+
+        transporter
+          .sendMail({
+            from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+            to: employee.email,
+            subject: 'Congrats! on Your New Achievement🚀',
+            html: `
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Wishes</title>
+  </head>
+
+  <body style="">
+    <div
+      class="container"
+      style="
+        min-height: 90vh;
+        border-radius: 10px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+          Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+          sans-serif;
+        max-width: 610px;
+        margin: 1vh auto;
+
+        color: #000;
+        padding: 10px;
+      "
+    >
+      <section
+        style="
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+          border-radius: 10px;
+        "
+      >
+        <div id="logo" style="display: flex; justify-content: end">
+          <img
+            src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+            alt="logo"
+            style="
+              width: 10vmax;
+              height: 5vmax;
+              margin-right: 5vmax;
+              margin-top: 2vmax;
+              object-fit: contain;
+            "
+          />
+        </div>
+        <h1 style="color: rgb(47, 179, 37); padding: 10px; text-align: center">
+          <span style="font-size: 30px"> Congratulations!</span> <br /><span
+            style="color: #000; font-size: 20px"
+            >On your probation period is completed today</span
+          >
+        </h1>
+
+        <p style="text-align: justify; padding: 5px 25px">
+          Dear
+          <span style="color: blue; font-weight: bold">${employee.NAME}</span>,
+          <br />
+          <br />
+          We are pleased to inform you that your probation period has been
+          successfully completed. Congratulations on reaching this important
+          milestone! During your probation, you have demonstrated outstanding
+          performance and dedication to your responsibilities.
+          <br />
+          We appreciate your hard work and commitment to our team. As a
+          permanent member of our organization, we look forward to continued
+          success and collaboration with you. If you have any questions or
+          require further information, feel free to reach out..
+        </p>
+        <p style="text-align: justify; padding: 10px 25px">
+          Best Regards <br />
+          <span style="color: green; font-weight: 700"> HR-Taypro</span>
+        </p>
+      </section>
+    </div>
+  </body>
+</html>
+
+`,
+          })
+          .then((info) => {
+            if (info.envelope.to.includes(employee.email)) {
+              console.log(
+                `Probation email successfully sent to ${employee.email}`
+              );
+            } else {
+              console.log(
+                `Failed to send Probation email to ${employee.email}`
+              );
+            }
+          })
+          .catch((error) => {
+            console.error(`Error sending email to ${employee.email}:`, error);
+          });
+      }
+    }
   } catch (error) {
     console.error('Error updating employee probation status:', error);
   }

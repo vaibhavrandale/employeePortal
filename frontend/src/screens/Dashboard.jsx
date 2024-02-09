@@ -785,10 +785,7 @@ function Dashboard() {
                       value={LeaveType}
                       onChange={(e) => setLeaveType(e.target.value)}
                     />
-                    <button
-                      type="submit"
-                      className="btn btn-success btn-sm mx-1"
-                    >
+                    <button type="submit" className=" Loginbutton  btn-sm mx-1">
                       Punch in 1
                     </button>
                   </form>
@@ -819,10 +816,7 @@ function Dashboard() {
                       onChange={(e) => setOUT_TIME_1(e.target.value)}
                     />
 
-                    <button
-                      className=" btn btn-sm btn-danger mx-1"
-                      type="submit"
-                    >
+                    <button className=" Loginbutton  mx-1" type="submit">
                       Punch out 1
                     </button>
                   </form>
@@ -854,10 +848,7 @@ function Dashboard() {
                       onChange={(e) => setIN_TIME_2(e.target.value)}
                     />
 
-                    <button
-                      className=" btn btn-sm btn-danger mx-1"
-                      type="submit"
-                    >
+                    <button className=" Loginbutton  mx-1" type="submit">
                       Punch in 2
                     </button>
                   </form>
@@ -889,10 +880,7 @@ function Dashboard() {
                       onChange={(e) => setOUT_TIME_2(e.target.value)}
                     />
 
-                    <button
-                      className=" btn btn-sm btn-danger mx-1"
-                      type="submit"
-                    >
+                    <button className=" Loginbutton  mx-1" type="submit">
                       Punch out 2
                     </button>
                   </form>
@@ -924,10 +912,7 @@ function Dashboard() {
                       onChange={(e) => setIN_TIME_3(e.target.value)}
                     />
 
-                    <button
-                      className=" btn btn-sm btn-danger mx-1"
-                      type="submit"
-                    >
+                    <button className=" Loginbutton  mx-1" type="submit">
                       Punch in 3
                     </button>
                   </form>
@@ -958,10 +943,7 @@ function Dashboard() {
                       onChange={(e) => setOUT_TIME_3(e.target.value)}
                     />
 
-                    <button
-                      className=" btn btn-sm btn-danger mx-1"
-                      type="submit"
-                    >
+                    <button className=" Loginbutton  mx-1" type="submit">
                       Punch out 3
                     </button>
                   </form>

@@ -81,7 +81,7 @@ function SalarCalculator() {
           </tr>
 
           <tr>
-            <td>CYC</td>
+            <td>CTC</td>
             <td>
               <input
                 type="number"

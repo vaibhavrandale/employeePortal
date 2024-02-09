@@ -39,7 +39,7 @@ const reducer = (state, action) => {
 };
 
 function SalarySleepNew() {
-  const { id, month, year, totaldays } = useParams();
+  const { id, month, year, token, totaldays, token2 } = useParams();
 
   const [{ loading, error, employees, payslip }, dispatch] = useReducer(
     reducer,

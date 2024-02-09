@@ -100,28 +100,14 @@ const Sidebar = () => {
             userInfo.isSuperAdmin === 1 &&
             userInfo.isVisitor === 0 && (
               <li>
-                <Link to="/notice-home-page">
+                <Link to="/new-attendancde">
                   <FcDataSheet color="red" className="icon me-2" />
                   {hovered && <span>Attendance</span>}
                 </Link>
               </li>
             )}
 
-          {/* {userInfo && userInfo.isAdmin===1 && (
-            <li>
-              <Link to="sitelist">
-                <img
-                  src="/images/icons/survey.png"
-                  alt="employee"
-                  className="icon me-1"
-                  height={'23px'}
-                />
-                {hovered && <span>Site Survey</span>}
-              </Link>
-            </li>
-          )} */}
-
-          {/* {userInfo && userInfo.isAdmin === 1 && (
+          {userInfo && userInfo.isAdmin === 1 && (
             <li>
               <Link to={`/myattendance/${userInfo.employee_id}`}>
                 <img
@@ -133,7 +119,7 @@ const Sidebar = () => {
                 {hovered && <span>Timeline</span>}
               </Link>
             </li>
-          )} */}
+          )}
         </>
       </ul>
     </div>

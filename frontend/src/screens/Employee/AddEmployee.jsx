@@ -54,6 +54,7 @@ function AddEmployee() {
   const [experience, setExperience] = useState('');
   const [joiningDate, setJoiningDate] = useState('');
   const [address, setAddress] = useState('');
+  const [addressProof, setAddresProof] = useState('');
   const [age, setAge] = useState('');
   const [designation, setDesignation] = useState('');
   const [gender, setGender] = useState('');
@@ -61,22 +62,23 @@ function AddEmployee() {
   const [birth_date, setBirth_date] = useState('');
   const [aadhar_no, setAdharno] = useState('');
   const [mobile_no, setMobile_no] = useState('');
-  const [activate, setActivate] = useState(false);
+  const [activate, setActivate] = useState(0);
   const [leaves, setLeaves] = useState(18);
   const [pf_account_no, setPf_account_no] = useState('');
   const [bank_account_no, setBank_account_no] = useState('');
   const [uan_number, setUan_number] = useState('');
   const [pan_number, setPan_number] = useState('');
   const [payslips, setPayslips] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [isSales, setIsSales] = useState(false);
-  const [isScm, setIsScm] = useState(false);
-  const [isDesign, setIsDesign] = useState(false);
-  const [isProject, setIsProject] = useState(false);
-  const [isVisitor, setIsVisitor] = useState(false);
-  const [isProduction, setIsProduction] = useState(false);
-  const [isAccountant, setIsAccountant] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(0);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(0);
+  const [isSales, setIsSales] = useState(0);
+  const [isScm, setIsScm] = useState(0);
+  const [isDesign, setIsDesign] = useState(0);
+  const [isProject, setIsProject] = useState(0);
+  const [isVisitor, setIsVisitor] = useState(0);
+  const [isProduction, setIsProduction] = useState(0);
+  const [isAccountant, setIsAccountant] = useState(0);
+  const [isHr, setIsHr] = useState(0);
 
   const [father_husband_name, setFather_husband_name] = useState('');
   const [marital_status, setMarital_status] = useState('');
@@ -100,6 +102,29 @@ function AddEmployee() {
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
   const [experience_letter, setExperience_letter] = useState('');
+
+  const [tenth_grade, setTenth_grade] = useState('');
+  const [tenth_marksheet, setTenth_marksheet] = useState('');
+  const [tenth_schoolName, setTenth_schoolName] = useState('');
+
+  const [twelth_or_diploma_grade, setTwelth_or_diploma_grade] = useState('');
+  const [twelth_or_diploma_marksheet, setTwelth_or_diploma_marksheet] =
+    useState('');
+  const [twelth_or_diploma_collegeName, setTwelth_or_diploma_collegeName] =
+    useState('');
+
+  const [
+    under_geaduate_or_post_graduate_grade,
+    setUnder_geaduate_or_post_graduate_grade,
+  ] = useState('');
+  const [
+    under_geaduate_or_post_graduate_marksheet,
+    setUnder_geaduate_or_post_graduate_marksheet,
+  ] = useState('');
+  const [
+    under_geaduate_or_post_graduate_collegeName,
+    setUnder_geaduate_or_post_graduate_collegeName,
+  ] = useState('');
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');
@@ -135,6 +160,7 @@ function AddEmployee() {
           birth_date,
           marital_status,
           address,
+          addressProof,
           sub_locality,
           district,
           pinCode,
@@ -177,6 +203,16 @@ function AddEmployee() {
           isVisitor,
           isProduction,
           isAccountant,
+          isHr,
+          tenth_marksheet,
+          tenth_schoolName,
+          tenth_grade,
+          twelth_or_diploma_marksheet,
+          twelth_or_diploma_collegeName,
+          under_geaduate_or_post_graduate_marksheet,
+          under_geaduate_or_post_graduate_collegeName,
+          twelth_or_diploma_grade,
+          under_geaduate_or_post_graduate_grade,
           ctc,
           salarygroup,
         },
@@ -499,6 +535,143 @@ function AddEmployee() {
           </tbody>
         </table>
 
+        <h2 style={styles.sectionHeader}>Educational Details</h2>
+        <table style={styles.table}>
+          <tbody>
+            <tr>
+              <td style={styles.label}>10th Grade:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="tenth_grade"
+                  placeholder="tenth_grade"
+                  value={tenth_grade}
+                  onChange={(e) => setTenth_grade(e.target.value)}
+                />
+              </td>
+
+              <td style={styles.label} className="ms-2">
+                10th Marksheet:
+              </td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="tenth_marksheet"
+                  placeholder="tenth_marksheet"
+                  value={tenth_marksheet}
+                  onChange={(e) => setTenth_marksheet(e.target.value)}
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td style={styles.label}>10th School Name:</td>
+              <td colSpan="3">
+                <textarea
+                  style={styles.input}
+                  type="text"
+                  id="tenth_schoolname"
+                  placeholder="Enter 10 the School Nam"
+                  value={tenth_schoolName}
+                  onChange={(e) => setTenth_schoolName(e.target.value)}
+                ></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td style={styles.label}>12th/Diploma Grade:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="twelth_or_diploma_grade"
+                  placeholder="12th/Diploma Grade"
+                  value={twelth_or_diploma_grade}
+                  onChange={(e) => setTwelth_or_diploma_grade(e.target.value)}
+                />
+              </td>
+              <td style={styles.label}>12th/Diploma marksheet:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="twelth_or_diploma_marksheet"
+                  placeholder="Enter 12th/Diploma Marksheet"
+                  value={twelth_or_diploma_marksheet}
+                  onChange={(e) =>
+                    setTwelth_or_diploma_marksheet(e.target.value)
+                  }
+                />
+              </td>
+            </tr>
+
+            <tr>
+              <td style={styles.label}>12th/Diploma College Name:</td>
+              <td colSpan="3">
+                <textarea
+                  style={styles.input}
+                  type="text"
+                  id="twelth_or_diploma_marksheet_collegeName"
+                  placeholder="Enter 12th/Diploma College Name"
+                  value={twelth_or_diploma_collegeName}
+                  onChange={(e) =>
+                    setTwelth_or_diploma_collegeName(e.target.value)
+                  }
+                ></textarea>
+              </td>
+            </tr>
+
+            <tr>
+              <td style={styles.label}>UG/PG Grade:</td>
+              <td>
+                {' '}
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="under_geaduate_or_post_graduate_grade"
+                  placeholder="Enter Under Graduate/ Post Graduate Grade"
+                  value={under_geaduate_or_post_graduate_grade}
+                  onChange={(e) =>
+                    setUnder_geaduate_or_post_graduate_grade(e.target.value)
+                  }
+                />
+              </td>
+              <td style={styles.label}>UG/PG Marksheet:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="under_geaduate_or_post_graduate_marksheet"
+                  placeholder="Enter Under Graduate/ Post Graduate Marksheet"
+                  value={under_geaduate_or_post_graduate_marksheet}
+                  onChange={(e) =>
+                    setUnder_geaduate_or_post_graduate_marksheet(e.target.value)
+                  }
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style={styles.label}>UG/PG College Name:</td>
+
+              <td colSpan={3}>
+                <textarea
+                  style={styles.input}
+                  type="text"
+                  id="under_geaduate_or_post_graduate_collegeName"
+                  placeholder="Enter Under Graduate/ Post Graduate College Name"
+                  value={under_geaduate_or_post_graduate_collegeName}
+                  onChange={(e) =>
+                    setUnder_geaduate_or_post_graduate_collegeName(
+                      e.target.value
+                    )
+                  }
+                ></textarea>
+              </td>
+            </tr>
+            {/* ... Add more fields as needed ... */}
+          </tbody>
+        </table>
         <h2 style={styles.sectionHeader}>Contact Information</h2>
         <table style={styles.table}>
           <tbody>
@@ -626,7 +799,8 @@ function AddEmployee() {
                   onChange={(e) => setPinCode(e.target.value)}
                 />
               </td>
-              <td style={styles.label}>No Of family members:</td>
+
+              <td style={styles.label}>No of family members:</td>
               <td>
                 <input
                   style={styles.input}
@@ -635,6 +809,19 @@ function AddEmployee() {
                   placeholder="Enter Number of family Members"
                   value={no_of_family_members}
                   onChange={(e) => setNo_of_family_members(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td style={styles.label}>Address Proof:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="addressProof"
+                  placeholder="Enter Address Proof"
+                  value={addressProof}
+                  onChange={(e) => setAddresProof(e.target.value)}
                 />
               </td>
             </tr>
@@ -1084,12 +1271,23 @@ function AddEmployee() {
               <div className="role-item">
                 <input
                   type="checkbox"
+                  id="isHr"
+                  className="input3"
+                  checked={isHr}
+                  onChange={(e) => setIsHr(e.target.checked)}
+                />
+                <label htmlFor="isSuperAdmin">HR</label>
+              </div>
+
+              <div className="role-item">
+                <input
+                  type="checkbox"
                   id="isSuperAdmin"
                   className="input3"
                   checked={isSuperAdmin}
                   onChange={(e) => setIsSuperAdmin(e.target.checked)}
                 />
-                <label htmlFor="isSuperAdmin">Super</label>
+                <label htmlFor="isSuperAdmin">Manager</label>
               </div>
               <div className="role-item">
                 <input

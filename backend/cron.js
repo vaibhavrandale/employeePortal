@@ -356,7 +356,7 @@ const checkAndCreateBirthdayRecords = async () => {
 
       console.log(`Birthday records created.`);
     } else {
-      console.log('No birthdays today.');
+      console.log('No Employee Has birthdays today.');
     }
   } catch (error) {
     console.error('Error checking and creating birthday records:', error);
@@ -402,7 +402,7 @@ const AnniversaryEmails = async () => {
 
       console.log(`Anniversary records created.`);
     } else {
-      console.log('No birthdays today.');
+      console.log('No employee Has Anniversary today.');
     }
 
     for (let employee of todaysanniversaryEmployees) {

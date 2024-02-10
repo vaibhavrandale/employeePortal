@@ -80,6 +80,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     birth_date,
     marital_status,
     address,
+    addressProof,
     sub_locality,
     district,
     state,
@@ -114,12 +115,6 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     previous_company_name,
     experience,
     experience_letter,
-
-    // leaves,
-    // sick,
-    // privilege,
-    // casual,
-    // activate,
     isAdmin,
     isSuperAdmin,
     isSales,
@@ -130,6 +125,16 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     isProduction,
     isAccountant,
     isHr,
+    tenth_marksheet,
+    tenth_schoolName,
+    twelth_or_diploma_marksheet,
+    twelth_or_diploma_collegeName,
+    under_geaduate_or_post_graduate_marksheet,
+    under_geaduate_or_post_graduate_collegeName,
+    tenth_grade,
+    twelth_or_diploma_grade,
+    under_geaduate_or_post_graduate_grade,
+
     // ctc,
     // salarygroup,
   } = req.body;
@@ -169,31 +174,6 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
   const formattedBirthDate = formatDate(parsedBirthDate);
   const formattedJoiningDate = formatDate(parsedJoiningDate);
 
-  // const basic = ((ctc / 12) * (45 / 100)).toFixed(2);
-  // const hra = ((basic * 40) / 100).toFixed(2);
-  // const conveyance = (1600).toFixed(2);
-  // const medical = (1250).toFixed(2);
-  // const special = (basic - hra - conveyance - medical).toFixed(2);
-
-  // const esi =
-  //   salarygroup === 8 && gross <= 21000 ? ((gross * 1.75) / 100).toFixed(2) : 0;
-
-  // const pf = Math.min((basic * 12) / 100, 1800);
-
-  // const pt = 200;
-
-  // // Ensure that pf and pt are numeric values before using toFixed
-  // const isNumeric = (value) => !isNaN(parseFloat(value)) && isFinite(value);
-
-  // const totaldeduction =
-  //   isNumeric(pf) && isNumeric(pt) ? (pf + pt).toFixed(2) : 'N/A';
-
-  // const gross = (ctc / 12).toFixed(2);
-  // const netsalary = (gross - totaldeduction).toFixed(2);
-  // const employerpf = ((basic * 13) / 100).toFixed(2);
-  // const employeresi = ((basic * 4.25) / 100).toFixed(2);
-  // const bonus = ((basic * 8.33) / 100).toFixed(2);
-
   try {
     // Find the employee by ID
     const employee = await Employee.findOne({
@@ -203,23 +183,6 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     if (!employee) {
       return res.status(404).json({ message: 'Employee not found.' });
     }
-    // employee.basic = basic;
-    // employee.ctc = ctc;
-    // employee.salarygroup = salarygroup;
-    // employee.hra = hra;
-    // employee.conveyance = conveyance;
-    // employee.medical = medical;
-    // employee.special = special;
-    // employee.pt = pt;
-    // employee.pf = pf;
-    // employee.esi = esi;
-    // employee.total_deduction = totaldeduction;
-    // employee.gross = gross;
-    // employee.netsalary = netsalary;
-    // employee.employer_pf = employerpf;
-    // employee.employer_esi = employeresi;
-    // employee.bonus = bonus;
-
     employee.employee_id = employee_id;
     employee.email = email;
     employee.NAME = name;
@@ -231,6 +194,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.joiningDate = formattedJoiningDate;
     employee.marital_status = marital_status;
     employee.address = address;
+    employee.addressProof = addressProof;
     employee.sub_locality = sub_locality;
     employee.district = district;
     employee.state = state;
@@ -264,11 +228,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.previous_company_name = previous_company_name;
     employee.experience = experience;
     employee.experience_letter = experience_letter;
-    // employee.leaves = leaves;
-    // employee.sick = sick;
-    // employee.privilege = privilege;
-    // employee.casual = casual;
-    // employee.activate = activate;
+
     employee.isAdmin = isAdmin;
     employee.isSuperAdmin = isSuperAdmin;
     employee.isSales = isSales;
@@ -279,6 +239,18 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.isProduction = isProduction;
     employee.isAccountant = isAccountant;
     employee.isHr = isHr;
+    employee.tenth_marksheet = tenth_marksheet;
+    employee.tenth_schoolName = tenth_schoolName;
+    employee.tenth_grade = tenth_grade;
+    employee.twelth_or_diploma_marksheet = twelth_or_diploma_marksheet;
+    employee.twelth_or_diploma_collegeName = twelth_or_diploma_collegeName;
+    employee.twelth_or_diploma_grade = twelth_or_diploma_grade;
+    employee.under_geaduate_or_post_graduate_marksheet =
+      under_geaduate_or_post_graduate_marksheet;
+    employee.under_geaduate_or_post_graduate_collegeName =
+      under_geaduate_or_post_graduate_collegeName;
+    employee.under_geaduate_or_post_graduate_grade =
+      under_geaduate_or_post_graduate_grade;
 
     // Save the updated employee document
     await employee.save();
@@ -365,46 +337,6 @@ emplyeeRouter.put('/activate/:id', async (req, res) => {
 });
 
 // -----------------activate employee------------
-
-// emplyeeRouter.post(
-//   '/signin',
-//   expressAsyncHandler(async (req, res) => {
-//     const employee = await Employee.findOne({ email: req.body.email });
-//     if (employee && bcrypt.compareSync(req.body.password, employee.password)) {
-//       // Code to be executed if the employee ID matches
-
-//       res.send({
-//         _id: employee._id,
-//         employee_id: employee.employee_id,
-//        NAME : employee.NAME,
-//         email: employee.email,
-//         mobile_no: employee.mobile_no,
-//         designation: employee.designation,
-//         isAdmin: employee.isAdmin,
-//         isSuperAdmin: employee.isSuperAdmin,
-//         isSales: employee.isSales,
-//         isScm: employee.isScm,
-//         isDesign: employee.isDesign,
-//         isProject: employee.isProject,
-//         isVisitor: employee.isVisitor,
-//         isProduction: employee.isProduction,
-//         isAccountant: employee.isAccountant,
-//         activate: employee.activate,
-//         leaves: employee.leaves,
-//         sick: employee.sick,
-//         privilege: employee.privilege,
-//         casual: employee.casual,
-//         profileImage: employee.image, // Include the profile image URL
-//         joiningDate: employee.joiningDate, // Include the profile image URL
-//         token: generateToken(employee),
-//         message: 'Sign in successful!', // Success message
-//       });
-//       return;
-//     }
-
-//     res.status(401).send({ message: 'Invalid Credentials' });
-//   })
-// );
 
 emplyeeRouter.post('/signin', async (req, res) => {
   try {
@@ -1792,6 +1724,7 @@ emplyeeRouter.post('/', async (req, res) => {
       birth_date,
       marital_status,
       address,
+      addressProof,
       sub_locality,
       district,
       state,
@@ -1843,6 +1776,16 @@ emplyeeRouter.post('/', async (req, res) => {
       casual,
       ctc,
       salarygroup,
+
+      tenth_marksheet,
+      tenth_schoolName,
+      twelth_or_diploma_marksheet,
+      twelth_or_diploma_collegeName,
+      under_geaduate_or_post_graduate_marksheet,
+      under_geaduate_or_post_graduate_collegeName,
+      tenth_grade,
+      twelth_or_diploma_grade,
+      under_geaduate_or_post_graduate_grade,
     } = req.body;
 
     // Hash the default password
@@ -1927,6 +1870,7 @@ emplyeeRouter.post('/', async (req, res) => {
       joiningDate: formattedJoiningDate,
       marital_status,
       address,
+      addressProof,
       sub_locality,
       district,
       state,
@@ -1976,6 +1920,16 @@ emplyeeRouter.post('/', async (req, res) => {
       sick,
       privilege,
       casual,
+
+      tenth_marksheet,
+      tenth_schoolName,
+      twelth_or_diploma_marksheet,
+      twelth_or_diploma_collegeName,
+      under_geaduate_or_post_graduate_marksheet,
+      under_geaduate_or_post_graduate_collegeName,
+      tenth_grade,
+      twelth_or_diploma_grade,
+      under_geaduate_or_post_graduate_grade,
     });
 
     // Save the new employee to the database

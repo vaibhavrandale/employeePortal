@@ -187,6 +187,10 @@ const Employee = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    addressProof: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     sub_locality: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -409,6 +413,49 @@ const Employee = sequelize.define(
 
     isProbation: {
       type: DataTypes.INTEGER,
+    },
+
+    tenth_marksheet: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    tenth_grade: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    tenth_schoolName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    twelth_or_diploma_marksheet: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    twelth_or_diploma_grade: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    twelth_or_diploma_collegeName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    under_geaduate_or_post_graduate_marksheet: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    under_geaduate_or_post_graduate_grade: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    under_geaduate_or_post_graduate_collegeName: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   {

@@ -121,6 +121,7 @@ const UpdateEmployee = () => {
   const [experience, setExperience] = useState('');
   const [joiningDate, setJoiningDate] = useState('');
   const [address, setAddress] = useState('');
+  const [addressProof, setAddressProof] = useState('');
   const [age, setAge] = useState('');
   const [designation, setDesignation] = useState('');
   const [gender, setGender] = useState('');
@@ -167,7 +168,31 @@ const UpdateEmployee = () => {
   const [pan_card_file, setPan_card_file] = useState('');
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
+
   const [experience_letter, setExperience_letter] = useState('');
+
+  const [tenth_grade, setTenth_grade] = useState('');
+  const [tenth_marksheet, setTenth_marksheet] = useState('');
+  const [tenth_schoolName, setTenth_schoolName] = useState('');
+
+  const [twelth_or_diploma_grade, setTwelth_or_diploma_grade] = useState('');
+  const [twelth_or_diploma_marksheet, setTwelth_or_diploma_marksheet] =
+    useState('');
+  const [twelth_or_diploma_collegeName, setTwelth_or_diploma_collegeName] =
+    useState('');
+
+  const [
+    under_geaduate_or_post_graduate_grade,
+    setUnder_geaduate_or_post_graduate_grade,
+  ] = useState('');
+  const [
+    under_geaduate_or_post_graduate_marksheet,
+    setUnder_geaduate_or_post_graduate_marksheet,
+  ] = useState('');
+  const [
+    under_geaduate_or_post_graduate_collegeName,
+    setUnder_geaduate_or_post_graduate_collegeName,
+  ] = useState('');
 
   const [salaryMonth, setSalaryMonth] = useState('');
   const [salaryyear, setSalaryYear] = useState('');
@@ -206,6 +231,7 @@ const UpdateEmployee = () => {
         setExperience(result.data.employee.experience);
         setJoiningDate(result.data.employee.joiningDate);
         setAddress(result.data.employee.address);
+        setAddressProof(result.data.employee.addressProof);
         setAge(result.data.employee.age);
         setDesignation(result.data.employee.designation);
         setGender(result.data.employee.gender);
@@ -222,6 +248,30 @@ const UpdateEmployee = () => {
         setIsProduction(result.data.employee.isProduction);
         setIsAccountant(result.data.employee.isAccountant);
         setIsHr(result.data.employee.isHr);
+
+        setTenth_grade(result.data.employee.tenth_grade);
+        setTenth_marksheet(result.data.employee.tenth_marksheet);
+        setTenth_schoolName(result.data.employee.tenth_schoolName);
+
+        setTwelth_or_diploma_marksheet(
+          result.data.employee.twelth_or_diploma_marksheet
+        );
+        setTwelth_or_diploma_collegeName(
+          result.data.employee.twelth_or_diploma_collegeName
+        );
+        setTwelth_or_diploma_grade(
+          result.data.employee.twelth_or_diploma_grade
+        );
+
+        setUnder_geaduate_or_post_graduate_marksheet(
+          result.data.employee.under_geaduate_or_post_graduate_marksheet
+        );
+        setUnder_geaduate_or_post_graduate_collegeName(
+          result.data.employee.under_geaduate_or_post_graduate_collegeName
+        );
+        setUnder_geaduate_or_post_graduate_grade(
+          result.data.employee.under_geaduate_or_post_graduate_grade
+        );
 
         setFather_husband_name(result.data.employee.father_husband_name);
         setMarital_status(result.data.employee.marital_status);
@@ -346,6 +396,7 @@ const UpdateEmployee = () => {
           birth_date,
           marital_status,
           address,
+          addressProof,
           sub_locality,
           district,
 
@@ -388,6 +439,15 @@ const UpdateEmployee = () => {
           isProduction,
           isAccountant,
           isHr,
+          tenth_marksheet,
+          tenth_schoolName,
+          twelth_or_diploma_marksheet,
+          twelth_or_diploma_collegeName,
+          under_geaduate_or_post_graduate_marksheet,
+          under_geaduate_or_post_graduate_collegeName,
+          tenth_grade,
+          twelth_or_diploma_grade,
+          under_geaduate_or_post_graduate_grade,
           state: State,
         },
         {
@@ -577,8 +637,8 @@ const UpdateEmployee = () => {
     image: {
       height: '150px',
       width: '150px',
-      borderRadius: '',
-      objectFit: 'contain',
+      borderRadius: '50%',
+      objectFit: 'cover',
     },
     imageContainer: {
       display: 'flex',
@@ -990,7 +1050,22 @@ const UpdateEmployee = () => {
                       onChange={(e) => setFather_husband_name(e.target.value)}
                     />
                   </td>
-                  <td style={styles.label}>Profile Image:</td>
+                  <td style={styles.label}>
+                    Profile Image
+                    {image ? (
+                      <Link
+                        target="blank"
+                        to={`${image}`}
+                        className="fs-4"
+                        style={styles.link}
+                      >
+                        <PiLinkThin />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    :
+                  </td>
                   <td>
                     <input
                       style={styles.file}
@@ -999,6 +1074,148 @@ const UpdateEmployee = () => {
                       placeholder="profile"
                       onChange={uploadFileHandler}
                     />
+                  </td>
+                </tr>
+                {/* ... Add more fields as needed ... */}
+              </tbody>
+            </table>
+
+            <h2 style={styles.sectionHeader}>Educational Details</h2>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Tenth Grade:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="tenth_grade"
+                      placeholder="tenth_grade"
+                      value={tenth_grade}
+                      onChange={(e) => setTenth_grade(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label} className="ms-2">
+                    10th Marksheet:
+                  </td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="tenth_marksheet"
+                      placeholder="tenth_marksheet"
+                      value={tenth_marksheet}
+                      onChange={(e) => setTenth_marksheet(e.target.value)}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>10th School Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="tenth_schoolname"
+                      placeholder="Enter 10 the School Nam"
+                      value={tenth_schoolName}
+                      onChange={(e) => setTenth_schoolName(e.target.value)}
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>12th/Diploma Grade:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_grade"
+                      placeholder="12th/Diploma Grade"
+                      value={twelth_or_diploma_grade}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_marksheet(e.target.value)
+                      }
+                    />
+                  </td>
+                  <td style={styles.label}>12th/Diploma marksheet:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_marksheet"
+                      placeholder="Enter 12th/Diploma Marksheet"
+                      value={twelth_or_diploma_marksheet}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_marksheet(e.target.value)
+                      }
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>12th/Diploma College Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_marksheet_collegeName"
+                      placeholder="Enter 12th/Diploma College Name"
+                      value={twelth_or_diploma_collegeName}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_collegeName(e.target.value)
+                      }
+                    ></textarea>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>UG/PG Marksheet:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_marksheet"
+                      placeholder="Enter Under Graduate/ Post Graduate Marksheet"
+                      value={under_geaduate_or_post_graduate_marksheet}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_marksheet(
+                          e.target.value
+                        )
+                      }
+                    />
+                  </td>
+                  <td style={styles.label}>UG/PG Grade:</td>
+                  <td>
+                    {' '}
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_grade"
+                      placeholder="Enter Under Graduate/ Post Graduate Grade"
+                      value={under_geaduate_or_post_graduate_grade}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_grade(e.target.value)
+                      }
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>UG/PG College Name:</td>
+
+                  <td colSpan={3}>
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_collegeName"
+                      placeholder="Enter Under Graduate/ Post Graduate College Name"
+                      value={under_geaduate_or_post_graduate_collegeName}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_collegeName(
+                          e.target.value
+                        )
+                      }
+                    ></textarea>
                   </td>
                 </tr>
                 {/* ... Add more fields as needed ... */}
@@ -1155,6 +1372,29 @@ const UpdateEmployee = () => {
                       placeholder="Enter address"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>
+                    Address Proof
+                    <Link
+                      target="blank"
+                      to={`${addressProof}`}
+                      className="fs-4"
+                      style={styles.link}
+                    >
+                      <PiLinkThin />
+                    </Link>
+                    :
+                  </td>
+                  <td colSpan="2">
+                    <input
+                      style={styles.input}
+                      id="address-proof"
+                      placeholder="Enter address Proof"
+                      value={addressProof}
+                      onChange={(e) => setAddressProof(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -1677,7 +1917,7 @@ const UpdateEmployee = () => {
                       checked={isSuperAdmin}
                       onChange={(e) => setIsSuperAdmin(e.target.checked)}
                     />
-                    <label htmlFor="isSuperAdmin">HR</label>
+                    <label htmlFor="isSuperAdmin">Manager</label>
                   </div>
                   <div className="role-item">
                     <input
@@ -1687,7 +1927,7 @@ const UpdateEmployee = () => {
                       checked={isHr}
                       onChange={(e) => setIsHr(e.target.checked)}
                     />
-                    <label htmlFor="isAdmin"> Account</label>
+                    <label htmlFor="isAdmin"> HR</label>
                   </div>
                   <div className="role-item">
                     <input

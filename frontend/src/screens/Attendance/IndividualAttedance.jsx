@@ -354,10 +354,18 @@ const NewAttendance = () => {
               setSelectedMonth(e.target.value ? parseInt(e.target.value) : null)
             }
           >
-            {/* Add options for months */}
             <option value="1">January</option>
             <option value="2">February</option>
-            {/* ... Add options for other months ... */}
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
           </select>
         </div>
 
@@ -422,6 +430,17 @@ const NewAttendance = () => {
                   }
                 });
 
+                // Check if groupedData is empty
+                if (groupedData.length === 0) {
+                  return (
+                    <tr>
+                      <td colSpan={34} className="text-center">
+                        No data found
+                      </td>
+                    </tr>
+                  );
+                }
+
                 // Render the table using the grouped data
                 return groupedData.map((employee) => {
                   let totalPCount = 0; // Move totalPCount inside the employee map loop
@@ -483,9 +502,9 @@ const NewAttendance = () => {
                                         <b className="text-dark">
                                           {' '}
                                           <span style={{ color: 'crimson' }}>
-                                            {employee.Name}
+                                            Your
                                           </span>
-                                          's Day {day} Attendance
+                                          &nbsp; Day {day} Timeline
                                         </b>
                                       </h5>
                                       <button
@@ -588,12 +607,7 @@ const NewAttendance = () => {
                                                     IN
                                                   </Link>
                                                 ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    IN
-                                                  </Link>
+                                                  ''
                                                 )}
                                                 {attendance.OUT_LATTITUDE_2 &&
                                                 attendance.OUT_LONGITUDE_2 ? (
@@ -605,12 +619,7 @@ const NewAttendance = () => {
                                                     OUT
                                                   </Link>
                                                 ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    OUT
-                                                  </Link>
+                                                  ''
                                                 )}
                                               </span>
                                             </td>
@@ -644,12 +653,7 @@ const NewAttendance = () => {
                                                     IN
                                                   </Link>
                                                 ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    IN
-                                                  </Link>
+                                                  ''
                                                 )}
                                                 {attendance.OUT_LATTITUDE_3 &&
                                                 attendance.OUT_LONGITUDE_3 ? (
@@ -661,12 +665,7 @@ const NewAttendance = () => {
                                                     OUT
                                                   </Link>
                                                 ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    OUT
-                                                  </Link>
+                                                  ''
                                                 )}
                                               </span>
                                             </td>
@@ -696,72 +695,119 @@ const NewAttendance = () => {
 
                       <td className="text-center">{employee.totalPCount}</td>
                       <td className="text-center">
-                        <td className="text-center">
+                        {new Date().getDate() >= 28 ? (
+                          <Link
+                            to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
+                            target="_blank"
+                            className="btn btn-success btn-sm"
+                          >
+                            Slip
+                          </Link>
+                        ) : (
                           <Link
                             className="btn btn-sm btn-warning"
                             data-bs-toggle="modal"
-                            data-bs-target={`#viewEmployee_${employee.id}`}
+                            data-bs-target={`#viewEmployee_${employee.employee_id}`}
                             type="button"
                           >
-                            <i className="fas fa-edit"></i>
+                            Pending
                           </Link>
+                        )}
 
-                          <div
-                            className="modal fade"
-                            id={`viewEmployee_${employee.id}`}
-                            tabIndex="-1"
-                            aria-labelledby="exampleModalLabel"
-                            aria-hidden="true"
-                            style={{}}
-                          >
-                            <div className="modal-dialog modal-md">
-                              <div className="modal-content">
-                                <div className="modal-header">
-                                  <h5
-                                    className="modal-title"
-                                    id="exampleModalLabel"
-                                  >
-                                    <b className="text-dark">
-                                      {' '}
-                                      <span style={{ color: 'crimson' }}>
-                                        Employee {employee.Name}
-                                      </span>
-                                    </b>
-                                  </h5>
-                                  <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                  ></button>
-                                </div>
-                                <div className="modal-body">
-                                  <div className="text-center mt-3">
-                                    {exportData.length > 0 && (
-                                      <CSVLink
-                                        data={exportData}
-                                        filename={`employee_data_${employee.employee_id}.csv`}
-                                        className="btn btn-secondary"
-                                      >
-                                        Download CSV
-                                      </CSVLink>
-                                    )}
+                        {/* -------------------pending modal-------------------------- */}
+                        <div
+                          className="modal fade"
+                          id={`viewEmployee_${employee.employee_id}`}
+                          tabIndex="-1"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                          style={{}}
+                        >
+                          <div className="modal-dialog modal-md">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                <h3 className="" style={{ color: 'crimson' }}>
+                                  Salary slip for current month is Not yet
+                                  generated
+                                </h3>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {/* -------------------pending modal-------------------------- */}
 
-                                    {/* Link to view salary slip */}
-                                    <Link
-                                      // pay-slip/:id/:year/:month/:totaldays
-                                      to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
-                                      target="_blank"
-                                      className="btn btn-success"
+                        {/* <Link
+                          className="btn btn-sm btn-warning"
+                          data-bs-toggle="modal"
+                          data-bs-target={`#viewEmployee_${employee.id}`}
+                          type="button"
+                        >
+                          <i className="fas fa-edit"></i>
+                        </Link> */}
+
+                        {/* <div
+                          className="modal fade"
+                          id={`viewEmployee_${employee.id}`}
+                          tabIndex="-1"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                          style={{}}
+                        >
+                          <div className="modal-dialog modal-md">
+                            <div className="modal-content">
+                              <div className="modal-header">
+                                <h5
+                                  className="modal-title"
+                                  id="exampleModalLabel"
+                                >
+                                  <b className="text-dark">
+                                    {' '}
+                                    <span style={{ color: 'crimson' }}>
+                                      Employee {employee.Name}
+                                    </span>
+                                  </b>
+                                </h5>
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div className="modal-body">
+                                <div className="text-center mt-3">
+                                  {exportData.length > 0 && (
+                                    <CSVLink
+                                      data={exportData}
+                                      filename={`employee_data_${employee.employee_id}.csv`}
+                                      className="btn btn-secondary"
                                     >
-                                      Slip
-                                    </Link>
-                                  </div>
+                                      Download CSV
+                                    </CSVLink>
+                                  )}
+
+                                 
+                                  <Link
+                                    // pay-slip/:id/:year/:month/:totaldays
+                                    to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
+                                    target="_blank"
+                                    className="btn btn-success"
+                                  >
+                                    Slip
+                                  </Link>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </td>
+                        </div> */}
                       </td>
                     </tr>
                   );

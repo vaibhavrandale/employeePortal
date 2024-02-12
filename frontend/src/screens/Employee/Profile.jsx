@@ -1233,7 +1233,7 @@ const UpdateEmployee = () => {
               </tr>
               <tr>
                 <td style={styles.label}>
-                  Upload Aadhar File
+                  View Aadhar
                   <Link
                     target="blank"
                     to={`${aadhar_card_file}`}
@@ -1250,14 +1250,14 @@ const UpdateEmployee = () => {
                     style={styles.input}
                     type="text"
                     id="employee_id"
-                    placeholder="Enter  Aadhar File"
+                    placeholder="Enter  Aadhar"
                     value={aadhar_card_file}
                     onChange={(e) => setAadhar_card_file(e.target.value)}
                   />
                 </td>
 
                 <td style={styles.label}>
-                  Upload PAN File{' '}
+                  View PAN{' '}
                   <Link
                     target="blank"
                     to={`${pan_card_file}`}
@@ -1274,7 +1274,7 @@ const UpdateEmployee = () => {
                     style={styles.input}
                     type="text"
                     id="designation"
-                    placeholder="Enter Pan File"
+                    placeholder="Enter Pan"
                     value={pan_card_file}
                     onChange={(e) => setPan_card_file(e.target.value)}
                   />
@@ -1295,7 +1295,7 @@ const UpdateEmployee = () => {
                 </td>
 
                 <td style={styles.label}>
-                  Upload Bank File{' '}
+                  View Bank{' '}
                   <Link
                     target="blank"
                     to={`${bank_account_file}`}
@@ -1312,7 +1312,7 @@ const UpdateEmployee = () => {
                     style={styles.input}
                     type="text"
                     id="designation"
-                    placeholder="Enter Bank File"
+                    placeholder="Enter Bank"
                     value={bank_account_file}
                     onChange={(e) => setBank_account_file(e.target.value)}
                   />

@@ -66,6 +66,21 @@ payslipRouter.get('/:employeeid/:year/:month', async (req, res) => {
   }
 });
 
+payslipRouter.get('/', async (req, res) => {
+  try {
+    const { employeeid, id } = req.params;
+    const payslip = await Payslip.findAll();
+
+    if (payslip) {
+      res.status(200).send(payslip);
+    } else {
+      res.status(404).send({ message: 'Payslip not found' });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
 payslipRouter.get('/:employeeid/:id', async (req, res) => {
   try {
     const { employeeid, id } = req.params;

@@ -58,6 +58,7 @@ import AddNewSalary from './screens/Employee/AddNewSalary';
 import NewAttendance from './screens/Attendance/NewAttendance';
 import SalarCalculator from './screens/Attendance/SalarCalculator';
 import Location from './components/Location';
+import MonthlySalaryReport from './screens/Attendance/MonthlySalaryReport';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -321,6 +322,15 @@ function AppRouter() {
             <SuperAdminRoutes>
               {/* <AttedanceTable /> */}
               <AttendanceTableUpdated />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/Salary-Report/:month/:year"
+          element={
+            <SuperAdminRoutes>
+              {/* <AttedanceTable /> */}
+              <MonthlySalaryReport />
             </SuperAdminRoutes>
           }
         />

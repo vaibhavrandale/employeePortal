@@ -1156,7 +1156,7 @@ function Dashboard() {
                     </div>
                   </div>
                 )} */}
-                  {/* {userInfo && userInfo.isVisitor === 0 && (
+                  {userInfo && userInfo.isVisitor === 0 && (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link
@@ -1181,7 +1181,7 @@ function Dashboard() {
                         </Link>
                       </div>
                     </div>
-                  )} */}
+                  )}
 
                   {userInfo && userInfo.isVisitor === 0 && (
                     <div className="col">

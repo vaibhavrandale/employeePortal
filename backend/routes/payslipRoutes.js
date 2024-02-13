@@ -81,6 +81,7 @@ payslipRouter.get('/', async (req, res) => {
     res.status(500).send({ error: 'Internal Server Error' });
   }
 });
+
 payslipRouter.get('/:employeeid/:id', async (req, res) => {
   try {
     const { employeeid, id } = req.params;

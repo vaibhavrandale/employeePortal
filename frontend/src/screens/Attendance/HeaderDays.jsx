@@ -23,7 +23,8 @@ const HeaderDays = ({ daysInMonth }) => {
         <th className="text-center">Name</th>
         <th className="col-3">Employee ID</th>
         {renderTableHeaders()}
-        <th className="text-center">Total</th>
+        <th className="text-center">Total P</th>
+        <th className="text-center">Total H</th>
 
         <th className="text-center">Action</th>
       </tr>

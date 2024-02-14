@@ -21,6 +21,7 @@ const NewAttendance = () => {
   const [month, setMonth] = useState(currentMonth);
   const [searchTerm, setSearchTerm] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
+  const [employeeData, setEmployeeData] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [exportData, setExportData] = useState(true);
@@ -34,6 +35,14 @@ const NewAttendance = () => {
         const response = await axios.get(`/api/attendence`);
         const data = response.data.attendance;
         setAttendanceData(data);
+        console.log(`data ${data}`);
+
+        // const Employeeresponse = await axios.get(`/api/employees/`);
+        // console.log(Employeeresponse.data.employees);
+
+        // const Employeedata = Employeeresponse.data.employees;
+        // setEmployeeData(Employeedata);
+        // console.log(`Employee data ${Employeedata}`);
 
         // Update the number of days in the month
         const daysResponse = await axios.get(
@@ -184,6 +193,7 @@ const NewAttendance = () => {
                       ...attendance,
                       days: Array.from({ length: daysInMonth }).map(() => ({})),
                       totalPCount: 0, // Initialize totalPCount for each employee
+                      totalHCount: 0, // Initialize totalPCount for each employee
                     };
 
                     const day = new Date(attendance.IN_TIME_1).getDate();
@@ -197,7 +207,7 @@ const NewAttendance = () => {
                 if (groupedData.length === 0) {
                   return (
                     <tr>
-                      <td colSpan={34} className="text-center">
+                      <td colSpan={35} className="text-center">
                         No data found
                       </td>
                     </tr>
@@ -207,6 +217,7 @@ const NewAttendance = () => {
                 // Render the table using the grouped data
                 return groupedData.map((employee) => {
                   let totalPCount = 0; // Move totalPCount inside the employee map loop
+                  let totalHCount = 0; // Move totalHCount inside the employee map loop
 
                   return (
                     <tr key={employee.employee_id}>
@@ -219,18 +230,32 @@ const NewAttendance = () => {
 
                         if (attendance.IN_TIME_1) {
                           const inTime = attendance.IN_TIME_1.split(' ')[1];
+
                           const status = attendance.isLeave
                             ? 'L'
                             : inTime < '09:15:00'
                             ? 'P'
-                            : 'P*';
+                            : attendance.totalHours < 4
+                            ? 'H'
+                            : 'P';
+
                           const bgClass =
                             status === 'L'
-                              ? 'badge bg-warning text-dark p-2'
+                              ? 'badge bg-danger text-white p-2'
                               : 'badge bg-success text-white p-2';
 
                           // Increment the totalPCount when status is 'P'
                           if (status === 'P') {
+                            totalPCount++;
+                            employee.totalPCount++; // Increment the employee's totalPCount
+                          }
+
+                          // Increment the totalPCount when status is 'P'
+                          if (status === 'H') {
+                            totalHCount++;
+                            employee.totalHCount++; // Increment the employee's totalPCount
+                          }
+                          if (status === 'L' && employee.isProbation === 1) {
                             totalPCount++;
                             employee.totalPCount++; // Increment the employee's totalPCount
                           }
@@ -318,6 +343,7 @@ const NewAttendance = () => {
                                                 ) : (
                                                   ''
                                                 )}
+
                                                 {attendance.OUT_LATTITUDE_1 &&
                                                 attendance.OUT_LONGITUDE_1 ? (
                                                   <Link
@@ -440,8 +466,22 @@ const NewAttendance = () => {
                                             <td className="col-md-3">
                                               Total Hours
                                             </td>
-                                            <td colspan="3">
+                                            <td colSpan="3">
                                               {attendance.totalHours}
+                                              &nbsp;&nbsp;
+                                              <span className="text-danger ">
+                                                {status === 'L' ? (
+                                                  <>
+                                                    <span className="text-success fw-bold">
+                                                      {attendance.Name}{' '}
+                                                    </span>
+                                                    is on Leave -(
+                                                    {attendance.LeaveType})
+                                                  </>
+                                                ) : (
+                                                  ''
+                                                )}{' '}
+                                              </span>
                                             </td>
                                           </tr>
                                         </tbody>
@@ -459,6 +499,7 @@ const NewAttendance = () => {
                       })}
 
                       <td className="text-center">{employee.totalPCount}</td>
+                      <td className="text-center">{employee.totalHCount}</td>
 
                       <td className="text-center">
                         <Link

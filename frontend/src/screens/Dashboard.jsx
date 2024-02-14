@@ -1052,7 +1052,7 @@ function Dashboard() {
               >
                 <span className="bg-dark text-light ">Quick Links</span>
                 <div className="row row-cols-1 row-cols-md-4 g-2">
-                  {userInfo && userInfo.isAccountant === 1 && (
+                  {userInfo && userInfo.isHr === 1 && (
                     <div className="col">
                       <div
                         className="card border border-0 quicklikCard"
@@ -1233,6 +1233,35 @@ function Dashboard() {
                                 style={{ color: '#2749f5', fontWeight: '500' }}
                               >
                                 Attendance
+                              </span>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
+                  {userInfo &&
+                    userInfo.isSuperAdmin === 1 &&
+                    userInfo.isHr === 1 && (
+                      <div className="col">
+                        <div className="card border border-0 quicklikCard">
+                          <Link
+                            to="calender"
+                            className="p-1 text-decoration-none"
+                          >
+                            <img
+                              src="/images/icons/attendance1.jpg"
+                              height={50}
+                              style={{ objectFit: 'contain' }}
+                              className="card-img-top quicklikCardImg"
+                              alt="i"
+                            />
+                            <div className="card-body text-center">
+                              <span
+                                className="card-title"
+                                style={{ color: '#2749f5', fontWeight: '500' }}
+                              >
+                                Calender
                               </span>
                             </div>
                           </Link>

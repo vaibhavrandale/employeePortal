@@ -135,11 +135,225 @@ function AddEmployee() {
     const missingFields = [];
 
     if (!employee_id) {
-      missingFields.push('Employee Employee ID');
+      missingFields.push('Employee ID');
+    }
+
+    if (!UID) {
+      missingFields.push('UID');
+    }
+
+    if (!email) {
+      missingFields.push('Email');
+    }
+
+    if (!firstName) {
+      missingFields.push('First Name');
+    }
+
+    if (!lastName) {
+      missingFields.push('Last Name');
+    }
+
+    if (!State) {
+      missingFields.push('State');
+    }
+
+    if (!father_husband_name) {
+      missingFields.push('Father/Husband Name');
+    }
+
+    if (!gender) {
+      missingFields.push('Gender');
+    }
+
+    if (!birth_date) {
+      missingFields.push('Birth Date');
+    }
+
+    if (!marital_status) {
+      missingFields.push('Marital Status');
+    }
+
+    if (!address) {
+      missingFields.push('Address');
+    }
+
+    if (!addressProof) {
+      missingFields.push('Address Proof');
+    }
+
+    if (!sub_locality) {
+      missingFields.push('Sub Locality');
+    }
+
+    if (!district) {
+      missingFields.push('District');
+    }
+
+    if (!pinCode) {
+      missingFields.push('Pin Code');
+    }
+
+    if (!mobile_no) {
+      missingFields.push('Mobile No');
+    }
+
+    if (!nominee_name) {
+      missingFields.push('Nominee Name');
+    }
+
+    if (!nominee_relationship) {
+      missingFields.push('Nominee Relationship');
+    }
+
+    if (!nominee_address) {
+      missingFields.push('Nominee Address');
+    }
+
+    if (!nominee_sub_locality) {
+      missingFields.push('Nominee Sub Locality');
+    }
+
+    if (!nominee_district) {
+      missingFields.push('Nominee District');
+    }
+
+    if (!nominee_state) {
+      missingFields.push('Nominee State');
+    }
+
+    if (!nominee_mobile_no) {
+      missingFields.push('Nominee Mobile No');
+    }
+
+    if (!nominee_pinCode) {
+      missingFields.push('Nominee Pin Code');
+    }
+
+    if (!nominee_email) {
+      missingFields.push('Nominee Email');
+    }
+
+    if (!no_of_family_members) {
+      missingFields.push('No. of Family Members');
+    }
+
+    if (!alternate_mobile_no) {
+      missingFields.push('Alternate Mobile No');
+    }
+
+    if (!personal_email) {
+      missingFields.push('Personal Email');
+    }
+
+    if (!aadhar_no) {
+      missingFields.push('Aadhar No');
+    }
+
+    if (!pan_number) {
+      missingFields.push('Pan Number');
+    }
+
+    if (!bank_account_no) {
+      missingFields.push('Bank Account No');
+    }
+
+    if (!aadhar_card_file) {
+      missingFields.push('Aadhar Card File');
+    }
+
+    if (!pan_card_file) {
+      missingFields.push('Pan Card File');
+    }
+
+    if (!bank_account_file) {
+      missingFields.push('Bank Account File');
+    }
+
+    if (!pf_account_no) {
+      missingFields.push('PF Account No');
+    }
+
+    if (!uan_number) {
+      missingFields.push('UAN Number');
+    }
+
+    if (!image) {
+      missingFields.push('Image');
+    }
+
+    if (!joiningDate) {
+      missingFields.push('Joining Date');
+    }
+
+    if (!designation) {
+      missingFields.push('Designation');
+    }
+
+    if (!age) {
+      missingFields.push('Age');
+    }
+
+    if (!previous_company_name) {
+      missingFields.push('Previous Company Name');
+    }
+
+    if (!experience) {
+      missingFields.push('Experience');
+    }
+
+    if (!experience_letter) {
+      missingFields.push('Experience Letter');
+    }
+
+    if (!tenth_marksheet) {
+      missingFields.push('10th Marksheet');
+    }
+
+    if (!tenth_schoolName) {
+      missingFields.push('10th School Name');
+    }
+
+    if (!tenth_grade) {
+      missingFields.push('10th Grade');
+    }
+
+    if (!twelth_or_diploma_marksheet) {
+      missingFields.push('12th/Diploma Marksheet');
+    }
+
+    if (!twelth_or_diploma_collegeName) {
+      missingFields.push('12th/Diploma College Name');
+    }
+
+    if (!under_geaduate_or_post_graduate_marksheet) {
+      missingFields.push('UG/PG Marksheet');
+    }
+
+    if (!under_geaduate_or_post_graduate_collegeName) {
+      missingFields.push('UG/PG College Name');
+    }
+
+    if (!twelth_or_diploma_grade) {
+      missingFields.push('12th/Diploma Grade');
+    }
+
+    if (!under_geaduate_or_post_graduate_grade) {
+      missingFields.push('UG/PG Grade');
+    }
+
+    if (!ctc) {
+      missingFields.push('CTC');
+    }
+
+    if (!salarygroup) {
+      missingFields.push('Salary Group');
     }
 
     if (missingFields.length > 0) {
-      toast.error(`Please fill : ${missingFields.join(', ')}`);
+      toast.error(
+        `Please fill in the following fields: ${missingFields.join(', ')}`
+      );
       return;
     }
 

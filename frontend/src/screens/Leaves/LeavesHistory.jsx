@@ -433,16 +433,20 @@ function LeavesHistory() {
                     </td>
                     <td className="text-center">
                       {item.approved === 1 ? (
-                        <span className="badge text-bg-success">Approved</span>
+                        <span className="badge text-white bg-success">
+                          Approved
+                        </span>
                       ) : item.approved === 0 && item.remark !== '' ? (
                         <span className="badge text-bg-danger">Rejected</span>
                       ) : (
-                        <span className="badge text-bg-warning">Pending</span>
+                        <span className="badge text-dark bg-warning">
+                          Pending
+                        </span>
                       )}
                     </td>
                     <td className="text-center">
                       {item.approvedAt !== '' ? (
-                        <span className="badge p-2 text-bg-light">
+                        <span className="badge p-2 text-white bg-success">
                           {}
                           {new Date(item.createdAt).toLocaleDateString(
                             'en-GB',
@@ -454,34 +458,46 @@ function LeavesHistory() {
                           )}
                         </span>
                       ) : item.approvedAt === '' && item.remark !== '' ? (
-                        <span className="badge text-bg-danger">Rejected</span>
+                        <span className="badge text-success bg-danger">
+                          Rejected
+                        </span>
                       ) : (
-                        <span className="badge text-bg-warning">Pending</span>
+                        <span className="badge text-dark bg-warning">
+                          Pending
+                        </span>
                       )}
                     </td>
                     <td className="text-center">
                       {item.approvedBy !== '' ? (
-                        <span className="badge text-bg-success">
+                        <span className="badge text-white bg-success">
                           {item.approvedBy}
                         </span>
                       ) : item.approvedBy === '' && item.remark !== '' ? (
                         <span className="badge text-bg-danger">Rejected</span>
                       ) : (
-                        <span className="badge text-bg-warning">pending</span>
+                        <span className="badge text-dark bg-warning">
+                          pending
+                        </span>
                       )}
                     </td>
                     <td className="text-center" style={{ minWidth: '180px' }}>
                       {item.remark === '' ? (
-                        <span className="badge text-bg-warning">pending</span>
+                        <span className="badge text-dark bg-warning">
+                          pending
+                        </span>
                       ) : (
-                        <span className="">{item.remark}</span>
+                        <span className="badge text-white bg-success">
+                          {item.remark}
+                        </span>
                       )}
                     </td>
                     <td className="text-center">
                       {item.remarkBy === '' ? (
-                        <span className="badge text-bg-warning">pending</span>
+                        <span className="badge text-dark bg-warning">
+                          pending
+                        </span>
                       ) : (
-                        <span className="badge text-bg-success">
+                        <span className="badge text-white bg-success">
                           {item.remarkBy}
                         </span>
                       )}

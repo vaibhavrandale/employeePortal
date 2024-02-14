@@ -213,7 +213,7 @@ const TableWithSearchAndPagination = () => {
       ) : (
         <>
           <div className="form-group   mb-2  d-flex w-100 justify-content-between">
-            {userInfo && userInfo.isAdmin && userInfo.isAccountant && (
+            {userInfo && userInfo.isHr === 1 && (
               <Link id="AddBtn" onClick={popupHandle}>
                 ADD
               </Link>

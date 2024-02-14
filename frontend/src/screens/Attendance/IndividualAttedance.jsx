@@ -434,7 +434,7 @@ const NewAttendance = () => {
                 if (groupedData.length === 0) {
                   return (
                     <tr>
-                      <td colSpan={34} className="text-center">
+                      <td colSpan={35} className="text-center">
                         No data found
                       </td>
                     </tr>
@@ -461,9 +461,22 @@ const NewAttendance = () => {
                             : inTime < '09:15:00'
                             ? 'P'
                             : 'P*';
+
+                          // if (status === 'L') {
+                          //   totalPCount++;
+                          //   employee.totalPCount++; // Increment the employee's totalPCount
+                          // }
+
+                          // const status = attendance.isLeave
+                          //   ? 'L'
+                          //   : inTime < '09:15:00'
+                          //   ? 'P'
+                          //   : attendance.totalHours < 4
+                          //   ? 'H'
+                          //   : 'P';
                           const bgClass =
                             status === 'L'
-                              ? 'badge bg-warning text-dark p-2'
+                              ? 'badge bg-danger text-white p-2'
                               : 'badge bg-success text-white p-2';
 
                           // Increment the totalPCount when status is 'P'

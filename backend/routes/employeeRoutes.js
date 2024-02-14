@@ -1920,7 +1920,6 @@ emplyeeRouter.post('/', async (req, res) => {
       sick,
       privilege,
       casual,
-
       tenth_marksheet,
       tenth_schoolName,
       twelth_or_diploma_marksheet,
@@ -1993,138 +1992,204 @@ emplyeeRouter.post('/', async (req, res) => {
     transporter
       .sendMail({
         from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-        to: savedEmployee.email,
+        to: `${savedEmployee.email},${savedEmployee.personal_email}`,
         subject: 'Welcome Abroad🚀!',
         html: `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to Taypro</title>
-      <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 10px;
-        background-color: #f5f5f5;
-      }
-      .container {
-        background-color: #ffffff;
-        padding-left: 20px;
-        padding-right: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      .header {
-        text-align: center;
-      }
-      .image-content {
-        text-align: center;
-      }
-      img {
-        width: 100px;
-        height: 100px;
-        object-fit: contain;
-        display: flex;
-        justify-content: start;
-      }
-    a{
-      text-decoration:"none"
-    }
-       
-    
-        p {
-          color: #333;
-          font-size: 16px;
-          margin-bottom: 20px;
-        }
-    
-        .footer {
-          font-size: 12px;
-          text-align: center;
-          padding:10px 0px 20px 10px;
-        }
-   
-        #name{
-          color:#ff004f;
-          font-weight:600;
-        }
-        #message{
-          color:#006600;
-          font-weight:600;
-        }
-      </style>
-    </head>
-    <body>
-
-   
-      <div class="container">
-      <div class="header">
-      <h2>
-        <img src=${logo} alt="Embedded Image" />
-      </h2>
-    
-        <p>Hii <b id="name">${savedEmployee.name}</b>,Welcome to Taypro! We are excited to have you on board.</p>
-    
-        <p><b id="message"><em>"Your journey with us begins now, and we're here to support you every step of the way."</em></b></p>
-   
-        <p>Here are some details about your account</p>
-
-        <table style=" border-collapse: collapse; width: 100%;">
-       
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Employee portal</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><a href="https://employee.taypro.in" target="blank">https://employee.taypro.in</a></td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Employee ID</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.employee_id}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Name</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.name}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Email</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.email}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Designation</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.designation}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Date of joining</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.joiningDate}</td>
-        </tr>
-        <tr>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;"><strong>Default password</strong></td>
-          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">${savedEmployee.employee_id}</td>
-        </tr>
-        <!-- Add more rows as needed -->
-      </table>
-      
-     <p> If you have any questions or need assistance, feel free to contact us.</p>
-      </div>
-      <div id="footer">
-      <br/>
-      <span>Best Regards,</span><br/>
-      <span>TAYPRO PRIVATE LIMITED</span><br/>
-   <span><b>We make green energy greener!!</b></span><br/>
-      </div>
-    </body>
-    </html>
+        <!DOCTYPE html>
+        <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Welcome to Taypro</title>
+            <style></style>
+          </head>
+        
+          <body>
+            <div
+              class="container"
+              style="
+                max-width: 600px;
+                min-height: 100vh;
+                font-family: Arial, sans-serif;
+                margin: auto;
+                padding: 10px;
+                border-radius: 10px;
+                background-color: #f8f8f8;
+              "
+            >
+              <div class="header">
+                <div style="text-align: end">
+                  <img
+                    src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                    alt="Embedded Image"
+                    style="
+                      height: 120px;
+                      width: 120px;
+                      object-fit: contain;
+                      margin: 1px 0px;
+                    "
+                  />
+                </div>
+                <div style="width: 25%; margin: auto">
+                  <img
+                    style="
+                      height: 150px;
+                      width: 150px;
+                      object-fit: cover;
+                      margin: 10px 0px;
+        
+                      border-radius: 50%;
+                    "
+                    src=${savedEmployee.image}  />
+                </div>
+        
+                <p style="padding: 10px 20px">
+                  Hii <b style="color: crimson">${savedEmployee.NAME}</b>,Welcome to
+                  Taypro! We are excited to have you on board.
+                </p>
+        
+                <p style="padding: 10px 20px; display: flex; justify-content: center">
+                  <b style="padding: 10px 20px; text-align: center; color: tomato">
+                    "Your journey with us begins now, and we're here to support you
+                    every step of the way."</b
+                  >
+                </p>
+        
+                <p style="padding: 10px 20px">
+                  Here are some details about your account
+                </p>
+        
+                <table style="border-collapse: collapse; width: 80%; margin: auto">
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Employee portal</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <a href="https://employee.taypro.in" target="blank"
+                        >click here</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Employee ID</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.employee_id}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Name</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.NAME}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Email</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.email}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Designation</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.designation}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Date of joining</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.joiningDate}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      <strong>Default password</strong>
+                    </td>
+                    <td
+                      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+                    >
+                      ${savedEmployee.employee_id}
+                    </td>
+                  </tr>
+                  <!-- Add more rows as needed -->
+                </table>
+        
+                <p style="padding: 10px 20px">
+                  If you have any questions or need assistance, feel free to contact us.
+                </p>
+                <p style="padding: 0px 20px">
+                  Contact : <b><a mailto="hr@taypro.in">hr@taypro.in</a></b>
+                </p>
+              </div>
+              <div style="padding: 10px 20px">
+                <br />
+                <span style="color: black; font-weight: 600">Best Regards,</span><br />
+                <span style="color: crimson; font-weight: 600">HR TAYPRO,</span><br />
+                <span style="color: rgb(0, 0, 0); font-weight: 600"
+                  >TAYPRO PRIVATE LIMITED</span
+                ><br />
+                <span style="color: green; font-weight: 600"
+                  ><b>We make green energy greener!!</b></span
+                ><br />
+              </div>
+            </div>
+          </body>
+        </html>
+        
+        
       `,
       })
       .then((info) => {
         if (info.accepted.includes(savedEmployee.email)) {
-          console.log(`Email successfully sent to ${savedEmployee.email}`);
+          console.log(
+            `Email successfully sent to ${savedEmployee.email},${savedEmployee.personal_email}`
+          );
         } else {
-          console.log(`Failed to send email to ${savedEmployee.email}`);
+          console.log(
+            `Failed to send email to ${savedEmployee.email},${savedEmployee.personal_email}`
+          );
         }
       })
       .catch((error) => {
-        console.error(`Error sending email to ${savedEmployee.email}:`, error);
+        console.error(
+          `Error sending email to ${savedEmployee.email},${savedEmployee.personal_email}:`,
+          error
+        );
       });
     // ----------------email---------------------------------
 

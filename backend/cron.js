@@ -5,6 +5,9 @@ import { Op } from 'sequelize';
 import nodemailer from 'nodemailer';
 import Anniversary from './models/Anniversary.js';
 import sequelize from './config/database.js';
+import Leaves from './models/LeaveModel.js';
+import RfidCkeck from './models/RfidCkeck.js';
+import cron from 'node-cron';
 
 const birthday =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
@@ -1068,6 +1071,108 @@ const ProbationChecker = async () => {
   }
 };
 
+const processLeavesAndCreateRefidChecks = async () => {
+  try {
+    // Fetch all leaves from Leaves table
+    const allLeaves = await Leaves.findAll({
+      where: {
+        approved: 1,
+      },
+    });
+
+    console.log(`leave found ${allLeaves}`);
+
+    // Iterate through each leave and create RefidChecks if conditions are met
+    for (const leaveInstance of allLeaves) {
+      const leave = leaveInstance.get(); // Convert Sequelize instance to plain JavaScript object
+      console.log('Processing leave:', leave);
+
+      const currentDate = new Date();
+
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth() + 1;
+      const currentDay = currentDate.getDate();
+      const InTime = '09:00:00';
+      const OutTime = '18:00:00';
+
+      const DefaultInLattitude = '18.6483599';
+      const DefaultInLongitude = '73.8313038';
+
+      const DefaultOutLattitude = '18.6483599';
+      const DefaultOutLongitude = '73.8313038';
+
+      const expectedDateOfLeave = new Date(leave.expectedDateOfLeave);
+      const startDate = expectedDateOfLeave.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+
+      const expectedDateOfreturn = new Date(leave.expectedDateOfreturn);
+
+      const EndDate = expectedDateOfreturn.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      });
+
+      console.log(startDate, EndDate);
+
+      // if (leave) {
+      const employee = await Employee.findOne({
+        where: {
+          employee_id: leave.employee_id,
+        },
+      });
+      console.log(employee.employee_id);
+      // } else {
+      //   console.log(`Employeee Not Found :${leave.employee_id}`);
+      // }
+
+      if (
+        currentDate >= expectedDateOfLeave &&
+        currentDate <= expectedDateOfreturn
+      ) {
+        // Create a record in RefidChecks table
+        const rfidCheck = await RfidCkeck.create({
+          IN_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${InTime}`,
+          OUT_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${OutTime}`,
+          totalHours: 8,
+          isLeave: 1,
+          LeaveType: leave.type,
+          Name: leave.name,
+          employee_id: leave.employee_id,
+          UID: employee.UID,
+          IN_LATTITUDE_1: DefaultInLattitude,
+          IN_LONGITUDE_1: DefaultInLongitude,
+          OUT_LATTITUDE_1: DefaultOutLattitude,
+          OUT_LONGITUDE_1: DefaultOutLongitude,
+          year: currentYear,
+          month: currentMonth,
+          day: currentDay,
+        });
+
+        // console.log('Creating RefidCheck:', rfidCheck);
+
+        const leaveRecord = await rfidCheck.save();
+        if (!leaveRecord) {
+          console.error(
+            'Failed to create RefidCheck. Validation errors:',
+            rfidCheck.errors
+          );
+        } else {
+          console.log('Leave record created successfully:');
+        }
+        console.log('Leave record created:');
+      } else {
+        console.log('Did not found');
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching or processing leaves:', error);
+  }
+};
+
 export {
   sendBirthdayEmails,
   checkAndCreateBirthdayRecords,
@@ -1075,4 +1180,5 @@ export {
   Intern,
   PayslipGenerator,
   ProbationChecker,
+  processLeavesAndCreateRefidChecks,
 };

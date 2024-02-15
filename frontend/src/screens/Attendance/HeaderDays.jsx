@@ -1,6 +1,24 @@
 import React from 'react';
 
-const HeaderDays = ({ daysInMonth }) => {
+const HeaderDays = ({ daysInMonth, month }) => {
+  const getMonthName = (monthNumber) => {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return months[monthNumber - 1];
+  };
+
   const renderTableHeaders = () => {
     const headers = [];
 
@@ -18,6 +36,25 @@ const HeaderDays = ({ daysInMonth }) => {
 
   return (
     <thead>
+      <tr>
+        <th
+          className="text-center"
+          colSpan={
+            daysInMonth === 28
+              ? 34
+              : daysInMonth === 29
+              ? 35
+              : daysInMonth === 30
+              ? 36
+              : 37
+          }
+        >
+          <h3 className="text-underline-0">
+            Timeline for month-{' '}
+            <span className="text-success">{getMonthName(month)}</span>
+          </h3>
+        </th>
+      </tr>
       <tr>
         <th className="text-center">UID</th>
         <th className="text-center">Name</th>

@@ -298,6 +298,21 @@ const data = {
     },
   ],
 
+  holidays: [
+    {
+      name: "New Year's Day",
+      img: '/images/happynewyear.avif',
+      date: '01/01/2024',
+      description: 'Celebration of the beginning of the new year.',
+    },
+    {
+      name: 'Independence Day',
+      img: '/images/independance.avif',
+      date: '04/07/2024',
+      description: 'Celebration of national independence.',
+    },
+  ],
+
   RfidReg: [
     {
       UID: '5014F559',

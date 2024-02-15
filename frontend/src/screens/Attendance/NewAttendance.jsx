@@ -76,9 +76,9 @@ const NewAttendance = () => {
   return (
     <div className="container">
       <Helmet>
-        <title>Attendance</title>
+        <title> All Employee Timeline</title>
       </Helmet>
-      <h2 className="text-center mt-3">All Employee Attendance</h2>
+      <h2 className="text-center mt-3">All Employee Timeline</h2>
       {/* Add filters for month and year */}
       <div className="d-flex justify-content-between">
         <div className="d-flex">
@@ -165,7 +165,7 @@ const NewAttendance = () => {
       </div>
 
       <table className="table table-bordered" ref={tableRef}>
-        <HeaderDays daysInMonth={daysInMonth} />
+        <HeaderDays daysInMonth={daysInMonth} month={month} />
 
         <tbody>
           {loading ? (

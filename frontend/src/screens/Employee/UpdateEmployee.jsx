@@ -2139,6 +2139,7 @@ const UpdateEmployee = () => {
                                         {' '}
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="month"
                                           value={item.month}
@@ -2152,6 +2153,7 @@ const UpdateEmployee = () => {
                                         {' '}
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="year"
                                           value={item.year}
@@ -2164,6 +2166,7 @@ const UpdateEmployee = () => {
                                         {' '}
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="ctc"
                                           value={item.ctc}
@@ -2175,6 +2178,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="netsalary"
                                           value={item.netsalary}
@@ -2186,6 +2190,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="salarygroup"
                                           value={item.salarygroup}
@@ -2198,6 +2203,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="basic"
                                           value={item.basic}
@@ -2210,6 +2216,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="hra"
                                           value={item.hra}
@@ -2222,6 +2229,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="conveyance"
                                           value={item.conveyance}
@@ -2234,6 +2242,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="medical"
                                           value={item.medical}
@@ -2245,6 +2254,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="special"
                                           value={item.special}
@@ -2257,6 +2267,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="pt"
                                           value={item.pt}
@@ -2269,6 +2280,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="pf"
                                           value={item.pf}
@@ -2281,6 +2293,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="pf"
                                           value={item.esi}
@@ -2293,6 +2306,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="total_deduction"
                                           value={item.total_deduction}
@@ -2305,6 +2319,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="gross"
                                           value={item.gross}
@@ -2317,6 +2332,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="employer_pf"
                                           value={item.employer_pf}
@@ -2328,6 +2344,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="employer_esi"
                                           value={item.employer_esi}
@@ -2340,6 +2357,7 @@ const UpdateEmployee = () => {
                                       <td className=" text-center">
                                         <input
                                           style={styles.input2}
+                                          disabled
                                           type="text"
                                           id="bonus"
                                           value={item.bonus}

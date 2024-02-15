@@ -1232,7 +1232,7 @@ function Dashboard() {
                                 className="card-title"
                                 style={{ color: '#2749f5', fontWeight: '500' }}
                               >
-                                Attendance
+                                Timeline
                               </span>
                             </div>
                           </Link>
@@ -1240,34 +1240,32 @@ function Dashboard() {
                       </div>
                     )}
 
-                  {userInfo &&
-                    userInfo.isSuperAdmin === 1 &&
-                    userInfo.isHr === 1 && (
-                      <div className="col">
-                        <div className="card border border-0 quicklikCard">
-                          <Link
-                            to="calender"
-                            className="p-1 text-decoration-none"
-                          >
-                            <img
-                              src="/images/icons/attendance1.jpg"
-                              height={50}
-                              style={{ objectFit: 'contain' }}
-                              className="card-img-top quicklikCardImg"
-                              alt="i"
-                            />
-                            <div className="card-body text-center">
-                              <span
-                                className="card-title"
-                                style={{ color: '#2749f5', fontWeight: '500' }}
-                              >
-                                Calender
-                              </span>
-                            </div>
-                          </Link>
-                        </div>
+                  {
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="calender"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/holiday.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{ color: '#2749f5', fontWeight: '500' }}
+                            >
+                              Holiday
+                            </span>
+                          </div>
+                        </Link>
                       </div>
-                    )}
+                    </div>
+                  }
 
                   {userInfo && userInfo.isAdmin && userInfo.isVisitor === 0 && (
                     <div className="col">

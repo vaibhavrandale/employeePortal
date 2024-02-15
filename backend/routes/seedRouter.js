@@ -57,6 +57,7 @@ import RfidReg from '../models/RfidReg.js';
 import RfidCkeck from '../models/RfidCkeck.js';
 import Payslip from '../models/Payslip.js';
 import Anniversary from '../models/Anniversary.js';
+import Holidays from '../models/Holidays.js';
 
 const seedRouter = express.Router();
 
@@ -95,6 +96,10 @@ seedRouter.get('/', async (req, res) => {
     await Anniversary.destroy({ where: {}, truncate: true });
     await Anniversary.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    await Holidays.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await Holidays.destroy({ where: {}, truncate: true });
+    await Holidays.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
     // Insert data into the Employee table
     const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
@@ -106,6 +111,7 @@ seedRouter.get('/', async (req, res) => {
     const createdRfidCkeck = await RfidCkeck.bulkCreate(data.RfidCkeck);
     const createdPayslip = await Payslip.bulkCreate(data.Payslip);
     const createdAnniversary = await Anniversary.bulkCreate(data.Anniversary);
+    const createdHolidays = await Holidays.bulkCreate(data.holidays);
 
     res.send({
       createdEmployees,
@@ -116,6 +122,7 @@ seedRouter.get('/', async (req, res) => {
       createdRfidCkeck,
       createdPayslip,
       createdAnniversary,
+      createdHolidays,
     });
   } catch (error) {
     console.error(error);

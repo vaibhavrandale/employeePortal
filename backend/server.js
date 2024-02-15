@@ -25,6 +25,7 @@ import {
 import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
 import payslipRouter from './routes/payslipRoutes.js';
+import holidayRouter from './routes/holidayRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -97,6 +98,7 @@ app.use('/api/calendar', EventRouter);
 app.use('/api/notice', NoticeRouter);
 app.use('/api/leaves', leaveRouter);
 app.use('/api/payslip', payslipRouter);
+app.use('/api/holidays', holidayRouter);
 
 app.get('/api/leaves', (req, res) => {
   res.send(data.Leaves);

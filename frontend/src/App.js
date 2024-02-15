@@ -60,6 +60,8 @@ import SalarCalculator from './screens/Attendance/SalarCalculator';
 import Location from './components/Location';
 import MonthlySalaryReport from './screens/Attendance/MonthlySalaryReport';
 import Holidayhome from './screens/Holiday/Holidayhome';
+import CreateHoliday from './screens/Holiday/CreateHoliday';
+import Editholiday from './screens/Holiday/Editholiday';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -547,8 +549,26 @@ function AppRouter() {
         <Route
           path="/calender"
           element={
-            <SuperAdminRoutes>
+            <ProtectedRoutes>
               <Holidayhome />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/new-holiday"
+          element={
+            <SuperAdminRoutes>
+              <CreateHoliday />
+            </SuperAdminRoutes>
+          }
+        />
+
+        <Route
+          path="/edit-holiday/:id"
+          element={
+            <SuperAdminRoutes>
+              <Editholiday />
             </SuperAdminRoutes>
           }
         />

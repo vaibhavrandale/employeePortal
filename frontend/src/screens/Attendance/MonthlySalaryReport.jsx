@@ -221,13 +221,16 @@ const MonthlySalaryReport = () => {
           <table className="table table-bordered" ref={tableRef}>
             <thead>
               <tr>
-                <th colSpan={28} className="">
+                <th colSpan={14} className="text-center">
                   <h3 className="m-1">
                     Salary Report of Month&nbsp;-&nbsp;
                     <span className="text-success fw-bold">
                       {getMonthName(month)}
                     </span>
                   </h3>
+                </th>
+                <th colSpan={14} className="text-center">
+                  <h3 className="m-1 text-dark fw-bold">TAYPRO - PUNE</h3>
                 </th>
               </tr>
               <tr>

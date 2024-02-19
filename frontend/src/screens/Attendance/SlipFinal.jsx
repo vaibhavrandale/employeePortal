@@ -104,7 +104,7 @@ function SlipFinal() {
     const logoX = pageWidth - logoWidth - paddingFromRight;
 
     // doc.rect(7, 5, pageWidth - 10, doc.internal.pageSize.getHeight() - 10, 'S');
-    doc.rect(7, 5, pageWidth - 10, 180 - 10, 'S');
+    doc.rect(7, 5, pageWidth - 28, 180 - 17, 'S');
     doc.addImage(logo, 'PNG', logoX, 10, 35, 10);
 
     doc.setFont('helvetica', 'bold');
@@ -230,7 +230,7 @@ function SlipFinal() {
 
     // doc.text(`Financial Period ${year}-${parseInt(year, 10) + 1}`, 16, 26);
     doc.setFontSize(10);
-    doc.line(7, 26, doc.internal.pageSize.getWidth() - 3, 26);
+    doc.line(7, 26, doc.internal.pageSize.getWidth() - 21, 26);
 
     let department;
 
@@ -264,7 +264,10 @@ function SlipFinal() {
     //left vertical line
     doc.line(15, 35, 15, 92);
     doc.setTextColor(0, 0, 0); // Set text color to blue
+    doc.setFont('helvetica', 'bold');
+
     doc.text(`Employee Id`, 16, 40);
+    doc.setFont('helvetica', 'normal');
 
     //middle vertical line
     doc.line(56, 35, 56, 92);
@@ -272,45 +275,56 @@ function SlipFinal() {
     doc.setTextColor(0); // Reset text color to black
     doc.text(` ${employees.employee_id}`, 57, 40);
 
-    doc.line(15, 42, 95, 42);
+    // doc.line(15, 42, 95, 42);
 
     doc.setTextColor(0, 0, 0); // Set text color to blue
-
+    doc.setFont('helvetica', 'bold');
     doc.text(`Employee Name`, 16, 47);
-
-    doc.line(15, 49, 95, 49);
+    doc.setFont('helvetica', 'normal');
+    // doc.line(15, 49, 95, 49);
 
     doc.setTextColor(0, 128, 255); // Set text color to blue
 
     doc.setTextColor(0); // Reset text color to black
 
     doc.text(`${name}`, 58, 47);
-    //right vertical line
-    // doc.line(85, 35, 85, 84);
 
-    //horizantal
-    doc.line(15, 56, 95, 56);
+    // doc.line(15, 56, 95, 56);
 
     doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
     doc.text(`Department`, 16, 54);
+    doc.setFont('helvetica', 'normal');
 
     doc.text(`${department}`, 58, 54);
 
+    doc.setFont('helvetica', 'bold');
     doc.text(`Designation`, 16, 61);
+    doc.setFont('helvetica', 'normal');
+
     doc.text(`${employees.designation}`, 58, 61);
 
-    doc.line(15, 63, 95, 63);
+    // doc.line(15, 63, 95, 63);
 
+    doc.setFont('helvetica', 'bold');
     doc.text(`Location`, 16, 67.5);
+    doc.setFont('helvetica', 'normal');
 
     doc.text(`Pune`, 58, 67.5);
-    doc.line(15, 70, 95, 70);
 
+    // doc.line(15, 70, 95, 70);
+
+    doc.setFont('helvetica', 'bold');
     doc.text(`Adhar No`, 16, 74.5);
-    doc.text(`${employees.aadhar_no}`, 58, 74.5);
-    doc.line(15, 77, 95, 77);
+    doc.setFont('helvetica', 'normal');
 
+    doc.text(`${employees.aadhar_no}`, 58, 74.5);
+    // doc.line(15, 77, 95, 77);
+
+    doc.setFont('helvetica', 'bold');
     doc.text(`Bank IFSC`, 16, 81.5);
+    doc.setFont('helvetica', 'normal');
+
     doc.text(`${employees.ifsc_code}`, 58, 81.5);
 
     doc.line(15, 84, 95, 84);
@@ -320,7 +334,6 @@ function SlipFinal() {
     //  ----------------------------------- 2nd table start ------------------------------
 
     doc.setDrawColor(0, 0, 0);
-    doc.line(45, 35, 85, 35);
 
     //left vertical line
     doc.line(100, 35, 100, 84);
@@ -331,40 +344,51 @@ function SlipFinal() {
     doc.setTextColor(0, 0, 0); // Set text color to blue
 
     doc.line(95, 35, 181, 35);
+    doc.setFont('helvetica', 'bold');
     doc.text(`UAN (PF)`, 102, 40);
+    doc.setFont('helvetica', 'normal');
 
-    doc.text(`${employees.pf_account_no}`, 152, 40);
+    doc.text(`${employees.pf_account_no}`, 151.2, 40);
 
-    doc.line(95, 42, 181, 42);
-
+    // doc.line(95, 42, 181, 42);
+    doc.setFont('helvetica', 'bold');
     doc.text(`IP NO (ESIC)`, 102, 47);
+    doc.setFont('helvetica', 'normal');
 
-    doc.text(`${payslip.esi}`, 152, 47);
-    doc.line(95, 49, 181, 49);
+    doc.text(`${payslip.esi}`, 151.2, 47);
+    // doc.line(95, 49, 181, 49);
 
+    doc.setFont('helvetica', 'bold');
     doc.text(`Joining Date`, 102, 54);
-    doc.text(`${employees.joiningDate}`, 152, 54);
+    doc.setFont('helvetica', 'normal');
 
-    doc.line(95, 56, 181, 56);
+    doc.text(`${employees.joiningDate}`, 151.2, 54);
 
+    // doc.line(95, 56, 181, 56);
+    doc.setFont('helvetica', 'bold');
     doc.text(`Birth Date`, 102, 61);
-    doc.text(`${employees.birth_date}`, 152, 61);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${employees.birth_date}`, 151.2, 61);
 
-    doc.line(95, 63, 181, 63);
-
+    // doc.line(95, 63, 181, 63);
+    doc.setFont('helvetica', 'bold');
     doc.text(`Gender`, 102, 68);
-    doc.text(`${employees.gender}`, 152, 68);
+    doc.setFont('helvetica', 'normal');
 
-    doc.line(95, 70, 181, 70);
+    doc.text(`${employees.gender}`, 151.2, 68);
 
+    // doc.line(95, 70, 181, 70);
+    doc.setFont('helvetica', 'bold');
     doc.text(`PAN`, 102, 75);
-    doc.text(`${employees.pan_number}`, 152, 75);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${employees.pan_number}`, 151.2, 75);
 
-    doc.line(95, 77, 181, 77);
-
+    // doc.line(95, 77, 181, 77);
+    doc.setFont('helvetica', 'bold');
     doc.text(`BANK A/C`, 102, 82);
+    doc.setFont('helvetica', 'normal');
 
-    doc.text(`${employees.bank_account_no}`, 152, 82);
+    doc.text(`${employees.bank_account_no}`, 151.2, 82);
 
     doc.line(95, 84, 181, 84);
 
@@ -374,60 +398,78 @@ function SlipFinal() {
     // doc.line(85, 84, 95, 84);
     doc.line(15, 92, 181, 92);
 
+    doc.setFont('helvetica', 'bold');
     doc.text(`Attendance`, 16, 89);
+    doc.setFont('helvetica', 'Normal');
+    doc.setFont('helvetica', 'bold');
 
-    doc.text(`Total Day :  ${daysInMonth}`, 58, 89);
+    doc.text(`Total Day :  ${daysInMonth}`, 58, 89.2);
 
-    doc.text(`Paid Day : 25`, 152, 89);
+    doc.text(`Paid Day : 25`, 152, 89.2);
+    doc.setFont('helvetica', 'Normal');
 
     //  ----------------------------------- 2nd table end------------------------------
 
     // ------------------------------3rd table start------------------------------------------
     //top
-    doc.line(15, 100, 181, 100);
+    // doc.line(15, 92, 181, 92);
 
     //left vertical line
-    doc.line(15, 100, 15, 157);
+    doc.line(15, 92, 15, 160);
 
     //right vertical line
-    doc.line(181, 100, 181, 157);
+    doc.line(181, 92, 181, 160);
 
     doc.setFont('helvetica', 'bold');
 
-    doc.text(`EARNINGS`, 26, 105);
+    doc.text(`EARNINGS`, 26, 97.5);
 
-    doc.line(15, 107, 181, 107);
+    doc.line(15, 100, 181, 100);
 
-    doc.text(`AMOUNT`, 67, 105);
+    doc.text(`AMOUNT`, 67, 97.5);
 
     // doc.line(15, 107, 181, 107);
 
     //2nd vertical line
-    doc.line(56, 100, 56, 150);
+    doc.line(56, 92, 56, 150);
 
     //3rd vertical line
-    doc.line(100, 100, 100, 150);
+    doc.line(100, 92, 100, 150);
 
     doc.setFont('helvetica', 'normal');
 
-    doc.text(`Base Pay`, 16, 112);
-    doc.text(`${payslip.basic}.00`, 71, 112);
-    doc.line(15, 114, 181, 114);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Base Pay`, 16, 105);
+    doc.setFont('helvetica', 'normal');
 
-    doc.text(`House Rent Allowance`, 16, 119);
-    doc.text(`${payslip.hra}.00`, 71, 119);
-    doc.line(15, 121, 181, 121);
+    doc.text(`${payslip.basic}.00`, 71, 105);
+    // doc.line(15, 114, 181, 114);
 
-    doc.text(`Conveyance allowances`, 16, 126);
-    doc.text(`${payslip.conveyance}.00`, 73, 126);
-    doc.line(15, 128, 181, 128);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`House Rent Allowance`, 16, 111);
+    doc.setFont('helvetica', 'normal');
 
-    doc.text(`Medical allowances`, 16, 133);
-    doc.text(`${payslip.medical}.00`, 73, 133);
-    doc.line(15, 135, 181, 135);
+    doc.text(`${payslip.hra}.00`, 71, 111);
+    // doc.line(15, 121, 181, 121);
 
-    doc.text(`Special allowances`, 16, 139);
-    doc.text(`${payslip.special}.00`, 71, 139);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Conveyance allowance`, 16, 117);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${payslip.conveyance}.00`, 73, 117);
+    // doc.line(15, 128, 181, 128);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Medical allowance`, 16, 123);
+    doc.setFont('helvetica', 'normal');
+
+    doc.text(`${payslip.medical}.00`, 73, 123);
+    // doc.line(15, 135, 181, 135);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Special allowance`, 16, 129);
+    doc.setFont('helvetica', 'normal');
+
+    doc.text(`${payslip.special}.00`, 71, 129);
     doc.line(15, 142, 181, 142);
 
     doc.setFont('helvetica', 'bold');
@@ -437,7 +479,7 @@ function SlipFinal() {
     doc.line(15, 150, 181, 150);
 
     // bottom
-    doc.line(15, 157, 181, 157);
+    doc.line(15, 160, 181, 160);
 
     // doc.line(15, 107, 181, 107);
     // ------------------------------3rd table end--------------------------------------------
@@ -446,36 +488,48 @@ function SlipFinal() {
 
     doc.setFont('helvetica', 'bold');
 
-    doc.text(`DEDUCTIONS`, 110, 105);
+    doc.text(`DEDUCTIONS`, 110, 97.5);
 
     // doc.line(15, 107, 181, 107);
 
-    doc.text(`AMOUNT`, 157, 105);
+    doc.text(`AMOUNT`, 157, 97.5);
 
     //3rd  vertical line
-    doc.line(150, 100, 150, 150);
+    doc.line(150, 92, 150, 150);
 
     doc.setFont('helvetica', 'normal');
 
-    doc.text(`PF contribution by employee`, 102, 112);
-    doc.text(`${payslip.pf}.00`, 156, 112);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.8);
+    doc.text(`PF contribution by employee`, 101, 105);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(`${payslip.pf}.00`, 156, 105);
 
-    doc.text(`ESI contribution by employee`, 102, 119);
-    doc.text(`${payslip.esi}.00`, 162, 119);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.8);
+    doc.text(`ESI contribution by employee`, 100.5, 111);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(`${payslip.esi}.00`, 162, 111);
 
-    doc.text(`Professional Tax (PT)`, 102, 126);
-    doc.text(`${payslip.pt}.00`, 158, 126);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9.8);
+    doc.text(`Professional Tax (PT)`, 101, 117);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.text(`${payslip.pt}.00`, 158, 117);
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Total Deductions`, 102, 147);
     doc.text(`${payslip.total_deduction}.00`, 156, 147);
 
     doc.setFont('helvetica', 'bold');
-    doc.text(`Net Pay :`, 16, 155);
+    doc.text(`Net Pay :`, 16, 155.7);
     doc.text(
       `${payslip.netsalary}.00 INR  (${numberToWords(payslip.netsalary)})`,
       33,
-      155
+      155.7
     );
     // doc.line(15, 114, 181, 114);
 

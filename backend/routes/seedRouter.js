@@ -61,7 +61,7 @@ import Holidays from '../models/Holidays.js';
 
 const seedRouter = express.Router();
 
-seedRouter.get('/', async (req, res) => {
+seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
   try {
     // Remove all existing records from the Employee table
     await Employee.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');

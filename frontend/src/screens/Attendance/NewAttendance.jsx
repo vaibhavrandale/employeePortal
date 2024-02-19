@@ -233,25 +233,35 @@ const NewAttendance = () => {
                         if (attendance.IN_TIME_1) {
                           const inTime = attendance.IN_TIME_1.split(' ')[1];
 
+                          const status = attendance.isLeave
+                            ? 'L'
+                            : inTime < '09:15:00' && attendance.totalHours >= 8
+                            ? 'P'
+                            : inTime < '09:15:00'
+                            ? 'P'
+                            : attendance.totalHours < 4
+                            ? 'P*'
+                            : 'H';
+
                           // const status = attendance.isLeave
                           //   ? 'L'
                           //   : inTime < '09:15:00'
                           //   ? 'P'
                           //   : attendance.totalHours < 4
-                          //   ? 'H'
-                          //   : 'P';
+                          //   ? 'P*'
+                          //   : 'H';
 
-                          const status =
-                            attendance.LeaveType === 'PH' &&
-                            attendance.isLeave === 0
-                              ? 'PH'
-                              : attendance.isLeave === 1
-                              ? 'L'
-                              : inTime < '09:15:00'
-                              ? 'P'
-                              : attendance.totalHours < 4
-                              ? 'H'
-                              : 'P';
+                          // const status =
+                          //   attendance.LeaveType === 'PH' &&
+                          //   attendance.isLeave === 0
+                          //     ? 'PH'
+                          //     : attendance.isLeave === 1
+                          //     ? 'L'
+                          //     : inTime < '09:15:00'
+                          //     ? 'P'
+                          //     : attendance.totalHours < 4
+                          //     ? 'H'
+                          //     : 'P';
 
                           // const bgClass =
                           //   status === 'L'
@@ -267,6 +277,10 @@ const NewAttendance = () => {
 
                           // Increment the totalPCount when status is 'P'
                           if (status === 'P') {
+                            totalPCount++;
+                            employee.totalPCount++; // Increment the employee's totalPCount
+                          }
+                          if (status === 'P*') {
                             totalPCount++;
                             employee.totalPCount++; // Increment the employee's totalPCount
                           }

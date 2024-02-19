@@ -27,6 +27,15 @@ const reducer = (state, action) => {
     case 'FETCH_EMPLOYEE_FAIL':
       return { ...state, fetchloading: false, error: action.payload };
 
+    case 'FETCH_HOLIDAY_REQUEST':
+      return { ...state, fetchloading: true };
+
+    case 'FETCH_HOLIDAY_SUCCESS':
+      return { ...state, holidays: action.payload, fetchloading: false };
+
+    case 'FETCH_HOLIDAY_FAIL':
+      return { ...state, fetchloading: false, error: action.payload };
+
     default:
       return state;
   }
@@ -34,15 +43,14 @@ const reducer = (state, action) => {
 
 const MonthlySalaryReport = () => {
   const { month, year } = useParams();
-  const [{ fetchloading, error, payslip, employees }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ fetchloading, error, payslip, employees, holidays }, dispatch] =
+    useReducer(reducer, {
       payslip: [],
       employees: [],
+      holidays: null,
       loading: true,
       error: '',
-    }
-  );
+    });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
@@ -61,9 +69,9 @@ const MonthlySalaryReport = () => {
         setLoading(true);
 
         const response = await axios.get(`/api/payslip`);
-        console.log(`response ` + response);
+        //console.log(`response ` + response);
         const data = response.data;
-        console.log(`data ` + data);
+        //console.log(`data ` + data);
         dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
 
         setAttendanceData(data);
@@ -109,6 +117,20 @@ const MonthlySalaryReport = () => {
       }
     };
 
+    const HolidayCount = async () => {
+      dispatch({ type: 'FETCH_HOLIDAY_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/holidays/total/${month}/${year}`);
+        dispatch({
+          type: 'FETCH_HOLIDAY_SUCCESS',
+          payload: result.data,
+        });
+        console.log('holidaycount ' + result.data);
+      } catch (err) {
+        dispatch({ type: 'FETCH_HOLIDAY_FAIL', payload: err.message });
+      }
+    };
     const EmployeeData = async () => {
       dispatch({ type: 'FETCH_EMPLOYEE_REQUEST' });
 
@@ -118,7 +140,7 @@ const MonthlySalaryReport = () => {
           type: 'FETCH_EMPLOYEE_SUCCESS',
           payload: result.data.employees,
         });
-        console.log(result.data);
+        //console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_EMPLOYEE_FAIL', payload: err.message });
       }
@@ -127,6 +149,7 @@ const MonthlySalaryReport = () => {
     daysData();
     EmployeeData();
     fetchData();
+    HolidayCount();
   }, [month, totalSunday, year]);
 
   const applyStylesAndHeadingForExport = () => {
@@ -200,6 +223,8 @@ const MonthlySalaryReport = () => {
 
   const filteredData = payslip.filter((entry) => {});
 
+  console.log(holidays);
+
   return (
     <>
       <div className="container">
@@ -267,12 +292,12 @@ const MonthlySalaryReport = () => {
 
             <tbody>
               {payslip.map((item, index) => {
-                console.log('item.employee_id:', item.employee_id);
-                console.log('Employees:', employees);
+                ////console.log('item.employee_id:', item.employee_id);
+                ////console.log('Employees:', employees);
                 const correspondingEmployee = employees.find(
                   (employee) => employee.employee_id === item.employee_id
                 );
-                console.log('correspondingEmployee:', correspondingEmployee);
+                ////console.log('correspondingEmployee:', correspondingEmployee);
 
                 // Add the logic for parsed values here
                 let parsedMonth = parseInt(month, 10);
@@ -302,7 +327,7 @@ const MonthlySalaryReport = () => {
                   averagedays = 30;
                 }
 
-                console.log(`average days ${averagedays}`);
+                //console.log(`average days ${averagedays}`);
 
                 const netSalary = Math.floor(
                   correspondingEmployee.isProbation === 1
@@ -354,7 +379,7 @@ const MonthlySalaryReport = () => {
                       </span>
                     </td>
                     <td className="text-center">
-                      <span style={styles.input}></span>
+                      <span style={styles.input}>{holidays}</span>
                     </td>
 
                     <td className="text-center">

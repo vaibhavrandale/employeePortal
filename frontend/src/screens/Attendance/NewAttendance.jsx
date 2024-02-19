@@ -194,6 +194,7 @@ const NewAttendance = () => {
                       days: Array.from({ length: daysInMonth }).map(() => ({})),
                       totalPCount: 0, // Initialize totalPCount for each employee
                       totalHCount: 0, // Initialize totalPCount for each employee
+                      totalPHCount: 0, // Initialize totalPCount for each employee
                     };
 
                     const day = new Date(attendance.IN_TIME_1).getDate();
@@ -218,6 +219,7 @@ const NewAttendance = () => {
                 return groupedData.map((employee) => {
                   let totalPCount = 0; // Move totalPCount inside the employee map loop
                   let totalHCount = 0; // Move totalHCount inside the employee map loop
+                  let totalPHCount = 0; // Move totalHCount inside the employee map loop
 
                   return (
                     <tr key={employee.employee_id}>
@@ -231,17 +233,36 @@ const NewAttendance = () => {
                         if (attendance.IN_TIME_1) {
                           const inTime = attendance.IN_TIME_1.split(' ')[1];
 
-                          const status = attendance.isLeave
-                            ? 'L'
-                            : inTime < '09:15:00'
-                            ? 'P'
-                            : attendance.totalHours < 4
-                            ? 'H'
-                            : 'P';
+                          // const status = attendance.isLeave
+                          //   ? 'L'
+                          //   : inTime < '09:15:00'
+                          //   ? 'P'
+                          //   : attendance.totalHours < 4
+                          //   ? 'H'
+                          //   : 'P';
+
+                          const status =
+                            attendance.LeaveType === 'PH' &&
+                            attendance.isLeave === 0
+                              ? 'PH'
+                              : attendance.isLeave === 1
+                              ? 'L'
+                              : inTime < '09:15:00'
+                              ? 'P'
+                              : attendance.totalHours < 4
+                              ? 'H'
+                              : 'P';
+
+                          // const bgClass =
+                          //   status === 'L'
+                          //     ? 'badge bg-danger text-white p-2'
+                          //     : 'badge bg-success text-white p-2';
 
                           const bgClass =
                             status === 'L'
                               ? 'badge bg-danger text-white p-2'
+                              : attendance.LeaveType === 'PH'
+                              ? 'badge bg-danger text-white p-2' // Set background color to danger for 'PH'
                               : 'badge bg-success text-white p-2';
 
                           // Increment the totalPCount when status is 'P'
@@ -258,6 +279,10 @@ const NewAttendance = () => {
                           if (status === 'L' && employee.isProbation === 1) {
                             totalPCount++;
                             employee.totalPCount++; // Increment the employee's totalPCount
+                          }
+                          if (attendance.LeaveType === 'PH') {
+                            totalPHCount++;
+                            employee.totalPHCount++; // Increment the employee's totalPCount
                           }
 
                           return (
@@ -470,6 +495,17 @@ const NewAttendance = () => {
                                               {attendance.totalHours}
                                               &nbsp;&nbsp;
                                               <span className="text-danger ">
+                                                {/* {status === 'L' ? (
+                                                  <>
+                                                    <span className="text-success fw-bold">
+                                                      {attendance.Name}{' '}
+                                                    </span>
+                                                    is on Leave -(
+                                                    {attendance.LeaveType})
+                                                  </>
+                                                ) : (
+                                                  ''
+                                                )}{' '} */}
                                                 {status === 'L' ? (
                                                   <>
                                                     <span className="text-success fw-bold">
@@ -500,6 +536,7 @@ const NewAttendance = () => {
 
                       <td className="text-center">{employee.totalPCount}</td>
                       <td className="text-center">{employee.totalHCount}</td>
+                      <td className="text-center">{employee.totalPHCount}</td>
 
                       <td className="text-center">
                         <Link

@@ -8,6 +8,7 @@ import sequelize from './config/database.js';
 import Leaves from './models/LeaveModel.js';
 import RfidCkeck from './models/RfidCkeck.js';
 import cron from 'node-cron';
+import Holidays from './models/Holidays.js';
 
 const birthday =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
@@ -1173,6 +1174,72 @@ const processLeavesAndCreateRefidChecks = async () => {
   }
 };
 
+const HolidayGenerator = async () => {
+  try {
+    // Get the current date
+    const currentDate = new Date();
+
+    // Check if Payslip records already exist for the current month
+    const existingHolidays = await Holidays.findOne({
+      where: {
+        date: {
+          [Op.eq]: new Date(
+            currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate()
+          ),
+        },
+      },
+    });
+
+    console.log(existingHolidays);
+    console.log('current Day ' + currentDate.getDate());
+    console.log('current Month ' + (currentDate.getMonth() + 1));
+    console.log('current Year ' + currentDate.getFullYear());
+
+    // If there are no existing holidays, create new records for the current month
+    if (!existingHolidays) {
+      // Fetch all employees from the Employees table
+      const employees = await Employee.findAll();
+
+      // Create records in RfidCkecks table for each employee
+      const rfidCheckRecords = employees.map((employee) => {
+        return {
+          UID: employee.UID, // Assuming UID is a field in the Employees table
+          Name: employee.NAME,
+          employee_id: employee.employee_id, // Assuming id is the primary key of the Employees table
+          IN_LATTITUDE_1: '18.6483599',
+          IN_LONGITUDE_1: '73.8313038',
+          IN_TIME_1: `${currentDate.getFullYear()}-${
+            currentDate.getMonth() + 1
+          }-${currentDate.getDate()} 09:00:00`,
+          OUT_LATTITUDE_1: '18.6483599',
+          OUT_LONGITUDE_1: '73.8313038',
+          OUT_TIME_1: `${currentDate.getFullYear()}-${
+            currentDate.getMonth() + 1
+          }-${currentDate.getDate()} 18:00:00`,
+          // Other fields as per your data model
+          LeaveType: 'PH', // Set LeaveType to 'PH'
+          isLeave: '0', // Set isLeave to '0'
+          totalHours: '9',
+          year: currentDate.getFullYear(),
+          month: currentDate.getMonth() + 1, // Months are zero-based, so add 1
+          day: currentDate.getDate(),
+          // Set other fields as per your requirements
+        };
+      });
+
+      // Create records in RfidCkecks table
+      await RfidCkeck.bulkCreate(rfidCheckRecords);
+      console.log(`Successfully created records for paid holiday today`);
+    } else {
+      console.log(`No holiday found today`);
+    }
+  } catch (error) {
+    console.error('Error in HolidayGenerator:', error);
+  }
+};
+
 export {
   sendBirthdayEmails,
   checkAndCreateBirthdayRecords,
@@ -1180,5 +1247,6 @@ export {
   Intern,
   PayslipGenerator,
   ProbationChecker,
-  processLeavesAndCreateRefidChecks,
+  processLeavesAndCreateRefidChecks, // Call the HolidayGenerator function
+  HolidayGenerator,
 };

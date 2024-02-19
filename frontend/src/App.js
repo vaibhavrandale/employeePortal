@@ -62,6 +62,7 @@ import MonthlySalaryReport from './screens/Attendance/MonthlySalaryReport';
 import Holidayhome from './screens/Holiday/Holidayhome';
 import CreateHoliday from './screens/Holiday/CreateHoliday';
 import Editholiday from './screens/Holiday/Editholiday';
+import SlipFinal from './screens/Attendance/SlipFinal';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -385,11 +386,21 @@ function AppRouter() {
         />
 
         {/* old */}
-        <Route
+        {/* <Route
           path="/pay-slip/:id/:year/:month/:token/:totaldays/:token"
           element={
             <ProtectedRoutes>
               <SalarySleepNew />
+            </ProtectedRoutes>
+          }
+        /> */}
+
+        {/* hr discussed */}
+        <Route
+          path="/pay-slip/:id/:year/:month/:token/:totaldays/:token"
+          element={
+            <ProtectedRoutes>
+              <SlipFinal />
             </ProtectedRoutes>
           }
         />

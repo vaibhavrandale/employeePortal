@@ -76,7 +76,7 @@ const Holidayhome = () => {
   const [img, setImage] = useState('');
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
-  const [description, setDescription] = useState('');
+  // const [description, setDescription] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -123,10 +123,10 @@ const Holidayhome = () => {
     }
   };
   const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const formattedDate = new Date(inputDate).toLocaleDateString(
-      undefined,
-      options
+    const formattedDate = new Intl.DateTimeFormat('en-GB', options).format(
+      date
     );
     return formattedDate;
   };
@@ -161,7 +161,8 @@ const Holidayhome = () => {
                 className={`card   mb-3 mx-1 `}
                 id="element"
                 style={{
-                  maxWidth: '14.5rem',
+                  maxWidth: '18.5rem',
+                  minWidth: '16.5rem',
                 }}
               >
                 <div className="card-header fw-bold d-flex justify-content-between ">
@@ -252,9 +253,9 @@ const Holidayhome = () => {
                       <b>{formatDate(holiday.date)}</b>
                     </b>
                   </p>
-                  <p className="card-text  fs-6 text-justify">
+                  {/* <p className="card-text  fs-6 text-justify">
                     {holiday.description}
-                  </p>
+                  </p> */}
                 </div>
               </div>
             ))}

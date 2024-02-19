@@ -101,11 +101,11 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     aadhar_no,
     pan_number,
     bank_account_no,
+    ifsc_code,
     aadhar_card_file,
     pan_card_file,
     bank_account_file,
     pf_account_no,
-    uan_number,
     resetToken,
     password,
     image,
@@ -125,6 +125,8 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     isProduction,
     isAccountant,
     isHr,
+    isSoftwareDevlopment,
+    isHardwareDevlopment,
     tenth_marksheet,
     tenth_schoolName,
     twelth_or_diploma_marksheet,
@@ -215,11 +217,11 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.aadhar_no = aadhar_no;
     employee.pan_number = pan_number;
     employee.bank_account_no = bank_account_no;
+    employee.ifsc_code = ifsc_code;
     employee.aadhar_card_file = aadhar_card_file;
     employee.pan_card_file = pan_card_file;
     employee.bank_account_file = bank_account_file;
     employee.pf_account_no = pf_account_no;
-    employee.uan_number = uan_number;
     employee.resetToken = resetToken;
     employee.image = image;
     employee.password = hashedPassword;
@@ -239,6 +241,8 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.isProduction = isProduction;
     employee.isAccountant = isAccountant;
     employee.isHr = isHr;
+    employee.isSoftwareDevlopment = isSoftwareDevlopment;
+    employee.isHardwareDevlopment = isHardwareDevlopment;
     employee.tenth_marksheet = tenth_marksheet;
     employee.tenth_schoolName = tenth_schoolName;
     employee.tenth_grade = tenth_grade;
@@ -363,6 +367,8 @@ emplyeeRouter.post('/signin', async (req, res) => {
         isProduction: employee.isProduction,
         isAccountant: employee.isAccountant,
         isHr: employee.isHr,
+        isSoftwareDevlopment: employee.isSoftwareDevlopment,
+        isHardwareDevlopment: employee.isHardwareDevlopment,
         activate: employee.activate,
         leaves: employee.leaves,
         sick: employee.sick,
@@ -1745,11 +1751,11 @@ emplyeeRouter.post('/', async (req, res) => {
       aadhar_no,
       pan_number,
       bank_account_no,
+      ifsc_code,
       aadhar_card_file,
       pan_card_file,
       bank_account_file,
       pf_account_no,
-      uan_number,
       resetToken,
       image,
       joiningDate,
@@ -1769,6 +1775,8 @@ emplyeeRouter.post('/', async (req, res) => {
       isProduction,
       isAccountant,
       isHr,
+      isSoftwareDevlopment,
+      isHardwareDevlopment,
       isProbation,
       leaves,
       sick,
@@ -1891,11 +1899,11 @@ emplyeeRouter.post('/', async (req, res) => {
       aadhar_no,
       pan_number,
       bank_account_no,
+      ifsc_code,
       aadhar_card_file,
       pan_card_file,
       bank_account_file,
       pf_account_no,
-      uan_number,
       resetToken,
       password: hashedPassword,
       image,
@@ -1915,6 +1923,8 @@ emplyeeRouter.post('/', async (req, res) => {
       isProduction,
       isAccountant,
       isHr,
+      isHardwareDevlopment,
+      isSoftwareDevlopment,
       isProbation,
       leaves,
       sick,

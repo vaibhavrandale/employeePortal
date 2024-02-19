@@ -120,6 +120,19 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
+          {userInfo && userInfo.isSuperAdmin === 1 && (
+            <li>
+              <Link to={`/calender`}>
+                <img
+                  src="/images/icons/holiday.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Holiday</span>}
+              </Link>
+            </li>
+          )}
         </>
       </ul>
     </div>

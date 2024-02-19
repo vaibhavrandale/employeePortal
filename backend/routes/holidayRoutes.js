@@ -35,9 +35,41 @@ holidayRouter.get('/:id', async (req, res) => {
   res.send({ holiday });
 });
 
+holidayRouter.get('/total/:month/:year', async (req, res) => {
+  const { month, year } = req.params;
+
+  try {
+    // Count holidays for the specified month and year
+    const holidayCount = await Holidays.count({
+      where: {
+        date: {
+          [Op.and]: [
+            Sequelize.where(
+              Sequelize.fn('MONTH', Sequelize.col('date')),
+              month
+            ),
+            Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('date')), year),
+          ],
+        },
+      },
+    });
+
+    // Send the count as the response
+    res.status(200).send(holidayCount.toString()); // Convert to string if necessary
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
 holidayRouter.put('/:id', async (req, res) => {
   const id = req.params.id;
-  const { name, img, date, description } = req.body;
+  const {
+    name,
+    img,
+    date,
+    //  description
+  } = req.body;
 
   try {
     const holiday = await Holidays.findByPk(id);
@@ -51,7 +83,7 @@ holidayRouter.put('/:id', async (req, res) => {
     holiday.img = img;
     holiday.name = name;
     holiday.date = date;
-    holiday.description = description;
+    // holiday.description = description;
 
     // Save the updated holiday to the database
     const updatedholiday = await holiday.save();
@@ -85,8 +117,18 @@ holidayRouter.post(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const { name, img, date, description } = req.body;
-    const newholiday = new Holidays({ name, img, date, description });
+    const {
+      name,
+      img,
+      date,
+      // description
+    } = req.body;
+    const newholiday = new Holidays({
+      name,
+      img,
+      date,
+      // description
+    });
     const holiday = await newholiday.save();
     res.send({ holiday, message: 'holiday Created' });
   })

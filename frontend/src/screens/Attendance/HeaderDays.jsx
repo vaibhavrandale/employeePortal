@@ -41,12 +41,12 @@ const HeaderDays = ({ daysInMonth, month }) => {
           className="text-center"
           colSpan={
             daysInMonth === 28
-              ? 34
-              : daysInMonth === 29
               ? 35
-              : daysInMonth === 30
+              : daysInMonth === 29
               ? 36
-              : 37
+              : daysInMonth === 30
+              ? 37
+              : 38
           }
         >
           <h3 className="text-underline-0">
@@ -62,6 +62,7 @@ const HeaderDays = ({ daysInMonth, month }) => {
         {renderTableHeaders()}
         <th className="text-center">Total P</th>
         <th className="text-center">Total H</th>
+        <th className="text-center">Total PH</th>
 
         <th className="text-center">Action</th>
       </tr>

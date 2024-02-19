@@ -63,7 +63,7 @@ const CreateHoliday = () => {
   const [img, setImage] = useState('');
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
-  const [description, setDescription] = useState('');
+  // const [description, setDescription] = useState('');
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -103,9 +103,9 @@ const CreateHoliday = () => {
     if (!date) {
       missingFields.push('Please Enter Date Of Holiday');
     }
-    if (!description) {
-      missingFields.push('Please Enter Description Of Holiday');
-    }
+    // if (!description) {
+    //   missingFields.push('Please Enter Description Of Holiday');
+    // }
 
     if (missingFields.length > 0) {
       toast.error(`Please fill : ${missingFields.join(', ')}`);
@@ -119,7 +119,7 @@ const CreateHoliday = () => {
           name,
           date,
           img,
-          description,
+          // description,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -211,7 +211,7 @@ const CreateHoliday = () => {
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label
               htmlFor="description"
               className="form-label text-dark fw-bold"
@@ -227,7 +227,7 @@ const CreateHoliday = () => {
               required
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-          </div>
+          </div> */}
 
           {loadingUpload ? (
             <div>

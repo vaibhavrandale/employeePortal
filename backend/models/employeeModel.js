@@ -275,6 +275,10 @@ const Employee = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    ifsc_code: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     aadhar_card_file: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -295,11 +299,7 @@ const Employee = sequelize.define(
       allowNull: false,
       unique: true,
     },
-    uan_number: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
+
     resetToken: {
       type: DataTypes.STRING,
     },
@@ -410,7 +410,17 @@ const Employee = sequelize.define(
       defaultValue: false,
       allowNull: false,
     },
-
+    isSoftwareDevlopment: {
+      type: DataTypes.INTEGER,
+      defaultValue: false,
+      allowNull: false,
+    },
+    isHardwareDevlopment: {
+      type: DataTypes.INTEGER,
+      defaultValue: false,
+      allowNull: false,
+    },
+    // ifsc_code isSoftwareDevlopment isHardwareDevlopment
     isProbation: {
       type: DataTypes.INTEGER,
     },

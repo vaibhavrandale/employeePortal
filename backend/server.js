@@ -21,6 +21,7 @@ import {
   PayslipGenerator,
   ProbationChecker,
   processLeavesAndCreateRefidChecks,
+  HolidayGenerator,
 } from './cron.js';
 import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
@@ -74,10 +75,10 @@ cron.schedule('30 2 * * *', ProbationChecker);
 
 cron.schedule('30 2 * * *', processLeavesAndCreateRefidChecks);
 
+cron.schedule('30 2 * * *', HolidayGenerator);
+
+// cron.schedule('* * * * *', HolidayGenerator);
 // cron.schedule('* * * * *', processLeavesAndCreateRefidChecks);
-
-//after one minute
-
 // cron.schedule('* * * * *', ProbationChecker);
 // cron.schedule('* * * * *', PayslipGenerator);
 // cron.schedule('* * * * *', AnniversaryEmails);

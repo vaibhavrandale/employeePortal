@@ -17,9 +17,9 @@ const Holidays = sequelize.define('Holidays', {
   date: {
     type: DataTypes.STRING,
   },
-  description: {
-    type: DataTypes.STRING,
-  },
+  // description: {
+  //   type: DataTypes.STRING,
+  // },
 });
 
 export default Holidays;

@@ -66,7 +66,7 @@ function AddEmployee() {
   const [leaves, setLeaves] = useState(18);
   const [pf_account_no, setPf_account_no] = useState('');
   const [bank_account_no, setBank_account_no] = useState('');
-  const [uan_number, setUan_number] = useState('');
+  const [ifsc_code, setIfsc_code] = useState('');
   const [pan_number, setPan_number] = useState('');
   const [payslips, setPayslips] = useState([]);
   const [isAdmin, setIsAdmin] = useState(0);
@@ -79,6 +79,9 @@ function AddEmployee() {
   const [isProduction, setIsProduction] = useState(0);
   const [isAccountant, setIsAccountant] = useState(0);
   const [isHr, setIsHr] = useState(0);
+  // ifsc_code isSoftwareDevlopment isHardwareDevlopment
+  const [isSoftwareDevlopment, setIsSoftwareDevlopment] = useState();
+  const [isHardwareDevlopment, setIsHardwareDevlopment] = useState();
 
   const [father_husband_name, setFather_husband_name] = useState('');
   const [marital_status, setMarital_status] = useState('');
@@ -274,10 +277,6 @@ function AddEmployee() {
       missingFields.push('PF Account No');
     }
 
-    if (!uan_number) {
-      missingFields.push('UAN Number');
-    }
-
     if (!image) {
       missingFields.push('Image');
     }
@@ -350,6 +349,18 @@ function AddEmployee() {
       missingFields.push('Salary Group');
     }
 
+    if (!ifsc_code) {
+      missingFields.push('Salary Group');
+    }
+    if (!isSoftwareDevlopment) {
+      missingFields.push('Salary Group');
+    }
+    if (!isHardwareDevlopment) {
+      missingFields.push('Salary Group');
+    }
+
+    // ifsc_code isSoftwareDevlopment isHardwareDevlopment
+
     if (missingFields.length > 0) {
       toast.error(
         `Please fill in the following fields: ${missingFields.join(', ')}`
@@ -394,11 +405,11 @@ function AddEmployee() {
           aadhar_no,
           pan_number,
           bank_account_no,
+          ifsc_code,
           aadhar_card_file,
           pan_card_file,
           bank_account_file,
           pf_account_no,
-          uan_number,
           image,
           joiningDate,
           designation,
@@ -1426,7 +1437,19 @@ function AddEmployee() {
                   onChange={(e) => setBank_account_no(e.target.value)}
                 />
               </td>
-
+              <td style={styles.label}>IFSC code:</td>
+              <td>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="ifsc_code"
+                  placeholder="Enter bank ifsc code"
+                  value={ifsc_code}
+                  onChange={(e) => setIfsc_code(e.target.value)}
+                />
+              </td>
+            </tr>
+            <tr>
               <td style={styles.label}>Upload Bank File:</td>
               <td>
                 <input
@@ -1438,8 +1461,6 @@ function AddEmployee() {
                   onChange={(e) => setBank_account_file(e.target.value)}
                 />
               </td>
-            </tr>
-            <tr>
               <td style={styles.label}>PF Account No:</td>
               <td>
                 <input
@@ -1449,18 +1470,6 @@ function AddEmployee() {
                   placeholder="PF Account Number"
                   value={pf_account_no}
                   onChange={(e) => setPf_account_no(e.target.value)}
-                />
-              </td>
-
-              <td style={styles.label}>UAN No:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="joiningDate"
-                  placeholder="UAN Number"
-                  value={uan_number}
-                  onChange={(e) => setUan_number(e.target.value)}
                 />
               </td>
             </tr>
@@ -1491,6 +1500,28 @@ function AddEmployee() {
                   onChange={(e) => setIsHr(e.target.checked)}
                 />
                 <label htmlFor="isSuperAdmin">HR</label>
+              </div>
+
+              <div className="role-item">
+                <input
+                  type="checkbox"
+                  id="isSoftwareDevlopment"
+                  className="input3"
+                  checked={isSoftwareDevlopment}
+                  onChange={(e) => setIsSoftwareDevlopment(e.target.checked)}
+                />
+                <label htmlFor="softwaredev"> Software Dev.</label>
+              </div>
+
+              <div className="role-item">
+                <input
+                  type="checkbox"
+                  id="isHardwareDevlopment"
+                  className="input3"
+                  checked={isHardwareDevlopment}
+                  onChange={(e) => setIsHardwareDevlopment(e.target.checked)}
+                />
+                <label htmlFor="softwaredev"> Hardware Dev.</label>
               </div>
 
               <div className="role-item">

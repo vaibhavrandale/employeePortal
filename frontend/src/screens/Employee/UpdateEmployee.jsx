@@ -131,7 +131,7 @@ const UpdateEmployee = () => {
   const [mobile_no, setMobile_no] = useState('');
   const [pf_account_no, setPf_account_no] = useState('');
   const [bank_account_no, setBank_account_no] = useState('');
-  const [uan_number, setUan_number] = useState('');
+  const [ifsc_code, setIfsc_code] = useState('');
   const [pan_number, setPan_number] = useState('');
   const [isAdmin, setIsAdmin] = useState();
   const [isSuperAdmin, setIsSuperAdmin] = useState();
@@ -143,6 +143,9 @@ const UpdateEmployee = () => {
   const [isProduction, setIsProduction] = useState();
   const [isAccountant, setIsAccountant] = useState();
   const [isHr, setIsHr] = useState();
+  // ifsc_code isSoftwareDevlopment isHardwareDevlopment
+  const [isSoftwareDevlopment, setIsSoftwareDevlopment] = useState();
+  const [isHardwareDevlopment, setIsHardwareDevlopment] = useState();
   const [ctc, setCtc] = useState();
   const [salarygroup, setSalarygroup] = useState();
   const [netsalary, setNetsalary] = useState();
@@ -248,6 +251,11 @@ const UpdateEmployee = () => {
         setIsProduction(result.data.employee.isProduction);
         setIsAccountant(result.data.employee.isAccountant);
         setIsHr(result.data.employee.isHr);
+        // ifsc_code isSoftwareDevlopment isHardwareDevlopment
+
+        setIfsc_code(result.data.employee.ifsc_code);
+        setIsSoftwareDevlopment(result.data.employee.isSoftwareDevlopment);
+        setIsHardwareDevlopment(result.data.employee.isHardwareDevlopment);
 
         setTenth_grade(result.data.employee.tenth_grade);
         setTenth_marksheet(result.data.employee.tenth_marksheet);
@@ -299,7 +307,6 @@ const UpdateEmployee = () => {
         setMobile_no(result.data.employee.mobile_no);
         setPf_account_no(result.data.employee.pf_account_no);
         setBank_account_no(result.data.employee.bank_account_no);
-        setUan_number(result.data.employee.uan_number);
         setPan_number(result.data.employee.pan_number);
 
         // /api/payslip
@@ -417,11 +424,11 @@ const UpdateEmployee = () => {
           aadhar_no,
           pan_number,
           bank_account_no,
+
           aadhar_card_file,
           pan_card_file,
           bank_account_file,
           pf_account_no,
-          uan_number,
           image,
           joiningDate,
           designation,
@@ -439,6 +446,10 @@ const UpdateEmployee = () => {
           isProduction,
           isAccountant,
           isHr,
+          ifsc_code,
+          isSoftwareDevlopment,
+          isHardwareDevlopment,
+
           tenth_marksheet,
           tenth_schoolName,
           twelth_or_diploma_marksheet,
@@ -465,12 +476,12 @@ const UpdateEmployee = () => {
       const custommessage = data.message;
 
       toast.success(custommessage, {
-        position: 'top-center',
+        position: 'top-right',
       });
       // navigate(`/employees`);
     } catch (err) {
       toast.error(getError(err), {
-        position: 'top-center',
+        position: 'top-right',
       });
       dispatch({ type: 'UPDATE_FAIL' });
     }
@@ -1778,7 +1789,19 @@ const UpdateEmployee = () => {
                       onChange={(e) => setBank_account_no(e.target.value)}
                     />
                   </td>
-
+                  <td style={styles.label}>IFSC code:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="ifsc_code"
+                      placeholder="Enter ifsc code"
+                      value={ifsc_code}
+                      onChange={(e) => setIfsc_code(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
                   <td style={styles.label}>
                     Upload Bank File{' '}
                     <Link
@@ -1801,8 +1824,6 @@ const UpdateEmployee = () => {
                       onChange={(e) => setBank_account_file(e.target.value)}
                     />
                   </td>
-                </tr>
-                <tr>
                   <td style={styles.label}>PF Account No:</td>
                   <td>
                     <input
@@ -1812,18 +1833,6 @@ const UpdateEmployee = () => {
                       placeholder="PF Account Number"
                       value={pf_account_no}
                       onChange={(e) => setPf_account_no(e.target.value)}
-                    />
-                  </td>
-
-                  <td style={styles.label}>UAN No:</td>
-                  <td>
-                    <input
-                      style={styles.input}
-                      type="text"
-                      id="joiningDate"
-                      placeholder="UAN Number"
-                      value={uan_number}
-                      onChange={(e) => setUan_number(e.target.value)}
                     />
                   </td>
                 </tr>
@@ -1928,6 +1937,33 @@ const UpdateEmployee = () => {
                       onChange={(e) => setIsHr(e.target.checked)}
                     />
                     <label htmlFor="isAdmin"> HR</label>
+                  </div>
+                  {/* // ifsc_code isSoftwareDevlopment isHardwareDevlopment */}
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isSoftwareDevlopment"
+                      className="input3"
+                      checked={isSoftwareDevlopment}
+                      onChange={(e) =>
+                        setIsSoftwareDevlopment(e.target.checked)
+                      }
+                    />
+                    <label htmlFor="softwaredev"> Software Dev.</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isHardwareDevlopment"
+                      className="input3"
+                      checked={isHardwareDevlopment}
+                      onChange={(e) =>
+                        setIsHardwareDevlopment(e.target.checked)
+                      }
+                    />
+                    <label htmlFor="softwaredev"> Hardware Dev.</label>
                   </div>
                   <div className="role-item">
                     <input

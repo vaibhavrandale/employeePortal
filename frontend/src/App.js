@@ -63,6 +63,8 @@ import Holidayhome from './screens/Holiday/Holidayhome';
 import CreateHoliday from './screens/Holiday/CreateHoliday';
 import Editholiday from './screens/Holiday/Editholiday';
 import SlipFinal from './screens/Attendance/SlipFinal';
+import PolicyDocHome from './screens/policy_documents/PolicyDocHome';
+import AddPolicy from './screens/policy_documents/AddPolicy';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -585,6 +587,27 @@ function AppRouter() {
         />
 
         {/* -------------------------holiday------------------------------ */}
+
+        {/* -----------------policy documnets-------------------- */}
+        <Route
+          path="/policy-documents-home"
+          element={
+            <ProtectedRoutes>
+              <PolicyDocHome />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/add-policy"
+          element={
+            <ProtectedRoutes>
+              <AddPolicy />
+            </ProtectedRoutes>
+          }
+        />
+
+        {/* -----------------policy documnets-------------------- */}
       </Routes>
     </>
   );

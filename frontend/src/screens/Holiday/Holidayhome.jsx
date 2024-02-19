@@ -140,7 +140,7 @@ const Holidayhome = () => {
         <span className="fw-bold text-success">Taypro</span> Holiday Calender
         2024
       </h3>
-      {userInfo && userInfo.isSuperAdmin === 1 && (
+      {userInfo && userInfo.isHr === 1 && (
         <div className="d-flex justify-content-end my-2 align-items-center">
           <Link
             className="btn btn-sm btn-warning text-decoration-none fw-bold "

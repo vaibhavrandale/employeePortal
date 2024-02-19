@@ -355,7 +355,7 @@ function SlipFinal() {
     doc.text(`IP NO (ESIC)`, 102, 47);
     doc.setFont('helvetica', 'normal');
 
-    doc.text(`${payslip.esi}`, 151.2, 47);
+    doc.text(`0`, 151.2, 47);
     // doc.line(95, 49, 181, 49);
 
     doc.setFont('helvetica', 'bold');
@@ -400,13 +400,13 @@ function SlipFinal() {
 
     doc.setFont('helvetica', 'bold');
     doc.text(`Attendance`, 16, 89);
-    doc.setFont('helvetica', 'Normal');
+    doc.setFont('helvetica', 'normal');
     doc.setFont('helvetica', 'bold');
 
     doc.text(`Total Day :  ${daysInMonth}`, 58, 89.2);
 
     doc.text(`Paid Day : 25`, 152, 89.2);
-    doc.setFont('helvetica', 'Normal');
+    doc.setFont('helvetica', 'normal');
 
     //  ----------------------------------- 2nd table end------------------------------
 
@@ -436,101 +436,233 @@ function SlipFinal() {
     //3rd vertical line
     doc.line(100, 92, 100, 150);
 
-    doc.setFont('helvetica', 'normal');
+    // if employee is not on probation
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Base Pay`, 16, 105);
-    doc.setFont('helvetica', 'normal');
+    if (employees.isProbation === 0) {
+      let parsedMonth = parseInt(month, 10);
+      let parsedYear = parseInt(year, 10);
+      let parsedTotalDays = parseInt(totaldays, 10);
+      let parsedCtc = parseInt(payslip.ctc, 10);
+      let parsedTotalDeduction = parseInt(payslip.total_deduction, 10);
+      let averagedays = 31;
+      console.log(`month ${month}`);
 
-    doc.text(`${payslip.basic}.00`, 71, 105);
-    // doc.line(15, 114, 181, 114);
+      if (parsedMonth === 2) {
+        // If the month is February, adjust the days and handle leap years
+        if (
+          (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
+          parsedYear % 400 === 0
+        ) {
+          // Leap year, February has 29 days
+          averagedays = 29;
+        } else {
+          // Non-leap year, February has 28 days
+          averagedays = 28;
+        }
+      } else if ([4, 6, 9, 11].includes(parsedMonth)) {
+        // Months with 30 days
+        averagedays = 30;
+      }
+      console.log(`average days ${averagedays}`);
+      const netSalary = Math.floor(
+        [(parsedTotalDays * (parsedCtc / 12)) / averagedays] -
+          parsedTotalDeduction
+      );
+      console.log(`Net Salary ${netSalary}`);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`House Rent Allowance`, 16, 111);
-    doc.setFont('helvetica', 'normal');
+      doc.setFont('helvetica', 'normal');
 
-    doc.text(`${payslip.hra}.00`, 71, 111);
-    // doc.line(15, 121, 181, 121);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Base Pay`, 16, 105);
+      doc.setFont('helvetica', 'normal');
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Conveyance allowance`, 16, 117);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`${payslip.conveyance}.00`, 73, 117);
-    // doc.line(15, 128, 181, 128);
+      doc.text(`${payslip.basic}.00`, 79, 105);
+      // doc.line(15, 114, 181, 114);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Medical allowance`, 16, 123);
-    doc.setFont('helvetica', 'normal');
+      doc.setFont('helvetica', 'bold');
+      doc.text(`House Rent Allowance`, 16, 111);
+      doc.setFont('helvetica', 'normal');
 
-    doc.text(`${payslip.medical}.00`, 73, 123);
-    // doc.line(15, 135, 181, 135);
+      doc.text(`${payslip.hra}.00`, 81, 111);
+      // doc.line(15, 121, 181, 121);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Special allowance`, 16, 129);
-    doc.setFont('helvetica', 'normal');
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Conveyance allowance`, 16, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${payslip.conveyance}.00`, 81, 117);
+      // doc.line(15, 128, 181, 128);
 
-    doc.text(`${payslip.special}.00`, 71, 129);
-    doc.line(15, 142, 181, 142);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Medical allowance`, 16, 123);
+      doc.setFont('helvetica', 'normal');
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Total Gross Salary`, 16, 147);
-    doc.text(`${payslip.gross}.00`, 71, 147);
-    doc.setFont('helvetica', 'normal');
-    doc.line(15, 150, 181, 150);
+      doc.text(`${payslip.medical}.00`, 81, 123);
+      // doc.line(15, 135, 181, 135);
 
-    // bottom
-    doc.line(15, 160, 181, 160);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Special allowance`, 16, 129);
+      doc.setFont('helvetica', 'normal');
 
-    // doc.line(15, 107, 181, 107);
-    // ------------------------------3rd table end--------------------------------------------
+      doc.text(`${payslip.special}.00`, 81, 129);
+      doc.line(15, 142, 181, 142);
 
-    // ------------------------------4th table start------------------------------------------
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Gross Salary`, 16, 147);
+      doc.text(`${payslip.gross}.00`, 79, 147);
+      doc.setFont('helvetica', 'normal');
+      doc.line(15, 150, 181, 150);
 
-    doc.setFont('helvetica', 'bold');
+      // bottom
+      doc.line(15, 160, 181, 160);
 
-    doc.text(`DEDUCTIONS`, 110, 97.5);
+      // doc.line(15, 107, 181, 107);
+      // ------------------------------3rd table end--------------------------------------------
 
-    // doc.line(15, 107, 181, 107);
+      // ------------------------------4th table start------------------------------------------
 
-    doc.text(`AMOUNT`, 157, 97.5);
+      doc.setFont('helvetica', 'bold');
 
-    //3rd  vertical line
-    doc.line(150, 92, 150, 150);
+      doc.text(`DEDUCTIONS`, 110, 97.5);
 
-    doc.setFont('helvetica', 'normal');
+      // doc.line(15, 107, 181, 107);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.8);
-    doc.text(`PF contribution by employee`, 101, 105);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.text(`${payslip.pf}.00`, 156, 105);
+      doc.text(`AMOUNT`, 157, 97.5);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.8);
-    doc.text(`ESI contribution by employee`, 100.5, 111);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.text(`${payslip.esi}.00`, 162, 111);
+      //3rd  vertical line
+      doc.line(150, 92, 150, 150);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9.8);
-    doc.text(`Professional Tax (PT)`, 101, 117);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.text(`${payslip.pt}.00`, 158, 117);
+      doc.setFont('helvetica', 'normal');
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Total Deductions`, 102, 147);
-    doc.text(`${payslip.total_deduction}.00`, 156, 147);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`PF contribution by employee`, 101, 105);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${payslip.pf}.00`, 164, 105);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Net Pay :`, 16, 155.7);
-    doc.text(
-      `${payslip.netsalary}.00 INR  (${numberToWords(payslip.netsalary)})`,
-      33,
-      155.7
-    );
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`ESI contribution by employee`, 100.5, 111);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      if (payslip.esi === 0) {
+        doc.text(`${0}.00`, 169.7, 111);
+      } else {
+        doc.text(`${payslip.esi}.00`, 164, 111);
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`Professional Tax (PT)`, 101, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${payslip.pt}.00`, 166, 117);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Deductions`, 102, 147);
+      doc.text(`${payslip.total_deduction}.00`, 164, 147);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Net Pay :`, 16, 155.7);
+      doc.text(`${netSalary}.00 INR  (${numberToWords(netSalary)})`, 33, 155.7);
+    } else {
+      const netSalary = Math.floor(payslip.ctc / 12 - payslip.total_deduction);
+      doc.setFont('helvetica', 'normal');
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Base Pay`, 16, 105);
+      doc.setFont('helvetica', 'normal');
+
+      doc.text(`${payslip.basic}.00`, 79, 105);
+      // doc.line(15, 114, 181, 114);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`House Rent Allowance`, 16.5, 111);
+      doc.setFont('helvetica', 'normal');
+
+      doc.text(`${payslip.hra}.00`, 79, 111);
+      // doc.line(15, 121, 181, 121);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Conveyance allowance`, 16, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${payslip.conveyance}.00`, 81, 117);
+      // doc.line(15, 128, 181, 128);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Medical allowance`, 16, 123);
+      doc.setFont('helvetica', 'normal');
+
+      doc.text(`${payslip.medical}.00`, 81, 123);
+      // doc.line(15, 135, 181, 135);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Special allowance`, 16, 129);
+      doc.setFont('helvetica', 'normal');
+
+      doc.text(`${payslip.special}.00`, 79, 129);
+      doc.line(15, 142, 181, 142);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Gross Salary`, 16, 147);
+      doc.text(`${payslip.gross}.00`, 79, 147);
+      doc.setFont('helvetica', 'normal');
+      doc.line(15, 150, 181, 150);
+
+      // bottom
+      doc.line(15, 160, 181, 160);
+
+      // doc.line(15, 107, 181, 107);
+      // ------------------------------3rd table end--------------------------------------------
+
+      // ------------------------------4th table start------------------------------------------
+
+      doc.setFont('helvetica', 'bold');
+
+      doc.text(`DEDUCTIONS`, 110, 97.5);
+
+      // doc.line(15, 107, 181, 107);
+
+      doc.text(`AMOUNT`, 157, 97.5);
+
+      //3rd  vertical line
+      doc.line(150, 92, 150, 150);
+
+      doc.setFont('helvetica', 'normal');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`PF contribution by employee`, 101, 105);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${payslip.pf}.00`, 164, 105);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`ESI contribution by employee`, 100.5, 111);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      if (payslip.esi === 0) {
+        doc.text(`${0}.00`, 169.7, 111);
+      } else {
+        doc.text(`${payslip.esi}.00`, 164, 111);
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`Professional Tax (PT)`, 101, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${payslip.pt}.00`, 166, 117);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Deductions`, 102, 147);
+      doc.text(`${payslip.total_deduction}.00`, 164, 147);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Net Pay :`, 16, 155.7);
+      doc.text(`${netSalary}.00 INR  (${numberToWords(netSalary)})`, 33, 155.7);
+    }
     // doc.line(15, 114, 181, 114);
 
     // ------------------------------4th table end------------------------------------------

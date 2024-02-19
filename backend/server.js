@@ -10,7 +10,6 @@ import path from 'path';
 import emplyeeRouter from './routes/employeeRoutes.js';
 import surveyRouter from './routes/surveyRoutes.js';
 import uploadRouter from './routes/uploadRoute.js';
-import EventRouter from './routes/eventRoutes.js';
 import NoticeRouter from './routes/noticeRoutes.js';
 import attendenceRouter from './routes/attendenceRoutes.js';
 import {
@@ -27,6 +26,7 @@ import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
 import payslipRouter from './routes/payslipRoutes.js';
 import holidayRouter from './routes/holidayRoutes.js';
+import PolicyRouter from './routes/policyRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -95,11 +95,11 @@ app.use('/api/attendence', attendenceRouter);
 
 app.use('/api/survey', surveyRouter);
 app.use('/api/upload', uploadRouter);
-app.use('/api/calendar', EventRouter);
 app.use('/api/notice', NoticeRouter);
 app.use('/api/leaves', leaveRouter);
 app.use('/api/payslip', payslipRouter);
 app.use('/api/holidays', holidayRouter);
+app.use('/api/policy', PolicyRouter);
 
 app.get('/api/leaves', (req, res) => {
   res.send(data.Leaves);

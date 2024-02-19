@@ -1,0 +1,13 @@
+.policyCard {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 15px;
+}
+
+.policyCard img {
+  height: 80px;
+  width: 80px;
+}

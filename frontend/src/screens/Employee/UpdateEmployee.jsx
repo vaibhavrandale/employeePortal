@@ -146,6 +146,7 @@ const UpdateEmployee = () => {
   // ifsc_code isSoftwareDevlopment isHardwareDevlopment
   const [isSoftwareDevlopment, setIsSoftwareDevlopment] = useState();
   const [isHardwareDevlopment, setIsHardwareDevlopment] = useState();
+  const [isDirector, setIsDirector] = useState();
   const [ctc, setCtc] = useState();
   const [salarygroup, setSalarygroup] = useState();
   const [netsalary, setNetsalary] = useState();
@@ -256,6 +257,7 @@ const UpdateEmployee = () => {
         setIfsc_code(result.data.employee.ifsc_code);
         setIsSoftwareDevlopment(result.data.employee.isSoftwareDevlopment);
         setIsHardwareDevlopment(result.data.employee.isHardwareDevlopment);
+        setIsDirector(result.data.employee.isDirector);
 
         setTenth_grade(result.data.employee.tenth_grade);
         setTenth_marksheet(result.data.employee.tenth_marksheet);
@@ -449,7 +451,7 @@ const UpdateEmployee = () => {
           ifsc_code,
           isSoftwareDevlopment,
           isHardwareDevlopment,
-
+          isDirector,
           tenth_marksheet,
           tenth_schoolName,
           twelth_or_diploma_marksheet,
@@ -1965,6 +1967,18 @@ const UpdateEmployee = () => {
                     />
                     <label htmlFor="softwaredev"> Hardware Dev.</label>
                   </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isDirector"
+                      className="input3"
+                      checked={isDirector}
+                      onChange={(e) => setIsDirector(e.target.checked)}
+                    />
+                    <label htmlFor="softwaredev"> Director</label>
+                  </div>
+
                   <div className="role-item">
                     <input
                       type="checkbox"

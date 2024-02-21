@@ -1,11 +1,7 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate } from 'react-router-dom';
-import { Store } from '../../Store';
-import { FaRegEdit } from 'react-icons/fa';
-import { RiDeleteBinLine } from 'react-icons/ri';
-import LoadingBox1 from '../../components/LoadingBox1';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../../utils';
 import toast from 'react-hot-toast';
@@ -32,56 +28,38 @@ const reducer = (state, action) => {
 };
 
 const AddPolicy = () => {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
-  const [{ loading, policies, createloading }, dispatch] = useReducer(reducer, {
+  const [{ createloading }, dispatch] = useReducer(reducer, {
     policies: [],
     loading: true,
     error: '',
   });
   const navigate = useNavigate();
 
-  const [link, setLink] = useState('');
-  const [name, setName] = useState('');
-  // const [description, setDescription] = useState('');
+  const [filename, setFilename] = useState([]);
+  const [title, setTitle] = useState('');
 
-  // create
-  const CreatePolicy = async (e) => {
+  const submitImage = async (e) => {
     e.preventDefault();
     dispatch({
       type: 'CREATE_REQUEST',
     });
-    const missingFields = [];
-
-    if (!name) {
-      missingFields.push('Please Enter Name Of policy');
-    }
-    if (!link) {
-      missingFields.push('Please Enter link for policy');
-    }
-
-    if (missingFields.length > 0) {
-      toast.error(`Please fill : ${missingFields.join(', ')}`);
-      return;
-    }
-
     try {
-      const { data } = await axios.post(
-        `/api/policy/create`,
-        {
-          name,
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('file', filename);
+      console.log(title, filename);
 
-          link,
-          // description,
-        },
+      const result = await axios.post(
+        'http://localhost:5000/uploadp',
+        formData,
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { 'Content-Type': 'multipart/form-data' },
         }
       );
-      console.log(data);
+      console.log(result);
       dispatch({
         type: 'CREATE_SUCCESS',
-        payload: data.policies,
+        payload: result.data.data,
       });
       toast.success('policy Created successfully', {
         position: 'top-right',
@@ -97,39 +75,39 @@ const AddPolicy = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>Add New Policy</title>
+      </Helmet>
+
       <div
         className="card p-2"
         style={{ minHeight: '300px', width: '500px', margin: 'Auto' }}
       >
         <h4 className="text-center fw-bold">Add new Policy</h4>
-        <form onSubmit={CreatePolicy}>
+        <form onSubmit={submitImage}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label text-dark fw-bold">
               Policy Label
             </label>
             <input
-              placeholder="Enter label here"
               type="text"
               className="form-control"
-              id="name"
-              value={name}
+              placeholder="Title"
               required
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div className="mb-3">
             <label htmlFor="name" className="form-label text-dark fw-bold">
-              Policy Link
+              Policy File
             </label>
-            <textarea
-              type="text"
-              className="form-control"
-              id="name"
-              value={link}
+            <input
+              type="file"
+              class="form-control"
+              accept="application/pdf"
               required
-              onChange={(e) => setLink(e.target.value)}
-              placeholder="paste link here"
-            ></textarea>
+              onChange={(e) => setFilename(e.target.files[0])}
+            />
           </div>
 
           <div className="d-flex justify-content-end">

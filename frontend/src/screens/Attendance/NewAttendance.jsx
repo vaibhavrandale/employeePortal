@@ -185,8 +185,8 @@ const NewAttendance = () => {
 
                   if (existingEmployee) {
                     // Employee already exists, update days array
-                    const day = new Date(attendance.day);
-                    existingEmployee.days[day.getDate() - 1] = attendance;
+                    const day = attendance.day;
+                    existingEmployee.days[day - 1] = attendance;
                   } else {
                     // Add new employee to the groupedData array
                     const newEmployee = {
@@ -232,41 +232,27 @@ const NewAttendance = () => {
 
                         if (attendance.IN_TIME_1) {
                           const inTime = attendance.IN_TIME_1.split(' ')[1];
-
-                          const status = attendance.isLeave
-                            ? 'L'
-                            : inTime < '09:15:00' && attendance.totalHours >= 8
-                            ? 'P'
-                            : inTime < '09:15:00'
-                            ? 'P'
-                            : attendance.totalHours < 4
-                            ? 'P*'
-                            : 'H';
+                          const total = attendance.totalHours / 60;
 
                           // const status = attendance.isLeave
                           //   ? 'L'
+                          //   : inTime < '09:15:00' && attendance.totalHours >= 8
+                          //   ? 'P'
                           //   : inTime < '09:15:00'
                           //   ? 'P'
                           //   : attendance.totalHours < 4
                           //   ? 'P*'
                           //   : 'H';
 
-                          // const status =
-                          //   attendance.LeaveType === 'PH' &&
-                          //   attendance.isLeave === 0
-                          //     ? 'PH'
-                          //     : attendance.isLeave === 1
-                          //     ? 'L'
-                          //     : inTime < '09:15:00'
-                          //     ? 'P'
-                          //     : attendance.totalHours < 4
-                          //     ? 'H'
-                          //     : 'P';
-
-                          // const bgClass =
-                          //   status === 'L'
-                          //     ? 'badge bg-danger text-white p-2'
-                          //     : 'badge bg-success text-white p-2';
+                          const status = attendance.isLeave
+                            ? 'L'
+                            : inTime > '09:15:00' && total >= 8
+                            ? 'P*'
+                            : inTime < '09:15:00' || total >= 8
+                            ? 'P'
+                            : attendance.totalHours < 4
+                            ? 'P*'
+                            : 'H';
 
                           const bgClass =
                             status === 'L'
@@ -345,30 +331,40 @@ const NewAttendance = () => {
                                       <table className="table table-bordered">
                                         <thead>
                                           <tr>
-                                            <th className="col-2">ON / OUT</th>
-                                            <th className="col-3">IN TIME</th>
-                                            <th className="col-3">OUT TIME</th>
-                                            <th className="col-1">LOCATION</th>
+                                            <th className="col-2 text-center">
+                                              ON / OUT
+                                            </th>
+                                            <th className="col-3 text-center">
+                                              IN TIME
+                                            </th>
+                                            <th className="col-3 text-center">
+                                              OUT TIME
+                                            </th>
+                                            <th className="col-1 text-center">
+                                              LOCATION
+                                            </th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                           <tr>
-                                            <td className="col">Punch 1</td>
-                                            <td className="col-3">
+                                            <td className="col text-center">
+                                              Tap 1
+                                            </td>
+                                            <td className="col-3 text-center">
                                               {attendance.IN_TIME_1
                                                 ? attendance.IN_TIME_1.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-3">
+                                            <td className="col-3 text-center">
                                               {attendance.OUT_TIME_1
                                                 ? attendance.OUT_TIME_1.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-1">
+                                            <td className="col-1 text-center">
                                               <span className="d-flex">
                                                 {attendance.IN_LATTITUDE_1 &&
                                                 attendance.IN_LONGITUDE_1 ? (
@@ -400,22 +396,24 @@ const NewAttendance = () => {
                                           </tr>
 
                                           <tr>
-                                            <td className="col">Punch 2</td>
-                                            <td className="col-3">
+                                            <td className="col  text-center">
+                                              Tap 2
+                                            </td>
+                                            <td className="col-3  text-center">
                                               {attendance.IN_TIME_2
                                                 ? attendance.IN_TIME_2.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-3">
+                                            <td className="col-3  text-center">
                                               {attendance.OUT_TIME_2
                                                 ? attendance.OUT_TIME_2.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-1">
+                                            <td className="col-1 text-center">
                                               <span className="d-flex">
                                                 {attendance.IN_LATTITUDE_2 &&
                                                 attendance.IN_LONGITUDE_2 ? (
@@ -456,22 +454,24 @@ const NewAttendance = () => {
                                           </tr>
 
                                           <tr>
-                                            <td className="col">Punch 3</td>
-                                            <td className="col-3">
+                                            <td className="col text-center">
+                                              Tap 3
+                                            </td>
+                                            <td className="col-3 text-center">
                                               {attendance.IN_TIME_3
                                                 ? attendance.IN_TIME_3.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-3">
+                                            <td className="col-3 text-center">
                                               {attendance.OUT_TIME_3
                                                 ? attendance.OUT_TIME_3.split(
                                                     ' '
                                                   )[1]
                                                 : ''}
                                             </td>
-                                            <td className="col-1">
+                                            <td className="col-1 text-center">
                                               <span className="d-flex">
                                                 {attendance.IN_LATTITUDE_3 &&
                                                 attendance.IN_LONGITUDE_3 ? (
@@ -506,20 +506,11 @@ const NewAttendance = () => {
                                               Total Hours
                                             </td>
                                             <td colSpan="3">
-                                              {attendance.totalHours}
+                                              {(
+                                                attendance.totalHours / 60
+                                              ).toFixed(2) + ' hours'}
                                               &nbsp;&nbsp;
                                               <span className="text-danger ">
-                                                {/* {status === 'L' ? (
-                                                  <>
-                                                    <span className="text-success fw-bold">
-                                                      {attendance.Name}{' '}
-                                                    </span>
-                                                    is on Leave -(
-                                                    {attendance.LeaveType})
-                                                  </>
-                                                ) : (
-                                                  ''
-                                                )}{' '} */}
                                                 {status === 'L' ? (
                                                   <>
                                                     <span className="text-success fw-bold">

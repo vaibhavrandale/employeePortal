@@ -115,6 +115,7 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
+
           {userInfo && userInfo.isHr === 1 && (
             <li>
               <Link to={`/calender`}>
@@ -125,6 +126,36 @@ const Sidebar = () => {
                   height={'23px'}
                 />
                 {hovered && <span>Holiday</span>}
+              </Link>
+            </li>
+          )}
+
+          {userInfo.isAdmin === 1 ? (
+            <li>
+              <Link to={`/policy-documents-home`}>
+                <img
+                  src="/images/icons/policy.jpg"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Policy Doc</span>}
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
+
+          {userInfo && userInfo.isHr === 1 && (
+            <li>
+              <Link to={`/assets-home`}>
+                <img
+                  src="/images/icons/assets.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Assets</span>}
               </Link>
             </li>
           )}

@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { getError } from '../../utils';
 import { RiDeleteBinLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
+import PdfComp from '../PdfComp';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -15,7 +16,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, policies: action.payload, loading: false };
+      return { ...state, allImage: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -37,9 +38,9 @@ const reducer = (state, action) => {
 const PolicyDocHome = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, policies, createloading, successDelete }, dispatch] =
+  const [{ loading, allImage, createloading, successDelete }, dispatch] =
     useReducer(reducer, {
-      policies: [],
+      allImage: [],
       loading: true,
       error: '',
     });
@@ -48,33 +49,55 @@ const PolicyDocHome = () => {
   const [name, setName] = useState('');
   const [deleteModalId, setDeleteModalId] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [viewPdfModalVisible, setViewPdfModalVisible] = useState(false);
+
+  const [filename, setFilename] = useState([]);
+  const [title, setTitle] = useState('');
+  // const [allImage, setAllImage] = useState(null);
+  const [pdfFile, setPdfFile] = useState(null);
+
+  // useEffect(() => {
+  //   // Simulate API call or data fetching
+  //   const fetchData = async () => {
+  //     dispatch({ type: 'FETCH_REQUEST' });
+
+  //     try {
+  //       const result = await axios.get('/get-files');
+  //       dispatch({ type: 'FETCH_SUCCESS', payload: result.data.data });
+  //       console.log(result.data);
+  //     } catch (err) {
+  //       dispatch({ type: 'FETCH_FAIL', payload: err.message });
+  //     }
+  //   };
+  //   if (successDelete) {
+  //     dispatch({ type: 'DELETE_RESET' });
+  //   } else {
+  //     fetchData();
+  //   }
+  //   // fetchData();
+  // }, [successDelete]);
 
   useEffect(() => {
-    // Simulate API call or data fetching
-    const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
-
-      try {
-        const result = await axios.get('/api/policy');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.policies });
-        console.log(result.data);
-      } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: err.message });
-      }
-    };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
     } else {
-      fetchData();
+      getPdf();
     }
-    // fetchData();
   }, [successDelete]);
+
+  const getPdf = async () => {
+    const result = await axios.get('http://localhost:5000/get-files');
+    console.log(result.data.data);
+    dispatch({ type: 'FETCH_SUCCESS', payload: result.data.data });
+
+    // setAllImage(result.data.data);
+  };
 
   const deleteHandler = async (id) => {
     setDeleteModalId(id);
 
     try {
-      await axios.delete(`/api/policy/${id}`, {
+      await axios.delete(`http://localhost:5000/files/${id}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       toast.success(`policy deleted successfully`);
@@ -91,14 +114,18 @@ const PolicyDocHome = () => {
     }
   };
 
+  const showPdf = (pdf) => {
+    setPdfFile(`http://localhost:5000/files/${pdf}`);
+  };
+
   return (
     <div className="container">
-      <h2 className="text-center fw-bold">Policy Documents</h2>
+      <h3 className="text-center fw-bold my-3">Policy Documents</h3>
 
       <div className=" my-2 text-dark fw-bold">
         <div className="d-flex justify-content-end">
           {userInfo.isHr === 1 ? (
-            <Link to="/add-policy" className="btn btn-sm btn-success">
+            <Link to="/add-policy" className="btn btn-sm btn-warning">
               ADD
             </Link>
           ) : (
@@ -108,84 +135,131 @@ const PolicyDocHome = () => {
         <div className="d-flex flex-wrap justify-content-center">
           {loading ? (
             <LoadingBox1 />
+          ) : allImage.length === 0 ? (
+            <div className="text-center mt-3">
+              <span className="badge  bg-danger p-3 fs-5">No policy found</span>
+            </div>
           ) : (
-            policies.map((policy, index) => (
+            allImage.map((policy, index) => (
               <div className="card m-1 policyCard" key={index}>
-                <img src="/images/icons/policy.jpg" alt={policy.name} />
-                <p className=" my-2 text-dark fw-bold">{policy.name}</p>
+                <img src="/images/icons/policy.jpg" alt={policy.title} />
+                <p className=" my-2 text-dark fw-bold">{policy.title}</p>
                 <div className="d-flex">
                   <Link
                     className="text-decoration-none btn btn-sm btn-link m-1"
-                    to={policy.link}
-                    target="_blank"
+                    onClick={() => showPdf(policy.filename)}
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#exampleModal_${policy.id}`}
                   >
                     View&nbsp;
                     <FaLink />
                   </Link>
-                  {userInfo.isHr === 1 ? (
-                    <Link
-                      className="mx-1 text-danger m-1"
-                      onClick={() => setShowModal(true)}
-                    >
-                      <RiDeleteBinLine />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-
-                  {/* --------------------delete modal---------------------------------- */}
-
+                  {/* ----------------------view modal------------------- */}
                   <div
-                    className={`modal fade ${showModal ? 'show' : ''}`}
-                    style={{ display: showModal ? 'block' : 'none' }}
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-labelledby="deleteModal"
-                    aria-hidden={!showModal}
+                    className="modal fade"
+                    id={`exampleModal_${policy.id}`}
+                    tabindex="-1"
+                    aria-labelledby={`exampleModal_${policy.id}`}
+                    aria-hidden="true"
                   >
-                    <div className="modal-dialog modal-dialog-centered modal-sm">
+                    <div className="modal-dialog  modal-xl">
                       <div className="modal-content">
                         <div className="modal-header">
-                          <h5 className="modal-title" id="deleteModalLabel">
-                            Confirmation
+                          <h5
+                            className="modal-title"
+                            id={`exampleModal_${policy.id}`}
+                          >
+                            Policy- {policy.title}
                           </h5>
                           <button
                             type="button"
                             className="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
-                            onClick={() => setShowModal(false)}
                           ></button>
                         </div>
                         <div className="modal-body">
-                          Are you sure to delete{' '}
-                          <span className="text-danger">{policy.name}</span>{' '}
-                          policy ?
-                        </div>
-                        <div className="modal-footer">
-                          <button
-                            type="button"
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => setShowModal(false)}
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            onClick={(e) => deleteHandler(policy.id)}
-                          >
-                            Delete
-                          </button>
+                          <PdfComp pdfFile={pdfFile} />
                         </div>
                       </div>
                     </div>
                   </div>
-                  {/* --------------------delete modal---------------------------------- */}
+                  {/* ----------------------view modal------------------- */}
+
+                  {userInfo.isHr === 1 ? (
+                    <>
+                      <Link
+                        className="mx-1 text-danger m-1"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <RiDeleteBinLine />
+                      </Link>
+
+                      {/* --------------------delete modal---------------------------------- */}
+
+                      <div
+                        className={`modal fade ${showModal ? 'show' : ''}`}
+                        style={{ display: showModal ? 'block' : 'none' }}
+                        tabIndex="-1"
+                        role="dialog"
+                        aria-labelledby="deleteModal"
+                        aria-hidden={!showModal}
+                      >
+                        <div className="modal-dialog modal-dialog-centered modal-sm">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              <h5 className="modal-title" id="deleteModalLabel">
+                                Confirmation
+                              </h5>
+                              <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                                onClick={() => setShowModal(false)}
+                              ></button>
+                            </div>
+                            <div className="modal-body">
+                              Are you sure to delete{' '}
+                              <span className="text-danger">
+                                {policy.title}
+                              </span>{' '}
+                              policy ?
+                            </div>
+                            <div className="modal-footer">
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => setShowModal(false)}
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={(e) => deleteHandler(policy.id)}
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {/* --------------------delete modal---------------------------------- */}
+                    </>
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
             ))
           )}
+        </div>
+
+        <div className="my-2 d-flex justify-content-center">
+          {' '}
+          {/* <PdfComp pdfFile={pdfFile} /> */}
         </div>
       </div>
     </div>

@@ -44,14 +44,11 @@ import EditNotice from './screens/Notice/EditNotice';
 import Upcoming from './components/Upcoming';
 import Wishes from './screens/Employee/Wishes';
 import UpdateEmployee from './screens/Employee/UpdateEmployee';
-import SalarySleepNew from './screens/Attendance/SalarySleepNew';
 import SalarySleepUpdated from './screens/salarySleep/SalarySleepUpdated';
 import IndividualAttedance from './screens/Attendance/IndividualAttedance';
 import Available from './screens/SiteInventory/Available';
 import AllSites from './screens/SiteInventory/AllSites';
-import AttendanceTableUpdated from './screens/Attendance/AttendanceTableUpdated';
 import LeaveStatus from './screens/Leaves/LeaveStatus';
-import SalarySlip from './screens/temp_salaryslip/SalarySlip';
 import Generateslip from './screens/temp_salaryslip/Generateslip';
 import UpdateSalary from './screens/Employee/UpdateSalary';
 import AddNewSalary from './screens/Employee/AddNewSalary';
@@ -65,6 +62,10 @@ import Editholiday from './screens/Holiday/Editholiday';
 import SlipFinal from './screens/Attendance/SlipFinal';
 import PolicyDocHome from './screens/policy_documents/PolicyDocHome';
 import AddPolicy from './screens/policy_documents/AddPolicy';
+import Assetshome from './screens/Assets/Assetshome';
+import Addasset from './screens/Assets/Addasset';
+import EditAssetStatus from './screens/Assets/EditAssetStatus';
+import CompanyProfile from './screens/Company_Profile/CompanyProfile';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -125,6 +126,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <Upcoming />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/company-profile"
+          element={
+            <ProtectedRoutes>
+              <CompanyProfile />
             </ProtectedRoutes>
           }
         />
@@ -302,17 +312,6 @@ function AppRouter() {
 
         {/* -------------------------------Attendance--------------------------------- */}
 
-        {/*
-        // new
-        <Route
-          path="/attendance-home-page"
-          element={
-            <SuperAdminRoutes>
-              <AttendanceTableNew />
-            </SuperAdminRoutes>
-          }
-        /> */}
-
         <Route
           path="/new-attendancde"
           element={
@@ -322,15 +321,6 @@ function AppRouter() {
           }
         />
 
-        <Route
-          path="/attendance-home-page"
-          element={
-            <SuperAdminRoutes>
-              {/* <AttedanceTable /> */}
-              <AttendanceTableUpdated />
-            </SuperAdminRoutes>
-          }
-        />
         <Route
           path="/Salary-Report/:month/:year"
           element={
@@ -350,14 +340,6 @@ function AppRouter() {
           }
         />
 
-        {/* <Route
-          path="/attendenceDetails/:id"
-          element={
-            <SuperAdminRoutes>
-              <AttendanceDetails />
-            </SuperAdminRoutes>
-          }
-        /> */}
         {/* -------------------------------Attendance--------------------------------- */}
 
         <Route
@@ -608,6 +590,35 @@ function AppRouter() {
         />
 
         {/* -----------------policy documnets-------------------- */}
+
+        {/* ------------assets-------------------- */}
+        <Route
+          path="/assets-home"
+          element={
+            <ProtectedRoutes>
+              <Assetshome />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/add-asset"
+          element={
+            <ProtectedRoutes>
+              <Addasset />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/edit-asset/:id"
+          element={
+            <ProtectedRoutes>
+              <EditAssetStatus />
+            </ProtectedRoutes>
+          }
+        />
+        {/* ------------assets-------------------- */}
       </Routes>
     </>
   );

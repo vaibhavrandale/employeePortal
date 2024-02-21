@@ -346,7 +346,7 @@ const data = {
     //   plantLayout: '/plantA.pdf',
     // },
   ],
-
+  EmployeeAssets: [],
   Policy: [],
   notices: [],
   Leaves: [],

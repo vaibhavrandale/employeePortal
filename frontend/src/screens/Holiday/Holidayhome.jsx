@@ -183,12 +183,7 @@ const Holidayhome = () => {
                       >
                         <RiDeleteBinLine />
                       </Link>
-                      {/* <Link
-                        className="btn btn-sm btn-danger mx-1"
-                        onClick={() => setShowModal(true)}
-                      >
-                        <RiDeleteBinLine />
-                      </Link> */}
+
                       {/* --------------------delete modal---------------------------------- */}
 
                       <div

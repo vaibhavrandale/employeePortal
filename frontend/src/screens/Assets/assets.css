@@ -1,0 +1,12 @@
+#element {
+  color: #000 !important;
+  background: #f5c6f7;
+}
+
+.holidayImage {
+  mix-blend-mode: multiply;
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
+  /* filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5)); */
+}

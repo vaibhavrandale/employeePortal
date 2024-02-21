@@ -127,6 +127,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     isHr,
     isSoftwareDevlopment,
     isHardwareDevlopment,
+    isDirector,
     tenth_marksheet,
     tenth_schoolName,
     twelth_or_diploma_marksheet,
@@ -243,6 +244,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     employee.isHr = isHr;
     employee.isSoftwareDevlopment = isSoftwareDevlopment;
     employee.isHardwareDevlopment = isHardwareDevlopment;
+    employee.isDirector = isDirector;
     employee.tenth_marksheet = tenth_marksheet;
     employee.tenth_schoolName = tenth_schoolName;
     employee.tenth_grade = tenth_grade;
@@ -369,6 +371,7 @@ emplyeeRouter.post('/signin', async (req, res) => {
         isHr: employee.isHr,
         isSoftwareDevlopment: employee.isSoftwareDevlopment,
         isHardwareDevlopment: employee.isHardwareDevlopment,
+        isDirector: employee.isDirector,
         activate: employee.activate,
         leaves: employee.leaves,
         sick: employee.sick,
@@ -1777,6 +1780,7 @@ emplyeeRouter.post('/', async (req, res) => {
       isHr,
       isSoftwareDevlopment,
       isHardwareDevlopment,
+      isDirector,
       isProbation,
       leaves,
       sick,
@@ -1925,6 +1929,7 @@ emplyeeRouter.post('/', async (req, res) => {
       isHr,
       isHardwareDevlopment,
       isSoftwareDevlopment,
+      isDirector,
       isProbation,
       leaves,
       sick,

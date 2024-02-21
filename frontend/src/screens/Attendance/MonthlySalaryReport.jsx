@@ -433,7 +433,7 @@ const MonthlySalaryReport = () => {
                     <td className="text-center">
                       <span style={styles.input}>
                         {correspondingEmployee
-                          ? `${correspondingEmployee.uan_number}`
+                          ? `${correspondingEmployee.pf_account_no}`
                           : 'N/A'}
                       </span>
                     </td>

@@ -413,8 +413,8 @@ const NewAttendance = () => {
 
                   if (existingEmployee) {
                     // Employee already exists, update days array
-                    const day = new Date(attendance.day);
-                    existingEmployee.days[day.getDate() - 1] = attendance;
+                    const day = attendance.day;
+                    existingEmployee.days[day - 1] = attendance;
                   } else {
                     // Add new employee to the groupedData array
                     const newEmployee = {
@@ -460,11 +460,12 @@ const NewAttendance = () => {
 
                         if (attendance.IN_TIME_1) {
                           const inTime = attendance.IN_TIME_1.split(' ')[1];
+                          const total = attendance.totalHours / 60;
                           const status = attendance.isLeave
                             ? 'L'
-                            : inTime < '09:15:00' && attendance.totalHours >= 8
-                            ? 'P'
-                            : inTime < '09:15:00'
+                            : inTime > '09:15:00' && total >= 8
+                            ? 'P*'
+                            : inTime < '09:15:00' || total >= 8
                             ? 'P'
                             : attendance.totalHours < 4
                             ? 'P*'
@@ -564,7 +565,7 @@ const NewAttendance = () => {
                                         </thead>
                                         <tbody>
                                           <tr>
-                                            <td className="col">Punch 1</td>
+                                            <td className="col">Tap 1</td>
                                             <td className="col-3 text-center">
                                               {attendance.IN_TIME_1
                                                 ? attendance.IN_TIME_1.split(
@@ -610,7 +611,7 @@ const NewAttendance = () => {
                                           </tr>
 
                                           <tr>
-                                            <td className="col">Punch 2</td>
+                                            <td className="col">Tap 2</td>
                                             <td className="col-3 text-center">
                                               {attendance.IN_TIME_2
                                                 ? attendance.IN_TIME_2.split(
@@ -656,7 +657,7 @@ const NewAttendance = () => {
                                           </tr>
 
                                           <tr>
-                                            <td className="col">Punch 3</td>
+                                            <td className="col">Tap 3</td>
                                             <td className="col-3 text-center">
                                               {attendance.IN_TIME_3
                                                 ? attendance.IN_TIME_3.split(
@@ -706,7 +707,9 @@ const NewAttendance = () => {
                                               Total Hours
                                             </td>
                                             <td colspan="3">
-                                              {attendance.totalHours}
+                                              {(
+                                                attendance.totalHours / 60
+                                              ).toFixed(2)}
                                             </td>
                                           </tr>
                                         </tbody>

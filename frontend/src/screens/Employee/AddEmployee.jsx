@@ -80,8 +80,9 @@ function AddEmployee() {
   const [isAccountant, setIsAccountant] = useState(0);
   const [isHr, setIsHr] = useState(0);
   // ifsc_code isSoftwareDevlopment isHardwareDevlopment
-  const [isSoftwareDevlopment, setIsSoftwareDevlopment] = useState();
-  const [isHardwareDevlopment, setIsHardwareDevlopment] = useState();
+  const [isSoftwareDevlopment, setIsSoftwareDevlopment] = useState(0);
+  const [isHardwareDevlopment, setIsHardwareDevlopment] = useState(0);
+  const [isDirector, setIsDirector] = useState(0);
 
   const [father_husband_name, setFather_husband_name] = useState('');
   const [marital_status, setMarital_status] = useState('');
@@ -356,6 +357,9 @@ function AddEmployee() {
       missingFields.push('Salary Group');
     }
     if (!isHardwareDevlopment) {
+      missingFields.push('Salary Group');
+    }
+    if (!isDirector) {
       missingFields.push('Salary Group');
     }
 
@@ -1522,6 +1526,16 @@ function AddEmployee() {
                   onChange={(e) => setIsHardwareDevlopment(e.target.checked)}
                 />
                 <label htmlFor="softwaredev"> Hardware Dev.</label>
+              </div>
+              <div className="role-item">
+                <input
+                  type="checkbox"
+                  id="isDirector"
+                  className="input3"
+                  checked={isDirector}
+                  onChange={(e) => setIsDirector(e.target.checked)}
+                />
+                <label htmlFor="softwaredev">Director</label>
               </div>
 
               <div className="role-item">

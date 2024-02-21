@@ -97,6 +97,7 @@ const UpdateEmployee = () => {
   // isSoftwareDevlopment isHardwareDevlopment
   const [isSoftwareDevlopment, setisSoftwareDevlopment] = useState();
   const [isHardwareDevlopment, setisHardwareDevlopment] = useState();
+  const [isDirector, setIsDirector] = useState();
   const [ctc, setCtc] = useState();
   const [salarygroup, setSalarygroup] = useState();
   const [netsalary, setNetsalary] = useState();
@@ -203,6 +204,7 @@ const UpdateEmployee = () => {
         setIfsc_code(result.data.employee.ifsc_code);
         setisSoftwareDevlopment(result.data.employee.isSoftwareDevlopment);
         setisHardwareDevlopment(result.data.employee.isHardwareDevlopment);
+        setIsDirector(result.data.employee.isDirector);
 
         setTenth_grade(result.data.employee.tenth_grade);
         setTenth_marksheet(result.data.employee.tenth_marksheet);
@@ -1493,6 +1495,22 @@ const UpdateEmployee = () => {
                       }
                     />
                     <label htmlFor="isAdmin">Hardware Dev.</label>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {isDirector === 1 ? (
+                  <div className="role-item">
+                    <input
+                      disabled
+                      type="checkbox"
+                      id="hardware"
+                      className="input3"
+                      checked={isDirector}
+                      onChange={(e) => setIsDirector(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin">Director</label>
                   </div>
                 ) : (
                   ''

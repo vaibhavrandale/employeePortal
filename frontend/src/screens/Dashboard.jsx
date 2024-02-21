@@ -1133,29 +1133,6 @@ function Dashboard() {
                     </div>
                   )}
 
-                  {/* {userInfo &&   userInfo.isVisitor === 0 && (
-                  <div className="col">
-                    <div className="card border border-0 quicklikCard">
-                      <Link to="pay-sleep" className="p-1 text-decoration-none">
-                        <img
-                          src="/images/icons/slip.png"
-                          height={50}
-                          style={{ objectFit: 'contain' }}
-                          className="card-img-top quicklikCardImg"
-                          alt="i"
-                        />
-                        <div className="card-body text-center">
-                          <span
-                            className="card-title"
-                            style={{ color: '#2749f5', fontWeight: '500' }}
-                          >
-                            Pay Slip
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                )} */}
                   {userInfo && userInfo.isVisitor === 0 && (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
@@ -1286,12 +1263,75 @@ function Dashboard() {
                               className="card-title"
                               style={{ color: '#2749f5', fontWeight: '500' }}
                             >
-                              Policy Doc.
+                              HR Policy
                             </span>
                           </div>
                         </Link>
                       </div>
                     </div>
+                  )}
+
+                  {userInfo.isHr === 1 ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="/assets-home"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/assets.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Assets
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {userInfo.isAdmin === 1 ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="/company-profile"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/profile.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Company Profile
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
                   )}
 
                   {userInfo && userInfo.isAdmin && userInfo.isVisitor === 0 && (

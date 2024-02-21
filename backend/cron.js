@@ -1192,13 +1192,13 @@ const HolidayGenerator = async () => {
       },
     });
 
-    console.log(existingHolidays);
+    console.log(`holiday ${existingHolidays}`);
     console.log('current Day ' + currentDate.getDate());
     console.log('current Month ' + (currentDate.getMonth() + 1));
     console.log('current Year ' + currentDate.getFullYear());
 
     // If there are no existing holidays, create new records for the current month
-    if (!existingHolidays) {
+    if (existingHolidays) {
       // Fetch all employees from the Employees table
       const employees = await Employee.findAll();
 
@@ -1221,7 +1221,7 @@ const HolidayGenerator = async () => {
           // Other fields as per your data model
           LeaveType: 'PH', // Set LeaveType to 'PH'
           isLeave: '0', // Set isLeave to '0'
-          totalHours: '9',
+          totalHours: '540',
           year: currentDate.getFullYear(),
           month: currentDate.getMonth() + 1, // Months are zero-based, so add 1
           day: currentDate.getDate(),

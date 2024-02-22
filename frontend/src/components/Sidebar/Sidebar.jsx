@@ -130,7 +130,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo.isAdmin === 1 ? (
+          {userInfo && userInfo.isAdmin === 1 ? (
             <li>
               <Link to={`/policy-documents-home`}>
                 <img

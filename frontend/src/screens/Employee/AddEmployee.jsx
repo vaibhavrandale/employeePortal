@@ -8,6 +8,9 @@ import axios from 'axios';
 import { Store } from '../../Store';
 import LoadingBox1 from '../../components/LoadingBox1';
 import dummyimage from './images.jpg';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import MyModal from './MyModal'; // Adjust the path accordingly
+import { IoEyeOutline } from 'react-icons/io5';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -30,17 +33,35 @@ const reducer = (state, action) => {
     case 'UPLOAD_FAIL':
       return { ...state, loadingUpload: false, errorUpload: action.payload };
 
+    case 'UPLOAD_DOCUMENT_REQUEST':
+      return { ...state, loadingDocumentUpload: true, errorDocumentUpload: '' };
+    case 'UPLOAD_DOCUMENT_SUCCESS':
+      return {
+        ...state,
+        loadingDocumentUpload: false,
+        errorDocumentUpload: '',
+      };
+    case 'UPLOAD_DOCUMENT_FAIL':
+      return {
+        ...state,
+        loadingDocumentUpload: false,
+        errorDocumentUpload: action.payload,
+      };
+
     default:
       return state;
   }
 };
 
 function AddEmployee() {
-  const [{ loadingUpload }, dispatch] = useReducer(reducer, {
-    employees: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loadingUpload, loadingDocumentUpload }, dispatch] = useReducer(
+    reducer,
+    {
+      employees: [],
+      loading: true,
+      error: '',
+    }
+  );
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -132,6 +153,16 @@ function AddEmployee() {
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');
+
+  const [showImageModal, setShowImageModal] = useState(false);
+
+  const handleShowImage = () => {
+    setShowImageModal(true);
+  };
+
+  const handleCloseImageModal = () => {
+    setShowImageModal(false);
+  };
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
@@ -351,18 +382,8 @@ function AddEmployee() {
     }
 
     if (!ifsc_code) {
-      missingFields.push('Salary Group');
+      missingFields.push('Ifsc Code ');
     }
-    if (!isSoftwareDevlopment) {
-      missingFields.push('Salary Group');
-    }
-    if (!isHardwareDevlopment) {
-      missingFields.push('Salary Group');
-    }
-    if (!isDirector) {
-      missingFields.push('Salary Group');
-    }
-
     // ifsc_code isSoftwareDevlopment isHardwareDevlopment
 
     if (missingFields.length > 0) {
@@ -454,12 +475,12 @@ function AddEmployee() {
         type: 'CREATE_SUCCESS',
       });
       toast.success('Employee Added successfully', {
-        position: 'bottom-right',
+        position: 'top-right',
       });
       navigate('/employees');
     } catch (error) {
       toast.error(getError(error), {
-        position: 'bottom-right',
+        position: 'top-right',
       });
       dispatch({ type: 'CREATE_FAIL' });
     }
@@ -492,11 +513,11 @@ function AddEmployee() {
       }
 
       toast.success('Image uploaded successfully.', {
-        position: 'bottom-right',
+        position: 'top-right',
       });
     } catch (err) {
       toast.success(getError(err), {
-        position: 'bottom-right',
+        position: 'top-right',
       });
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
@@ -634,6 +655,298 @@ function AddEmployee() {
       Object.assign(buttonElem.style, styles.button);
     });
   });
+
+  // --------------educational documents----------------
+  const uploadtenththCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setTenth_marksheet([...tenth_marksheet, data.secure_url]);
+      } else {
+        setTenth_marksheet(data.secure_url);
+      }
+
+      toast.success('10th marksheet uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadtwelthordiplomaCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setTwelth_or_diploma_marksheet([
+          ...twelth_or_diploma_marksheet,
+          data.secure_url,
+        ]);
+      } else {
+        setTwelth_or_diploma_marksheet(data.secure_url);
+      }
+
+      toast.success('12th/diploma marksheet uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploaddegreeorPGCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setUnder_geaduate_or_post_graduate_marksheet([
+          ...under_geaduate_or_post_graduate_marksheet,
+          data.secure_url,
+        ]);
+      } else {
+        setUnder_geaduate_or_post_graduate_marksheet(data.secure_url);
+      }
+
+      toast.success('UG/PG certifate uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  // --------------educational documents----------------
+
+  // ------------------------   identificationdocuments-----------------------
+
+  const uploadAddressProof = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setAddresProof([...addressProof, data.secure_url]);
+      } else {
+        setAddresProof(data.secure_url);
+      }
+
+      toast.success('Addres Proof uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadAdharCard = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setAadhar_card_file([...aadhar_card_file, data.secure_url]);
+      } else {
+        setAadhar_card_file(data.secure_url);
+      }
+
+      toast.success('Adhar card uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadPanCard = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setPan_card_file([...pan_card_file, data.secure_url]);
+      } else {
+        setPan_card_file(data.secure_url);
+      }
+
+      toast.success('Pan card uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadBankPassbook = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setBank_account_file([...bank_account_file, data.secure_url]);
+      } else {
+        setBank_account_file(data.secure_url);
+      }
+
+      toast.success('Bank passbook uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadExperienceLetter = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setExperience_letter([...experience_letter, data.secure_url]);
+      } else {
+        setExperience_letter(data.secure_url);
+      }
+
+      toast.success('Experience letter uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+  // ------------------------   identificationdocuments----------------------
 
   return (
     <div style={styles.container}>
@@ -783,18 +1096,42 @@ function AddEmployee() {
               <td style={styles.label} className="ms-2">
                 10th Marksheet:
               </td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="tenth_marksheet"
-                  placeholder="tenth_marksheet"
-                  value={tenth_marksheet}
-                  onChange={(e) => setTenth_marksheet(e.target.value)}
+              <td className="d-flex">
+                {tenth_marksheet ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#myModal_10thCertificate`}
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadtenththCertificate}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="10th Marksheet"
+                  modalName="myModal_10thCertificate"
+                  img={tenth_marksheet}
                 />
               </td>
             </tr>
-
             <tr>
               <td style={styles.label}>10th School Name:</td>
               <td colSpan="3">
@@ -802,7 +1139,7 @@ function AddEmployee() {
                   style={styles.input}
                   type="text"
                   id="tenth_schoolname"
-                  placeholder="Enter 10 the School Nam"
+                  placeholder="Enter 10 the School Name"
                   value={tenth_schoolName}
                   onChange={(e) => setTenth_schoolName(e.target.value)}
                 ></textarea>
@@ -821,16 +1158,39 @@ function AddEmployee() {
                 />
               </td>
               <td style={styles.label}>12th/Diploma marksheet:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="twelth_or_diploma_marksheet"
-                  placeholder="Enter 12th/Diploma Marksheet"
-                  value={twelth_or_diploma_marksheet}
-                  onChange={(e) =>
-                    setTwelth_or_diploma_marksheet(e.target.value)
-                  }
+              <td className="d-flex">
+                {twelth_or_diploma_marksheet ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_12thCertificate"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadtwelthordiplomaCertificate}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="12th Marksheet"
+                  modalName="myModal_12thCertificate"
+                  img={twelth_or_diploma_marksheet}
                 />
               </td>
             </tr>
@@ -867,16 +1227,39 @@ function AddEmployee() {
                 />
               </td>
               <td style={styles.label}>UG/PG Marksheet:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="under_geaduate_or_post_graduate_marksheet"
-                  placeholder="Enter Under Graduate/ Post Graduate Marksheet"
-                  value={under_geaduate_or_post_graduate_marksheet}
-                  onChange={(e) =>
-                    setUnder_geaduate_or_post_graduate_marksheet(e.target.value)
-                  }
+              <td className="d-flex">
+                {under_geaduate_or_post_graduate_marksheet ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_ugpgthCertificate"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploaddegreeorPGCertificate}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="UG/PG Marksheet"
+                  modalName="myModal_ugpgthCertificate"
+                  img={under_geaduate_or_post_graduate_marksheet}
                 />
               </td>
             </tr>
@@ -1043,14 +1426,39 @@ function AddEmployee() {
             </tr>
             <tr>
               <td style={styles.label}>Address Proof:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="addressProof"
-                  placeholder="Enter Address Proof"
-                  value={addressProof}
-                  onChange={(e) => setAddresProof(e.target.value)}
+              <td className="d-flex">
+                {addressProof ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_addressProof"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadAddressProof}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="Address Proof"
+                  modalName="myModal_addressProof"
+                  img={addressProof}
                 />
               </td>
             </tr>
@@ -1341,14 +1749,39 @@ function AddEmployee() {
             </tr>
             <tr>
               <td style={styles.label}>Experience Letter:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="joiningDate"
-                  placeholder="Enter Experience Letter"
-                  value={experience_letter}
-                  onChange={(e) => setExperience_letter(e.target.value)}
+              <td className="d-flex">
+                {experience_letter ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_experience_letter"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadExperienceLetter}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="Address Proof"
+                  modalName="myModal_experience_letter"
+                  img={experience_letter}
                 />
               </td>
               <td style={styles.label}>Previous Company :</td>
@@ -1367,15 +1800,16 @@ function AddEmployee() {
         </table>
 
         <h2 style={styles.sectionHeader}>
-          Identification Documents [
-          <Link
+          Identification Documents{' '}
+          {/*[
+           <Link
             to="https://drive.google.com/drive/folders/1vJGTA8x9F0zHOK2BSFinTNUdVCEchJMR?usp=sharing"
             target="blank"
             className="m-1 text-decoration-none"
           >
             G-drive
-          </Link>
-          ]
+          </Link> 
+          ]*/}
         </h2>
         <table style={styles.table}>
           <tbody>
@@ -1406,26 +1840,76 @@ function AddEmployee() {
             </tr>
             <tr>
               <td style={styles.label}>Upload Aadhar File:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="employee_id"
-                  placeholder="Enter  Aadhar File"
-                  value={aadhar_card_file}
-                  onChange={(e) => setAadhar_card_file(e.target.value)}
+              <td className="d-flex">
+                {aadhar_card_file ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_aadhar_card_file"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadAdharCard}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="Aaadhar card"
+                  modalName="myModal_aadhar_card_file"
+                  img={aadhar_card_file}
                 />
               </td>
 
               <td style={styles.label}>Upload PAN File:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="designation"
-                  placeholder="Enter Pan File"
-                  value={pan_card_file}
-                  onChange={(e) => setPan_card_file(e.target.value)}
+              <td className="d-flex">
+                {pan_card_file ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_pan_card_file"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadPanCard}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="Pan card"
+                  modalName="myModal_pan_card_file"
+                  img={pan_card_file}
                 />
               </td>
             </tr>
@@ -1455,14 +1939,39 @@ function AddEmployee() {
             </tr>
             <tr>
               <td style={styles.label}>Upload Bank File:</td>
-              <td>
-                <input
-                  style={styles.input}
-                  type="text"
-                  id="designation"
-                  placeholder="Enter Bank File"
-                  value={bank_account_file}
-                  onChange={(e) => setBank_account_file(e.target.value)}
+              <td className="d-flex">
+                {bank_account_file ? (
+                  <Link
+                    type="button"
+                    className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal_bank_account_file"
+                    onClick={handleShowImage}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                ) : (
+                  ''
+                )}
+
+                <div>
+                  <input
+                    style={{ width: '50%' }}
+                    type="file"
+                    id="profile"
+                    placeholder="profile"
+                    onChange={uploadBankPassbook}
+                    className="my-2 mx-2"
+                  />
+                  {loadingDocumentUpload && <LoadingBox4 />}
+                </div>
+
+                <MyModal
+                  showModal={showImageModal}
+                  handleClose={handleCloseImageModal}
+                  data="Bank Account"
+                  modalName="myModal_bank_account_file"
+                  img={bank_account_file}
                 />
               </td>
               <td style={styles.label}>PF Account No:</td>

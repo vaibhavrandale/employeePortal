@@ -16,6 +16,7 @@ function PdfComp(props) {
           <Document file={props.pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
             {Array.from({ length: numPages }, (_, index) => (
               <Page
+                height={1300}
                 key={`page_${index + 1}`}
                 pageNumber={index + 1}
                 renderTextLayer={false}

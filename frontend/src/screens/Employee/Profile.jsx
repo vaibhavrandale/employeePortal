@@ -15,6 +15,9 @@ import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
 import { AiOutlineEye } from 'react-icons/ai';
 import { PiLinkThin } from 'react-icons/pi';
+import MyModal from './MyModal';
+
+import { IoEyeOutline } from 'react-icons/io5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -165,6 +168,16 @@ const UpdateEmployee = () => {
   const [employer_esi, setEmployer_esi] = useState('');
   const [bonus, setBonus] = useState('');
   // employer_esi, bonus
+
+  const [showImageModal, setShowImageModal] = useState(false);
+
+  const handleShowImage = () => {
+    setShowImageModal(true);
+  };
+
+  const handleCloseImageModal = () => {
+    setShowImageModal(false);
+  };
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -648,7 +661,7 @@ const UpdateEmployee = () => {
                     onChange={(e) => setFather_husband_name(e.target.value)}
                   />
                 </td>
-                <td style={styles.label}>Profile Image:</td>
+                {/* <td style={styles.label}>Profile Image:</td>
                 <td>
                   <input
                     disabled
@@ -658,7 +671,7 @@ const UpdateEmployee = () => {
                     placeholder="profile"
                     value={image}
                   />
-                </td>
+                </td> */}
               </tr>
               {/* ... Add more fields as needed ... */}
             </tbody>
@@ -684,14 +697,26 @@ const UpdateEmployee = () => {
                   10th Marksheet:
                 </td>
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="tenth_marksheet"
-                    placeholder="tenth_marksheet"
-                    value={tenth_marksheet}
-                    onChange={(e) => setTenth_marksheet(e.target.value)}
+                  {tenth_marksheet ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_10thmarksheet"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="10th marksheet"
+                    modalName="myModal_10thmarksheet"
+                    img={tenth_marksheet}
                   />
                 </td>
               </tr>
@@ -724,17 +749,28 @@ const UpdateEmployee = () => {
                   />
                 </td>
                 <td style={styles.label}>12th/Diploma marksheet:</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="twelth_or_diploma_marksheet"
-                    placeholder="Enter 12th/Diploma Marksheet"
-                    value={twelth_or_diploma_marksheet}
-                    onChange={(e) =>
-                      setTwelth_or_diploma_marksheet(e.target.value)
-                    }
+                  {twelth_or_diploma_marksheet ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_twelth_or_diploma_marksheet"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="12th marksheet"
+                    modalName="myModal_twelth_or_diploma_marksheet"
+                    img={twelth_or_diploma_marksheet}
                   />
                 </td>
               </tr>
@@ -772,19 +808,28 @@ const UpdateEmployee = () => {
                   />
                 </td>
                 <td style={styles.label}>UG/PG Marksheet:</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="under_geaduate_or_post_graduate_marksheet"
-                    placeholder="Enter Under Graduate/ Post Graduate Marksheet"
-                    value={under_geaduate_or_post_graduate_marksheet}
-                    onChange={(e) =>
-                      setUnder_geaduate_or_post_graduate_marksheet(
-                        e.target.value
-                      )
-                    }
+                  {under_geaduate_or_post_graduate_marksheet ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_under_geaduate_or_post_graduate_marksheet"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="UG/PG marksheet"
+                    modalName="myModal_under_geaduate_or_post_graduate_marksheet"
+                    img={under_geaduate_or_post_graduate_marksheet}
                   />
                 </td>
               </tr>
@@ -917,26 +962,29 @@ const UpdateEmployee = () => {
                 </td>
               </tr>
               <tr>
-                <td style={styles.label}>
-                  Address Proof
-                  <Link
-                    target="blank"
-                    to={`${addressProof}`}
-                    className="fs-4"
-                    style={styles.link}
-                  >
-                    <PiLinkThin />
-                  </Link>
-                  :
-                </td>
-                <td colSpan={2}>
-                  <input
-                    style={styles.input}
-                    id="address-proof"
-                    placeholder="Enter address Proof"
-                    disabled
-                    value={addressProof}
-                    onChange={(e) => setAddressProof(e.target.value)}
+                <td style={styles.label}>Address Proof</td>
+
+                <td>
+                  {addressProof ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_addressProof"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Address Proof"
+                    modalName="myModal_addressProof"
+                    img={addressProof}
                   />
                 </td>
               </tr>
@@ -1164,31 +1212,29 @@ const UpdateEmployee = () => {
                 </td>
               </tr>
               <tr>
-                <td style={styles.label}>
-                  Experience Letter{' '}
-                  {experience_letter === 'fresher' ? (
-                    ''
-                  ) : (
-                    <Link
-                      target="blank"
-                      to={`${experience_letter}`}
-                      className="fs-4"
-                      style={styles.link}
-                    >
-                      <PiLinkThin />
-                    </Link>
-                  )}
-                  :
-                </td>
+                <td style={styles.label}>Experience Letter:</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="joiningDate"
-                    placeholder="Enter Experience Letter"
-                    value={experience_letter}
-                    onChange={(e) => setExperience_letter(e.target.value)}
+                  {experience_letter ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_experience_letter"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Experience Letter"
+                    modalName="myModal_experience_letter"
+                    img={experience_letter}
                   />
                 </td>
 
@@ -1238,51 +1284,55 @@ const UpdateEmployee = () => {
                 </td>
               </tr>
               <tr>
-                <td style={styles.label}>
-                  View Aadhar
-                  <Link
-                    target="blank"
-                    to={`${aadhar_card_file}`}
-                    className="fs-4"
-                    style={styles.link}
-                  >
-                    <PiLinkThin />
-                  </Link>{' '}
-                  :
-                </td>
+                <td style={styles.label}>View Aadhar :</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter  Aadhar"
-                    value={aadhar_card_file}
-                    onChange={(e) => setAadhar_card_file(e.target.value)}
+                  {aadhar_card_file ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className=" p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_aadhar_card_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Adhar Card"
+                    modalName="myModal_aadhar_card_file"
+                    img={aadhar_card_file}
                   />
                 </td>
 
-                <td style={styles.label}>
-                  View PAN{' '}
-                  <Link
-                    target="blank"
-                    to={`${pan_card_file}`}
-                    className="fs-4"
-                    style={styles.link}
-                  >
-                    <PiLinkThin />
-                  </Link>{' '}
-                  :
-                </td>
+                <td style={styles.label}>View PAN :</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Pan"
-                    value={pan_card_file}
-                    onChange={(e) => setPan_card_file(e.target.value)}
+                  {pan_card_file ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_pan_card_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Pan Card"
+                    modalName="myModal_pan_card_file"
+                    img={pan_card_file}
                   />
                 </td>
               </tr>
@@ -1313,27 +1363,29 @@ const UpdateEmployee = () => {
                 </td>
               </tr>
               <tr>
-                <td style={styles.label}>
-                  View Bank{' '}
-                  <Link
-                    target="blank"
-                    to={`${bank_account_file}`}
-                    className="fs-4"
-                    style={styles.link}
-                  >
-                    <PiLinkThin />
-                  </Link>{' '}
-                  :
-                </td>
+                <td style={styles.label}>View Bank :</td>
+
                 <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Bank"
-                    value={bank_account_file}
-                    onChange={(e) => setBank_account_file(e.target.value)}
+                  {bank_account_file ? (
+                    <Link
+                      type="button"
+                      style={{ width: '30px' }}
+                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_bank_account_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Bank Passbook"
+                    modalName="myModal_bank_account_file"
+                    img={bank_account_file}
                   />
                 </td>
                 <td style={styles.label}>PF Account No:</td>
@@ -1351,70 +1403,6 @@ const UpdateEmployee = () => {
               </tr>
             </tbody>
           </table>
-          {/* 
-            <h2 style={styles.sectionHeader}>Document Links</h2>
-
-            <div className="d-flex justify-content-center align-items-center">
-              <div className="d-flex m-1 badge bg-warning p-2">
-                <span className="me-1 text-dark">Adhar</span>
-                <span>
-                  {' '}
-                  <Link onClick={openAdharModal}>
-                    <BiLinkAlt className="text-info fw-bold" />
-                  </Link>
-                  <PdfModal
-                    isOpen={isAdharModalOpen}
-                    closeModal={closeAdharModal}
-                    pdfUrl={AdharFile}
-                  />
-                </span>
-              </div>
-
-              <div className="d-flex m-1 badge bg-warning p-2">
-                <span className="me-1 text-dark">Pan</span>
-                <span>
-                  {' '}
-                  <Link onClick={openPanModal}>
-                    <BiLinkAlt className="text-info fw-bold" />
-                  </Link>
-                  <PdfModal
-                    isOpen={isPanModalOpen}
-                    closeModal={closePanModal}
-                    pdfUrl={PanFile}
-                  />
-                </span>
-              </div>
-
-              <div className="d-flex m-1 badge bg-warning p-2">
-                <span className="me-1 text-dark">Bank Account</span>
-                <span>
-                  {' '}
-                  <Link onClick={openBankModal}>
-                    <BiLinkAlt className="text-info fw-bold" />
-                  </Link>
-                  <PdfModal
-                    isOpen={isBankModalOpen}
-                    closeModal={closeBankModal}
-                    pdfUrl={BankFile}
-                  />
-                </span>
-              </div>
-
-              <div className="d-flex m-1 badge bg-warning p-2">
-                <span className="me-1 text-dark">Experience Letter</span>
-                <span>
-                  {' '}
-                  <Link onClick={openExperienceModal}>
-                    <BiLinkAlt className="text-info fw-bold" />
-                  </Link>
-                  <PdfModal
-                    isOpen={isExperienceModalOpen}
-                    closeModal={closeExperienceModal}
-                    pdfUrl={ExperienceFile}
-                  />
-                </span>
-              </div>
-            </div> */}
           <div className="employee-form-container">
             <div className="form-section">
               <h4>Assign Role</h4>

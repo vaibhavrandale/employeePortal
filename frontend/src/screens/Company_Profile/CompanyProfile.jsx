@@ -10,6 +10,7 @@ const CompanyProfile = () => {
   const [loading, setLoading] = useState(false);
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
+
   const handleBadgeClick = (department) => {
     setSelectedDepartment(department);
   };
@@ -19,13 +20,34 @@ const CompanyProfile = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }); // Simulating a 1-second delay
+    }, 1000); // Simulating a 1-second delay
   }, [selectedDepartment]);
+
+  const departmentMap = {
+    isSales: 'Sales',
+    isScm: 'SCM',
+    isDesign: 'Design',
+    isProject: 'Project',
+    isProduction: 'Production',
+    isAccountant: 'Account',
+    isHr: 'HR',
+    isSoftwareDevlopment: 'Software Dev',
+    isHardwareDevlopment: 'Hardware Dev',
+  };
+
+  const getDepartmentName = (employee) => {
+    for (const [key, value] of Object.entries(departmentMap)) {
+      if (employee[key] === 1) {
+        return value;
+      }
+    }
+    return 'Unknown Department';
+  };
 
   const filteredEmployees = selectedDepartment
     ? employees.filter(
         (employee) =>
-          employee.Department === selectedDepartment &&
+          getDepartmentName(employee) === selectedDepartment &&
           employee.isActivate === 1
       )
     : employees.filter((employee) => employee.isActivate === 1);
@@ -37,8 +59,10 @@ const CompanyProfile = () => {
   const renderEmployeeCards = () => {
     if (loading) {
       return (
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading...</span>
+        <div style={{ minHeight: '350px' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
       );
     }
@@ -135,7 +159,7 @@ const CompanyProfile = () => {
 
       <div
         className="d-flex justify-content-center flex-wrap"
-        style={{ minHeight: '290px' }}
+        // style={{ minHeight: '0px' }}
       >
         {renderEmployeeCards()}
       </div>

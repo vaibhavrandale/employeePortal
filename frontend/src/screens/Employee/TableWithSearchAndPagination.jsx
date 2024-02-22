@@ -274,7 +274,11 @@ const TableWithSearchAndPagination = () => {
                           <img
                             src={item.image}
                             alt={item.NAME}
-                            className="table-image"
+                            style={{
+                              height: '50px',
+                              width: '50px',
+                              objectFit: 'cover',
+                            }}
                             // style={{ backgroundColor: 'transparent' }}
                             // onLoad={() => handleImageLoad(index)}
                           />

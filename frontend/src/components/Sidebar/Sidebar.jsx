@@ -173,19 +173,6 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
-          {userInfo && userInfo.isAdmin === 1 && (
-            <li>
-              <Link to={`/company-profile`}>
-                <img
-                  src="/images/icons/profile.png"
-                  alt="employee"
-                  className="icon me-1"
-                  height={'23px'}
-                />
-                {hovered && <span>Profile2</span>}
-              </Link>
-            </li>
-          )}
         </>
       </ul>
     </div>

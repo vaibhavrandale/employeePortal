@@ -396,16 +396,72 @@ NoticeRouter.post(
       const superAdminEmails = superAdmins.map((admin) => admin.email);
 
       const emailContent = `
-        <div>
-        <img src=${logo} style='height:100px,width:100px'/>
-          <h2>Notice: ${title}</h2>
-          <p><strong>Date:</strong> ${date}</p>
-          <p><strong>Subject:</strong> ${subject}</p>
-          <p><strong>Description:</strong> ${description}</p>
-          <p><strong>Notice By:</strong> ${noticeBy}</p>
-          <!-- Add more details as needed -->
-        </div>
-      `;
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Document</title>
+        </head>
+        <body>
+          <table style="width: 500px; margin: auto;">
+            <tr>
+              <td
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  flex-direction: column;
+                  align-items: flex-end;
+                  padding: 20px;
+                "
+              >
+                <img
+                  src="${logo}"
+                  alt="Logo"
+                  style="height: 50px; width: 100px; object-fit: contain"
+                />
+                <span><strong>Date:&nbsp;</strong>${date}</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 20px">
+                ${
+                  title
+                    ? `
+                <h2 style="text-align: center">${title}</h2>
+                `
+                    : ''
+                } ${
+        subject
+          ? `
+                <p><strong>Subject:&nbsp;</strong>${subject}</p>
+                `
+          : ''
+      } ${
+        description
+          ? `
+                <p><strong>Description:</strong> ${description}</p>
+                `
+          : ''
+      }
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    flex-direction: column;
+                  "
+                >
+                  <span><strong>Thanks and Regards,</strong></span>
+                  <span>${noticeBy}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </body>
+      </html>
+      
+    `;
 
       transporter.sendMail(
         {

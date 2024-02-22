@@ -39,6 +39,7 @@ const Sidebar = () => {
               height: '28px',
               width: '120px',
               margin: 'auto',
+
               objectFit: 'contain',
               zIndex: '200',
             }}
@@ -156,6 +157,32 @@ const Sidebar = () => {
                   height={'23px'}
                 />
                 {hovered && <span>Assets</span>}
+              </Link>
+            </li>
+          )}
+          {userInfo && userInfo.isAdmin === 1 && (
+            <li>
+              <Link to={`/company-profile`}>
+                <img
+                  src="/images/icons/profile.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Profile</span>}
+              </Link>
+            </li>
+          )}
+          {userInfo && userInfo.isAdmin === 1 && (
+            <li>
+              <Link to={`/company-profile`}>
+                <img
+                  src="/images/icons/profile.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Profile2</span>}
               </Link>
             </li>
           )}

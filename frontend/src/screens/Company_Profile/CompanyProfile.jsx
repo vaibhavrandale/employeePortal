@@ -51,6 +51,7 @@ const CompanyProfile = () => {
           img={item.img}
           designation={item.Designation}
           employee_id={item.employee_id}
+          email={item.email}
         />
       ));
     } else {
@@ -91,13 +92,14 @@ const CompanyProfile = () => {
             img={item.img}
             designation={item.Designation}
             employee_id={item.employee_id}
+            email={item.email}
           />
         ))}
       </div>
 
       <h3 className="my-3 text-center">Team Tour</h3>
 
-      <div className="d-flex justify-content-center my-3">
+      <div className="d-flex justify-content-center my-3 flex-wrap">
         {[
           'Account',
           'HR',
@@ -127,7 +129,7 @@ const CompanyProfile = () => {
           className="Department badge bg-light p-2 text-dark m-1 border border-1"
           onClick={handleReset}
         >
-          Reset
+          ALL
         </div>
       </div>
 

@@ -291,7 +291,7 @@ const NewAttendance = () => {
     };
 
     fetchData();
-  }, [month, year]);
+  }, [month, userInfo.employee_id, year]);
 
   const filteredData = attendanceData.filter((entry) => {
     if (searchTerm) {
@@ -463,11 +463,11 @@ const NewAttendance = () => {
                           const total = attendance.totalHours / 60;
                           const status = attendance.isLeave
                             ? 'L'
-                            : inTime > '09:15:00' && total >= 8
+                            : inTime > '09:15:00' || total <= 8
                             ? 'P*'
-                            : inTime < '09:15:00' || total >= 8
+                            : inTime < '09:15:00' || total <= 8
                             ? 'P'
-                            : attendance.totalHours < 4
+                            : attendance.totalHours <= 4
                             ? 'P*'
                             : 'H';
 
@@ -485,6 +485,10 @@ const NewAttendance = () => {
 
                           // Increment the totalPCount when status is 'P'
                           if (status === 'P') {
+                            totalPCount++;
+                            employee.totalPCount++; // Increment the employee's totalPCount
+                          }
+                          if (status === 'P*') {
                             totalPCount++;
                             employee.totalPCount++; // Increment the employee's totalPCount
                           }
@@ -706,10 +710,12 @@ const NewAttendance = () => {
                                             <td className="col-md-3">
                                               Total Hours
                                             </td>
-                                            <td colspan="3">
-                                              {(
-                                                attendance.totalHours / 60
-                                              ).toFixed(2)}
+                                            <td colSpan="3">
+                                              {attendance.totalHours > 20
+                                                ? (
+                                                    attendance.totalHours / 60
+                                                  ).toFixed(2)
+                                                : attendance.totalHours}
                                             </td>
                                           </tr>
                                         </tbody>

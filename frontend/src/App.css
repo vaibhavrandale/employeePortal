@@ -143,40 +143,6 @@ input:focus {
   color: #ffffff;
 }
 
-.editBtn {
-  background: transparent;
-  border: none;
-  border-radius: 1px;
-  cursor: pointer;
-  padding: 3px 5px 3px 5px;
-  margin: 5px;
-  text-decoration: none;
-  font-size: 19px;
-  color: #1934df;
-}
-.viewBtn {
-  background: transparent;
-  border: none;
-  border-radius: 1px;
-  cursor: pointer;
-  padding: 3px 5px 3px 5px;
-  margin: 5px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #0be219;
-}
-
-.deleteBtn {
-  background: transparent;
-  border: none;
-  border-radius: 1px;
-  cursor: pointer;
-  padding: 3px 5px 3px 5px;
-  margin: 5px;
-  text-decoration: none;
-  font-size: 20px;
-  color: #f30909;
-}
 .submitBtn:hover {
   background: rgb(41, 40, 40);
   color: rgb(255, 255, 255);

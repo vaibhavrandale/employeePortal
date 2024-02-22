@@ -15,7 +15,7 @@ const reducer = (state, action) => {
     case 'CREATE_SUCCESS':
       return {
         ...state,
-        policies: [...state.policies, action.payload],
+        policies: action.payload,
         createloading: false,
       };
 

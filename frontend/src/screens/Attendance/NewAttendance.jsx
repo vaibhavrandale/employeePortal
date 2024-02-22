@@ -246,11 +246,11 @@ const NewAttendance = () => {
 
                           const status = attendance.isLeave
                             ? 'L'
-                            : inTime > '09:15:00' && total >= 8
+                            : inTime > '09:15:00' || total <= 8
                             ? 'P*'
-                            : inTime < '09:15:00' || total >= 8
+                            : inTime < '09:15:00' || total <= 8
                             ? 'P'
-                            : attendance.totalHours < 4
+                            : attendance.totalHours <= 4
                             ? 'P*'
                             : 'H';
 
@@ -506,9 +506,11 @@ const NewAttendance = () => {
                                               Total Hours
                                             </td>
                                             <td colSpan="3">
-                                              {(
-                                                attendance.totalHours / 60
-                                              ).toFixed(2) + ' hours'}
+                                              {attendance.totalHours > 20
+                                                ? (
+                                                    attendance.totalHours / 60
+                                                  ).toFixed(2)
+                                                : attendance.totalHours}
                                               &nbsp;&nbsp;
                                               <span className="text-danger ">
                                                 {status === 'L' ? (

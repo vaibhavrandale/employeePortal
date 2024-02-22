@@ -129,6 +129,88 @@ function SlipFinal() {
 
     const cuMonth = monthNames[new Date().getMonth()];
 
+    // function numberToWords(number) {
+    //   const units = [
+    //     '',
+    //     'One',
+    //     'Two',
+    //     'Three',
+    //     'Four',
+    //     'Five',
+    //     'Six',
+    //     'Seven',
+    //     'Eight',
+    //     'Nine',
+    //   ];
+    //   const teens = [
+    //     '',
+    //     'Eleven',
+    //     'Twelve',
+    //     'Thirteen',
+    //     'Fourteen',
+    //     'Fifteen',
+    //     'Sixteen',
+    //     'Seventeen',
+    //     'Eighteen',
+    //     'Nineteen',
+    //   ];
+    //   const tens = [
+    //     '',
+    //     'Ten',
+    //     'Twenty',
+    //     'Thirty',
+    //     'Forty',
+    //     'Fifty',
+    //     'Sixty',
+    //     'Seventy',
+    //     'Eighty',
+    //     'Ninety',
+    //   ];
+
+    //   function convertChunk(chunk) {
+    //     const chunkArr = Array.from(String(chunk)).map(Number).reverse();
+    //     const [unit, ten, hundred] = chunkArr;
+
+    //     let result = '';
+    //     if (hundred) {
+    //       result += units[hundred] + ' Hundred ';
+    //     }
+
+    //     if (ten === 1) {
+    //       result += teens[unit] || '';
+    //     } else {
+    //       result += tens[ten] + (unit ? ' ' + units[unit] : '');
+    //     }
+
+    //     return result.trim();
+    //   }
+
+    //   if (number === 0) {
+    //     return 'Zero';
+    //   }
+
+    //   const billion = Math.floor(number / 1000000000);
+    //   const million = Math.floor((number % 1000000000) / 1000000);
+    //   const thousand = Math.floor((number % 1000000) / 1000);
+    //   const remainder = number % 1000;
+
+    //   let result = '';
+    //   if (billion) {
+    //     result += convertChunk(billion) + ' Billion ';
+    //   }
+    //   if (million) {
+    //     result += convertChunk(million) + ' Million ';
+    //   }
+    //   if (thousand) {
+    //     result += convertChunk(thousand) + ' Thousand ';
+    //   }
+    //   if (remainder) {
+    //     result += convertChunk(remainder);
+    //   }
+
+    //   return result.trim();
+    // }
+
     function numberToWords(number) {
       const units = [
         '',
@@ -179,16 +261,12 @@ function SlipFinal() {
         if (ten === 1) {
           result += teens[unit] || '';
         } else {
-          result += tens[ten] + ' ' + units[unit];
+          result += ten ? tens[ten] + ' ' : '';
+          result += unit ? units[unit] : '';
         }
 
         return result.trim();
       }
-
-      if (number === 0) {
-        return 'Zero';
-      }
-
       const billion = Math.floor(number / 1000000000);
       const million = Math.floor((number % 1000000000) / 1000000);
       const thousand = Math.floor((number % 1000000) / 1000);
@@ -405,7 +483,7 @@ function SlipFinal() {
 
     doc.text(`Total Day :  ${daysInMonth}`, 58, 89.2);
 
-    doc.text(`Paid Day : 25`, 152, 89.2);
+    doc.text(`Paid Day : ${totaldays}`, 152, 89.2);
     doc.setFont('helvetica', 'normal');
 
     //  ----------------------------------- 2nd table end------------------------------

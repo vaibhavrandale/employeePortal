@@ -119,30 +119,39 @@ function NoticeHome() {
 
   return (
     <div className="container" style={{ overflow: 'hidden' }}>
-      <div className="mb-3 d-flex justify-content-end "></div>
-      <div className="m-5 d-flex flex-column justify-content-center align-items-center">
+      <div className=" d-flex flex-column justify-content-center align-items-center">
         <h3 className="text-center">NOTICES</h3>
-        <input
-          type="search"
-          name=""
-          id=""
-          placeholder="search notice.."
-          style={{ width: '250px' }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
-        />
-        {userInfo &&
-          userInfo.isHr === 1 &&
-          userInfo.isSuperAdmin === 1 &&
-          userInfo.isVisitor === 0 && (
-            <Link
-              className="btn btn-sm btn-warning mt-2"
-              to="/new-notice"
-              style={{ width: '250px' }}
-            >
-              Post Notice
-            </Link>
-          )}
+        <div className="d-flex justify-content-end align-items-end   w-100">
+          <input
+            type="search"
+            name=""
+            id=""
+            placeholder="search notice.."
+            style={{ width: '250px' }}
+            value={searchTerm}
+            className="mx-1"
+            onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm on input change
+          />
+          <div className="d-flex justify-content-center align-items-center">
+            {userInfo &&
+              userInfo.isHr === 1 &&
+              userInfo.isSuperAdmin === 1 &&
+              userInfo.isVisitor === 0 && (
+                <Link
+                  className="btn btn-sm btn-warning  mx-1"
+                  to="/new-notice"
+                  style={{
+                    height: '35px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  ADD
+                </Link>
+              )}
+          </div>
+        </div>
       </div>
       <div className="d-flex justify-content-start align-items-start flex-wrap">
         {loading ? (
@@ -164,80 +173,69 @@ function NoticeHome() {
                 <div
                   className="card mx-2 my-2 animated" // Add 'animated' class
                   style={{
-                    width: '18rem',
-                    minHeight: '200px',
+                    width: '15rem',
+                    minHeight: '140px',
                     animationDelay: `${index * 0.1}s`, // Delay animation for each card
                   }}
                 >
-                  {/* <img
-                    src={logo}
-                    className="card-img-top"
-                    alt="..."
-                    style={{
-                      height: '50px',
-                      display: 'flex',
-                      justifyContent: 'start',
-                      alignItems: 'start',
-                      objectFit: 'contain',
-                    }}
-                  />{' '} */}
-
                   <div className="card-body">
-                    <h5
-                      className="card-title text-primary fw-bold"
-                      style={{ fontSize: '15px' }}
-                    >
-                      {item.title}
-                    </h5>
-                    <p
+                    <div className="d-flex justify-content-between align-items-center ">
+                      <div className="d-flex justify-content-center  align-items-center">
+                        <h5
+                          className="card-title text-primary fw-bold   "
+                          style={{ fontSize: '15px' }}
+                        >
+                          {item.title}
+                        </h5>
+                      </div>
+
+                      <div className="d-flex justify-content-center  align-items-center ">
+                        <Link
+                          to={`/notice/${item.id}`}
+                          className="viewBtn text-decoration-none"
+                        >
+                          <AiOutlineEye />
+                        </Link>
+
+                        {userInfo &&
+                        userInfo.isHr === 1 &&
+                        userInfo.isSuperAdmin === 1 &&
+                        userInfo.isVisitor === 0 ? (
+                          <>
+                            {' '}
+                            <Link
+                              to={`/edit-notice/${item.id}`}
+                              className="editBtn text-decoration-none text-center"
+                            >
+                              <FiEdit />
+                            </Link>
+                            <Link
+                              onClick={() => popupHandle(item.id)}
+                              // to={`/notice/${item._id}`}
+                              className="deleteBtn   text-danger text-decoration-none"
+                            >
+                              <MdDeleteOutline />
+                            </Link>
+                          </>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </div>
+                    <span
                       className="card-text text-muted"
-                      style={{ fontSize: '15px' }}
+                      style={{ fontSize: '13px' }}
                     >
                       posted on -{' '}
                       {new Date(item.createdAt).toString().substring(0, 16)}
-                    </p>
-                    <p
-                      className="card-text text-danger"
-                      style={{ fontSize: '13px' }}
+                    </span>
+                    <br />
+                    <span
+                      className=" text-danger"
+                      style={{ fontSize: '13px', textAlign: 'center' }}
                     >
-                      subject :{' '}
-                      <span className="card-text text-dark">
-                        {item.subject}
-                      </span>
-                    </p>
-                    <hr />
-                    <div className="d-flex justify-content-center">
-                      <Link
-                        to={`/notice/${item.id}`}
-                        className="viewBtn text-decoration-none"
-                      >
-                        <AiOutlineEye />
-                      </Link>
-
-                      {userInfo &&
-                      userInfo.isHr === 1 &&
-                      userInfo.isSuperAdmin === 1 &&
-                      userInfo.isVisitor === 0 ? (
-                        <>
-                          {' '}
-                          <Link
-                            to={`/edit-notice/${item.id}`}
-                            className="editBtn text-decoration-none text-center"
-                          >
-                            <FiEdit />
-                          </Link>
-                          <Link
-                            onClick={() => popupHandle(item.id)}
-                            // to={`/notice/${item._id}`}
-                            className="deleteBtn   text-danger text-decoration-none"
-                          >
-                            <MdDeleteOutline />
-                          </Link>
-                        </>
-                      ) : (
-                        ''
-                      )}
-                    </div>
+                      {item.subject}
+                    </span>
                   </div>
                 </div>{' '}
                 {popupNoticeId === item.id && (

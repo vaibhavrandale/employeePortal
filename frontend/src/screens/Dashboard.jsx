@@ -152,7 +152,7 @@ function Dashboard() {
         const result = await axios.get(`/api/notice`);
         // setForceUpdate((prev) => prev + 1);
         console.log(result);
-        setIsAttendanceLoggedin(!!state.attendance);
+
         dispatch({
           type: 'FETCH_SUCCESS',
           payload: result.data.notices,
@@ -197,6 +197,7 @@ function Dashboard() {
         const AttendanceresponseData = Attendanceresponse.data;
         setAttendanceResponse(AttendanceresponseData.attendance);
         console.log(AttendanceresponseData.attendance);
+        setIsAttendanceLoggedin(!!state.attendance);
         dispatch({
           type: 'FETCH_SUCCESS',
           payload: AttendanceresponseData.attendance,

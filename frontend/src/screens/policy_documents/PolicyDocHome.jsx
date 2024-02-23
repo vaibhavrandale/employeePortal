@@ -86,7 +86,7 @@ const PolicyDocHome = () => {
   }, [successDelete]);
 
   const getPdf = async () => {
-    const result = await axios.get('http://localhost:5000/get-files');
+    const result = await axios.get('/get-files');
     console.log(result.data.data);
     dispatch({ type: 'FETCH_SUCCESS', payload: result.data.data });
 
@@ -97,7 +97,7 @@ const PolicyDocHome = () => {
     setDeleteModalId(id);
 
     try {
-      await axios.delete(`http://localhost:5000/files/${id}`, {
+      await axios.delete(`/files/${id}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       toast.success(`policy deleted successfully`);
@@ -115,7 +115,7 @@ const PolicyDocHome = () => {
   };
 
   const showPdf = (pdf) => {
-    setPdfFile(`http://localhost:5000/files/${pdf}`);
+    setPdfFile(`/files/${pdf}`);
   };
 
   return (

@@ -49,13 +49,9 @@ const AddPolicy = () => {
       formData.append('file', filename);
       console.log(title, filename);
 
-      const result = await axios.post(
-        'http://localhost:5000/uploadp',
-        formData,
-        {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }
-      );
+      const result = await axios.post('/uploadp', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       console.log(result);
       dispatch({
         type: 'CREATE_SUCCESS',

@@ -248,166 +248,173 @@ const LeaveStatus = () => {
         </nav>{' '}
         <h2 className="text-center text-dark fw-bolder">Update Leave Status</h2>
         <span className="underline"></span>
-        <table
-          class="table table-striped"
-          style={{ width: 'auto', overflowX: 'scroll' }}
-        >
-          <thead>
-            <tr>
-              <th scope="col">Sr</th>
-              <th scope="col">Applied At </th>
-              <th scope="col">Type</th>
-              <th scope="col">Reason</th>
-              <th scope="col">From</th>
-              <th scope="col">To</th>
-              <th scope="col">Status</th>
-              <th scope="col">Approved At</th>
-              <th scope="col">Approved By</th>
-              <th scope="col">Remark</th>
-              <th scope="col">Remark By</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading ? (
-              <tr className="text-center">
-                <td colSpan="12">
-                  <span className="badge bg-success p-2 ">
-                    <span className=""> Loading....</span>
-                    <LoadingBox4 />
-                  </span>
-                </td>
+        <div class="table-responsive">
+          <table
+            class="table table-striped"
+            style={{ width: 'auto', overflowX: 'scroll' }}
+          >
+            <thead>
+              <tr>
+                <th scope="col">Sr</th>
+                <th scope="col">Applied At </th>
+                <th scope="col">Type</th>
+                <th scope="col">Reason</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Status</th>
+                <th scope="col">Approved At</th>
+                <th scope="col">Approved By</th>
+                <th scope="col">Remark</th>
+                <th scope="col">Remark By</th>
               </tr>
-            ) : Leave ? (
-              <>
-                <tr>
-                  <th scope="row">{Leave.id}</th>
-                  <td>{`${new Date(Leave.createdAt)
-                    .getDate()
-                    .toString()
-                    .padStart(2, '0')}/${(
-                    new Date(Leave.createdAt).getMonth() + 1
-                  )
-                    .toString()
-                    .padStart(2, '0')}/${new Date(
-                    Leave.createdAt
-                  ).getFullYear()}`}</td>
-
-                  <td>{Leave.type}</td>
-                  <td>{Leave.reasonInDetail}</td>
-                  {/* <td>{Leave.expectedDateOfLeave}</td> */}
-
-                  <td>{`${new Date(Leave.expectedDateOfLeave)
-                    .getDate()
-                    .toString()
-                    .padStart(2, '0')}/${(
-                    new Date(Leave.expectedDateOfLeave).getMonth() + 1
-                  )
-                    .toString()
-                    .padStart(2, '0')}/${new Date(
-                    Leave.expectedDateOfLeave
-                  ).getFullYear()}`}</td>
-
-                  <td>{`${new Date(Leave.expectedDateOfreturn)
-                    .getDate()
-                    .toString()
-                    .padStart(2, '0')}/${(
-                    new Date(Leave.expectedDateOfreturn).getMonth() + 1
-                  )
-                    .toString()
-                    .padStart(2, '0')}/${new Date(
-                    Leave.expectedDateOfreturn
-                  ).getFullYear()}`}</td>
-
-                  <td>
-                    {Leave.approved === 1 ? (
-                      <span className="badge text-white bg-success">
-                        Approved
-                      </span>
-                    ) : Leave.approved === 0 && Leave.remark !== '' ? (
-                      <span className="badge text-white bg-danger">
-                        Rejected
-                      </span>
-                    ) : (
-                      <span className="badge text-white bg-warning">
-                        Pending
-                      </span>
-                    )}
-                  </td>
-                  {/* <td>{approvedAt}</td> */}
-
-                  <td className="text-center">
-                    {Leave.approvedAt !== '' ? (
-                      <span className="badge p-2 text-light bg-success">
-                        {}
-                        {new Date(Leave.createdAt).toLocaleDateString('en-GB', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                        })}
-                      </span>
-                    ) : Leave.approvedAt === '' && Leave.remark !== '' ? (
-                      <span className="badge text-light bg-danger">
-                        Rejected
-                      </span>
-                    ) : (
-                      <span className="badge text-light bg-warning">
-                        Pending
-                      </span>
-                    )}
-                  </td>
-                  <td className="text-center">
-                    {Leave.approvedBy !== '' ? (
-                      <span className="badge text-white bg-success">
-                        {Leave.approvedBy}
-                      </span>
-                    ) : Leave.approvedBy === '' && Leave.remark !== '' ? (
-                      <span className="badge text-white bg-danger">
-                        Rejected
-                      </span>
-                    ) : (
-                      <span className="badge text-white bg-warning">
-                        pending
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="text-center">
-                    {Leave.remark === '' ? (
-                      <span className="badge text-white bg-warning">
-                        pending
-                      </span>
-                    ) : Leave.approved === 0 && Leave.remark !== '' ? (
-                      <span className="badge text-white bg-danger">
-                        {Leave.remark}
-                      </span>
-                    ) : (
-                      <span className={`badge bg-success`}>{Leave.remark}</span>
-                    )}
-                  </td>
-                  <td className="text-center">
-                    {Leave.remarkBy === '' ? (
-                      <span className="badge text-white bg-warning">
-                        pending
-                      </span>
-                    ) : Leave.approved === 0 && Leave.remark !== '' ? (
-                      <span className="badge text-white bg-danger">
-                        {Leave.remarkBy}
-                      </span>
-                    ) : (
-                      <span className="badge  text-white bg-success">
-                        {Leave.remarkBy}
-                      </span>
-                    )}
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr className="text-center">
+                  <td colSpan="12">
+                    <span className="badge bg-success p-2 ">
+                      <span className=""> Loading....</span>
+                      <LoadingBox4 />
+                    </span>
                   </td>
                 </tr>
-              </>
-            ) : (
-              <tr>
-                <td>Leave not found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ) : Leave ? (
+                <>
+                  <tr>
+                    <th scope="row">{Leave.id}</th>
+                    <td>{`${new Date(Leave.createdAt)
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}/${(
+                      new Date(Leave.createdAt).getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, '0')}/${new Date(
+                      Leave.createdAt
+                    ).getFullYear()}`}</td>
+
+                    <td>{Leave.type}</td>
+                    <td>{Leave.reasonInDetail}</td>
+                    {/* <td>{Leave.expectedDateOfLeave}</td> */}
+
+                    <td>{`${new Date(Leave.expectedDateOfLeave)
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}/${(
+                      new Date(Leave.expectedDateOfLeave).getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, '0')}/${new Date(
+                      Leave.expectedDateOfLeave
+                    ).getFullYear()}`}</td>
+
+                    <td>{`${new Date(Leave.expectedDateOfreturn)
+                      .getDate()
+                      .toString()
+                      .padStart(2, '0')}/${(
+                      new Date(Leave.expectedDateOfreturn).getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, '0')}/${new Date(
+                      Leave.expectedDateOfreturn
+                    ).getFullYear()}`}</td>
+
+                    <td>
+                      {Leave.approved === 1 ? (
+                        <span className="badge text-white bg-success">
+                          Approved
+                        </span>
+                      ) : Leave.approved === 0 && Leave.remark !== '' ? (
+                        <span className="badge text-white bg-danger">
+                          Rejected
+                        </span>
+                      ) : (
+                        <span className="badge text-white bg-warning">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    {/* <td>{approvedAt}</td> */}
+
+                    <td className="text-center">
+                      {Leave.approvedAt !== '' ? (
+                        <span className="badge p-2 text-light bg-success">
+                          {}
+                          {new Date(Leave.createdAt).toLocaleDateString(
+                            'en-GB',
+                            {
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric',
+                            }
+                          )}
+                        </span>
+                      ) : Leave.approvedAt === '' && Leave.remark !== '' ? (
+                        <span className="badge text-light bg-danger">
+                          Rejected
+                        </span>
+                      ) : (
+                        <span className="badge text-light bg-warning">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      {Leave.approvedBy !== '' ? (
+                        <span className="badge text-white bg-success">
+                          {Leave.approvedBy}
+                        </span>
+                      ) : Leave.approvedBy === '' && Leave.remark !== '' ? (
+                        <span className="badge text-white bg-danger">
+                          Rejected
+                        </span>
+                      ) : (
+                        <span className="badge text-white bg-warning">
+                          pending
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="text-center">
+                      {Leave.remark === '' ? (
+                        <span className="badge text-white bg-warning">
+                          pending
+                        </span>
+                      ) : Leave.approved === 0 && Leave.remark !== '' ? (
+                        <span className="badge text-white bg-danger">
+                          {Leave.remark}
+                        </span>
+                      ) : (
+                        <span className={`badge bg-success`}>
+                          {Leave.remark}
+                        </span>
+                      )}
+                    </td>
+                    <td className="text-center">
+                      {Leave.remarkBy === '' ? (
+                        <span className="badge text-white bg-warning">
+                          pending
+                        </span>
+                      ) : Leave.approved === 0 && Leave.remark !== '' ? (
+                        <span className="badge text-white bg-danger">
+                          {Leave.remarkBy}
+                        </span>
+                      ) : (
+                        <span className="badge  text-white bg-success">
+                          {Leave.remarkBy}
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                </>
+              ) : (
+                <tr>
+                  <td>Leave not found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
         <form>
           <div className="form-group mt-4">
             <div className="row d-flex flex-column justify-content-center align-items-center">

@@ -6,17 +6,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import LoadingBox5 from '../components/LoadingBox/LoadingBox5';
-import LoadingBox5White from '../components/LoadingBox/LoadingBox5White';
 import { Helmet } from 'react-helmet';
 import { getError } from '../utils';
-import { AiOutlineSend } from 'react-icons/ai';
-import { BiTimeFive } from 'react-icons/bi';
 // import img from './Vaibhav_Randale.jpg';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import LoadingBox4 from '../components/LoadingBox/LoadingBox4';
-import { differenceInMonths } from 'date-fns';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -59,15 +55,6 @@ const reducer = (state, action) => {
 
     case 'ENTRY_EXIT_RESET':
       return { ...state, loadingAttendance: false, successAttendance: false };
-    // case 'DELETE_REQUEST':
-    //   return { ...state, loadingDelete: true, successDelete: false };
-    // case 'DELETE_SUCCESS':
-    //   return { ...state, loadingDelete: false, successDelete: true };
-    // case 'DELETE_FAIL':
-    //   return { ...state, loadingDelete: false, successDelete: false };
-    // case 'DELETE_RESET':
-    //   return { ...state, loadingDelete: false, successDelete: false };
-
     case 'CREATE_REQUEST':
       return { ...state, loadingCreate: true };
 
@@ -85,11 +72,8 @@ function Dashboard() {
   const [
     {
       loading,
-      error,
       notices,
-      attendance,
-      loadingCreate,
-      birthdayData,
+
       loadingAttendance,
       successAttendance,
     },
@@ -107,8 +91,6 @@ function Dashboard() {
     !!state.attendance
   );
 
-  const navigate = useNavigate();
-
   const [birthdayEmployees, setBirthdayEmployees] = useState([]);
   const [AnnivarsaryEmployees, setAnnivarsaryEmployees] = useState([]);
   const [AttendanceResponse, setAttendanceResponse] = useState({
@@ -119,19 +101,8 @@ function Dashboard() {
     OUT_TIME_2: null,
     OUT_TIME_3: null,
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEmployeeWishes, setSelectedEmployeeWishes] = useState([]);
 
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const [birthdayBoyId, setbirthdayBoyId] = useState('');
-  const [wishername, setwishername] = useState('');
-  const [wisher_employee_id, setwisher_employee_id] = useState('');
-  const [wisher_email, setwisher_email] = useState('');
-  const [wish, setWish] = useState('');
-  const [wisher_image, setwisher_image] = useState('');
-
-  const [isInputDisabled, setInputDisabled] = useState(false);
 
   var todayDate = new Date();
 
@@ -241,66 +212,10 @@ function Dashboard() {
     autoplay: true,
     afterChange: (current) => setCurrentSlide(current),
   };
-  const NewDate = new Date();
-
-  const Year = NewDate.getFullYear();
-  const Month = NewDate.getMonth() + 1; // Note that months are zero-based (January is 0, February is 1, etc.)
-  const ToDay = NewDate.getDate();
-
-  const [isPopupOpen, setPopupOpen] = useState(false);
-
-  const popupHandle = () => {
-    setPopupOpen(!isPopupOpen);
-  };
-
-  const WishHandler = async (e, id) => {
-    e.preventDefault();
-    dispatch({
-      type: 'CREATE_REQUEST',
-    });
-    const missingFields = [];
-
-    if (!wish) {
-      missingFields.push('Please Enter wish');
-    }
-
-    if (missingFields.length > 0) {
-      toast.error(`Please fill : ${missingFields.join(', ')}`, {
-        position: 'top-center',
-      });
-      return;
-    }
-
-    try {
-      const { data } = await axios.post(`/api/employees/post-wish`, {
-        birthdayBoyId: id,
-        wishername: wishername,
-        wisher_employee_id: wisher_employee_id,
-        wisher_email: wisher_email,
-        wish: wish,
-        wisher_image: wisher_image,
-      });
-      console.log(data);
-      dispatch({
-        type: 'CREATE_SUCCESS',
-      });
-      setWish('');
-      setInputDisabled(true);
-      toast.success('Wish Posted successfully', {
-        position: 'top-center',
-      });
-    } catch (error) {
-      toast.error(getError(error), {
-        position: 'top-center',
-      });
-      dispatch({ type: 'CREATE_FAIL' });
-    }
-  };
 
   const today = new Date();
   const currentMonth = today.getMonth() + 1; // January is 0, so add 1
   const currentDate = today.getDate();
-  const currentYear = today.getFullYear();
 
   // Filter employees whose birthday matches the current date and month
   const birthdayEmployeesToday = birthdayEmployees.filter((employee) => {
@@ -317,11 +232,6 @@ function Dashboard() {
     const AnniversaryDate = parseInt(AnniversaryParts[0], 10); // Convert to integer
     return AnniversaryMonth === currentMonth && AnniversaryDate === currentDate;
   });
-
-  // const joiningDate = userInfo.joiningDate; // Assuming you have the joiningDate in a suitable format
-  // console.log(joiningDate);
-
-  // const showLeavesLink = true;
 
   // 1st entry
 
@@ -739,12 +649,12 @@ function Dashboard() {
                     <input
                       type="hidden"
                       value={IN_LONGITUDE_1}
-                      onChange={(e) => IN_LONGITUDE_1(e.target.value)}
+                      onChange={(e) => setIN_LONGITUDE_1(e.target.value)}
                     />
                     <input
                       type="hidden"
                       value={IN_TIME_1}
-                      onChange={(e) => IN_TIME_1(e.target.value)}
+                      onChange={(e) => setIN_TIME_1(e.target.value)}
                     />
                     <input
                       type="hidden"

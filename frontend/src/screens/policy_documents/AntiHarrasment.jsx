@@ -1,13 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PolicyFooter from './PolicyFooter';
 
 // import logo from './Taypro.png';
 const AntiHarrasment = () => {
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
-  const date = new Date();
-  const year = date.getFullYear();
+
   return (
     <div className="policy-container py-1">
       <div className=" policy-heading-container">
@@ -185,8 +183,6 @@ const AntiHarrasment = () => {
           </span>
         </div>
       </section>
-      <hr />
-
       <PolicyFooter />
     </div>
   );

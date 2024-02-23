@@ -239,209 +239,210 @@ const MonthlySalaryReport = () => {
             <button className="btn btn-sm btn-success mx-1"> Export</button>
           </DownloadTableExcel>
         </div>
-
         {fetchloading ? (
           <LoadingBox4 />
         ) : (
-          <table className="table table-bordered" ref={tableRef}>
-            <thead>
-              <tr>
-                <th colSpan={14} className="text-center">
-                  <h3 className="m-1">
-                    Salary Report of Month&nbsp;-&nbsp;
-                    <span className="text-success fw-bold">
-                      {getMonthName(month)}
-                    </span>
-                  </h3>
-                </th>
-                <th colSpan={14} className="text-center">
-                  <h3 className="m-1 text-dark fw-bold">TAYPRO - PUNE</h3>
-                </th>
-              </tr>
-              <tr>
-                <th className="text-center">Employee id </th>
-                <th className="text-center">Name </th>
-                <th className="text-center">BASIC</th>
-                <th className="text-center">HRA</th>
-                <th className="text-center">medical</th>
-                <th className="text-center">Conveyance</th>
-                <th className="text-center">Net Salary</th>
-                <th className="text-center">Monthly Days</th>
-                <th className="text-center">Present Days</th>
-                <th className="text-center">W/OFF</th>
-                <th className="text-center">Leave</th>
-                <th className="text-center">PH</th>
-                <th className="text-center">Paid Days</th>
-                <th className="text-center">Can Days</th>
-                <th className="text-center">Basic</th>
-                <th className="text-center">HRA</th>
-                <th className="text-center">medical</th>
-                <th className="text-center">Conveyance</th>
-                <th className="text-center">Incentive</th>
-                <th className="text-center">Gross</th>
-                <th className="text-center">PF</th>
-                <th className="text-center">Esic</th>
-                <th className="text-center">PT 12%</th>
-                <th className="text-center">Canteen Deduction</th>
-                <th className="text-center">MLWF</th>
-                <th className="text-center">Total Deduction</th>
-                <th className="text-center">Net Salary</th>
-                <th className="text-center">UAN No</th>
-              </tr>
-            </thead>
+          <div class="table-responsive">
+            <table className="table table-bordered" ref={tableRef}>
+              <thead>
+                <tr>
+                  <th colSpan={14} className="text-center">
+                    <h3 className="m-1">
+                      Salary Report of Month&nbsp;-&nbsp;
+                      <span className="text-success fw-bold">
+                        {getMonthName(month)}
+                      </span>
+                    </h3>
+                  </th>
+                  <th colSpan={14} className="text-center">
+                    <h3 className="m-1 text-dark fw-bold">TAYPRO - PUNE</h3>
+                  </th>
+                </tr>
+                <tr>
+                  <th className="text-center">Employee id </th>
+                  <th className="text-center">Name </th>
+                  <th className="text-center">BASIC</th>
+                  <th className="text-center">HRA</th>
+                  <th className="text-center">medical</th>
+                  <th className="text-center">Conveyance</th>
+                  <th className="text-center">Net Salary</th>
+                  <th className="text-center">Monthly Days</th>
+                  <th className="text-center">Present Days</th>
+                  <th className="text-center">W/OFF</th>
+                  <th className="text-center">Leave</th>
+                  <th className="text-center">PH</th>
+                  <th className="text-center">Paid Days</th>
+                  <th className="text-center">Can Days</th>
+                  <th className="text-center">Basic</th>
+                  <th className="text-center">HRA</th>
+                  <th className="text-center">medical</th>
+                  <th className="text-center">Conveyance</th>
+                  <th className="text-center">Incentive</th>
+                  <th className="text-center">Gross</th>
+                  <th className="text-center">PF</th>
+                  <th className="text-center">Esic</th>
+                  <th className="text-center">PT 12%</th>
+                  <th className="text-center">Canteen Deduction</th>
+                  <th className="text-center">MLWF</th>
+                  <th className="text-center">Total Deduction</th>
+                  <th className="text-center">Net Salary</th>
+                  <th className="text-center">UAN No</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {payslip.map((item, index) => {
-                ////console.log('item.employee_id:', item.employee_id);
-                ////console.log('Employees:', employees);
-                const correspondingEmployee = employees.find(
-                  (employee) => employee.employee_id === item.employee_id
-                );
-                ////console.log('correspondingEmployee:', correspondingEmployee);
+              <tbody>
+                {payslip.map((item, index) => {
+                  ////console.log('item.employee_id:', item.employee_id);
+                  ////console.log('Employees:', employees);
+                  const correspondingEmployee = employees.find(
+                    (employee) => employee.employee_id === item.employee_id
+                  );
+                  ////console.log('correspondingEmployee:', correspondingEmployee);
 
-                // Add the logic for parsed values here
-                let parsedMonth = parseInt(month, 10);
-                let parsedYear = parseInt(year, 10);
-                let parsedTotalDays = parseInt(
-                  correspondingEmployee.isProbation === 1
-                    ? daysInMonth - totalSunday
-                    : [daysInMonth - totalSunday] -
-                        [18 - correspondingEmployee.leaves],
-                  10
-                );
+                  // Add the logic for parsed values here
+                  let parsedMonth = parseInt(month, 10);
+                  let parsedYear = parseInt(year, 10);
+                  let parsedTotalDays = parseInt(
+                    correspondingEmployee.isProbation === 1
+                      ? daysInMonth - totalSunday
+                      : [daysInMonth - totalSunday] -
+                          [18 - correspondingEmployee.leaves],
+                    10
+                  );
 
-                let parsedCtc = parseInt(item.ctc, 10);
+                  let parsedCtc = parseInt(item.ctc, 10);
 
-                let averagedays = 31;
+                  let averagedays = 31;
 
-                if (parsedMonth === 2) {
-                  if (
-                    (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
-                    parsedYear % 400 === 0
-                  ) {
-                    averagedays = 29;
-                  } else {
-                    averagedays = 28;
+                  if (parsedMonth === 2) {
+                    if (
+                      (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
+                      parsedYear % 400 === 0
+                    ) {
+                      averagedays = 29;
+                    } else {
+                      averagedays = 28;
+                    }
+                  } else if ([4, 6, 9, 11].includes(parsedMonth)) {
+                    averagedays = 30;
                   }
-                } else if ([4, 6, 9, 11].includes(parsedMonth)) {
-                  averagedays = 30;
-                }
 
-                //console.log(`average days ${averagedays}`);
+                  //console.log(`average days ${averagedays}`);
 
-                const netSalary = Math.floor(
-                  correspondingEmployee.isProbation === 1
-                    ? parsedCtc / 12 - item.total_deduction
-                    : [
-                        ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /
-                          averagedays,
-                      ] - item.total_deduction
-                );
+                  const netSalary = Math.floor(
+                    correspondingEmployee.isProbation === 1
+                      ? parsedCtc / 12 - item.total_deduction
+                      : [
+                          ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /
+                            averagedays,
+                        ] - item.total_deduction
+                  );
 
-                return (
-                  <tr key={index}>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.employee_id}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.NAME}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.basic}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.hra}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.medical}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.conveyance}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.netsalary}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{daysInMonth}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{totalSunday}</span>
-                    </td>
-                    {/* Render Leaves information once for each employee */}
-                    <td className="text-center">
-                      <span style={styles.input}>
-                        {correspondingEmployee
-                          ? `${18 - correspondingEmployee.leaves}`
-                          : 'N/A'}
-                      </span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{holidays}</span>
-                    </td>
+                  return (
+                    <tr key={index}>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.employee_id}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.NAME}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.basic}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.hra}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.medical}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.conveyance}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.netsalary}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{daysInMonth}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{totalSunday}</span>
+                      </td>
+                      {/* Render Leaves information once for each employee */}
+                      <td className="text-center">
+                        <span style={styles.input}>
+                          {correspondingEmployee
+                            ? `${18 - correspondingEmployee.leaves}`
+                            : 'N/A'}
+                        </span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{holidays}</span>
+                      </td>
 
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
 
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
 
-                    <td className="text-center">
-                      <span style={styles.input}>{item.basic}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.hra}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.medical}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.conveyance}</span>
-                    </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.basic}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.hra}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.medical}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.conveyance}</span>
+                      </td>
 
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.gross}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.pf}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.esic}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.pt}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>{item.total_deduction}</span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}></span>
-                    </td>
-                    <td className="text-center">
-                      <span style={styles.input}>
-                        {correspondingEmployee
-                          ? `${correspondingEmployee.pf_account_no}`
-                          : 'N/A'}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.gross}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.pf}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.esic}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.pt}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>{item.total_deduction}</span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}></span>
+                      </td>
+                      <td className="text-center">
+                        <span style={styles.input}>
+                          {correspondingEmployee
+                            ? `${correspondingEmployee.pf_account_no}`
+                            : 'N/A'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </>

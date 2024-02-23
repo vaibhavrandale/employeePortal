@@ -389,151 +389,155 @@ function LeaveApplication() {
           {currentItems.length === 0 ? (
             <MsgBox className="alert alert-danger">No Leaves Found!</MsgBox>
           ) : (
-            <table className="table table-bordered ">
-              <thead>
-                <tr>
-                  <th className="col-md-1 text-center">Sr No </th>
-                  <th className="col-md-1 text-center">Applied At </th>
-                  <th className="col-md-1 text-center">Type</th>
-                  <th className="col-md-1 text-center">From </th>
-                  <th className="col-md-1 text-center">To </th>
+            <div class="table-responsive">
+              <table className="table table-bordered ">
+                <thead>
+                  <tr>
+                    <th className="col-md-1 text-center">Sr No </th>
+                    <th className="col-md-1 text-center">Applied At </th>
+                    <th className="col-md-1 text-center">Type</th>
+                    <th className="col-md-1 text-center">From </th>
+                    <th className="col-md-1 text-center">To </th>
 
-                  <th className="col-md-1 text-center">Status</th>
-                  <th className="col-md-2 text-center">Approved At </th>
-                  <th className="col-md-1 text-center">Approved By</th>
-                  <th className="col-md-1 text-center">Remark</th>
-                  <th className="col-md-1 text-center">Remark By</th>
-                  <th className="col-md-1 text-center">Update</th>
-                  {/* <th className="col-md-1 text-center">Approve</th>
+                    <th className="col-md-1 text-center">Status</th>
+                    <th className="col-md-2 text-center">Approved At </th>
+                    <th className="col-md-1 text-center">Approved By</th>
+                    <th className="col-md-1 text-center">Remark</th>
+                    <th className="col-md-1 text-center">Remark By</th>
+                    <th className="col-md-1 text-center">Update</th>
+                    {/* <th className="col-md-1 text-center">Approve</th>
                   <th className="col-md-1 text-center">Decline</th> */}
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((item, index) => (
-                  <tr
-                    key={index}
-                    className={index === hoveredRow ? 'hovered-row' : ''}
-                    onMouseEnter={() => handleRowHover(index)}
-                    onMouseLeave={() => handleRowHover(null)}
-                  >
-                    {/* {(index = index + 1)} */}
-                    <td className="text-center fw-bold">
-                      <Link
-                        className="text-decoration-none"
-                        to={`/edit-leave/${item.id}`}
-                      >
-                        {index + 1}
-                      </Link>
-                    </td>
-                    <td className="text-center">
-                      {}{' '}
-                      {new Date(item.createdAt).toLocaleDateString('en-GB', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                      })}
-                    </td>
-                    <td className="text-center fw-bold">{item.type}</td>
-                    <td className="text-center">
-                      {new Date(item.expectedDateOfLeave).toLocaleDateString(
-                        'en-GB',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                        }
-                      )}
-                    </td>
-                    <td className="text-center">
-                      {}{' '}
-                      {new Date(item.expectedDateOfreturn).toLocaleDateString(
-                        'en-GB',
-                        {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                        }
-                      )}
-                    </td>
-                    <td className="text-center">
-                      {item.approved === 1 ? (
-                        <span className="badge bg-success">Approved</span>
-                      ) : item.approved === 0 && item.remark !== '' ? (
-                        <span className="badge bg-danger">Rejected</span>
-                      ) : (
-                        <span className="badge bg-warning">Pending</span>
-                      )}
-                    </td>{' '}
-                    <td className="text-center">
-                      {item.approvedAt !== '' ? (
-                        <span className="badge p-2  bg-success ">
-                          {}
-                          {new Date(item.createdAt).toLocaleDateString(
-                            'en-GB',
-                            {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                            }
-                          )}
-                        </span>
-                      ) : item.approvedAt === '' && item.remark !== '' ? (
-                        <span className="badge bg-danger">Rejected</span>
-                      ) : (
-                        <span className="badge bg-warning">Pending</span>
-                      )}
-                    </td>
-                    <td className="text-center">
-                      {item.approvedBy !== '' ? (
-                        <span className="badge bg-success">
-                          {item.approvedBy}
-                        </span>
-                      ) : item.approvedBy === '' && item.remark !== '' ? (
-                        <span className="badge bg-danger">Rejected</span>
-                      ) : (
-                        <span className="badge bg-warning">pending</span>
-                      )}
-                    </td>
-                    {/* <td className="">{item.remark}</td>
-                  <td className="text-center">{item.remarkBy}</td> */}
-                    <td className="text-center">
-                      {item.remark === '' ? (
-                        <span className="badge bg-warning">pending</span>
-                      ) : item.approved === 0 && item.remark !== '' ? (
-                        <span className="badge text-white bg-danger">
-                          {item.remark}
-                        </span>
-                      ) : (
-                        <span className="badge bg-success">{item.remark}</span>
-                      )}
-                    </td>
-                    <td className="text-center">
-                      {item.remarkBy === '' ? (
-                        <span className="badge bg-warning">pending</span>
-                      ) : item.approved === 0 && item.remark !== '' ? (
-                        <span className="badge text-white bg-danger">
-                          {item.remarkBy}
-                        </span>
-                      ) : (
-                        <span className="badge bg-success">
-                          {item.remarkBy}
-                        </span>
-                      )}
-                    </td>
-                    <td className="text-center">
-                      <Link
-                        style={{ width: '86px' }}
-                        className="text-decoration-none btn btn-sm btn-light"
-                        to={`/leave-status/${item.employee_id}/${item.id}`}
-                        target="blank"
-                      >
-                        &nbsp;<i className="fas fa-edit"></i>
-                      </Link>
-                    </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {currentItems.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={index === hoveredRow ? 'hovered-row' : ''}
+                      onMouseEnter={() => handleRowHover(index)}
+                      onMouseLeave={() => handleRowHover(null)}
+                    >
+                      {/* {(index = index + 1)} */}
+                      <td className="text-center fw-bold">
+                        <Link
+                          className="text-decoration-none"
+                          to={`/edit-leave/${item.id}`}
+                        >
+                          {index + 1}
+                        </Link>
+                      </td>
+                      <td className="text-center">
+                        {}{' '}
+                        {new Date(item.createdAt).toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </td>
+                      <td className="text-center fw-bold">{item.type}</td>
+                      <td className="text-center">
+                        {new Date(item.expectedDateOfLeave).toLocaleDateString(
+                          'en-GB',
+                          {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          }
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {}{' '}
+                        {new Date(item.expectedDateOfreturn).toLocaleDateString(
+                          'en-GB',
+                          {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          }
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {item.approved === 1 ? (
+                          <span className="badge bg-success">Approved</span>
+                        ) : item.approved === 0 && item.remark !== '' ? (
+                          <span className="badge bg-danger">Rejected</span>
+                        ) : (
+                          <span className="badge bg-warning">Pending</span>
+                        )}
+                      </td>{' '}
+                      <td className="text-center">
+                        {item.approvedAt !== '' ? (
+                          <span className="badge p-2  bg-success ">
+                            {}
+                            {new Date(item.createdAt).toLocaleDateString(
+                              'en-GB',
+                              {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              }
+                            )}
+                          </span>
+                        ) : item.approvedAt === '' && item.remark !== '' ? (
+                          <span className="badge bg-danger">Rejected</span>
+                        ) : (
+                          <span className="badge bg-warning">Pending</span>
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {item.approvedBy !== '' ? (
+                          <span className="badge bg-success">
+                            {item.approvedBy}
+                          </span>
+                        ) : item.approvedBy === '' && item.remark !== '' ? (
+                          <span className="badge bg-danger">Rejected</span>
+                        ) : (
+                          <span className="badge bg-warning">pending</span>
+                        )}
+                      </td>
+                      {/* <td className="">{item.remark}</td>
+                  <td className="text-center">{item.remarkBy}</td> */}
+                      <td className="text-center">
+                        {item.remark === '' ? (
+                          <span className="badge bg-warning">pending</span>
+                        ) : item.approved === 0 && item.remark !== '' ? (
+                          <span className="badge text-white bg-danger">
+                            {item.remark}
+                          </span>
+                        ) : (
+                          <span className="badge bg-success">
+                            {item.remark}
+                          </span>
+                        )}
+                      </td>
+                      <td className="text-center">
+                        {item.remarkBy === '' ? (
+                          <span className="badge bg-warning">pending</span>
+                        ) : item.approved === 0 && item.remark !== '' ? (
+                          <span className="badge text-white bg-danger">
+                            {item.remarkBy}
+                          </span>
+                        ) : (
+                          <span className="badge bg-success">
+                            {item.remarkBy}
+                          </span>
+                        )}
+                      </td>
+                      <td className="text-center">
+                        <Link
+                          style={{ width: '86px' }}
+                          className="text-decoration-none btn btn-sm btn-light"
+                          to={`/leave-status/${item.employee_id}/${item.id}`}
+                          target="blank"
+                        >
+                          &nbsp;<i className="fas fa-edit"></i>
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </>
       )}

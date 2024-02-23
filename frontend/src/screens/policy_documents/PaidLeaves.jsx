@@ -1,10 +1,10 @@
 import React from 'react';
+import PolicyFooter from './PolicyFooter';
 
 const PaidLeaves = () => {
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
-  const date = new Date();
-  const year = date.getFullYear();
+
   return (
     <div className="policy-container py-1">
       <div className=" policy-heading-container">
@@ -414,6 +414,7 @@ const PaidLeaves = () => {
           <br />
         </section>
       </section>
+      <PolicyFooter />
     </div>
   );
 };

@@ -268,16 +268,10 @@
 
 // export default PolicyDocHome;
 
-import React, { useContext } from 'react';
-import { Store } from '../../Store';
-import { Link } from 'react-router-dom';
-import { FaLink } from 'react-icons/fa6';
 import './policy.css';
 import PolicyCard from './PolicyCard';
 
 const PolicyDocHome = () => {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { userInfo } = state;
   return (
     <div className="container">
       <h3 className="fw-bold text-center">Taypro's Policies</h3>

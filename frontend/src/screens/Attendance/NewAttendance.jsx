@@ -163,398 +163,404 @@ const NewAttendance = () => {
           )}
         </div>
       </div>
+      <div class="table-responsive">
+        <table
+          className="table table-bordered"
+          ref={tableRef}
+          style={{ overflowX: 'auto' }}
+        >
+          <HeaderDays daysInMonth={daysInMonth} month={month} />
 
-      <table className="table table-bordered" ref={tableRef}>
-        <HeaderDays daysInMonth={daysInMonth} month={month} />
+          <tbody>
+            {loading ? (
+              <tr className="text-center">
+                <LoadingBox4 />
+              </tr>
+            ) : (
+              <>
+                {(() => {
+                  // Preprocess the data to group it by employee_id
+                  const groupedData = [];
+                  filteredData.forEach((attendance) => {
+                    const existingEmployee = groupedData.find(
+                      (employee) =>
+                        employee.employee_id === attendance.employee_id
+                    );
 
-        <tbody>
-          {loading ? (
-            <tr className="text-center">
-              <LoadingBox4 />
-            </tr>
-          ) : (
-            <>
-              {(() => {
-                // Preprocess the data to group it by employee_id
-                const groupedData = [];
-                filteredData.forEach((attendance) => {
-                  const existingEmployee = groupedData.find(
-                    (employee) =>
-                      employee.employee_id === attendance.employee_id
-                  );
+                    if (existingEmployee) {
+                      // Employee already exists, update days array
+                      const day = attendance.day;
+                      existingEmployee.days[day - 1] = attendance;
+                    } else {
+                      // Add new employee to the groupedData array
+                      const newEmployee = {
+                        ...attendance,
+                        days: Array.from({ length: daysInMonth }).map(
+                          () => ({})
+                        ),
+                        totalPCount: 0, // Initialize totalPCount for each employee
+                        totalHCount: 0, // Initialize totalPCount for each employee
+                        totalPHCount: 0, // Initialize totalPCount for each employee
+                      };
 
-                  if (existingEmployee) {
-                    // Employee already exists, update days array
-                    const day = attendance.day;
-                    existingEmployee.days[day - 1] = attendance;
-                  } else {
-                    // Add new employee to the groupedData array
-                    const newEmployee = {
-                      ...attendance,
-                      days: Array.from({ length: daysInMonth }).map(() => ({})),
-                      totalPCount: 0, // Initialize totalPCount for each employee
-                      totalHCount: 0, // Initialize totalPCount for each employee
-                      totalPHCount: 0, // Initialize totalPCount for each employee
-                    };
+                      const day = new Date(attendance.IN_TIME_1).getDate();
+                      newEmployee.days[day - 1] = attendance;
 
-                    const day = new Date(attendance.IN_TIME_1).getDate();
-                    newEmployee.days[day - 1] = attendance;
+                      groupedData.push(newEmployee);
+                    }
+                  });
 
-                    groupedData.push(newEmployee);
+                  // Check if groupedData is empty
+                  if (groupedData.length === 0) {
+                    return (
+                      <tr>
+                        <td colSpan={35} className="text-center">
+                          No data found
+                        </td>
+                      </tr>
+                    );
                   }
-                });
 
-                // Check if groupedData is empty
-                if (groupedData.length === 0) {
-                  return (
-                    <tr>
-                      <td colSpan={35} className="text-center">
-                        No data found
-                      </td>
-                    </tr>
-                  );
-                }
+                  // Render the table using the grouped data
+                  return groupedData.map((employee) => {
+                    let totalPCount = 0; // Move totalPCount inside the employee map loop
+                    let totalHCount = 0; // Move totalHCount inside the employee map loop
+                    let totalPHCount = 0; // Move totalHCount inside the employee map loop
 
-                // Render the table using the grouped data
-                return groupedData.map((employee) => {
-                  let totalPCount = 0; // Move totalPCount inside the employee map loop
-                  let totalHCount = 0; // Move totalHCount inside the employee map loop
-                  let totalPHCount = 0; // Move totalHCount inside the employee map loop
+                    return (
+                      <tr key={employee.employee_id}>
+                        <td className="text-center">{employee.UID}</td>
+                        <td className="text-center">{employee.Name}</td>
+                        <td className="text-center">{employee.employee_id}</td>
 
-                  return (
-                    <tr key={employee.employee_id}>
-                      <td className="text-center">{employee.UID}</td>
-                      <td className="text-center">{employee.Name}</td>
-                      <td className="text-center">{employee.employee_id}</td>
+                        {employee.days.map((attendance, dayIndex) => {
+                          const day = dayIndex + 1;
 
-                      {employee.days.map((attendance, dayIndex) => {
-                        const day = dayIndex + 1;
+                          if (attendance.IN_TIME_1) {
+                            const inTime = attendance.IN_TIME_1.split(' ')[1];
+                            const total = attendance.totalHours / 60;
 
-                        if (attendance.IN_TIME_1) {
-                          const inTime = attendance.IN_TIME_1.split(' ')[1];
-                          const total = attendance.totalHours / 60;
+                            // const status = attendance.isLeave
+                            //   ? 'L'
+                            //   : inTime < '09:15:00' && attendance.totalHours >= 8
+                            //   ? 'P'
+                            //   : inTime < '09:15:00'
+                            //   ? 'P'
+                            //   : attendance.totalHours < 4
+                            //   ? 'P*'
+                            //   : 'H';
 
-                          // const status = attendance.isLeave
-                          //   ? 'L'
-                          //   : inTime < '09:15:00' && attendance.totalHours >= 8
-                          //   ? 'P'
-                          //   : inTime < '09:15:00'
-                          //   ? 'P'
-                          //   : attendance.totalHours < 4
-                          //   ? 'P*'
-                          //   : 'H';
+                            const status = attendance.isLeave
+                              ? 'L'
+                              : inTime > '09:15:00' || total <= 8
+                              ? 'P*'
+                              : inTime < '09:15:00' || total <= 8
+                              ? 'P'
+                              : attendance.totalHours <= 4
+                              ? 'P*'
+                              : 'H';
 
-                          const status = attendance.isLeave
-                            ? 'L'
-                            : inTime > '09:15:00' || total <= 8
-                            ? 'P*'
-                            : inTime < '09:15:00' || total <= 8
-                            ? 'P'
-                            : attendance.totalHours <= 4
-                            ? 'P*'
-                            : 'H';
+                            const bgClass =
+                              status === 'L'
+                                ? 'badge bg-danger text-white p-2'
+                                : attendance.LeaveType === 'PH'
+                                ? 'badge bg-danger text-white p-2' // Set background color to danger for 'PH'
+                                : 'badge bg-success text-white p-2';
 
-                          const bgClass =
-                            status === 'L'
-                              ? 'badge bg-danger text-white p-2'
-                              : attendance.LeaveType === 'PH'
-                              ? 'badge bg-danger text-white p-2' // Set background color to danger for 'PH'
-                              : 'badge bg-success text-white p-2';
+                            // Increment the totalPCount when status is 'P'
+                            if (status === 'P') {
+                              totalPCount++;
+                              employee.totalPCount++; // Increment the employee's totalPCount
+                            }
+                            if (status === 'P*') {
+                              totalPCount++;
+                              employee.totalPCount++; // Increment the employee's totalPCount
+                            }
 
-                          // Increment the totalPCount when status is 'P'
-                          if (status === 'P') {
-                            totalPCount++;
-                            employee.totalPCount++; // Increment the employee's totalPCount
-                          }
-                          if (status === 'P*') {
-                            totalPCount++;
-                            employee.totalPCount++; // Increment the employee's totalPCount
-                          }
+                            // Increment the totalPCount when status is 'P'
+                            if (status === 'H') {
+                              totalHCount++;
+                              employee.totalHCount++; // Increment the employee's totalPCount
+                            }
+                            if (status === 'L' && employee.isProbation === 1) {
+                              totalPCount++;
+                              employee.totalPCount++; // Increment the employee's totalPCount
+                            }
+                            if (attendance.LeaveType === 'PH') {
+                              totalPHCount++;
+                              employee.totalPHCount++; // Increment the employee's totalPCount
+                            }
 
-                          // Increment the totalPCount when status is 'P'
-                          if (status === 'H') {
-                            totalHCount++;
-                            employee.totalHCount++; // Increment the employee's totalPCount
-                          }
-                          if (status === 'L' && employee.isProbation === 1) {
-                            totalPCount++;
-                            employee.totalPCount++; // Increment the employee's totalPCount
-                          }
-                          if (attendance.LeaveType === 'PH') {
-                            totalPHCount++;
-                            employee.totalPHCount++; // Increment the employee's totalPCount
-                          }
+                            return (
+                              <td key={day}>
+                                <span
+                                  className={bgClass}
+                                  data-bs-toggle="modal"
+                                  data-bs-target={`#viewOneDay_${employee.employee_id}_${day}`}
+                                  type="button"
+                                >
+                                  {status}
+                                </span>
 
-                          return (
-                            <td key={day}>
-                              <span
-                                className={bgClass}
-                                data-bs-toggle="modal"
-                                data-bs-target={`#viewOneDay_${employee.employee_id}_${day}`}
-                                type="button"
-                              >
-                                {status}
-                              </span>
+                                {/* ------------------------------view oneDay -------------------------- */}
+                                <div
+                                  className="modal fade"
+                                  id={`viewOneDay_${employee.employee_id}_${day}`}
+                                  tabIndex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                  style={{}}
+                                >
+                                  <div className="modal-dialog modal-md">
+                                    <div className="modal-content">
+                                      <div className="modal-header">
+                                        <h5
+                                          className="modal-title"
+                                          id="exampleModalLabel"
+                                        >
+                                          <b className="text-dark">
+                                            {' '}
+                                            <span style={{ color: 'crimson' }}>
+                                              {employee.Name}
+                                            </span>
+                                            's Day {day} Attendance
+                                          </b>
+                                        </h5>
+                                        <button
+                                          type="button"
+                                          className="btn-close"
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                        ></button>
+                                      </div>
+                                      <div className="modal-body">
+                                        <table className="table table-bordered">
+                                          <thead>
+                                            <tr>
+                                              <th className="col-2 text-center">
+                                                ON / OUT
+                                              </th>
+                                              <th className="col-3 text-center">
+                                                IN TIME
+                                              </th>
+                                              <th className="col-3 text-center">
+                                                OUT TIME
+                                              </th>
+                                              <th className="col-1 text-center">
+                                                LOCATION
+                                              </th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <td className="col text-center">
+                                                Tap 1
+                                              </td>
+                                              <td className="col-3 text-center">
+                                                {attendance.IN_TIME_1
+                                                  ? attendance.IN_TIME_1.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-3 text-center">
+                                                {attendance.OUT_TIME_1
+                                                  ? attendance.OUT_TIME_1.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-1 text-center">
+                                                <span className="d-flex">
+                                                  {attendance.IN_LATTITUDE_1 &&
+                                                  attendance.IN_LONGITUDE_1 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white"
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_1},${attendance.IN_LONGITUDE_1}`}
+                                                      target="_blank"
+                                                    >
+                                                      IN
+                                                    </Link>
+                                                  ) : (
+                                                    ''
+                                                  )}
 
-                              {/* ------------------------------view oneDay -------------------------- */}
-                              <div
-                                className="modal fade"
-                                id={`viewOneDay_${employee.employee_id}_${day}`}
-                                tabIndex="-1"
-                                aria-labelledby="exampleModalLabel"
-                                aria-hidden="true"
-                                style={{}}
-                              >
-                                <div className="modal-dialog modal-md">
-                                  <div className="modal-content">
-                                    <div className="modal-header">
-                                      <h5
-                                        className="modal-title"
-                                        id="exampleModalLabel"
-                                      >
-                                        <b className="text-dark">
-                                          {' '}
-                                          <span style={{ color: 'crimson' }}>
-                                            {employee.Name}
-                                          </span>
-                                          's Day {day} Attendance
-                                        </b>
-                                      </h5>
-                                      <button
-                                        type="button"
-                                        className="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                      ></button>
-                                    </div>
-                                    <div className="modal-body">
-                                      <table className="table table-bordered">
-                                        <thead>
-                                          <tr>
-                                            <th className="col-2 text-center">
-                                              ON / OUT
-                                            </th>
-                                            <th className="col-3 text-center">
-                                              IN TIME
-                                            </th>
-                                            <th className="col-3 text-center">
-                                              OUT TIME
-                                            </th>
-                                            <th className="col-1 text-center">
-                                              LOCATION
-                                            </th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr>
-                                            <td className="col text-center">
-                                              Tap 1
-                                            </td>
-                                            <td className="col-3 text-center">
-                                              {attendance.IN_TIME_1
-                                                ? attendance.IN_TIME_1.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-3 text-center">
-                                              {attendance.OUT_TIME_1
-                                                ? attendance.OUT_TIME_1.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-1 text-center">
-                                              <span className="d-flex">
-                                                {attendance.IN_LATTITUDE_1 &&
-                                                attendance.IN_LONGITUDE_1 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white"
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_1},${attendance.IN_LONGITUDE_1}`}
-                                                    target="_blank"
-                                                  >
-                                                    IN
-                                                  </Link>
-                                                ) : (
-                                                  ''
-                                                )}
+                                                  {attendance.OUT_LATTITUDE_1 &&
+                                                  attendance.OUT_LONGITUDE_1 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white "
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_1},${attendance.OUT_LONGITUDE_1}`}
+                                                      target="_blank"
+                                                    >
+                                                      OUT
+                                                    </Link>
+                                                  ) : (
+                                                    ''
+                                                  )}
+                                                </span>
+                                              </td>
+                                            </tr>
 
-                                                {attendance.OUT_LATTITUDE_1 &&
-                                                attendance.OUT_LONGITUDE_1 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white "
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_1},${attendance.OUT_LONGITUDE_1}`}
-                                                    target="_blank"
-                                                  >
-                                                    OUT
-                                                  </Link>
-                                                ) : (
-                                                  ''
-                                                )}
-                                              </span>
-                                            </td>
-                                          </tr>
+                                            <tr>
+                                              <td className="col  text-center">
+                                                Tap 2
+                                              </td>
+                                              <td className="col-3  text-center">
+                                                {attendance.IN_TIME_2
+                                                  ? attendance.IN_TIME_2.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-3  text-center">
+                                                {attendance.OUT_TIME_2
+                                                  ? attendance.OUT_TIME_2.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-1 text-center">
+                                                <span className="d-flex">
+                                                  {attendance.IN_LATTITUDE_2 &&
+                                                  attendance.IN_LONGITUDE_2 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white"
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_2},${attendance.IN_LONGITUDE_2}`}
+                                                      target="_blank"
+                                                    >
+                                                      IN
+                                                    </Link>
+                                                  ) : (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-light mx-1 text-dark"
+                                                      disabled
+                                                    >
+                                                      IN
+                                                    </Link>
+                                                  )}
+                                                  {attendance.OUT_LATTITUDE_2 &&
+                                                  attendance.OUT_LONGITUDE_2 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white "
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_2},${attendance.OUT_LONGITUDE_2}`}
+                                                      target="_blank"
+                                                    >
+                                                      OUT
+                                                    </Link>
+                                                  ) : (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-light mx-1 text-dark"
+                                                      disabled
+                                                    >
+                                                      OUT
+                                                    </Link>
+                                                  )}
+                                                </span>
+                                              </td>
+                                            </tr>
 
-                                          <tr>
-                                            <td className="col  text-center">
-                                              Tap 2
-                                            </td>
-                                            <td className="col-3  text-center">
-                                              {attendance.IN_TIME_2
-                                                ? attendance.IN_TIME_2.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-3  text-center">
-                                              {attendance.OUT_TIME_2
-                                                ? attendance.OUT_TIME_2.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-1 text-center">
-                                              <span className="d-flex">
-                                                {attendance.IN_LATTITUDE_2 &&
-                                                attendance.IN_LONGITUDE_2 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white"
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_2},${attendance.IN_LONGITUDE_2}`}
-                                                    target="_blank"
-                                                  >
-                                                    IN
-                                                  </Link>
-                                                ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    IN
-                                                  </Link>
-                                                )}
-                                                {attendance.OUT_LATTITUDE_2 &&
-                                                attendance.OUT_LONGITUDE_2 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white "
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_2},${attendance.OUT_LONGITUDE_2}`}
-                                                    target="_blank"
-                                                  >
-                                                    OUT
-                                                  </Link>
-                                                ) : (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-light mx-1 text-dark"
-                                                    disabled
-                                                  >
-                                                    OUT
-                                                  </Link>
-                                                )}
-                                              </span>
-                                            </td>
-                                          </tr>
+                                            <tr>
+                                              <td className="col text-center">
+                                                Tap 3
+                                              </td>
+                                              <td className="col-3 text-center">
+                                                {attendance.IN_TIME_3
+                                                  ? attendance.IN_TIME_3.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-3 text-center">
+                                                {attendance.OUT_TIME_3
+                                                  ? attendance.OUT_TIME_3.split(
+                                                      ' '
+                                                    )[1]
+                                                  : ''}
+                                              </td>
+                                              <td className="col-1 text-center">
+                                                <span className="d-flex">
+                                                  {attendance.IN_LATTITUDE_3 &&
+                                                  attendance.IN_LONGITUDE_3 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white"
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_3},${attendance.IN_LONGITUDE_3}`}
+                                                      target="_blank"
+                                                    >
+                                                      IN
+                                                    </Link>
+                                                  ) : (
+                                                    ''
+                                                  )}
+                                                  {attendance.OUT_LATTITUDE_3 &&
+                                                  attendance.OUT_LONGITUDE_3 ? (
+                                                    <Link
+                                                      className="text-decoration-none badge bg-success mx-1 text-white "
+                                                      to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_3},${attendance.OUT_LONGITUDE_3}`}
+                                                      target="_blank"
+                                                    >
+                                                      OUT
+                                                    </Link>
+                                                  ) : (
+                                                    ''
+                                                  )}
+                                                </span>
+                                              </td>
+                                            </tr>
 
-                                          <tr>
-                                            <td className="col text-center">
-                                              Tap 3
-                                            </td>
-                                            <td className="col-3 text-center">
-                                              {attendance.IN_TIME_3
-                                                ? attendance.IN_TIME_3.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-3 text-center">
-                                              {attendance.OUT_TIME_3
-                                                ? attendance.OUT_TIME_3.split(
-                                                    ' '
-                                                  )[1]
-                                                : ''}
-                                            </td>
-                                            <td className="col-1 text-center">
-                                              <span className="d-flex">
-                                                {attendance.IN_LATTITUDE_3 &&
-                                                attendance.IN_LONGITUDE_3 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white"
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.IN_LATTITUDE_3},${attendance.IN_LONGITUDE_3}`}
-                                                    target="_blank"
-                                                  >
-                                                    IN
-                                                  </Link>
-                                                ) : (
-                                                  ''
-                                                )}
-                                                {attendance.OUT_LATTITUDE_3 &&
-                                                attendance.OUT_LONGITUDE_3 ? (
-                                                  <Link
-                                                    className="text-decoration-none badge bg-success mx-1 text-white "
-                                                    to={`https://www.google.com/maps/search/?api=1&query=${attendance.OUT_LATTITUDE_3},${attendance.OUT_LONGITUDE_3}`}
-                                                    target="_blank"
-                                                  >
-                                                    OUT
-                                                  </Link>
-                                                ) : (
-                                                  ''
-                                                )}
-                                              </span>
-                                            </td>
-                                          </tr>
-
-                                          <tr>
-                                            <td className="col-md-3">
-                                              Total Hours
-                                            </td>
-                                            <td colSpan="3">
-                                              {attendance.totalHours > 20
-                                                ? (
-                                                    attendance.totalHours / 60
-                                                  ).toFixed(2)
-                                                : attendance.totalHours}
-                                              &nbsp;&nbsp;
-                                              <span className="text-danger ">
-                                                {status === 'L' ? (
-                                                  <>
-                                                    <span className="text-success fw-bold">
-                                                      {attendance.Name}{' '}
-                                                    </span>
-                                                    is on Leave -(
-                                                    {attendance.LeaveType})
-                                                  </>
-                                                ) : (
-                                                  ''
-                                                )}{' '}
-                                              </span>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
+                                            <tr>
+                                              <td className="col-md-3">
+                                                Total Hours
+                                              </td>
+                                              <td colSpan="3">
+                                                {attendance.totalHours > 20
+                                                  ? (
+                                                      attendance.totalHours / 60
+                                                    ).toFixed(2)
+                                                  : attendance.totalHours}
+                                                &nbsp;&nbsp;
+                                                <span className="text-danger ">
+                                                  {status === 'L' ? (
+                                                    <>
+                                                      <span className="text-success fw-bold">
+                                                        {attendance.Name}{' '}
+                                                      </span>
+                                                      is on Leave -(
+                                                      {attendance.LeaveType})
+                                                    </>
+                                                  ) : (
+                                                    ''
+                                                  )}{' '}
+                                                </span>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                              {/* ------------------------------view One Day-------------------------- */}
-                            </td>
-                          );
-                        } else {
-                          return <td key={day}></td>;
-                        }
-                      })}
+                                {/* ------------------------------view One Day-------------------------- */}
+                              </td>
+                            );
+                          } else {
+                            return <td key={day}></td>;
+                          }
+                        })}
 
-                      <td className="text-center">{employee.totalPCount}</td>
-                      <td className="text-center">{employee.totalHCount}</td>
-                      <td className="text-center">{employee.totalPHCount}</td>
+                        <td className="text-center">{employee.totalPCount}</td>
+                        <td className="text-center">{employee.totalHCount}</td>
+                        <td className="text-center">{employee.totalPHCount}</td>
 
-                      <td className="text-center">
-                        <Link
-                          // pay-slip/:id/:year/:month/:totaldays
-                          to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
-                          target="_blank"
-                          className="btn btn-success"
-                        >
-                          Slip
-                        </Link>
-                        {/* <Link
+                        <td className="text-center">
+                          <Link
+                            // pay-slip/:id/:year/:month/:totaldays
+                            to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
+                            target="_blank"
+                            className="btn btn-success"
+                          >
+                            Slip
+                          </Link>
+                          {/* <Link
                           className="btn btn-sm btn-warning"
                           data-bs-toggle="modal"
                           data-bs-target={`#viewEmployee_${employee.id}`}
@@ -563,7 +569,7 @@ const NewAttendance = () => {
                           <i className="fas fa-edit"></i>
                         </Link> */}
 
-                        {/* <div
+                          {/* <div
                           className="modal fade"
                           id={`viewEmployee_${employee.id}`}
                           tabIndex="-1"
@@ -610,15 +616,16 @@ const NewAttendance = () => {
                             </div>
                           </div>
                         </div> */}
-                      </td>
-                    </tr>
-                  );
-                });
-              })()}
-            </>
-          )}
-        </tbody>
-      </table>
+                        </td>
+                      </tr>
+                    );
+                  });
+                })()}
+              </>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

@@ -43,9 +43,9 @@ const ForgetPasswordScreen = () => {
 
   return (
     <>
-      <section>
+      <section className="signin">
+        {' '}
         <title>Forgot Password ! </title>
-
         <div className="taypro-card ">
           <form action="" class="form_main" onSubmit={submitHandler}>
             <div className="taypro-logo">

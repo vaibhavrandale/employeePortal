@@ -1264,7 +1264,7 @@ function Dashboard() {
                               className="card-title"
                               style={{ color: '#2749f5', fontWeight: '500' }}
                             >
-                              HR Policy
+                              Policies
                             </span>
                           </div>
                         </Link>

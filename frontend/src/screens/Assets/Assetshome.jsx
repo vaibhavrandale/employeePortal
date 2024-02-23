@@ -147,7 +147,7 @@ const Assetshome = () => {
           <>
             {assets.length === 0 ? (
               <div className="text-center mt-3">
-                <span className="badge  bg-danger p-3 fs-5">
+                <span className="badge  bg-danger p-3 fs-6">
                   No assets found
                 </span>
               </div>

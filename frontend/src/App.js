@@ -66,6 +66,11 @@ import Assetshome from './screens/Assets/Assetshome';
 import Addasset from './screens/Assets/Addasset';
 import EditAssetStatus from './screens/Assets/EditAssetStatus';
 import CompanyProfile from './screens/Company_Profile/CompanyProfile';
+import AntiHarrasment from './screens/policy_documents/AntiHarrasment';
+import LateComing from './screens/policy_documents/LateComing';
+import OfficeRules from './screens/policy_documents/OfficeRules';
+import PaidLeaves from './screens/policy_documents/PaidLeaves';
+import Termination from './screens/policy_documents/Termination';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -576,6 +581,53 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <PolicyDocHome />
+            </ProtectedRoutes>
+          }
+        />
+
+        {/* 1 */}
+        <Route
+          path="/anti-harrasment"
+          element={
+            <ProtectedRoutes>
+              <AntiHarrasment />
+            </ProtectedRoutes>
+          }
+        />
+        {/* 2 */}
+        <Route
+          path="/late-coming"
+          element={
+            <ProtectedRoutes>
+              <LateComing />
+            </ProtectedRoutes>
+          }
+        />
+        {/* 3 */}
+        <Route
+          path="/office-rules-and-regulations"
+          element={
+            <ProtectedRoutes>
+              <OfficeRules />
+            </ProtectedRoutes>
+          }
+        />
+
+        {/* 5 */}
+        <Route
+          path="/paid-leaves"
+          element={
+            <ProtectedRoutes>
+              <PaidLeaves />
+            </ProtectedRoutes>
+          }
+        />
+        {/* 6 */}
+        <Route
+          path="/termination"
+          element={
+            <ProtectedRoutes>
+              <Termination />
             </ProtectedRoutes>
           }
         />

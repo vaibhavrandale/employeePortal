@@ -1,13 +1,96 @@
 .policyCard {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  min-height: 120px;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px 15px;
+  padding: 5px 5px;
+  border: none;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
 }
 
 .policyCard img {
-  height: 80px;
-  width: 80px;
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+
+.policyCard > span {
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.policy-container {
+  margin-top: 55px;
+  margin-left: 58px;
+  margin-right: 5px;
+  min-height: 70vh;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+}
+
+.policy-heading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.policy-heading {
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgb(246, 32, 75);
+}
+
+.policy-logo {
+  height: 70px;
+  width: 190px;
+
+  object-fit: contain;
+}
+.policy-section1 > .policy-section1-heading {
+  padding: 10px;
+  font-weight: 700;
+}
+.policy-section1 > .first-para-container > .first-para {
+  text-align: justify;
+  padding: 10px 15px 0px 15px;
+  font-size: 16px;
+}
+.policy-section1 > .first-para-container > .second-para {
+  text-align: justify;
+  padding: 5px 15px 0px 15px;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .policy-section1 > .policy-section1-heading {
+    font-size: 18px;
+  }
+
+  .policy-section1 > .first-para-container > .first-para,
+  .policy-section1 > .first-para-container > .second-para {
+    font-size: 14px;
+  }
+
+  .policy-logo {
+    height: 70px;
+    width: 130px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .policy-section1 > .policy-section1-heading {
+    font-size: 16px;
+  }
+
+  .policy-section1 > .first-para-container > .first-para,
+  .policy-section1 > .first-para-container > .second-para {
+    font-size: 12px;
+  }
+
+  .policy-logo {
+    height: 70px;
+    width: 110px;
+  }
 }

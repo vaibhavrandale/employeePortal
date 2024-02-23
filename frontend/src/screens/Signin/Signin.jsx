@@ -59,7 +59,7 @@ const Signin = () => {
 
   return (
     <>
-      <section>
+      <section className="signin">
         <title>LogIn </title>
 
         <div className="taypro-card ">

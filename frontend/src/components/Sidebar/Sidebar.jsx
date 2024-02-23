@@ -140,7 +140,7 @@ const Sidebar = () => {
                   className="icon me-1"
                   height={'23px'}
                 />
-                {hovered && <span>Policy Doc</span>}
+                {hovered && <span>Policies</span>}
               </Link>
             </li>
           ) : (

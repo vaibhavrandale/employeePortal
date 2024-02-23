@@ -47,7 +47,7 @@ const ResetPasswoed = () => {
 
   return (
     <>
-      <section>
+      <section className="signin">
         <title>Forgot Password ! </title>
 
         <div className="taypro-card ">

@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-section {
+.signin {
   background-image: url(./product.jpg);
   min-height: 100vh;
   background-position: center;

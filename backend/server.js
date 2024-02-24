@@ -31,6 +31,7 @@ import PolicyRouter from './routes/policyRoutes.js';
 import assetsRouter from './routes/assetRoutes.js';
 // import morgan from 'morgan';
 import pdf from './models/pdf.js';
+import expenseRouter from './routes/ExpenseRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -84,6 +85,8 @@ app.use('/api/payslip', payslipRouter);
 app.use('/api/holidays', holidayRouter);
 app.use('/api/policy', PolicyRouter);
 app.use('/api/assets', assetsRouter);
+
+app.use('/api/expenses', expenseRouter);
 
 // ---------------upload----------------
 

@@ -1180,16 +1180,19 @@ const HolidayGenerator = async () => {
     const currentDate = new Date();
 
     // Check if Payslip records already exist for the current month
+    // const existingHolidays = await Holidays.findOne({
+    //   where: {
+    //     date: {
+    //       [Op.eq]: new Date(
+    //         currentDate.getFullYear(),
+    //         currentDate.getMonth(),
+    //         currentDate.getDate()
+    //       ),
+    //     },
+    //   },
+    // });
     const existingHolidays = await Holidays.findOne({
-      where: {
-        date: {
-          [Op.eq]: new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth(),
-            currentDate.getDate()
-          ),
-        },
-      },
+      where: sequelize.literal(`DATE(date) = CURDATE()`),
     });
 
     console.log(`holiday ${existingHolidays}`);

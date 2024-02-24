@@ -69,7 +69,7 @@ function SlipFinal() {
         console.log(result.data);
 
         const Payslipresult = await axios.get(
-          `/api/payslip/${id}/${year}/${month}`
+          `/api/payslip/specificemployee/${id}/${year}/${month}`
         );
         dispatch({
           type: 'FETCH_PAYSLIP_SUCCESS',
@@ -554,39 +554,87 @@ function SlipFinal() {
       doc.text(`Base Pay`, 16, 105);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.basic}.00`, 79, 105);
+      // doc.text(`${payslip.basic}.00`, 79, 105);
+      // // doc.line(15, 114, 181, 114);
+
+      // doc.setFont('helvetica', 'bold');
+      // doc.text(`House Rent Allowance`, 16, 111);
+      // doc.setFont('helvetica', 'normal');
+
+      // doc.text(`${payslip.hra}`, 87, 111);
+      // doc.text(`.00`, 88, 111);
+      // // doc.line(15, 121, 181, 121);
+
+      // doc.setFont('helvetica', 'bold');
+      // doc.text(`Conveyance allowance`, 16, 117);
+      // doc.setFont('helvetica', 'normal');
+      // doc.text(`${payslip.conveyance}.00`, 81, 117);
+      // // doc.line(15, 128, 181, 128);
+
+      // doc.setFont('helvetica', 'bold');
+      // doc.text(`Medical allowance`, 16, 123);
+      // doc.setFont('helvetica', 'normal');
+
+      // doc.text(`${payslip.medical}.00`, 81, 123);
+      // // doc.line(15, 135, 181, 135);
+
+      // doc.setFont('helvetica', 'bold');
+      // doc.text(`Special allowance`, 16, 129);
+      // doc.setFont('helvetica', 'normal');
+
+      // doc.text(`${payslip.special}.00`, 81, 129);
+      // doc.line(15, 142, 181, 142);
+
+      // doc.setFont('helvetica', 'bold');
+      // doc.text(`Total Gross Salary`, 16, 147);
+      // doc.text(`${payslip.gross}.00`, 79, 147);
+
+      doc.text(`${payslip.basic}`, 83, 105);
+      doc.text(`.00`, 93, 105);
       // doc.line(15, 114, 181, 114);
 
       doc.setFont('helvetica', 'bold');
-      doc.text(`House Rent Allowance`, 16, 111);
+      doc.text(`House Rent Allowance`, 16.5, 111);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.hra}.00`, 81, 111);
+      doc.text(`${payslip.hra}`, 85, 111);
+      doc.text(`.00`, 93, 111);
       // doc.line(15, 121, 181, 121);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Conveyance allowance`, 16, 117);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${payslip.conveyance}.00`, 81, 117);
+      doc.text(`${payslip.conveyance}`, 85, 117);
+      doc.text(`.00`, 93, 117);
       // doc.line(15, 128, 181, 128);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Medical allowance`, 16, 123);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.medical}.00`, 81, 123);
+      doc.text(`${payslip.medical}`, 85, 123);
+      doc.text(`.00`, 93, 123);
       // doc.line(15, 135, 181, 135);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Special allowance`, 16, 129);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.special}.00`, 81, 129);
+      if (payslip.special > 100000) {
+        doc.text(`${payslip.special}`, 83, 129);
+        doc.text(`.00`, 93, 129);
+      } else {
+        doc.text(`${payslip.special}`, 85, 129);
+        doc.text(`.00`, 93, 129);
+      }
+      doc.line(15, 142, 181, 142);
+
       doc.line(15, 142, 181, 142);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Total Gross Salary`, 16, 147);
-      doc.text(`${payslip.gross}.00`, 79, 147);
+      doc.text(`${payslip.gross}`, 83, 147);
+      doc.text(`.00`, 93, 147);
       doc.setFont('helvetica', 'normal');
       doc.line(15, 150, 181, 150);
 
@@ -651,39 +699,49 @@ function SlipFinal() {
       doc.text(`Base Pay`, 16, 105);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.basic}.00`, 79, 105);
+      doc.text(`${payslip.basic}`, 83, 105);
+      doc.text(`.00`, 93, 105);
       // doc.line(15, 114, 181, 114);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`House Rent Allowance`, 16.5, 111);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.hra}.00`, 79, 111);
+      doc.text(`${payslip.hra}`, 85, 111);
+      doc.text(`.00`, 93, 111);
       // doc.line(15, 121, 181, 121);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Conveyance allowance`, 16, 117);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${payslip.conveyance}.00`, 81, 117);
+      doc.text(`${payslip.conveyance}`, 85, 117);
+      doc.text(`.00`, 93, 117);
       // doc.line(15, 128, 181, 128);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Medical allowance`, 16, 123);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.medical}.00`, 81, 123);
+      doc.text(`${payslip.medical}`, 85, 123);
+      doc.text(`.00`, 93, 123);
       // doc.line(15, 135, 181, 135);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Special allowance`, 16, 129);
       doc.setFont('helvetica', 'normal');
-
-      doc.text(`${payslip.special}.00`, 79, 129);
+      if (payslip.special > 10000) {
+        doc.text(`${payslip.special}`, 83, 129);
+        doc.text(`.00`, 93, 129);
+      } else {
+        doc.text(`${payslip.special}`, 85, 129);
+        doc.text(`.00`, 93, 129);
+      }
       doc.line(15, 142, 181, 142);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Total Gross Salary`, 16, 147);
-      doc.text(`${payslip.gross}.00`, 79, 147);
+      doc.text(`${payslip.gross}`, 83, 147);
+      doc.text(`.00`, 93, 147);
       doc.setFont('helvetica', 'normal');
       doc.line(15, 150, 181, 150);
 

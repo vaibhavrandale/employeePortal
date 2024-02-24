@@ -59,6 +59,7 @@ import data from '../data.js';
 // import Anniversary from '../models/Anniversary.js';
 // import Holidays from '../models/Holidays.js';
 import EmployeeAssets from '../models/EmployeeAssets.js';
+import { DaywiseExpense, EmployeeExpense } from '../models/expenseModels.js';
 
 const seedRouter = express.Router();
 
@@ -101,9 +102,17 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     // await Holidays.destroy({ where: {}, truncate: true });
     // await Holidays.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await EmployeeAssets.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await EmployeeAssets.destroy({ where: {}, truncate: true });
-    await EmployeeAssets.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await EmployeeAssets.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await EmployeeAssets.destroy({ where: {}, truncate: true });
+    // await EmployeeAssets.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
+    await EmployeeExpense.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await EmployeeExpense.destroy({ where: {}, truncate: true });
+    await EmployeeExpense.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
+    await DaywiseExpense.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await DaywiseExpense.destroy({ where: {}, truncate: true });
+    await DaywiseExpense.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     // // Insert data into the Employee table
     // const createdEmployees = await Employee.bulkCreate(data.employees);
@@ -117,8 +126,15 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     // const createdPayslip = await Payslip.bulkCreate(data.Payslip);
     // const createdAnniversary = await Anniversary.bulkCreate(data.Anniversary);
     // const createdHolidays = await Holidays.bulkCreate(data.holidays);
-    const createdEmployeeAssets = await EmployeeAssets.bulkCreate(
-      data.EmployeeAssets
+    // const createdEmployeeAssets = await EmployeeAssets.bulkCreate(
+    //   data.EmployeeAssets
+    // );
+
+    const createdEmployeeExpense = await EmployeeExpense.bulkCreate(
+      data.EmployeeExpense
+    );
+    const createdDaywiseExpense = await DaywiseExpense.bulkCreate(
+      data.DaywiseExpense
     );
 
     res.send({
@@ -131,7 +147,9 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       // createdPayslip,
       // createdAnniversary,
       // createdHolidays,
-      createdEmployeeAssets,
+      // createdEmployeeAssets,
+      createdEmployeeExpense,
+      createdDaywiseExpense,
     });
   } catch (error) {
     console.error(error);

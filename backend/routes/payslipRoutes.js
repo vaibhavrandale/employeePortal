@@ -45,33 +45,13 @@ payslipRouter.get('/:id', async (req, res) => {
     res.status(500).send({ error: 'Internal Server Error' });
   }
 });
-payslipRouter.get('/:employeeid/:year/:month', async (req, res) => {
-  try {
-    const { employeeid, year, month } = req.params;
-    const payslip = await Payslip.findOne({
-      where: { employee_id: employeeid, year: year, month: month },
-    });
-
-    if (payslip) {
-      res.status(200).send({ payslip });
-    } else {
-      res
-        .status(404)
-        .send({ message: `Payslip not found for month :${month}` });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Internal Server Error' });
-  }
-});
 
 payslipRouter.get('/', async (req, res) => {
   try {
-    const { employeeid, id } = req.params;
     const payslip = await Payslip.findAll();
 
     if (payslip) {
-      res.status(200).send(payslip);
+      res.status(200).send({ payslip });
     } else {
       res.status(404).send({ message: 'Payslip not found' });
     }
@@ -261,35 +241,51 @@ payslipRouter.delete(
   })
 );
 
-payslipRouter.get('/onemonth/:year/:month', async (req, res) => {
-  try {
-    const { year, month } = req.params;
-    console.log('Year:', year, 'Month:', month); // Add this logging statement
+payslipRouter.get(
+  '/specificemployee/:employeeid/:year/:month',
+  async (req, res) => {
+    try {
+      const { employeeid, year, month } = req.params;
+      const payslip = await Payslip.findOne({
+        where: { employee_id: employeeid, year: year, month: month },
+      });
 
-    const payslip = await Payslip.findAll({
-      where: { year: parseInt(year, 10), month: parseInt(month, 10) },
-    });
-
-    console.log(
-      'SQL Query:',
-      Payslip.findAll({
-        where: { year: year, month: month },
-      }).toString()
-    );
-
-    console.log('Payslip:', payslip); // Add this logging statement
-
-    if (payslip.length > 0) {
-      res.status(200).send(payslip);
-    } else {
-      res
-        .status(404)
-        .send({ message: `Payslip not found for month: ${month}` });
+      if (payslip) {
+        res.status(200).send({ payslip });
+      } else {
+        res.status(404).send({
+          message: `Payslip not found for month :${month} and year : ${year}`,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Internal Server Error' });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Internal Server Error' });
   }
-});
+);
+
+payslipRouter.get(
+  '/getspecificmonthpayslips/:year/:month',
+  async (req, res) => {
+    try {
+      const { year, month } = req.params;
+
+      const payslip = await Payslip.findAll({
+        where: { year: year, month: month },
+      });
+
+      if (payslip) {
+        res.status(200).send(payslip);
+      } else {
+        res.status(404).send({
+          message: `Payslip not found for month: ${month}`,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
+  }
+);
 
 export default payslipRouter;

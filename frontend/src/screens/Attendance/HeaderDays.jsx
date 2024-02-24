@@ -60,9 +60,9 @@ const HeaderDays = ({ daysInMonth, month }) => {
         <th className="text-center">Name</th>
         <th className="col-3">Employee ID</th>
         {renderTableHeaders()}
-        <th className="text-center">Present Days</th>
-        <th className="text-center">Half Days</th>
-        <th className="text-center">Paid Holidays</th>
+        <th className="text-center">P</th>
+        <th className="text-center">H</th>
+        <th className="text-center">PH</th>
 
         <th className="text-center">Action</th>
       </tr>

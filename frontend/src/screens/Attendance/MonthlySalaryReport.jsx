@@ -68,9 +68,11 @@ const MonthlySalaryReport = () => {
       try {
         setLoading(true);
 
-        const response = await axios.get(`/api/payslip`);
-        //console.log(`response ` + response);
-        const data = response.data;
+        const response = await axios.get(
+          `/api/payslip/getspecificmonthpayslips/${year}/${month}`
+        );
+        console.log(`api  payslip response ` + response);
+        const data = response.data.payslip;
         //console.log(`data ` + data);
         dispatch({ type: 'FETCH_SUCCESS', payload: response.data });
 
@@ -220,8 +222,6 @@ const MonthlySalaryReport = () => {
       disabled: true,
     },
   };
-
-  const filteredData = payslip.filter((entry) => {});
 
   console.log(holidays);
 

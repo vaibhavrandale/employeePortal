@@ -963,7 +963,7 @@ function Dashboard() {
               >
                 <span className="bg-dark text-light ">Quick Links</span>
                 <div className="row row-cols-1 row-cols-md-4 g-2">
-                  {userInfo && userInfo.isHr === 1 && (
+                  {userInfo && userInfo.isSuperAdmin === 1 && (
                     <div className="col">
                       <div
                         className="card border border-0 quicklikCard"
@@ -1100,7 +1100,6 @@ function Dashboard() {
 
                   {userInfo &&
                     userInfo.isSuperAdmin === 1 &&
-                    userInfo.isHr === 1 &&
                     userInfo.isVisitor === 0 && (
                       <div className="col">
                         <div className="card border border-0 quicklikCard">
@@ -1182,7 +1181,7 @@ function Dashboard() {
                     </div>
                   )}
 
-                  {userInfo.isHr === 1 ? (
+                  {userInfo.isSuperAdmin === 1 ? (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link
@@ -1213,6 +1212,7 @@ function Dashboard() {
                   ) : (
                     ''
                   )}
+
                   {userInfo.isAdmin === 1 ? (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
@@ -1236,6 +1236,38 @@ function Dashboard() {
                               }}
                             >
                               Company Profile
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {userInfo.isSuperAdmin === 1 ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="/expenses-home"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/survey.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Expenses
                             </span>
                           </div>
                         </Link>

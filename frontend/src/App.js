@@ -71,6 +71,11 @@ import LateComing from './screens/policy_documents/LateComing';
 import OfficeRules from './screens/policy_documents/OfficeRules';
 import PaidLeaves from './screens/policy_documents/PaidLeaves';
 import Termination from './screens/policy_documents/Termination';
+import ExperienceLetter from './screens/Letterhead/ExperienceLetter';
+import GenerateDoc from './screens/Letterhead/GenerateDoc';
+import ExpenseHome from './screens/expenses/ExpenseHome';
+import ViewExpense from './screens/expenses/ViewExpense';
+import NewExpense from './screens/expenses/NewExpense';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -671,6 +676,52 @@ function AppRouter() {
           }
         />
         {/* ------------assets-------------------- */}
+
+        {/* ----------------letter head------------ */}
+        <Route
+          path="/generate-doc"
+          element={
+            <ProtectedRoutes>
+              <GenerateDoc />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/experience-letter"
+          element={
+            <ProtectedRoutes>
+              <ExperienceLetter />
+            </ProtectedRoutes>
+          }
+        />
+        {/* ----------------letter head------------ */}
+
+        {/* ------------------expenses---------------- */}
+        <Route
+          path="/expenses-home"
+          element={
+            <ProtectedRoutes>
+              <ExpenseHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/view-expense/:id"
+          element={
+            <ProtectedRoutes>
+              <ViewExpense />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/new-expense/"
+          element={
+            <ProtectedRoutes>
+              <NewExpense />
+            </ProtectedRoutes>
+          }
+        />
+        {/* ------------------expenses---------------- */}
       </Routes>
     </>
   );

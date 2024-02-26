@@ -76,6 +76,10 @@ import GenerateDoc from './screens/Letterhead/GenerateDoc';
 import ExpenseHome from './screens/expenses/ExpenseHome';
 import ViewExpense from './screens/expenses/ViewExpense';
 import NewExpense from './screens/expenses/NewExpense';
+import MyExpenses from './screens/expenses/MyExpenses';
+import UpdateExpense from './screens/expenses/UpdateExpense';
+import ApproveExpense from './screens/expenses/ApproveExpense';
+import SettleExpense from './screens/expenses/SettleExpense';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -700,9 +704,9 @@ function AppRouter() {
         <Route
           path="/expenses-home"
           element={
-            <ProtectedRoutes>
+            <SuperAdminRoutes>
               <ExpenseHome />
-            </ProtectedRoutes>
+            </SuperAdminRoutes>
           }
         />
         <Route
@@ -714,10 +718,43 @@ function AppRouter() {
           }
         />
         <Route
-          path="/new-expense/"
+          path="/new-expense"
           element={
             <ProtectedRoutes>
               <NewExpense />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/my-expenses-home/:id"
+          element={
+            <ProtectedRoutes>
+              <MyExpenses />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/update-expense/:id"
+          element={
+            <ProtectedRoutes>
+              <UpdateExpense />
+            </ProtectedRoutes>
+          }
+        />
+        {/* //aprove expesne */}
+        <Route
+          path="/approve-expense/:id"
+          element={
+            <ProtectedRoutes>
+              <ApproveExpense />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/settle-expense/:id"
+          element={
+            <ProtectedRoutes>
+              <SettleExpense />
             </ProtectedRoutes>
           }
         />

@@ -70,7 +70,7 @@ const ViewExpense = () => {
 
   return (
     <div className="container">
-      <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
+      {/* <nav style={{ '--bs-breadcrumb-divider': "'>'" }} aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
             <Link to="/" className="text-decoration-none">
@@ -81,8 +81,11 @@ const ViewExpense = () => {
           <li className="breadcrumb-item active" aria-current="page">
             <Link
               className="text-decoration-none"
-              to={'/expenses-home'}
-              // onClick={historyHandler}
+              to={
+                userInfo.isSuperAdmin === 1
+                  ? '/expenses-home'
+                  : `/my-expenses-home/${userInfo.employee_id}`
+              }
             >
               Expenses
             </Link>
@@ -91,7 +94,7 @@ const ViewExpense = () => {
             {expense.sitename}
           </li>
         </ol>
-      </nav>
+      </nav> */}
       <h2 className="text-center">Expense Bill</h2>
 
       {loading ? (

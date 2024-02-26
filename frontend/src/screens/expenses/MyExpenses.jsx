@@ -1,6 +1,16 @@
+// import React from 'react';
+// import { useParams } from 'react-router-dom';
+
+// const MyExpenses = () => {
+//   const { id } = useParams();
+//   return <div className="container">MyExpenses {id}</div>;
+// };
+
+// export default MyExpenses;
+
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 // import expenses from './expenses';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IoEyeOutline } from 'react-icons/io5';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
@@ -35,35 +45,29 @@ const reducer = (state, action) => {
   }
 };
 
-const ExpenseHome = () => {
+const MyExpenses = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
+  const { id } = useParams();
+
+  const [showModal, setShowModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [{ loading, loadingUpload, expenses, successDelete }, dispatch] =
     useReducer(reducer, {
       expenses: [],
       loading: true,
       error: '',
     });
-  const [showModal, setShowModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const closeModal = () => {
-    setShowModal(false);
-  };
-
-  // Function to handle modal opening
-  const openModal = () => {
-    setShowModal(true);
-  };
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/expenses');
+        const result = await axios.get(`/api/expenses/getall/${id}`);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.expenses });
         console.log(result.data);
       } catch (err) {
@@ -72,29 +76,28 @@ const ExpenseHome = () => {
     };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
-      setShowModal(false);
     } else {
       fetchData();
     }
     // fetchData();
-  }, [successDelete]);
+  }, [id, successDelete]);
 
   const deleteHandler = async (e, id) => {
     try {
       await axios.delete(`/api/expenses/${id}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
-      toast.success(`Expense ${id} deleted successfully`);
+      toast.success('Expense deleted successfully');
       dispatch({
         type: 'DELETE_SUCCESS',
       });
-      setShowModal(false);
-      window.location.reload();
     } catch (err) {
       toast.error(getError(err));
       dispatch({
         type: 'DELETE_FAIL',
       });
+    } finally {
+      setShowModal(false);
     }
   };
 
@@ -113,8 +116,8 @@ const ExpenseHome = () => {
 
   return (
     <div className="container">
-      <h3 className="text-center my-3">All Employee Site Expenses</h3>
-      <div className="d-flex justify-content-end align-items-end my-2 flex-wrap">
+      <h3 className="text-center my-3">My Site Expenses</h3>
+      <div className="d-flex justify-content-end align-items-end my-2">
         <input
           type="text"
           className="form-control search mx-1"
@@ -132,71 +135,100 @@ const ExpenseHome = () => {
           <div className="d-flex justify-content-center align-items-center">
             <LoadingBox4 />
           </div>
-        ) : currentItems.length === 0 ? (
+        ) : expenses.length === 0 ? (
           <div className="d-flex justify-content-center">
-            <div className="badge bg-danger p-3 fs-5">No Expense Found</div>
+            <div className="badge bg-danger p-2">
+              <h5> No Expenses</h5>
+            </div>
           </div>
         ) : (
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   ID
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Name
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Employee ID
                 </th>
-                <th scope="col" className="text-center ">
+                <th
+                  scope="col"
+                  className="text-center "
+                  style={{ width: '250px' }}
+                >
                   Site Name
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Location
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Start Date
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Status
                 </th>
 
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Approved By
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Settled
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Settled By
                 </th>
-                <th scope="col" className="text-center">
+                <th
+                  scope="col"
+                  className="text-center"
+                  style={{ width: '50px' }}
+                >
                   Action
                 </th>
-                {userInfo.isDirector === 1 || userInfo.isHr ? (
-                  <th scope="col" className="text-center">
-                    Approve
-                  </th>
-                ) : (
-                  ''
-                )}
-                {userInfo.isAccountant === 1 || userInfo.isHr ? (
-                  <th scope="col" className="text-center">
-                    Settle
-                  </th>
-                ) : (
-                  ''
-                )}
               </tr>
             </thead>
             <tbody>
               {currentItems.map((item, index) => (
                 <tr key={index}>
-                  <td className="text-center">
-                    {' '}
-                    <Link to={`/view-expense/${item.id}`}>{item.id}</Link>
-                  </td>
+                  <td className="text-center">{item.id}</td>
                   <td className="text-center">{item.employeeName}</td>
                   <td className="text-center">{item.employee_id}</td>
                   <td className="text-center">{item.sitename}</td>
@@ -280,32 +312,25 @@ const ExpenseHome = () => {
                     >
                       <FaRegEdit />
                     </Link>
-
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-backdrop="false"
-                      onClick={openModal}
-                      data-bs-target={`#exampleModal_${item.id}`}
+                    <Link
+                      className="btn btn-sm text-decoration-none btn-danger mx-1"
+                      onClick={() => setShowModal(true)}
                     >
                       <MdDeleteOutline />
-                    </button>
+                    </Link>
 
                     <div
-                      className={`modal fade${showModal ? ' show' : ''}`}
-                      id={`exampleModal_${item.id}`}
+                      className={`modal fade ${showModal ? 'show' : ''}`}
+                      style={{ display: showModal ? 'block' : 'none' }}
                       tabIndex="-1"
-                      aria-labelledby={`exampleModalLabel_${item.id}`}
-                      aria-hidden="true"
+                      role="dialog"
+                      aria-labelledby="deleteModal"
+                      aria-hidden={!showModal}
                     >
                       <div className="modal-dialog modal-dialog-centered modal-sm">
                         <div className="modal-content">
                           <div className="modal-header">
-                            <h5
-                              className="modal-title"
-                              id={`exampleModalLabel_${item.id}`}
-                            >
+                            <h5 className="modal-title" id="deleteModalLabel">
                               Confirmation
                             </h5>
                             <button
@@ -313,21 +338,21 @@ const ExpenseHome = () => {
                               className="btn-close"
                               data-bs-dismiss="modal"
                               aria-label="Close"
+                              onClick={() => setShowModal(false)}
                             ></button>
                           </div>
                           <div className="modal-body">
-                            Are you sure to delete Expense-
+                            Are you sure to delete{' '}
                             <span className="text-success fw-bold">
-                              {item.sitename}
-                            </span>
-                            ?
+                              {item.sitename}-{item.startDate}
+                            </span>{' '}
+                            visit?
                           </div>
                           <div className="modal-footer">
                             <button
                               type="button"
                               className="btn btn-secondary btn-sm"
-                              data-bs-dismiss="modal"
-                              onClick={closeModal}
+                              onClick={() => setShowModal(false)}
                             >
                               Cancel
                             </button>
@@ -343,30 +368,6 @@ const ExpenseHome = () => {
                       </div>
                     </div>
                   </td>
-                  {userInfo.isDirector === 1 || userInfo.isHr ? (
-                    <td>
-                      <Link
-                        className="btn btn-sm btn-success"
-                        to={`/approve-expense/${item.id}`}
-                      >
-                        Approve
-                      </Link>
-                    </td>
-                  ) : (
-                    ''
-                  )}
-                  {userInfo.isAccountant === 1 || userInfo.isHr ? (
-                    <td>
-                      <Link
-                        className="btn btn-sm btn-success"
-                        to={`/settle-expense/${item.id}`}
-                      >
-                        Settle
-                      </Link>
-                    </td>
-                  ) : (
-                    ''
-                  )}
                 </tr>
               ))}
             </tbody>
@@ -377,4 +378,4 @@ const ExpenseHome = () => {
   );
 };
 
-export default ExpenseHome;
+export default MyExpenses;

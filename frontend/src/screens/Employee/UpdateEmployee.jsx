@@ -11,7 +11,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { getError } from '../../utils';
 import { Store } from '../../Store';
-import { MdVerified } from 'react-icons/md';
+import { MdDeleteOutline, MdVerified } from 'react-icons/md';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
@@ -215,6 +215,15 @@ const UpdateEmployee = () => {
     under_geaduate_or_post_graduate_collegeName,
     setUnder_geaduate_or_post_graduate_collegeName,
   ] = useState('');
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // Function to handle modal opening
+  const openModal = () => {
+    setShowModal(true);
+  };
 
   const [salaryMonth, setSalaryMonth] = useState('');
   const [salaryyear, setSalaryYear] = useState('');
@@ -821,19 +830,16 @@ const UpdateEmployee = () => {
   });
   const [showModal, setShowModal] = useState(false);
 
-  const deleteHandler = async (item) => {
+  const deleteHandler = async (e, slipid) => {
     try {
-      await axios.delete(`/api/payslip/${item.id}`, {
+      await axios.delete(`/api/payslip/${slipid}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       toast.success('Payslip deleted successfully');
       dispatch({
         type: 'DELETE_SUCCESS',
       });
-      window.scrollTo({
-        behavior: 'smooth',
-        top: salaryRef.current.offsetTop,
-      });
+      window.location.reload();
     } catch (err) {
       toast.error(getError(err));
       dispatch({
@@ -2483,7 +2489,7 @@ const UpdateEmployee = () => {
                       <div
                         class="modal fade"
                         id={`viewSalary${item.id}`}
-                        tabindex="-1"
+                        tabIndex={-1}
                         aria-labelledby="exampleModalLabel"
                         aria-hidden="true"
                       >
@@ -2782,24 +2788,31 @@ const UpdateEmployee = () => {
                       </div>
                       {/* ------------------------------view salary breakup-------------------------- */}
 
-                      <Link
-                        className="btn btn-sm btn-danger mx-1"
-                        onClick={() => setShowModal(true)}
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-backdrop="false"
+                        onClick={openModal}
+                        data-bs-target={`#exampleModal_${item.id}`}
                       >
-                        <RiDeleteBinLine />
-                      </Link>
+                        <MdDeleteOutline />
+                      </button>
+
                       <div
-                        className={`modal fade ${showModal ? 'show' : ''}`}
-                        style={{ display: showModal ? 'block' : 'none' }}
+                        className={`modal fade${showModal ? ' show' : ''}`}
+                        id={`exampleModal_${item.id}`}
                         tabIndex="-1"
-                        role="dialog"
-                        aria-labelledby="deleteModal"
-                        aria-hidden={!showModal}
+                        aria-labelledby={`exampleModalLabel_${item.id}`}
+                        aria-hidden="true"
                       >
                         <div className="modal-dialog modal-dialog-centered modal-sm">
                           <div className="modal-content">
                             <div className="modal-header">
-                              <h5 className="modal-title" id="deleteModalLabel">
+                              <h5
+                                className="modal-title"
+                                id={`exampleModalLabel_${item.id}`}
+                              >
                                 Confirmation
                               </h5>
                               <button
@@ -2807,24 +2820,25 @@ const UpdateEmployee = () => {
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
-                                onClick={() => setShowModal(false)}
                               ></button>
                             </div>
                             <div className="modal-body">
-                              Are you sure to delete?
+                              Are you sure to delete Salary Structure for month{' '}
+                              {item.month}?
                             </div>
                             <div className="modal-footer">
                               <button
                                 type="button"
                                 className="btn btn-secondary btn-sm"
-                                onClick={() => setShowModal(false)}
+                                data-bs-dismiss="modal"
+                                onClick={closeModal}
                               >
                                 Cancel
                               </button>
                               <button
                                 type="button"
                                 className="btn btn-danger btn-sm"
-                                onClick={(e) => deleteHandler(item)}
+                                onClick={(e) => deleteHandler(e, item.id)}
                               >
                                 Delete
                               </button>

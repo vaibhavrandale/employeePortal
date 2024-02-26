@@ -66,8 +66,8 @@ const EmployeeExpense = sequelize.define(
   }
 );
 
-const DaywiseExpense = sequelize.define(
-  'DaywiseExpense',
+const DaywiseExpenses = sequelize.define(
+  'DaywiseExpenses',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -96,9 +96,9 @@ const DaywiseExpense = sequelize.define(
   }
 );
 
-EmployeeExpense.hasMany(DaywiseExpense, {
+EmployeeExpense.hasMany(DaywiseExpenses, {
   foreignKey: 'EmployeeExpenseId',
 });
-DaywiseExpense.belongsTo(EmployeeExpense);
+DaywiseExpenses.belongsTo(EmployeeExpense);
 
-export { EmployeeExpense, DaywiseExpense };
+export { EmployeeExpense, DaywiseExpenses };

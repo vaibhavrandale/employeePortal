@@ -1,7 +1,7 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Store } from '../../Store';
 import toast from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { getError } from '../../utils';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
@@ -10,14 +10,23 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { GrAddCircle } from 'react-icons/gr';
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'CREATE_REQUEST':
-      return { ...state, createloading: true };
+    case 'FETCH_REQUEST':
+      return { ...state, fetchLoading: true };
 
-    case 'CREATE_SUCCESS':
-      return { ...state, expenses: action.payload, createloading: false };
+    case 'FETCH_SUCCESS':
+      return { ...state, expenses: action.payload, fetchLoading: false };
 
-    case 'CREATE_FAIL':
-      return { ...state, createloading: false, error: action.payload };
+    case 'FETCH_FAIL':
+      return { ...state, fetchLoading: false, error: action.payload };
+
+    case 'UPDATE_REQUEST':
+      return { ...state, fetchLoading: true };
+
+    case 'UPDATE_SUCCESS':
+      return { ...state, expenses: action.payload, fetchLoading: false };
+
+    case 'UPDATE_FAIL':
+      return { ...state, fetchLoading: false, error: action.payload };
 
     case 'UPLOAD_DOCUMENT_REQUEST':
       return { ...state, loadingDocumentUpload: true, errorDocumentUpload: '' };
@@ -39,16 +48,16 @@ const reducer = (state, action) => {
   }
 };
 
-const NewExpense = () => {
+const ApproveExpense = () => {
   // Employee Details
-
+  const { id } = useParams();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [
-    { loading, loadingUpload, expenses, loadingDocumentUpload, createloading },
+    { loading, loadingUpload, expenses, loadingDocumentUpload, fetchLoading },
     dispatch,
   ] = useReducer(reducer, {
-    expenses: [],
+    expenses: {},
     loading: true,
     error: '',
   });
@@ -113,9 +122,35 @@ const NewExpense = () => {
     ]);
   };
 
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/expenses/${id}`);
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.expense });
+        console.log(result.data);
+        setSitename(result.data.expense.sitename);
+        setSiteLocation(result.data.expense.siteLocation);
+        setStartDate(result.data.expense.startDate);
+        setEndDate(result.data.expense.endDate);
+        setAdvanceAmount(result.data.expense.AdvanceAmount);
+        setAdvanceAmountDate(result.data.expense.AdvanceAmountDate);
+        setDaywiseExpenses(result.data.expense.DaywiseExpenses);
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+    };
+
+    fetchData();
+
+    // fetchData();
+  }, [id]);
+
   const handleSubmit = async (e) => {
     dispatch({
-      type: 'CREATE_REQUEST',
+      type: 'FETCH_REQUEST',
     });
     e.preventDefault();
     const missingFields = [];
@@ -131,25 +166,12 @@ const NewExpense = () => {
     }
 
     try {
-      const { data } = await axios.post(
-        `api/expenses/new-expense`,
+      const { data } = await axios.put(
+        `/api/expenses/approve-expense-1/${id}`,
         {
-          employeeName: userInfo.NAME,
-          employee_id: userInfo.employee_id,
-          email: userInfo.email,
-          sitename,
-          siteLocation,
-          startDate,
-          endDate,
-          status,
-          ApprovedBy,
-          ApprovedBy2,
-          ApprovedAt,
-          AdvanceAmount,
-          AdvanceAmountDate,
-          Settled,
-          SettledBy,
-          daywiseExpenses: daywiseExpenses,
+          status: 1,
+          ApprovedBy: userInfo.NAME,
+          ApprovedAt: new Date(),
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -157,10 +179,10 @@ const NewExpense = () => {
       );
       console.log(data);
       dispatch({
-        type: 'CREATE_SUCCESS',
+        type: 'FETCH_SUCCESS',
         payload: data.expenses,
       });
-      toast.success('Expenses Created successfully', {
+      toast.success('Expenses Updated successfully', {
         position: 'top-right',
       });
 
@@ -175,7 +197,7 @@ const NewExpense = () => {
       toast.error(getError(error), {
         position: 'top-right',
       });
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: 'FETCH_FAIL' });
     }
   };
 
@@ -338,11 +360,11 @@ const NewExpense = () => {
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Expense</th>
-                  <th>Price</th>
-                  <th>Bill</th>
-                  <th>Action</th>
+                  <th className="text-center">Date</th>
+                  <th className="text-center">Expense</th>
+                  <th className="text-center">Price</th>
+                  <th className="text-center">Upload Bill image</th>
+                  <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -379,7 +401,7 @@ const NewExpense = () => {
                       />
                     </td>
                     <td className=" ">
-                      <div className="d-flex justify-content-center align-items-center">
+                      <div className="d-flex justify-content-center align-items-center w-50 m-auto border">
                         {dayExpense.img ? (
                           <>
                             <button
@@ -432,18 +454,18 @@ const NewExpense = () => {
                           <>
                             {' '}
                             <input
-                              style={{ width: '50%' }}
+                              style={{ width: '30%' }}
                               type="file"
                               id={`profile-${index}`}
                               placeholder="profile"
                               onChange={(e) => UploadBillImage(e, index)}
                               className="my-2 mx-2"
-                            />
+                            />{' '}
                             <LoadingBox4 />
                           </>
                         ) : (
                           <input
-                            style={{ width: '50%' }}
+                            style={{ width: '30%' }}
                             type="file"
                             id={`profile-${index}`}
                             placeholder="profile"
@@ -456,12 +478,14 @@ const NewExpense = () => {
                     <td>
                       <div className="d-flex">
                         <button
+                          type="button"
                           onClick={handleAddExpense}
                           className="btn btn-sm btn-primary text-light m-1"
                         >
                           <GrAddCircle />
                         </button>
                         <button
+                          type="button"
                           className="btn btn-sm btn-danger m-1"
                           onClick={() => handleDeleteExpense(index)}
                         >
@@ -482,20 +506,58 @@ const NewExpense = () => {
           </div>
         </div>
         <hr />
+
+        <div className="d-flex justify-content-between">
+          {expenses.ApprovedBy !== '' ? (
+            <span className=" d-flex flex-column m-1">
+              <span>{expenses.ApprovedBy}</span>
+              <span className="badge p-2 bg-success m-1">Approved</span>
+            </span>
+          ) : (
+            <span className=" d-flex flex-column">
+              <span className="badge bg-warning m-1">Pending</span>
+              <span className="badge  bg-warning m-1">Pending</span>
+            </span>
+          )}
+          {expenses.ApprovedBy2 !== '' ? (
+            <span className=" d-flex flex-column m-1">
+              <span>{expenses.ApprovedBy2}</span>
+              <span className="badge p-2 bg-success m-1">Approved</span>{' '}
+            </span>
+          ) : (
+            <span className=" d-flex flex-column">
+              <span className="badge bg-warning m-1">Pending</span>
+              <span className="badge  bg-warning m-1">Pending</span>
+            </span>
+          )}
+
+          {expenses.Settled === 1 ? (
+            <span className=" d-flex flex-column m-1">
+              <span>{expenses.SettledBy}</span>
+              <span className="badge p-2 bg-success">settled</span>
+            </span>
+          ) : (
+            <span className=" d-flex flex-column m-1">
+              <span className="badge  bg-warning m-1">pending</span>
+              <span className="badge  bg-warning m-1">Pending</span>
+            </span>
+          )}
+        </div>
+        <br />
         <div className="form-footer d-flex justify-content-end w-100">
-          {createloading ? (
+          {fetchLoading ? (
             <button
               type="submit"
               className="submit-expense-btn btn btn-sm btn-warning m-1"
             >
-              Submitting..{<LoadingBox4 />}
+              Approving..{<LoadingBox4 />}
             </button>
           ) : (
             <button
               type="submit"
               className="submit-expense-btn btn btn-sm btn-warning m-1"
             >
-              Submit
+              Approve
             </button>
           )}
         </div>
@@ -504,4 +566,4 @@ const NewExpense = () => {
   );
 };
 
-export default NewExpense;
+export default ApproveExpense;

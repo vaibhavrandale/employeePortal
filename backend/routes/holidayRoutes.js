@@ -64,12 +64,7 @@ holidayRouter.get('/total/:month/:year', async (req, res) => {
 
 holidayRouter.put('/:id', async (req, res) => {
   const id = req.params.id;
-  const {
-    name,
-    img,
-    date,
-    //  description
-  } = req.body;
+  const { name, img, date } = req.body;
 
   try {
     const holiday = await Holidays.findByPk(id);
@@ -83,7 +78,6 @@ holidayRouter.put('/:id', async (req, res) => {
     holiday.img = img;
     holiday.name = name;
     holiday.date = date;
-    // holiday.description = description;
 
     // Save the updated holiday to the database
     const updatedholiday = await holiday.save();

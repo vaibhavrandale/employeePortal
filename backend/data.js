@@ -362,12 +362,11 @@ const data = {
       ApprovedAt: '30/03/2024',
       AdvanceAmount: '3000',
       AdvanceAmountDate: '11/02/2024',
-
       Settled: 0,
       SettledBy: '',
     },
   ],
-  DaywiseExpense: [
+  DaywiseExpenses: [
     {
       // id: 1,
       date: '12/02/2024',
@@ -396,7 +395,6 @@ const data = {
       price: '250',
       img: '/images/bills/bill3.png',
     },
-
     {
       // id: 5,
       date: '14/02/2024',

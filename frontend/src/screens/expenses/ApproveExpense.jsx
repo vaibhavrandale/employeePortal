@@ -268,7 +268,7 @@ const ApproveExpense = () => {
         className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
       >
         <div className="form-header">
-          <h2>Settle Expense </h2>
+          <h2>Approve Expense </h2>
         </div>
         <div
           className="my-2 form-group "

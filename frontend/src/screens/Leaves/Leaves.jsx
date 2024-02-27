@@ -34,7 +34,7 @@ function Leaves() {
   const navigate = useNavigate();
   const [employee_id, setEmployee_id] = useState(userInfo.employee_id);
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(userInfo.NAME);
 
   const [type, setType] = useState('');
 
@@ -46,7 +46,7 @@ function Leaves() {
 
   const [reasonInDetail, setReasonInDetail] = useState('');
 
-  const [mobileNo, setMobileNo] = useState('');
+  const [mobileNo, setMobileNo] = useState(userInfo.mobile_no);
 
   const SubmitHandler = async (e) => {
     e.preventDefault();
@@ -130,21 +130,10 @@ function Leaves() {
         </nav>{' '}
         <h2 className="text-center text-dark fw-bolder">Leave Application</h2>
         <span className="underline"></span>
-        <form onSubmit={SubmitHandler}>
+        <form>
           <div className="form-group mt-4">
-            <div className="row col-md-12 d-flex justify-content-center align-items-center">
-              <div className="form-group col-md-5 ">
-                <label htmlFor="firstName"> Name:</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="firstName"
-                  placeholder="Enter First Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-              <div className="form-group col-md-5 m-2">
+            <div className="row col-md-12 d-flex flex-column justify-content-center align-items-center">
+              <div className="form-group col-md-5 my-2">
                 <label htmlFor="mobileNo">Type of Leave:</label>
                 <select
                   id="leave"
@@ -167,31 +156,27 @@ function Leaves() {
                   />
                 )}
               </div>
-
-              <div className="col-md-5 d-flex justify-content-center flex-wrap">
-                <div className="form-group col-md-5">
-                  <label htmlFor="leaveDate">From:</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="leaveDate"
-                    value={expectedDateOfLeave}
-                    onChange={(e) => setExpectedDateOfLeave(e.target.value)}
-                  />
-                </div>{' '}
-                &nbsp;
-                <div className="form-group col-md-5">
-                  <label htmlFor="returnDate">To:</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="returnDate"
-                    value={expectedDateOfreturn}
-                    onChange={(e) => setExpectedDateOfreturn(e.target.value)}
-                  />
-                </div>
+              <div className="form-group col-md-5 my-2">
+                <label htmlFor="leaveDate">From:</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="leaveDate"
+                  value={expectedDateOfLeave}
+                  onChange={(e) => setExpectedDateOfLeave(e.target.value)}
+                />
               </div>
-              <div className="form-group col-md-5">
+              <div className="form-group col-md-5 my-2">
+                <label htmlFor="returnDate">To:</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="returnDate"
+                  value={expectedDateOfreturn}
+                  onChange={(e) => setExpectedDateOfreturn(e.target.value)}
+                />
+              </div>
+              <div className="form-group  col-md-5 my-2">
                 <label htmlFor="mobileNo">Reason of Leave in Deatil :</label>
                 <textarea
                   type="text"
@@ -202,18 +187,24 @@ function Leaves() {
                   onChange={(e) => setReasonInDetail(e.target.value)}
                 ></textarea>
               </div>
+
               <div className="form-group  col-md-10 ">
-                <div className="col-md-5">
-                  <label htmlFor="mobileNo">Mobile No :</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="mobileNo"
-                    placeholder="Enter Mobile No."
-                    value={mobileNo}
-                    onChange={(e) => setMobileNo(e.target.value)}
-                  />
-                </div>
+                <input
+                  type="hidden"
+                  className="form-control"
+                  id="mobileNo"
+                  placeholder="Enter Mobile No."
+                  value={mobileNo}
+                  onChange={(e) => setMobileNo(e.target.value)}
+                />
+                <input
+                  type="hidden"
+                  className="form-control"
+                  id="firstName"
+                  placeholder="Enter First Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
                 <input
                   type="hidden"
                   className="form-control"
@@ -227,10 +218,18 @@ function Leaves() {
             <div className="d-flex justify-content-end align-items-center me-5">
               <button
                 className="submitBtn px-2 pt-1 pb-1"
-                type="submit"
+                type="button"
+                onClick={SubmitHandler}
                 style={{ marginRight: '50px' }}
               >
-                {loadingCreate ? <LoadingBox4 /> : 'Apply'}
+                {loadingCreate ? (
+                  <>
+                    Applying&nbsp;
+                    <LoadingBox4 />
+                  </>
+                ) : (
+                  'Apply'
+                )}
               </button>
             </div>
           </div>

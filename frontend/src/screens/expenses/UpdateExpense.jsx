@@ -271,267 +271,273 @@ const UpdateExpense = () => {
 
   return (
     <div className="container">
-      <form
-        onSubmit={handleSubmit}
-        className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
-      >
-        <div className="form-header">
-          <h2>Update Expense</h2>
+      {fetchLoading ? (
+        <div className="d-flex justify-content-center align-items-center">
+          <LoadingBox4 />
         </div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
+        >
+          <div className="form-header">
+            <h2>Update Expense</h2>
+          </div>
 
-        <div className="container ">
-          <div className="row">
-            <div className="col-md-5 mb-3">
-              <label>Site Name:</label>
-              <input
-                type="text"
-                name="siteName"
-                placeholder="Enter Site Name"
-                className="form-control"
-                value={sitename}
-                onChange={(e) => setSitename(e.target.value)}
-                required
-              />
+          <div className="container ">
+            <div className="row">
+              <div className="col-md-5 mb-3">
+                <label>Site Name:</label>
+                <input
+                  type="text"
+                  name="siteName"
+                  placeholder="Enter Site Name"
+                  className="form-control"
+                  value={sitename}
+                  onChange={(e) => setSitename(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="col-md-5 mb-3">
+                <label>Site Location:</label>
+                <input
+                  type="text"
+                  name="siteLocation"
+                  placeholder="Enter Site Location"
+                  className="form-control"
+                  value={siteLocation}
+                  onChange={(e) => setSiteLocation(e.target.value)}
+                  required
+                />
+              </div>
             </div>
 
-            <div className="col-md-5 mb-3">
-              <label>Site Location:</label>
-              <input
-                type="text"
-                name="siteLocation"
-                placeholder="Enter Site Location"
-                className="form-control"
-                value={siteLocation}
-                onChange={(e) => setSiteLocation(e.target.value)}
-                required
-              />
+            <div className="row">
+              <div className="col-md-5 mb-3">
+                <label>Start Date:</label>
+                <input
+                  type="date"
+                  name="startDate"
+                  className="form-control"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="col-md-5 mb-3">
+                <label>End Date:</label>
+                <input
+                  type="date"
+                  name="endDate"
+                  className="form-control"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-5 mb-3">
+                <label>Advance Amount:</label>
+                <input
+                  type="number"
+                  name="advanceAmount"
+                  className="form-control"
+                  value={AdvanceAmount}
+                  onChange={(e) => setAdvanceAmount(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="col-md-5 mb-3">
+                <label>Advance Amount Date:</label>
+                <input
+                  type="date"
+                  name="advanceAmountDate"
+                  className="form-control"
+                  value={AdvanceAmountDate}
+                  onChange={(e) => setAdvanceAmountDate(e.target.value)}
+                  required
+                />
+              </div>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-md-5 mb-3">
-              <label>Start Date:</label>
-              <input
-                type="date"
-                name="startDate"
-                className="form-control"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="col-md-5 mb-3">
-              <label>End Date:</label>
-              <input
-                type="date"
-                name="endDate"
-                className="form-control"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-md-5 mb-3">
-              <label>Advance Amount:</label>
-              <input
-                type="number"
-                name="advanceAmount"
-                className="form-control"
-                value={AdvanceAmount}
-                onChange={(e) => setAdvanceAmount(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="col-md-5 mb-3">
-              <label>Advance Amount Date:</label>
-              <input
-                type="date"
-                name="advanceAmountDate"
-                className="form-control"
-                value={AdvanceAmountDate}
-                onChange={(e) => setAdvanceAmountDate(e.target.value)}
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="container">
-          <h3 className="my-3">Daywise Expenses</h3>
-          <div className="table-responsive row">
-            <table className="table table-bordered col-md-8">
-              <thead>
-                <tr>
-                  <th className="text-center">Date</th>
-                  <th className="text-center">Expense</th>
-                  <th className="text-center">Price</th>
-                  <th className="text-center">Upload Bill image</th>
-                  <th className="text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {daywiseExpenses.map((dayExpense, index) => (
-                  <tr key={index}>
-                    <td>
-                      <input
-                        type="date"
-                        name="date"
-                        className="form-control"
-                        value={dayExpense.date}
-                        onChange={(e) => handleInputChange(e, index)}
-                        required
-                      />
-                    </td>
-                    <td>
-                      <textarea
-                        type="text"
-                        name="expense"
-                        style={{ margin: 'auto', width: '200px' }}
-                        className="form-control"
-                        value={dayExpense.expense}
-                        onChange={(e) => handleInputChange(e, index)}
-                        required
-                      ></textarea>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name="price"
-                        style={{ margin: 'auto', minWidth: '100px' }}
-                        className="form-control"
-                        value={dayExpense.price}
-                        onChange={(e) => handleInputChange(e, index)}
-                        required
-                      />
-                    </td>
-                    <td className=" ">
-                      <div className="d-flex justify-content-center align-items-center w-50 m-auto border">
-                        {dayExpense.img ? (
-                          <>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-success p-1"
-                              data-bs-toggle="modal"
-                              data-bs-target={`#exampleModal_${index}`}
-                            >
-                              <IoEyeOutline />
-                            </button>
-                            <div
-                              className="modal fade"
-                              id={`exampleModal_${index}`}
-                              tabIndex="-1"
-                              aria-labelledby={`exampleModal_${index}`}
-                              aria-hidden="true"
-                            >
-                              <div className="modal-dialog">
-                                <div className="modal-content">
-                                  <div className="modal-header">
-                                    <h5
-                                      className="modal-title"
-                                      id={`exampleModal_${index}`}
-                                    >
-                                      {dayExpense.expense} Bill
-                                    </h5>
-                                    <button
-                                      type="button"
-                                      className="btn-close"
-                                      data-bs-dismiss="modal"
-                                      aria-label="Close"
-                                    ></button>
-                                  </div>
-                                  <div className="modal-body">
-                                    <img
-                                      src={dayExpense.img}
-                                      alt={`${dayExpense.expense} Bill`}
-                                      style={{ maxWidth: '300px' }}
-                                    />
+          <div className="container">
+            <h3 className="my-3">Daywise Expenses</h3>
+            <div className="table-responsive row">
+              <table className="table table-bordered col-md-8">
+                <thead>
+                  <tr>
+                    <th className="text-center">Date</th>
+                    <th className="text-center">Expense</th>
+                    <th className="text-center">Price</th>
+                    <th className="text-center">Upload Bill image</th>
+                    <th className="text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {daywiseExpenses.map((dayExpense, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="date"
+                          name="date"
+                          className="form-control"
+                          value={dayExpense.date}
+                          onChange={(e) => handleInputChange(e, index)}
+                          required
+                        />
+                      </td>
+                      <td>
+                        <textarea
+                          type="text"
+                          name="expense"
+                          style={{ margin: 'auto', width: '200px' }}
+                          className="form-control"
+                          value={dayExpense.expense}
+                          onChange={(e) => handleInputChange(e, index)}
+                          required
+                        ></textarea>
+                      </td>
+                      <td>
+                        <input
+                          type="number"
+                          name="price"
+                          style={{ margin: 'auto', minWidth: '100px' }}
+                          className="form-control"
+                          value={dayExpense.price}
+                          onChange={(e) => handleInputChange(e, index)}
+                          required
+                        />
+                      </td>
+                      <td className=" ">
+                        <div className="d-flex justify-content-center align-items-center w-50 m-auto border">
+                          {dayExpense.img ? (
+                            <>
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-success p-1"
+                                data-bs-toggle="modal"
+                                data-bs-target={`#exampleModal_${index}`}
+                              >
+                                <IoEyeOutline />
+                              </button>
+                              <div
+                                className="modal fade"
+                                id={`exampleModal_${index}`}
+                                tabIndex="-1"
+                                aria-labelledby={`exampleModal_${index}`}
+                                aria-hidden="true"
+                              >
+                                <div className="modal-dialog">
+                                  <div className="modal-content">
+                                    <div className="modal-header">
+                                      <h5
+                                        className="modal-title"
+                                        id={`exampleModal_${index}`}
+                                      >
+                                        {dayExpense.expense} Bill
+                                      </h5>
+                                      <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                      ></button>
+                                    </div>
+                                    <div className="modal-body">
+                                      <img
+                                        src={dayExpense.img}
+                                        alt={`${dayExpense.expense} Bill`}
+                                        style={{ maxWidth: '300px' }}
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </>
-                        ) : (
-                          ''
-                        )}
+                            </>
+                          ) : (
+                            ''
+                          )}
 
-                        {loadingDocumentUpload ? (
-                          <>
-                            {' '}
+                          {loadingDocumentUpload ? (
+                            <>
+                              {' '}
+                              <input
+                                type="file"
+                                id={`profile-${index}`}
+                                placeholder="profile"
+                                onChange={(e) => UploadBillImage(e, index)}
+                                className="my-2 mx-2"
+                              />{' '}
+                              <LoadingBox4 />
+                            </>
+                          ) : (
                             <input
+                              style={{ margin: 'auto', width: '200px' }}
                               type="file"
                               id={`profile-${index}`}
                               placeholder="profile"
                               onChange={(e) => UploadBillImage(e, index)}
                               className="my-2 mx-2"
-                            />{' '}
-                            <LoadingBox4 />
-                          </>
-                        ) : (
-                          <input
-                            style={{ margin: 'auto', width: '200px' }}
-                            type="file"
-                            id={`profile-${index}`}
-                            placeholder="profile"
-                            onChange={(e) => UploadBillImage(e, index)}
-                            className="my-2 mx-2"
-                          />
-                        )}
-                      </div>
-                    </td>
-                    <td>
-                      <div className="d-flex">
-                        <button
-                          type="button"
-                          onClick={handleAddExpense}
-                          className="btn btn-sm btn-primary text-light m-1"
-                        >
-                          <GrAddCircle />
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-danger m-1"
-                          onClick={() => handleDeleteExpense(index)}
-                        >
-                          <MdDeleteOutline />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                            />
+                          )}
+                        </div>
+                      </td>
+                      <td>
+                        <div className="d-flex">
+                          <button
+                            type="button"
+                            onClick={handleAddExpense}
+                            className="btn btn-sm btn-primary text-light m-1"
+                          >
+                            <GrAddCircle />
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-danger m-1"
+                            onClick={() => handleDeleteExpense(index)}
+                          >
+                            <MdDeleteOutline />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div className="d-flex justify-content-end w-100">
-          Total -&nbsp;
-          <span className="badge bg-success p-2">
-            {calculateTotal('price')}
-          </span>
-        </div>
-        <hr />
-        <div className="form-footer d-flex justify-content-end w-100">
-          {fetchLoading ? (
-            <button
-              type="submit"
-              className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
-            >
-              Updating..{<LoadingBox4 />}
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
-            >
-              Update
-            </button>
-          )}
-        </div>
-      </form>
+          <div className="d-flex justify-content-end w-100">
+            Total -&nbsp;
+            <span className="badge bg-success p-2">
+              {calculateTotal('price')}
+            </span>
+          </div>
+          <hr />
+          <div className="form-footer d-flex justify-content-end w-100">
+            {fetchLoading ? (
+              <button
+                type="submit"
+                className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
+              >
+                Updating..{<LoadingBox4 />}
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
+              >
+                Update
+              </button>
+            )}
+          </div>
+        </form>
+      )}
     </div>
   );
 };

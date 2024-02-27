@@ -257,7 +257,7 @@ const Editholiday = () => {
             <br />
             {loadingUpload ? (
               <div>
-                <LoadingBox1 />
+                <LoadingBox4 />
               </div>
             ) : (
               <input
@@ -276,8 +276,8 @@ const Editholiday = () => {
                   type="submit"
                   className="w-50 py-1 m-auto fw-bold btn btn-warning btn-sm"
                 >
-                  Submiting..
-                  <LoadingBox1 />
+                  Updating..
+                  <LoadingBox4 />
                 </button>
               </>
             ) : (
@@ -285,7 +285,7 @@ const Editholiday = () => {
                 type="submit"
                 className="w-50 py-1 m-auto fw-bold btn btn-warning btn-sm"
               >
-                Submit
+                Update
               </button>
             )}
           </div>

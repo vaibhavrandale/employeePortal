@@ -231,7 +231,7 @@ const CreateHoliday = () => {
 
           {loadingUpload ? (
             <div>
-              <LoadingBox1 />
+              <LoadingBox4 />
             </div>
           ) : img ? (
             <>
@@ -248,7 +248,7 @@ const CreateHoliday = () => {
             <br />
             {loadingUpload ? (
               <div>
-                <LoadingBox1 />
+                <LoadingBox4 />
               </div>
             ) : (
               <input
@@ -267,16 +267,15 @@ const CreateHoliday = () => {
                   type="submit"
                   className="w-50 py-1 m-auto fw-bold btn btn-warning btn-sm"
                 >
-                  Submiting..
+                  Creating.. <LoadingBox4 />
                 </button>
-                <LoadingBox1 />
               </>
             ) : (
               <button
                 type="submit"
                 className="w-50 py-1 m-auto fw-bold btn btn-warning btn-sm"
               >
-                Submit
+                Create
               </button>
             )}
           </div>

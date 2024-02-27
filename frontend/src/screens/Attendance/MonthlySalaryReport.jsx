@@ -300,49 +300,49 @@ const MonthlySalaryReport = () => {
                   ////console.log('correspondingEmployee:', correspondingEmployee);
 
                   // Add the logic for parsed values here
-                  let parsedMonth = parseInt(month, 10);
-                  let parsedYear = parseInt(year, 10);
+                  // let parsedMonth = parseInt(month, 10);
+                  // let parsedYear = parseInt(year, 10);
 
-                  let parsedTotalDays = parseInt(
-                    correspondingEmployee &&
-                      correspondingEmployee.isProbation === 1
-                      ? daysInMonth - totalSunday
-                      : daysInMonth -
-                          totalSunday -
-                          (18 -
-                            (correspondingEmployee &&
-                              correspondingEmployee.leaves)),
-                    10
-                  );
+                  // let parsedTotalDays = parseInt(
+                  //   correspondingEmployee &&
+                  //     correspondingEmployee.isProbation === 1
+                  //     ? daysInMonth - totalSunday
+                  //     : daysInMonth -
+                  //         totalSunday -
+                  //         (18 -
+                  //           (correspondingEmployee &&
+                  //             correspondingEmployee.leaves)),
+                  //   10
+                  // );
 
-                  let parsedCtc = parseInt(item.ctc, 10);
+                  // let parsedCtc = parseInt(item.ctc, 10);
 
-                  let averagedays = 31;
+                  // let averagedays = 31;
 
-                  if (parsedMonth === 2) {
-                    if (
-                      (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
-                      parsedYear % 400 === 0
-                    ) {
-                      averagedays = 29;
-                    } else {
-                      averagedays = 28;
-                    }
-                  } else if ([4, 6, 9, 11].includes(parsedMonth)) {
-                    averagedays = 30;
-                  }
+                  // if (parsedMonth === 2) {
+                  //   if (
+                  //     (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
+                  //     parsedYear % 400 === 0
+                  //   ) {
+                  //     averagedays = 29;
+                  //   } else {
+                  //     averagedays = 28;
+                  //   }
+                  // } else if ([4, 6, 9, 11].includes(parsedMonth)) {
+                  //   averagedays = 30;
+                  // }
 
                   //console.log(`average days ${averagedays}`);
 
-                  const netSalary = Math.floor(
-                    correspondingEmployee &&
-                      correspondingEmployee.isProbation === 1
-                      ? parsedCtc / 12 - item.total_deduction
-                      : [
-                          ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /
-                            averagedays,
-                        ] - item.total_deduction
-                  );
+                  // const netSalary = Math.floor(
+                  //   correspondingEmployee &&
+                  //     correspondingEmployee.isProbation === 1
+                  //     ? parsedCtc / 12 - item.total_deduction
+                  //     : [
+                  //         ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /
+                  //           averagedays,
+                  //       ] - item.total_deduction
+                  // );
 
                   return (
                     <tr key={index}>

@@ -302,15 +302,16 @@ const MonthlySalaryReport = () => {
                   // Add the logic for parsed values here
                   let parsedMonth = parseInt(month, 10);
                   let parsedYear = parseInt(year, 10);
+
                   let parsedTotalDays = parseInt(
                     correspondingEmployee &&
                       correspondingEmployee.isProbation === 1
                       ? daysInMonth - totalSunday
-                      : [daysInMonth - totalSunday] -
-                          [
-                            18 - correspondingEmployee &&
-                              correspondingEmployee.leaves,
-                          ],
+                      : daysInMonth -
+                          totalSunday -
+                          (18 -
+                            (correspondingEmployee &&
+                              correspondingEmployee.leaves)),
                     10
                   );
 

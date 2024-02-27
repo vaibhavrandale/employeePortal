@@ -101,6 +101,10 @@ const ExpenseHome = () => {
   const filteredData = expenses.filter(
     (item) =>
       item.sitename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.SettledBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.ApprovedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.ApprovedBy2.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.siteLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.employee_id.includes(searchTerm) ||
       item.employeeName.includes(searchTerm)
@@ -201,25 +205,43 @@ const ExpenseHome = () => {
                   <td className="text-center">{item.employee_id}</td>
                   <td className="text-center">{item.sitename}</td>
                   <td className="text-center">{item.siteLocation}</td>
-                  <td className="text-center">{item.startDate}</td>
                   <td className="text-center">
-                    {item.status === 1 ? (
-                      <span className="badge bg-warning text-dark">
+                    {item.startDate && (
+                      <>
+                        {new Date(item.startDate).toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </>
+                    )}
+                  </td>
+                  <td className="text-center">
+                    {item.status === 0 ? (
+                      <span className="badge bg-warning text-dark p-2">
                         Pending
                       </span>
+                    ) : item.status === 1 ? (
+                      <span className="badge bg-success p-2">Approved-1</span>
                     ) : item.status === 2 ? (
-                      <span className="badge bg-success">Approved</span>
+                      <span className="badge bg-success p-2">Approved-2</span>
+                    ) : item.status === 3 ? (
+                      <span className="badge bg-success p-2">Approved</span>
                     ) : (
-                      <span className="badge bg-info">No View</span>
+                      <span className="badge bg-info p-2">No View</span>
                     )}
                   </td>
 
                   <td className="text-center">
-                    {item.status === 1 || item.status === 2 ? (
+                    {item.status === 1 ||
+                    item.status === 2 ||
+                    item.status === 3 ? (
                       <div className="dropdown">
                         <span
                           className={`badge bg-info text-dark p-2  ${
-                            item.status === 2 ? `dropdown-toggle` : `disabled`
+                            item.status === 2 || item.status === 3
+                              ? `dropdown-toggle`
+                              : `disabled`
                           }`}
                           type="button"
                           id="dropdownMenuButton1"
@@ -245,14 +267,15 @@ const ExpenseHome = () => {
                         )}
                       </div>
                     ) : (
-                      <span className="badge bg-info">No View</span>
+                      <span className="badge bg-info p-2">No View</span>
                     )}
                   </td>
+
                   <td className="text-center ">
                     {item.Settled === 1 ? (
-                      <span className="badge bg-success">Settled</span>
+                      <span className="badge bg-success p-2">Settled</span>
                     ) : (
-                      <span className="badge bg-warning text-dark">
+                      <span className="badge bg-warning text-dark p-2">
                         Pending
                       </span>
                     )}
@@ -260,9 +283,11 @@ const ExpenseHome = () => {
 
                   <td className="text-center ">
                     {item.SettledBy !== '' ? (
-                      <span className="badge bg-success">{item.SettledBy}</span>
+                      <span className="badge bg-success p-2">
+                        {item.SettledBy}
+                      </span>
                     ) : (
-                      <span className="badge bg-warning text-dark">
+                      <span className="badge bg-warning text-dark p-2">
                         Pending
                       </span>
                     )}
@@ -346,8 +371,11 @@ const ExpenseHome = () => {
                   {userInfo.isDirector === 1 || userInfo.isHr ? (
                     <td>
                       <Link
-                        className="btn btn-sm btn-success"
+                        className={`btn btn-sm btn-success  ${
+                          item.status >= 2 ? 'disabled' : ''
+                        }`}
                         to={`/approve-expense/${item.id}`}
+                        disabled={item.status >= 2}
                       >
                         Approve
                       </Link>
@@ -355,11 +383,15 @@ const ExpenseHome = () => {
                   ) : (
                     ''
                   )}
+
                   {userInfo.isAccountant === 1 || userInfo.isHr ? (
                     <td>
                       <Link
-                        className="btn btn-sm btn-success"
+                        className={`btn btn-sm btn-success ${
+                          item.status === 2 ? '' : 'disabled'
+                        }`}
                         to={`/settle-expense/${item.id}`}
+                        // disabled={item.status > 2}
                       >
                         Settle
                       </Link>

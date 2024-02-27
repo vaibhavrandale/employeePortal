@@ -466,13 +466,11 @@ const NewAttendance = () => {
                             const total = attendance.totalHours / 60;
                             const status = attendance.isLeave
                               ? 'L'
-                              : inTime > '09:15:00' || total <= 8
+                              : inTime >= '09:15:00' || total >= 8
                               ? 'P*'
-                              : inTime < '09:15:00' || total <= 8
-                              ? 'P'
-                              : attendance.totalHours <= 4
-                              ? 'P*'
-                              : 'H';
+                              : inTime < '09:15:00' && total > 0 && total <= 5
+                              ? 'H'
+                              : 'P';
 
                             // const bgClass =
                             //   status === 'L'

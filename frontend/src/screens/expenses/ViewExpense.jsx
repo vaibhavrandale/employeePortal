@@ -132,14 +132,22 @@ const ViewExpense = () => {
               </div>
               <div className="my-1">
                 <strong>Start Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>{' '}
-                {expense.startDate}
+                {new Date(expense.startDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}
               </div>
               <div className="my-1">
                 <strong>
                   End
                   Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </strong>{' '}
-                {expense.endDate}
+                {new Date(expense.endDate).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                })}
               </div>
             </div>
           </div>
@@ -155,7 +163,11 @@ const ViewExpense = () => {
             </span>
             <span>
               <strong>Advance Amount Date &nbsp; :</strong>{' '}
-              {expense.AdvanceAmountDate}
+              {new Date(expense.AdvanceAmountDate).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
             </span>
           </div>
 
@@ -172,10 +184,23 @@ const ViewExpense = () => {
               </thead>
               <tbody>
                 {expense.DaywiseExpenses &&
-                  expense.DaywiseExpenses.map((dayExpense) => (
+                  expense.DaywiseExpenses.map((dayExpense, index) => (
                     <tr key={dayExpense.id}>
-                      <td className="text-center">{dayExpense.id}</td>
-                      <td className="text-center">{dayExpense.date}</td>
+                      <td className="text-center">{index + 1}</td>
+                      <td className="text-center">
+                        {dayExpense.date && (
+                          <>
+                            {new Date(dayExpense.date).toLocaleDateString(
+                              'en-GB',
+                              {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                              }
+                            )}
+                          </>
+                        )}
+                      </td>
                       <td className="text-center">{dayExpense.expense}</td>
                       <td className="text-center">{dayExpense.price}</td>
                       <td className="text-center">
@@ -255,23 +280,25 @@ const ViewExpense = () => {
               {expense.ApprovedBy !== '' ? (
                 <span className=" d-flex flex-column">
                   <span>{expense.ApprovedBy}</span>
-                  <span className="badge p-2 bg-success">Approved</span>
+                  <span className="badge px-2 py-2 bg-success">Approved 1</span>
                 </span>
               ) : (
                 <span className=" d-flex flex-column">
-                  <span className="badge bg-warning m-1">Pending</span>
-                  <span className="badge  bg-warning m-1">Pending</span>
+                  <span className="badge bg-warning p-2 m-1">Pending</span>
+                  <span className="badge  bg-warning p-2 m-1">Pending</span>
                 </span>
               )}
               {expense.ApprovedBy2 !== '' ? (
                 <span className=" d-flex flex-column">
                   <span>{expense.ApprovedBy2}</span>
-                  <span className="badge p-2 bg-success">Approved</span>{' '}
+                  <span className="badge px-3 py-2 bg-success">
+                    Approved 2
+                  </span>{' '}
                 </span>
               ) : (
                 <span className=" d-flex flex-column">
-                  <span className="badge bg-warning m-1">Pending</span>
-                  <span className="badge  bg-warning m-1">Pending</span>
+                  <span className="badge bg-warning p-2 m-1">Pending</span>
+                  <span className="badge  bg-warning p-2 m-1">Pending</span>
                 </span>
               )}
 
@@ -282,8 +309,8 @@ const ViewExpense = () => {
                 </span>
               ) : (
                 <span className=" d-flex flex-column">
-                  <span className="badge  bg-warning m-1">pending</span>
-                  <span className="badge  bg-warning m-1">Pending</span>
+                  <span className="badge  bg-warning m-1 p-2">Pending</span>
+                  <span className="badge  bg-warning p-2 m-1">Pending</span>
                 </span>
               )}
             </div>

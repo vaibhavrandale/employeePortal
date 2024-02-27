@@ -61,6 +61,15 @@ const MyExpenses = () => {
       error: '',
     });
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // Function to handle modal opening
+  const openModal = () => {
+    setShowModal(true);
+  };
+
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
@@ -76,6 +85,7 @@ const MyExpenses = () => {
     };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
+      setShowModal(false);
     } else {
       fetchData();
     }
@@ -87,23 +97,27 @@ const MyExpenses = () => {
       await axios.delete(`/api/expenses/${id}`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
-      toast.success('Expense deleted successfully');
+      toast.success(`Expense ${id} deleted successfully`);
       dispatch({
         type: 'DELETE_SUCCESS',
       });
+      setShowModal(false);
+      window.location.reload();
     } catch (err) {
       toast.error(getError(err));
       dispatch({
         type: 'DELETE_FAIL',
       });
-    } finally {
-      setShowModal(false);
     }
   };
 
   const filteredData = expenses.filter(
     (item) =>
       item.sitename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.SettledBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.ApprovedBy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.ApprovedBy2.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.siteLocation.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.employee_id.includes(searchTerm) ||
       item.employeeName.includes(searchTerm)
@@ -130,7 +144,7 @@ const MyExpenses = () => {
           ADD
         </Link>
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{ minHeight: '30vh' }}>
         {loading ? (
           <div className="d-flex justify-content-center align-items-center">
             <LoadingBox4 />
@@ -145,75 +159,35 @@ const MyExpenses = () => {
           <table className="table table-bordered">
             <thead>
               <tr>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   ID
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Name
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Employee ID
                 </th>
-                <th
-                  scope="col"
-                  className="text-center "
-                  style={{ width: '250px' }}
-                >
+                <th scope="col" className="text-center ">
                   Site Name
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Location
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Start Date
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Status
                 </th>
 
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Approved By
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Settled
                 </th>
-                <th
-                  scope="col"
-                  className="text-center"
-                  style={{ width: '50px' }}
-                >
+                <th scope="col" className="text-center">
                   Settled By
                 </th>
                 <th
@@ -228,30 +202,50 @@ const MyExpenses = () => {
             <tbody>
               {currentItems.map((item, index) => (
                 <tr key={index}>
-                  <td className="text-center">{item.id}</td>
+                  <td className="text-center">
+                    {' '}
+                    <Link to={`/view-expense/${item.id}`}>{item.id}</Link>
+                  </td>{' '}
                   <td className="text-center">{item.employeeName}</td>
                   <td className="text-center">{item.employee_id}</td>
                   <td className="text-center">{item.sitename}</td>
                   <td className="text-center">{item.siteLocation}</td>
-                  <td className="text-center">{item.startDate}</td>
                   <td className="text-center">
-                    {item.status === 1 ? (
-                      <span className="badge bg-warning text-dark">
-                        Pending
-                      </span>
-                    ) : item.status === 2 ? (
-                      <span className="badge bg-success">Approved</span>
-                    ) : (
-                      <span className="badge bg-info">No View</span>
+                    {item.startDate && (
+                      <>
+                        {new Date(item.startDate).toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </>
                     )}
                   </td>
-
                   <td className="text-center">
-                    {item.status === 1 || item.status === 2 ? (
+                    {item.status === 0 ? (
+                      <span className="badge bg-warning text-dark p-2">
+                        Pending
+                      </span>
+                    ) : item.status === 1 ? (
+                      <span className="badge bg-success p-2">Approved-1</span>
+                    ) : item.status === 2 ? (
+                      <span className="badge bg-success p-2">Approved-2</span>
+                    ) : item.status === 3 ? (
+                      <span className="badge bg-success p-2">Approved</span>
+                    ) : (
+                      <span className="badge bg-info p-2">No View</span>
+                    )}
+                  </td>
+                  <td className="text-center">
+                    {item.status === 1 ||
+                    item.status === 2 ||
+                    item.status === 3 ? (
                       <div className="dropdown">
                         <span
                           className={`badge bg-info text-dark p-2  ${
-                            item.status === 2 ? `dropdown-toggle` : `disabled`
+                            item.status === 2 || item.status === 3
+                              ? `dropdown-toggle`
+                              : `disabled`
                           }`}
                           type="button"
                           id="dropdownMenuButton1"
@@ -277,24 +271,25 @@ const MyExpenses = () => {
                         )}
                       </div>
                     ) : (
-                      <span className="badge bg-info">No View</span>
+                      <span className="badge bg-info p-2">No View</span>
                     )}
                   </td>
                   <td className="text-center ">
                     {item.Settled === 1 ? (
-                      <span className="badge bg-success">Settled</span>
+                      <span className="badge bg-success p-2">Settled</span>
                     ) : (
-                      <span className="badge bg-warning text-dark">
+                      <span className="badge bg-warning text-dark p-2">
                         Pending
                       </span>
                     )}
                   </td>
-
                   <td className="text-center ">
                     {item.SettledBy !== '' ? (
-                      <span className="badge bg-success">{item.SettledBy}</span>
+                      <span className="badge bg-success p-2">
+                        {item.SettledBy}
+                      </span>
                     ) : (
-                      <span className="badge bg-warning text-dark">
+                      <span className="badge bg-warning text-dark p-2">
                         Pending
                       </span>
                     )}
@@ -312,25 +307,31 @@ const MyExpenses = () => {
                     >
                       <FaRegEdit />
                     </Link>
-                    <Link
-                      className="btn btn-sm text-decoration-none btn-danger mx-1"
-                      onClick={() => setShowModal(true)}
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-backdrop="false"
+                      onClick={openModal}
+                      data-bs-target={`#exampleModal_${item.id}`}
                     >
                       <MdDeleteOutline />
-                    </Link>
+                    </button>
 
                     <div
-                      className={`modal fade ${showModal ? 'show' : ''}`}
-                      style={{ display: showModal ? 'block' : 'none' }}
+                      className={`modal fade${showModal ? ' show' : ''}`}
+                      id={`exampleModal_${item.id}`}
                       tabIndex="-1"
-                      role="dialog"
-                      aria-labelledby="deleteModal"
-                      aria-hidden={!showModal}
+                      aria-labelledby={`exampleModalLabel_${item.id}`}
+                      aria-hidden="true"
                     >
                       <div className="modal-dialog modal-dialog-centered modal-sm">
                         <div className="modal-content">
                           <div className="modal-header">
-                            <h5 className="modal-title" id="deleteModalLabel">
+                            <h5
+                              className="modal-title"
+                              id={`exampleModalLabel_${item.id}`}
+                            >
                               Confirmation
                             </h5>
                             <button
@@ -338,21 +339,21 @@ const MyExpenses = () => {
                               className="btn-close"
                               data-bs-dismiss="modal"
                               aria-label="Close"
-                              onClick={() => setShowModal(false)}
                             ></button>
                           </div>
                           <div className="modal-body">
-                            Are you sure to delete{' '}
+                            Are you sure to delete Expense-
                             <span className="text-success fw-bold">
-                              {item.sitename}-{item.startDate}
-                            </span>{' '}
-                            visit?
+                              {item.sitename}
+                            </span>
+                            ?
                           </div>
                           <div className="modal-footer">
                             <button
                               type="button"
                               className="btn btn-secondary btn-sm"
-                              onClick={() => setShowModal(false)}
+                              data-bs-dismiss="modal"
+                              onClick={closeModal}
                             >
                               Cancel
                             </button>

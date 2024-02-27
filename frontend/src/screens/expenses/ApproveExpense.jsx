@@ -201,6 +201,59 @@ const ApproveExpense = () => {
     }
   };
 
+  const handleSubmit2 = async (e) => {
+    dispatch({
+      type: 'FETCH_REQUEST',
+    });
+    e.preventDefault();
+    const missingFields = [];
+
+    if (!employeeName) {
+      missingFields.push('employee Name ');
+    }
+    if (missingFields.length > 0) {
+      toast.error(
+        `Please fill in the following fields: ${missingFields.join(', ')}`
+      );
+      return;
+    }
+
+    try {
+      const { data } = await axios.put(
+        `/api/expenses/approve-expense-2/${id}`,
+        {
+          status: 2,
+          ApprovedBy2: userInfo.NAME,
+          ApprovedAt: new Date(),
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      console.log(data);
+      dispatch({
+        type: 'FETCH_SUCCESS',
+        payload: data.expenses,
+      });
+      toast.success('Expenses Approved  successfully', {
+        position: 'top-right',
+      });
+
+      navigate(
+        userInfo.isSuperAdmin === 1
+          ? '/expenses-home'
+          : `/my-expenses-home/${userInfo.employee_id}`
+      );
+
+      // '/expenses-home');
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'FETCH_FAIL' });
+    }
+  };
+
   const handleDeleteExpense = (index) => {
     const newExpenses = [...daywiseExpenses];
     newExpenses.splice(index, 1);
@@ -260,20 +313,19 @@ const ApproveExpense = () => {
         className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
       >
         <div className="form-header">
-          <h2>Expense Form</h2>
+          <h2>Approve Expense</h2>
         </div>
         <div
           className="my-2 form-group "
           style={{
             display: 'flex',
             flexWrap: 'wrap',
-            width: '70vw',
-            margin: 'auto',
           }}
         >
-          <div className=" mx-1" style={{ width: '30vw' }}>
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>Site Name:</label>
             <input
+              disabled
               type="text"
               name="siteName"
               placeholder="Enter Site Name"
@@ -284,9 +336,10 @@ const ApproveExpense = () => {
             />
           </div>
 
-          <div className=" mx-1" style={{ width: '30vw' }}>
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>Site Location:</label>
             <input
+              disabled
               type="text"
               name="siteLocation"
               placeholder="Enter Site Location"
@@ -298,13 +351,11 @@ const ApproveExpense = () => {
           </div>
         </div>
 
-        <div
-          className="form-group d-flex flex-wrap "
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
+        <div className="form-group d-flex flex-wrap ">
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>Start Date:</label>
             <input
+              disabled
               type="date"
               name="startDate"
               className="form-control"
@@ -313,9 +364,10 @@ const ApproveExpense = () => {
               required
             />
           </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>End Date:</label>
             <input
+              disabled
               type="date"
               name="endDate"
               className="form-control"
@@ -326,13 +378,11 @@ const ApproveExpense = () => {
           </div>
         </div>
 
-        <div
-          className="my-2 form-group d-flex flex-wrap"
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
+        <div className="my-2 form-group d-flex flex-wrap">
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>Advance Amount:</label>
             <input
+              disabled
               type="number"
               name="advanceAmount"
               className="form-control"
@@ -341,9 +391,10 @@ const ApproveExpense = () => {
               required
             />
           </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
+          <div className=" mx-1" style={{ width: '300px' }}>
             <label>Advance Amount Date:</label>
             <input
+              disabled
               type="date"
               name="advanceAmountDate"
               className="form-control"
@@ -363,8 +414,7 @@ const ApproveExpense = () => {
                   <th className="text-center">Date</th>
                   <th className="text-center">Expense</th>
                   <th className="text-center">Price</th>
-                  <th className="text-center">Upload Bill image</th>
-                  <th className="text-center">Action</th>
+                  <th className="text-center"> Bill image</th>
                 </tr>
               </thead>
               <tbody>
@@ -372,6 +422,7 @@ const ApproveExpense = () => {
                   <tr key={index}>
                     <td>
                       <input
+                        disabled
                         type="date"
                         name="date"
                         className="form-control"
@@ -382,6 +433,7 @@ const ApproveExpense = () => {
                     </td>
                     <td>
                       <input
+                        disabled
                         type="text"
                         name="expense"
                         className="form-control"
@@ -392,6 +444,7 @@ const ApproveExpense = () => {
                     </td>
                     <td>
                       <input
+                        disabled
                         type="number"
                         name="price"
                         className="form-control"
@@ -401,7 +454,7 @@ const ApproveExpense = () => {
                       />
                     </td>
                     <td className=" ">
-                      <div className="d-flex justify-content-center align-items-center w-50 m-auto border">
+                      <div className="d-flex justify-content-center align-items-center w-50 m-auto ">
                         {dayExpense.img ? (
                           <>
                             <button
@@ -449,33 +502,9 @@ const ApproveExpense = () => {
                         ) : (
                           ''
                         )}
-
-                        {loadingDocumentUpload ? (
-                          <>
-                            {' '}
-                            <input
-                              style={{ width: '30%' }}
-                              type="file"
-                              id={`profile-${index}`}
-                              placeholder="profile"
-                              onChange={(e) => UploadBillImage(e, index)}
-                              className="my-2 mx-2"
-                            />{' '}
-                            <LoadingBox4 />
-                          </>
-                        ) : (
-                          <input
-                            style={{ width: '30%' }}
-                            type="file"
-                            id={`profile-${index}`}
-                            placeholder="profile"
-                            onChange={(e) => UploadBillImage(e, index)}
-                            className="my-2 mx-2"
-                          />
-                        )}
                       </div>
                     </td>
-                    <td>
+                    {/* <td>
                       <div className="d-flex">
                         <button
                           type="button"
@@ -492,7 +521,7 @@ const ApproveExpense = () => {
                           <MdDeleteOutline />
                         </button>
                       </div>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
@@ -509,37 +538,39 @@ const ApproveExpense = () => {
 
         <div className="d-flex justify-content-between">
           {expenses.ApprovedBy !== '' ? (
-            <span className=" d-flex flex-column m-1">
+            <span className=" d-flex flex-column m-2 justify-content-center">
               <span>{expenses.ApprovedBy}</span>
-              <span className="badge p-2 bg-success m-1">Approved</span>
+              <span className="badge px-2 py-2 bg-success">Approved 1</span>
             </span>
           ) : (
-            <span className=" d-flex flex-column">
-              <span className="badge bg-warning m-1">Pending</span>
-              <span className="badge  bg-warning m-1">Pending</span>
+            <span className=" d-flex flex-column m-2 justify-content-center">
+              <span className="badge bg-warning p-2 m-1">Pending</span>
+              <span className="badge  bg-warning p-2 m-1">Pending</span>
             </span>
           )}
           {expenses.ApprovedBy2 !== '' ? (
-            <span className=" d-flex flex-column m-1">
+            <span className=" d-flex flex-column m-2 justify-content-center">
               <span>{expenses.ApprovedBy2}</span>
-              <span className="badge p-2 bg-success m-1">Approved</span>{' '}
+              <span className="badge px-3 py-2 bg-success">
+                Approved 2
+              </span>{' '}
             </span>
           ) : (
-            <span className=" d-flex flex-column">
-              <span className="badge bg-warning m-1">Pending</span>
-              <span className="badge  bg-warning m-1">Pending</span>
+            <span className=" d-flex flex-column m-2 justify-content-center">
+              <span className="badge bg-warning p-2 m-1">Pending</span>
+              <span className="badge  bg-warning p-2 m-1">Pending</span>
             </span>
           )}
 
           {expenses.Settled === 1 ? (
-            <span className=" d-flex flex-column m-1">
+            <span className=" d-flex flex-column m-2 justify-content-center">
               <span>{expenses.SettledBy}</span>
               <span className="badge p-2 bg-success">settled</span>
             </span>
           ) : (
-            <span className=" d-flex flex-column m-1">
-              <span className="badge  bg-warning m-1">pending</span>
-              <span className="badge  bg-warning m-1">Pending</span>
+            <span className=" d-flex flex-column m-2 justify-content-center">
+              <span className="badge  bg-warning m-1 p-2">Pending</span>
+              <span className="badge  bg-warning p-2 m-1">Pending</span>
             </span>
           )}
         </div>
@@ -549,16 +580,31 @@ const ApproveExpense = () => {
             <button
               type="submit"
               className="submit-expense-btn btn btn-sm btn-warning m-1"
+              disabled
             >
               Approving..{<LoadingBox4 />}
             </button>
           ) : (
-            <button
-              type="submit"
-              className="submit-expense-btn btn btn-sm btn-warning m-1"
-            >
-              Approve
-            </button>
+            <>
+              {expenses.status === 0 && (
+                <button
+                  type="submit"
+                  className="submit-expense-btn btn btn-sm btn-warning m-1"
+                  onClick={handleSubmit}
+                >
+                  Approve 1
+                </button>
+              )}
+              {expenses.status === 1 && (
+                <button
+                  type="submit"
+                  className="submit-expense-btn btn btn-sm btn-warning m-1"
+                  onClick={handleSubmit2}
+                >
+                  Approve 2
+                </button>
+              )}
+            </>
           )}
         </div>
       </form>

@@ -292,7 +292,7 @@ expenseRouter.put('/approve-expense-2/:expenseId', async (req, res) => {
   }
 });
 
-expenseRouter.put('/settle-expense-2/:expenseId', async (req, res) => {
+expenseRouter.put('/settle-expense/:expenseId', async (req, res) => {
   try {
     const expenseId = req.params.expenseId;
     const { status, SettledBy, Settled } = req.body;

@@ -175,6 +175,34 @@ const Sidebar = () => {
               </Link>
             </li>
           )}
+
+          {userInfo && userInfo.isDirector === 1 && userInfo.isHr && (
+            <li>
+              <Link to="/expenses-home">
+                <img
+                  src="/images/icons/survey.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span> Expenses</span>}
+              </Link>
+            </li>
+          )}
+
+          {userInfo && userInfo.isAdmin === 1 && (
+            <li>
+              <Link to={`/my-expenses-home/${userInfo.employee_id}`}>
+                <img
+                  src="/images/icons/survey1.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>My Expenses</span>}
+              </Link>
+            </li>
+          )}
         </>
       </ul>
     </div>

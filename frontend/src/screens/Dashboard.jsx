@@ -1285,7 +1285,7 @@ function Dashboard() {
                           className="p-1 text-decoration-none"
                         >
                           <img
-                            src="/images/icons/survey.png"
+                            src="/images/icons/survey1.png"
                             height={50}
                             style={{ objectFit: 'contain' }}
                             className="card-img-top quicklikCardImg"

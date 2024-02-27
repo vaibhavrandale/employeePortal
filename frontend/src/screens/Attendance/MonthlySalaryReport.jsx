@@ -335,7 +335,8 @@ const MonthlySalaryReport = () => {
                   //console.log(`average days ${averagedays}`);
 
                   const netSalary = Math.floor(
-                    correspondingEmployee.isProbation === 1
+                    correspondingEmployee &&
+                      correspondingEmployee.isProbation === 1
                       ? parsedCtc / 12 - item.total_deduction
                       : [
                           ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /

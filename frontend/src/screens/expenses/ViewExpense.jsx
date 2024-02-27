@@ -103,72 +103,65 @@ const ViewExpense = () => {
         </div>
       ) : (
         <div id="expense">
-          <div className="invoice-details d-flex justify-content-between">
-            <div>
-              <div className="my-2">
-                <strong>Employee Name&nbsp;:</strong> {expense.employeeName}
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-2 border p-2">
+                  <strong>Employee Name :</strong> {expense.employeeName}
+                </div>
+                <div className="mb-2 border p-2">
+                  <strong>Employee ID :</strong> {expense.employee_id}
+                </div>
+                <div className="mb-2 border p-2">
+                  <strong>Email :</strong> {expense.email}
+                </div>
               </div>
-              <div className="my-2">
-                <strong>
-                  Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </strong>
-                &nbsp;{expense.employee_id}
-              </div>
-              <div className="my-2">
-                <strong>
-                  Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </strong>{' '}
-                {expense.email}
-              </div>
-            </div>
-            <div>
-              {' '}
-              <div className="my-1">
-                <strong>Site Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>{' '}
-                {expense.sitename}
-              </div>
-              <div className="my-1">
-                <strong>Site Location&nbsp;:</strong> {expense.siteLocation}
-              </div>
-              <div className="my-1">
-                <strong>Start Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>{' '}
-                {new Date(expense.startDate).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                })}
-              </div>
-              <div className="my-1">
-                <strong>
-                  End
-                  Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                </strong>{' '}
-                {new Date(expense.endDate).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                })}
+              <div className="col-md-6">
+                <div className="mb-2 border p-2">
+                  <strong>Site Name :</strong> {expense.sitename}
+                </div>
+                <div className="mb-2 border p-2">
+                  <strong>Site Location :</strong> {expense.siteLocation}
+                </div>
+                <div className="mb-2 border p-2">
+                  <strong>Start Date :</strong>{' '}
+                  {new Date(expense.startDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                </div>
+                <div className="mb-2 border p-2">
+                  <strong>End Date :</strong>{' '}
+                  {new Date(expense.endDate).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                  })}
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="my-1 d-flex flex-column">
-            <span>
-              <strong>
-                Advance
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                :
-              </strong>{' '}
-              {expense.AdvanceAmount}
-            </span>
-            <span>
-              <strong>Advance Amount Date &nbsp; :</strong>{' '}
-              {new Date(expense.AdvanceAmountDate).toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-              })}
-            </span>
+            <div className="row mt-1">
+              <div className="col-md-6">
+                <div className="mb-2 border p-2">
+                  <strong>Advance :</strong> {expense.AdvanceAmount}
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="mb-2 border p-2">
+                  <strong>Advance Amount Date :</strong>{' '}
+                  {new Date(expense.AdvanceAmountDate).toLocaleDateString(
+                    'en-GB',
+                    {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    }
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="table-responsive my-3">

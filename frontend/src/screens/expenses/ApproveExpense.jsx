@@ -182,7 +182,7 @@ const ApproveExpense = () => {
         type: 'FETCH_SUCCESS',
         payload: data.expenses,
       });
-      toast.success('Expenses Updated successfully', {
+      toast.success('Expenses Approved successfully', {
         position: 'top-right',
       });
 
@@ -254,56 +254,11 @@ const ApproveExpense = () => {
     }
   };
 
-  const handleDeleteExpense = (index) => {
-    const newExpenses = [...daywiseExpenses];
-    newExpenses.splice(index, 1);
-    setDaywiseExpenses(newExpenses);
-  };
-
   const calculateTotal = (expenseType) => {
     return daywiseExpenses.reduce(
       (total, expense) => total + parseFloat(expense[expenseType] || 0),
       0
     );
-  };
-
-  const UploadBillImage = async (e, index) => {
-    const file = e.target.files[0];
-    const bodyFormData = new FormData();
-    bodyFormData.append('file', file);
-
-    try {
-      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
-      const { data } = await axios.post(
-        '/api/upload/expensebills',
-        bodyFormData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        }
-      );
-      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
-
-      setDaywiseExpenses((prevExpenses) => {
-        const updatedExpenses = [...prevExpenses];
-        updatedExpenses[index] = {
-          ...updatedExpenses[index],
-          img: data.secure_url,
-        };
-        return updatedExpenses;
-      });
-
-      toast.success('Bill uploaded successfully.', {
-        position: 'top-right',
-      });
-    } catch (err) {
-      toast.error(getError(err), {
-        position: 'top-right',
-      });
-      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
-    }
   };
 
   return (
@@ -313,7 +268,7 @@ const ApproveExpense = () => {
         className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
       >
         <div className="form-header">
-          <h2>Approve Expense</h2>
+          <h2>Settle Expense </h2>
         </div>
         <div
           className="my-2 form-group "
@@ -322,7 +277,7 @@ const ApproveExpense = () => {
             flexWrap: 'wrap',
           }}
         >
-          <div className=" mx-1" style={{ width: '300px' }}>
+          <div className=" mx-1" style={{ margin: 'auto', width: '300px' }}>
             <label>Site Name:</label>
             <input
               disabled
@@ -350,7 +305,6 @@ const ApproveExpense = () => {
             />
           </div>
         </div>
-
         <div className="form-group d-flex flex-wrap ">
           <div className=" mx-1" style={{ width: '300px' }}>
             <label>Start Date:</label>
@@ -377,7 +331,6 @@ const ApproveExpense = () => {
             />
           </div>
         </div>
-
         <div className="my-2 form-group d-flex flex-wrap">
           <div className=" mx-1" style={{ width: '300px' }}>
             <label>Advance Amount:</label>
@@ -535,7 +488,6 @@ const ApproveExpense = () => {
           </div>
         </div>
         <hr />
-
         <div className="d-flex justify-content-between">
           {expenses.ApprovedBy !== '' ? (
             <span className=" d-flex flex-column m-2 justify-content-center">

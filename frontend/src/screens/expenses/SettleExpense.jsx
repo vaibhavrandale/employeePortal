@@ -266,7 +266,7 @@ const SettleExpense = () => {
             flexWrap: 'wrap',
           }}
         >
-          <div className=" mx-1" style={{ width: '300px' }}>
+          <div className=" mx-1" style={{ margin: 'auto', width: '300px' }}>
             <label>Site Name:</label>
             <input
               disabled
@@ -346,6 +346,7 @@ const SettleExpense = () => {
             />
           </div>
         </div>
+
         <div className="daywise-expense-section mb-3">
           <h3 className="my-3">Daywise Expenses</h3>
           <div className="table-responsive">

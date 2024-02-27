@@ -338,11 +338,11 @@ const NewExpense = () => {
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Expense</th>
-                  <th>Price</th>
-                  <th>Bill</th>
-                  <th>Action</th>
+                  <th className="text-center">Date</th>
+                  <th className="text-center">Expense</th>
+                  <th className="text-center">Price</th>
+                  <th className="text-center">Upload Bill</th>
+                  <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -359,14 +359,14 @@ const NewExpense = () => {
                       />
                     </td>
                     <td>
-                      <input
+                      <textarea
                         type="text"
                         name="expense"
                         className="form-control"
                         value={dayExpense.expense}
                         onChange={(e) => handleInputChange(e, index)}
                         required
-                      />
+                      ></textarea>
                     </td>
                     <td>
                       <input

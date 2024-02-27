@@ -276,104 +276,95 @@ const UpdateExpense = () => {
         className=" d-flex flex-column justify-content-center align-items-center p-2  my-1"
       >
         <div className="form-header">
-          <h2>Expense Form</h2>
-        </div>
-        <div
-          className="my-2 form-group "
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: '70vw',
-            margin: 'auto',
-          }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Site Name:</label>
-            <input
-              type="text"
-              name="siteName"
-              placeholder="Enter Site Name"
-              className="form-control"
-              value={sitename}
-              onChange={(e) => setSitename(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Site Location:</label>
-            <input
-              type="text"
-              name="siteLocation"
-              placeholder="Enter Site Location"
-              className="form-control "
-              value={siteLocation}
-              onChange={(e) => setSiteLocation(e.target.value)}
-              required
-            />
-          </div>
+          <h2>Update Expense</h2>
         </div>
 
-        <div
-          className="form-group d-flex flex-wrap "
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Start Date:</label>
-            <input
-              type="date"
-              name="startDate"
-              className="form-control"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
-          </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>End Date:</label>
-            <input
-              type="date"
-              name="endDate"
-              className="form-control"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
-          </div>
-        </div>
+        <div className="container ">
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Site Name:</label>
+              <input
+                type="text"
+                name="siteName"
+                placeholder="Enter Site Name"
+                className="form-control"
+                value={sitename}
+                onChange={(e) => setSitename(e.target.value)}
+                required
+              />
+            </div>
 
-        <div
-          className="my-2 form-group d-flex flex-wrap"
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Advance Amount:</label>
-            <input
-              type="number"
-              name="advanceAmount"
-              className="form-control"
-              value={AdvanceAmount}
-              onChange={(e) => setAdvanceAmount(e.target.value)}
-              required
-            />
+            <div className="col-md-5 mb-3">
+              <label>Site Location:</label>
+              <input
+                type="text"
+                name="siteLocation"
+                placeholder="Enter Site Location"
+                className="form-control"
+                value={siteLocation}
+                onChange={(e) => setSiteLocation(e.target.value)}
+                required
+              />
+            </div>
           </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Advance Amount Date:</label>
-            <input
-              type="date"
-              name="advanceAmountDate"
-              className="form-control"
-              value={AdvanceAmountDate}
-              onChange={(e) => setAdvanceAmountDate(e.target.value)}
-              required
-            />
+
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Start Date:</label>
+              <input
+                type="date"
+                name="startDate"
+                className="form-control"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="col-md-5 mb-3">
+              <label>End Date:</label>
+              <input
+                type="date"
+                name="endDate"
+                className="form-control"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Advance Amount:</label>
+              <input
+                type="number"
+                name="advanceAmount"
+                className="form-control"
+                value={AdvanceAmount}
+                onChange={(e) => setAdvanceAmount(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="col-md-5 mb-3">
+              <label>Advance Amount Date:</label>
+              <input
+                type="date"
+                name="advanceAmountDate"
+                className="form-control"
+                value={AdvanceAmountDate}
+                onChange={(e) => setAdvanceAmountDate(e.target.value)}
+                required
+              />
+            </div>
           </div>
         </div>
 
-        <div className="daywise-expense-section mb-3">
+        <div className="container">
           <h3 className="my-3">Daywise Expenses</h3>
-          <div className="table-responsive">
-            <table className="table table-bordered">
+          <div className="table-responsive row">
+            <table className="table table-bordered col-md-8">
               <thead>
                 <tr>
                   <th className="text-center">Date</th>
@@ -397,19 +388,21 @@ const UpdateExpense = () => {
                       />
                     </td>
                     <td>
-                      <input
+                      <textarea
                         type="text"
                         name="expense"
+                        style={{ margin: 'auto', width: '200px' }}
                         className="form-control"
                         value={dayExpense.expense}
                         onChange={(e) => handleInputChange(e, index)}
                         required
-                      />
+                      ></textarea>
                     </td>
                     <td>
                       <input
                         type="number"
                         name="price"
+                        style={{ margin: 'auto', minWidth: '100px' }}
                         className="form-control"
                         value={dayExpense.price}
                         onChange={(e) => handleInputChange(e, index)}
@@ -470,7 +463,6 @@ const UpdateExpense = () => {
                           <>
                             {' '}
                             <input
-                              style={{ width: '30%' }}
                               type="file"
                               id={`profile-${index}`}
                               placeholder="profile"
@@ -481,7 +473,7 @@ const UpdateExpense = () => {
                           </>
                         ) : (
                           <input
-                            style={{ width: '30%' }}
+                            style={{ margin: 'auto', width: '200px' }}
                             type="file"
                             id={`profile-${index}`}
                             placeholder="profile"
@@ -513,29 +505,29 @@ const UpdateExpense = () => {
                 ))}
               </tbody>
             </table>
-            <div className="d-flex justify-content-end">
-              Total -&nbsp;
-              <span className="badge bg-success p-2">
-                {calculateTotal('price')}
-              </span>
-            </div>
           </div>
+        </div>
+        <div className="d-flex justify-content-end w-100">
+          Total -&nbsp;
+          <span className="badge bg-success p-2">
+            {calculateTotal('price')}
+          </span>
         </div>
         <hr />
         <div className="form-footer d-flex justify-content-end w-100">
           {fetchLoading ? (
             <button
               type="submit"
-              className="submit-expense-btn btn btn-sm btn-warning m-1"
+              className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
             >
-              Submitting..{<LoadingBox4 />}
+              Updating..{<LoadingBox4 />}
             </button>
           ) : (
             <button
               type="submit"
-              className="submit-expense-btn btn btn-sm btn-warning m-1"
+              className="submit-expense-btn btn btn-sm btn-warning m-1 fs-6 w-40 px-5 fw-bold"
             >
-              Submit
+              Update
             </button>
           )}
         </div>

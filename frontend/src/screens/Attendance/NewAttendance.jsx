@@ -252,9 +252,9 @@ const NewAttendance = () => {
 
                             const status = attendance.isLeave
                               ? 'L'
-                              : inTime >= '09:15:00' || total >= 8
+                              : inTime >= '09:15:00' || total > 8
                               ? 'P*'
-                              : inTime < '09:15:00' && total > 0 && total <= 5
+                              : inTime > '09:15:00' && total > 0 && total <= 5
                               ? 'H'
                               : 'P';
 

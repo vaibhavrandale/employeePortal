@@ -240,108 +240,98 @@ const NewExpense = () => {
         <div className="form-header">
           <h2>Expense Form</h2>
         </div>
-        <div
-          className="my-2 form-group "
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            width: '70vw',
-            margin: 'auto',
-          }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Site Name:</label>
-            <input
-              type="text"
-              name="siteName"
-              placeholder="Enter Site Name"
-              className="form-control"
-              value={sitename}
-              onChange={(e) => setSitename(e.target.value)}
-              required
-            />
+        <div className="container ">
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Site Name:</label>
+              <input
+                type="text"
+                name="siteName"
+                placeholder="Enter Site Name"
+                className="form-control"
+                value={sitename}
+                onChange={(e) => setSitename(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="col-md-5 mb-3">
+              <label>Site Location:</label>
+              <input
+                type="text"
+                name="siteLocation"
+                placeholder="Enter Site Location"
+                className="form-control"
+                value={siteLocation}
+                onChange={(e) => setSiteLocation(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Site Location:</label>
-            <input
-              type="text"
-              name="siteLocation"
-              placeholder="Enter Site Location"
-              className="form-control "
-              value={siteLocation}
-              onChange={(e) => setSiteLocation(e.target.value)}
-              required
-            />
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Start Date:</label>
+              <input
+                type="date"
+                name="startDate"
+                className="form-control"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="col-md-5 mb-3">
+              <label>End Date:</label>
+              <input
+                type="date"
+                name="endDate"
+                className="form-control"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-5 mb-3">
+              <label>Advance Amount:</label>
+              <input
+                type="number"
+                name="advanceAmount"
+                className="form-control"
+                value={AdvanceAmount}
+                onChange={(e) => setAdvanceAmount(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="col-md-5 mb-3">
+              <label>Advance Amount Date:</label>
+              <input
+                type="date"
+                name="advanceAmountDate"
+                className="form-control"
+                value={AdvanceAmountDate}
+                onChange={(e) => setAdvanceAmountDate(e.target.value)}
+                required
+              />
+            </div>
           </div>
         </div>
 
-        <div
-          className="form-group d-flex flex-wrap "
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Start Date:</label>
-            <input
-              type="date"
-              name="startDate"
-              className="form-control"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
-          </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>End Date:</label>
-            <input
-              type="date"
-              name="endDate"
-              className="form-control"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        <div
-          className="my-2 form-group d-flex flex-wrap"
-          style={{ width: '70vw', margin: 'auto' }}
-        >
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Advance Amount:</label>
-            <input
-              type="number"
-              name="advanceAmount"
-              className="form-control"
-              value={AdvanceAmount}
-              onChange={(e) => setAdvanceAmount(e.target.value)}
-              required
-            />
-          </div>
-          <div className=" mx-1" style={{ width: '30vw' }}>
-            <label>Advance Amount Date:</label>
-            <input
-              type="date"
-              name="advanceAmountDate"
-              className="form-control"
-              value={AdvanceAmountDate}
-              onChange={(e) => setAdvanceAmountDate(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="daywise-expense-section mb-3">
+        <div className="container">
           <h3 className="my-3">Daywise Expenses</h3>
-          <div className="table-responsive">
-            <table className="table table-bordered">
+          <div className="table-responsive row">
+            <table className="table table-bordered col-md-8">
               <thead>
                 <tr>
                   <th className="text-center">Date</th>
                   <th className="text-center">Expense</th>
                   <th className="text-center">Price</th>
-                  <th className="text-center">Upload Bill</th>
+                  <th className="text-center">Upload Bill image</th>
                   <th className="text-center">Action</th>
                 </tr>
               </thead>
@@ -362,6 +352,7 @@ const NewExpense = () => {
                       <textarea
                         type="text"
                         name="expense"
+                        style={{ margin: 'auto', width: '200px' }}
                         className="form-control"
                         value={dayExpense.expense}
                         onChange={(e) => handleInputChange(e, index)}
@@ -372,6 +363,7 @@ const NewExpense = () => {
                       <input
                         type="number"
                         name="price"
+                        style={{ margin: 'auto', minWidth: '100px' }}
                         className="form-control"
                         value={dayExpense.price}
                         onChange={(e) => handleInputChange(e, index)}
@@ -379,12 +371,12 @@ const NewExpense = () => {
                       />
                     </td>
                     <td className=" ">
-                      <div className="d-flex justify-content-center align-items-center">
+                      <div className="d-flex justify-content-center align-items-center  m-auto ">
                         {dayExpense.img ? (
                           <>
                             <button
                               type="button"
-                              className="btn btn-sm btn-success p-1"
+                              className="btn btn-sm btn-success p-1 m-1"
                               data-bs-toggle="modal"
                               data-bs-target={`#exampleModal_${index}`}
                             >
@@ -430,25 +422,23 @@ const NewExpense = () => {
 
                         {loadingDocumentUpload ? (
                           <>
-                            {' '}
                             <input
-                              style={{ width: '50%' }}
                               type="file"
                               id={`profile-${index}`}
                               placeholder="profile"
                               onChange={(e) => UploadBillImage(e, index)}
-                              className="my-2 mx-2"
+                              className=""
                             />
+                            &nbsp;
                             <LoadingBox4 />
                           </>
                         ) : (
                           <input
-                            style={{ width: '50%' }}
                             type="file"
                             id={`profile-${index}`}
                             placeholder="profile"
                             onChange={(e) => UploadBillImage(e, index)}
-                            className="my-2 mx-2"
+                            className=""
                           />
                         )}
                       </div>
@@ -456,12 +446,14 @@ const NewExpense = () => {
                     <td>
                       <div className="d-flex">
                         <button
+                          type="button"
                           onClick={handleAddExpense}
                           className="btn btn-sm btn-primary text-light m-1"
                         >
                           <GrAddCircle />
                         </button>
                         <button
+                          type="button"
                           className="btn btn-sm btn-danger m-1"
                           onClick={() => handleDeleteExpense(index)}
                         >
@@ -473,13 +465,13 @@ const NewExpense = () => {
                 ))}
               </tbody>
             </table>
-            <div className="d-flex justify-content-end">
-              Total -&nbsp;
-              <span className="badge bg-success p-2">
-                {calculateTotal('price')}
-              </span>
-            </div>
           </div>
+        </div>
+        <div className="d-flex justify-content-end w-100">
+          Total -&nbsp;
+          <span className="badge bg-success p-2">
+            {calculateTotal('price')}
+          </span>
         </div>
         <hr />
         <div className="form-footer d-flex justify-content-end w-100">

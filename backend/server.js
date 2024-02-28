@@ -22,6 +22,7 @@ import {
   ProbationChecker,
   processLeavesAndCreateRefidChecks,
   HolidayGenerator,
+  calculateTotalHoursForToday,
 } from './cron.js';
 import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
@@ -61,6 +62,9 @@ cron.schedule('30 2 * * *', processLeavesAndCreateRefidChecks);
 
 cron.schedule('30 2 * * *', HolidayGenerator);
 
+cron.schedule('30 19 * * *', calculateTotalHoursForToday);
+//
+// cron.schedule('* * * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', HolidayGenerator);
 // cron.schedule('* * * * *', processLeavesAndCreateRefidChecks);
 // cron.schedule('* * * * *', ProbationChecker);

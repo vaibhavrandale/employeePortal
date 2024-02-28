@@ -439,7 +439,7 @@ const NewAttendance = () => {
                   if (groupedData.length === 0) {
                     return (
                       <tr>
-                        <td colSpan={35} className="text-center">
+                        <td colSpan={36} className="text-center">
                           No data found
                         </td>
                       </tr>
@@ -466,9 +466,9 @@ const NewAttendance = () => {
                             const total = attendance.totalHours / 60;
                             const status = attendance.isLeave
                               ? 'L'
-                              : inTime >= '09:15:00' || total >= 8
+                              : inTime >= '09:15:00' || total > 8
                               ? 'P*'
-                              : inTime < '09:15:00' && total > 0 && total <= 5
+                              : inTime > '09:15:00' && total > 0 && total <= 5
                               ? 'H'
                               : 'P';
 
@@ -740,7 +740,11 @@ const NewAttendance = () => {
                         <td className="text-center">
                           {new Date().getDate() >= 28 ? (
                             <Link
-                              to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
+                              to={`/pay-slip/${
+                                employee.employee_id
+                              }/${year}/${month}/${userInfo.token}/${
+                                employee.totalPCount + employee.totalHCount / 2
+                              }/${userInfo.token}`}
                               target="_blank"
                               className="btn btn-success btn-sm"
                             >

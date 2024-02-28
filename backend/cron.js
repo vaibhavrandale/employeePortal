@@ -1179,18 +1179,6 @@ const HolidayGenerator = async () => {
     // Get the current date
     const currentDate = new Date();
 
-    // Check if Payslip records already exist for the current month
-    // const existingHolidays = await Holidays.findOne({
-    //   where: {
-    //     date: {
-    //       [Op.eq]: new Date(
-    //         currentDate.getFullYear(),
-    //         currentDate.getMonth(),
-    //         currentDate.getDate()
-    //       ),
-    //     },
-    //   },
-    // });
     const existingHolidays = await Holidays.findOne({
       where: sequelize.literal(`DATE(date) = CURDATE()`),
     });
@@ -1243,6 +1231,68 @@ const HolidayGenerator = async () => {
   }
 };
 
+const calculateTotalHoursForToday = async () => {
+  try {
+    // Get today's date
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // Months are zero-based
+    const day = currentDate.getDate();
+
+    // Find all records for the current day
+    const records = await RfidCkeck.findAll({
+      where: {
+        year,
+        month,
+        day,
+      },
+    });
+
+    for (const record of records) {
+      let tap1 = new Date(record.OUT_TIME_1) - new Date(record.IN_TIME_1);
+      let tap2 = 0;
+      let tap3 = 0;
+
+      if (record.IN_TIME_2) {
+        tap2 = new Date(record.OUT_TIME_2) - new Date(record.IN_TIME_2);
+      }
+
+      if (record.IN_TIME_3) {
+        tap3 = new Date(record.OUT_TIME_3) - new Date(record.IN_TIME_3);
+      }
+
+      const totalHTap1 = tap1 / (1000 * 60 * 60);
+      const totalHTap2 = tap2 / (1000 * 60 * 60);
+      const totalHTap3 = tap3 / (1000 * 60 * 60);
+
+      const totalH = totalHTap1 + totalHTap2 + totalHTap3;
+      const totalM = Math.floor((totalH % 1) * 60);
+      const totalHours = Math.floor(totalH);
+      // const totalHours = parseFloat(`${Math.floor(totalH)}.${totalM}`).toFixed(2);
+
+      let totalTime = `${totalHours}.${totalM}`;
+
+      await record.update({ totalTime });
+
+      // console.log(
+      //   `total Hour-${totalHours}.${totalM},tap1-${parseFloat(
+      //     (tap1 / (1000 * 60 * 60)).toFixed(2)
+      //   )},tap2-${parseFloat(
+      //     (tap2 / (1000 * 60 * 60)).toFixed(2)
+      //   )},tap3-${parseFloat((tap3 / (1000 * 60 * 60)).toFixed(2))}`
+      // );
+    }
+
+    console.log(
+      `Total hours calculation completed for the current day ,for total ${
+        records.length + 1
+      } employees`
+    );
+  } catch (error) {
+    console.error('Error calculating total hours:', error);
+  }
+};
+
 export {
   sendBirthdayEmails,
   checkAndCreateBirthdayRecords,
@@ -1252,4 +1302,5 @@ export {
   ProbationChecker,
   processLeavesAndCreateRefidChecks, // Call the HolidayGenerator function
   HolidayGenerator,
+  calculateTotalHoursForToday,
 };

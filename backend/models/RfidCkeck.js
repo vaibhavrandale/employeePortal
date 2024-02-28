@@ -18,15 +18,6 @@ const RfidCkeck = sequelize.define(
       allowNull: false,
     },
 
-    // IN_TIME: {
-    //   type: DataTypes.DATE,
-    // },
-    // OUT_TIME: {
-    //   type: DataTypes.DATE,
-    // },
-
-    //1ST ENTRY
-
     IN_LATTITUDE_1: {
       type: DataTypes.STRING,
     },

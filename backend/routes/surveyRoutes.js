@@ -152,7 +152,7 @@ surveyRouter.get('/sitesurveys/:id/reviews', async (req, res) => {
 // );
 
 const logo =
-  'https://taypro.in/assets/images/taypro-registered-without-tagline-354x82.png';
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';
 surveyRouter.post(
   '/sitesurveys/:id/reviews',
   isAuth,

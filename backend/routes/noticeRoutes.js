@@ -277,7 +277,7 @@ import Employee from '../models/employeeModel.js';
 const NoticeRouter = express.Router();
 dotenv.config();
 const logo =
-  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693544767/bourvup3cg574xxuwjpm.png';
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';
 
 // old post
 

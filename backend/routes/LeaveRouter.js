@@ -17,7 +17,7 @@ const leaveRouter = express.Router();
 dotenv.config();
 
 const logo =
-  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';
 
 // get all leaves Start
 

@@ -93,7 +93,7 @@ function SlipFinal() {
   }, [month, year, totaldays, id]);
 
   const logo =
-    'https://res.cloudinary.com/di0iwc8ql/image/upload/v1813812425/wzdesp1oce9ndc5yipep.png';
+    'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';
 
   const generatePdf = (employee, year, month) => {
     const doc = new jsPDF('potrait'); // Set landscape orientation

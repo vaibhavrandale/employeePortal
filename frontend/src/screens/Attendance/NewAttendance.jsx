@@ -552,7 +552,11 @@ const NewAttendance = () => {
                         <td className="text-center">
                           <Link
                             // pay-slip/:id/:year/:month/:totaldays
-                            to={`/pay-slip/${employee.employee_id}/${year}/${month}/${userInfo.token}/${totalPCount}/${userInfo.token}`}
+                            to={`/pay-slip/${
+                              employee.employee_id
+                            }/${year}/${month}/${userInfo.token}/${
+                              employee.totalPCount + employee.totalHCount / 2
+                            }/${userInfo.token}`}
                             target="_blank"
                             className="btn btn-success"
                           >

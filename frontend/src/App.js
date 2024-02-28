@@ -80,6 +80,7 @@ import MyExpenses from './screens/expenses/MyExpenses';
 import UpdateExpense from './screens/expenses/UpdateExpense';
 import ApproveExpense from './screens/expenses/ApproveExpense';
 import SettleExpense from './screens/expenses/SettleExpense';
+import ExpenseExport from './screens/expenses/ExpenseExport';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -755,6 +756,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <SettleExpense />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/export-expense/:id"
+          element={
+            <ProtectedRoutes>
+              <ExpenseExport />
             </ProtectedRoutes>
           }
         />

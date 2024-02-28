@@ -103,6 +103,12 @@ const ViewExpense = () => {
         </div>
       ) : (
         <div id="expense">
+          <Link
+            className="btn btn-sm btn-success p-2"
+            to={`/export-expense/${id}`}
+          >
+            Export
+          </Link>
           <div
             className=" container"
             style={{

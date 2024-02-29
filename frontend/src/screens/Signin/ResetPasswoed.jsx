@@ -14,6 +14,7 @@ const ResetPasswoed = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
+  const [loading, setLoading] = useState(false); // 1. Add a Loading State
 
   const [showPassword, setShowPassword] = useState(false);
   const { state } = useContext(Store);
@@ -21,8 +22,11 @@ const ResetPasswoed = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true before sending the email
+
     if (password !== confirmpassword) {
       toast.error('Passwords do not match');
+      setLoading(false); // Set loading to true before sending the email
       return;
     }
     try {
@@ -36,6 +40,8 @@ const ResetPasswoed = () => {
       toast.error(getError(err), {
         position: 'bottom-right',
       });
+    } finally {
+      setLoading(false); // Set loading to false once the email is sent
     }
   };
 
@@ -124,7 +130,7 @@ const ResetPasswoed = () => {
               </div>
             </div>{' '}
             <button id="button" type="submit">
-              Reset
+              {loading ? 'Reseting...' : 'Reset'}
             </button>
           </form>{' '}
         </div>

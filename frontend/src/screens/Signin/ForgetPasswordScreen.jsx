@@ -60,9 +60,12 @@ const ForgetPasswordScreen = () => {
                 />
               }
             </div>
-            <h4 class="" style={{ zIndex: '5', fontWeight: 'bold' }}>
+            <h5
+              className="text-decoration-none"
+              style={{ zIndex: '5', fontWeight: 'bold' }}
+            >
               Forget Password
-            </h4>
+            </h5>
             <div class="inputContainer">
               <svg
                 class="inputIcon"

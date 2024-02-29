@@ -176,7 +176,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && userInfo.isDirector === 1 && userInfo.isHr && (
+          {userInfo && userInfo.isDirector === 1 && userInfo.isHr===1 && (
             <li>
               <Link to="/expenses-home">
                 <img

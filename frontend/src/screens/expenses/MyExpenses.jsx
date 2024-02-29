@@ -19,6 +19,7 @@ import axios from 'axios';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import toast from 'react-hot-toast';
 import { getError } from '../../utils';
+import { FaFileExport } from 'react-icons/fa6';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -301,22 +302,52 @@ const MyExpenses = () => {
                     >
                       <IoEyeOutline />
                     </Link>
+                    {item.status >= 1 ? (
+                      <Link
+                        className="disabled btn btn-sm text-decoration-none btn-warning text-light mx-1"
+                        to={`/update-expense/${item.id}`}
+                      >
+                        <FaRegEdit />
+                      </Link>
+                    ) : (
+                      <Link
+                        className="btn btn-sm text-decoration-none btn-warning text-light mx-1"
+                        to={`/update-expense/${item.id}`}
+                      >
+                        <FaRegEdit />
+                      </Link>
+                    )}
+                    {item.status >= 1 ? (
+                      <Link
+                        type="button"
+                        className="disabled btn btn-danger btn-sm mx-1"
+                        data-bs-toggle="modal"
+                        data-bs-backdrop="false"
+                        onClick={openModal}
+                        data-bs-target={`#exampleModal_${item.id}`}
+                      >
+                        <MdDeleteOutline />
+                      </Link>
+                    ) : (
+                      <Link
+                        type="button"
+                        className="btn btn-danger btn-sm mx-1"
+                        data-bs-toggle="modal"
+                        data-bs-backdrop="false"
+                        onClick={openModal}
+                        data-bs-target={`#exampleModal_${item.id}`}
+                      >
+                        <MdDeleteOutline />
+                      </Link>
+                    )}
+
                     <Link
-                      className="btn btn-sm text-decoration-none btn-warning text-light mx-1"
-                      to={`/update-expense/${item.id}`}
+                      className="btn btn-sm btn-success p-2 text-decoration-none mx-1"
+                      target="_blank"
+                      to={`/export-expense/${item.id}`}
                     >
-                      <FaRegEdit />
+                      <FaFileExport />
                     </Link>
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-backdrop="false"
-                      onClick={openModal}
-                      data-bs-target={`#exampleModal_${item.id}`}
-                    >
-                      <MdDeleteOutline />
-                    </button>
 
                     <div
                       className={`modal fade${showModal ? ' show' : ''}`}

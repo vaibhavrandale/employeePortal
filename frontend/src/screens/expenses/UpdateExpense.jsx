@@ -77,6 +77,20 @@ const UpdateExpense = () => {
   const [employee_id, setEmployeeId] = useState(userInfo.employee_id);
   const [email, setEmail] = useState(userInfo.email);
 
+  const [showModal, setShowModal] = useState(false);
+
+  const [activeModal, setActiveModal] = useState(null);
+
+  // Function to set the active modal ID
+  const openModal = (id) => {
+    setActiveModal(id);
+  };
+
+  // Function to close the active modal
+  const closeModal = () => {
+    setActiveModal(null);
+  };
+
   // Site Information
   const [sitename, setSitename] = useState('');
   const [siteLocation, setSiteLocation] = useState('');
@@ -415,38 +429,50 @@ const UpdateExpense = () => {
                         />
                       </td>
                       <td className=" ">
-                        <div className="d-flex justify-content-center align-items-center w-50 m-auto border">
+                        <div className="d-flex justify-content-center align-items-center ">
                           {dayExpense.img ? (
                             <>
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-success p-1"
-                                data-bs-toggle="modal"
-                                data-bs-target={`#exampleModal_${index}`}
+                              {/* --------------------bill modal---------------------------------- */}
+                              <Link
+                                className="mx-1 text-danger"
+                                // onClick={() => setShowModal(true)}
+                                onClick={() => openModal(`modal-${index}`)}
                               >
                                 <IoEyeOutline />
-                              </button>
+                              </Link>
                               <div
-                                className="modal fade"
-                                id={`exampleModal_${index}`}
+                                // className={`modal fade ${showModal ? 'show' : ''}`}
+                                // style={{ display: showModal ? 'block' : 'none' }}
+                                className={`modal fade ${
+                                  activeModal === `modal-${index}` ? 'show' : ''
+                                }`}
+                                style={{
+                                  display:
+                                    activeModal === `modal-${index}`
+                                      ? 'block'
+                                      : 'none',
+                                }}
                                 tabIndex="-1"
-                                aria-labelledby={`exampleModal_${index}`}
-                                aria-hidden="true"
+                                role="dialog"
+                                aria-labelledby="deleteModal"
+                                aria-hidden={!showModal}
                               >
-                                <div className="modal-dialog">
+                                <div className="modal-dialog modal-dialog-centered ">
                                   <div className="modal-content">
                                     <div className="modal-header">
                                       <h5
-                                        className="modal-title"
-                                        id={`exampleModal_${index}`}
+                                        className="modal-title text-dark "
+                                        id="deleteModalLabel"
                                       >
-                                        {dayExpense.expense} Bill
+                                        {dayExpense.expense}
                                       </h5>
                                       <button
                                         type="button"
                                         className="btn-close"
                                         data-bs-dismiss="modal"
                                         aria-label="Close"
+                                        // onClick={() => setShowModal(false)}
+                                        onClick={closeModal}
                                       ></button>
                                     </div>
                                     <div className="modal-body">
@@ -459,6 +485,7 @@ const UpdateExpense = () => {
                                   </div>
                                 </div>
                               </div>
+                              {/* --------------------bill modal---------------------------------- */}
                             </>
                           ) : (
                             ''
@@ -473,12 +500,13 @@ const UpdateExpense = () => {
                                 placeholder="profile"
                                 onChange={(e) => UploadBillImage(e, index)}
                                 className="my-2 mx-2"
-                              />{' '}
+                              />
+                              &nbsp;
                               <LoadingBox4 />
                             </>
                           ) : (
                             <input
-                              style={{ margin: 'auto', width: '200px' }}
+                              // style={{ margin: 'auto', width: '200px' }}
                               type="file"
                               id={`profile-${index}`}
                               placeholder="profile"

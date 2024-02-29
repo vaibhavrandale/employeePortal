@@ -29,3 +29,13 @@
 .cssbuttons-io-button:active {
   box-shadow: 0 0.3em 1em -0.5em rgb(160, 109, 255);
 }
+
+/* Modal */
+.modal {
+  z-index: 1050; /* Ensure this is higher than the backdrop */
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+  z-index: 1040; /* Ensure this is lower than the modal z-index */
+}

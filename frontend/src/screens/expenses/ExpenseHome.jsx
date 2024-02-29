@@ -10,6 +10,8 @@ import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import toast from 'react-hot-toast';
 import { getError } from '../../utils';
 
+import { FaFileExport } from 'react-icons/fa6';
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -316,6 +318,14 @@ const ExpenseHome = () => {
                     >
                       <MdDeleteOutline />
                     </button>
+
+                    <Link
+                      className="btn btn-sm btn-success p-2 text-decoration-none mx-1"
+                      target="_blank"
+                      to={`/export-expense/${item.id}`}
+                    >
+                      <FaFileExport />
+                    </Link>
 
                     <div
                       className={`modal fade${showModal ? ' show' : ''}`}

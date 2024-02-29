@@ -8,6 +8,7 @@ import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import { IoEyeOutline } from 'react-icons/io5';
 import { MdDeleteOutline } from 'react-icons/md';
 import { GrAddCircle } from 'react-icons/gr';
+import './expense.css';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -53,7 +54,18 @@ const NewExpense = () => {
     error: '',
   });
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
 
+  // Function to set the active modal ID
+  const openModal = (id) => {
+    setActiveModal(id);
+  };
+
+  // Function to close the active modal
+  const closeModal = () => {
+    setActiveModal(null);
+  };
   const [employeeName, setEmployeeName] = useState(userInfo.NAME);
   const [employee_id, setEmployeeId] = useState(userInfo.employee_id);
   const [email, setEmail] = useState(userInfo.email);
@@ -371,19 +383,78 @@ const NewExpense = () => {
                       />
                     </td>
                     <td className=" ">
-                      <div className="d-flex justify-content-center align-items-center  m-auto ">
-                        {dayExpense.img ? (
-                          <>
-                            <button
+                      {/* <div className="d-flex justify-content-center align-items-center  m-auto "> */}
+                      {dayExpense.img ? (
+                        <>
+                          {/* --------------------bill modal---------------------------------- */}
+                          <Link
+                            className="mx-1 text-danger"
+                            // onClick={() => setShowModal(true)}
+                            onClick={() => openModal(`modal-${index}`)}
+                          >
+                            <IoEyeOutline />
+                          </Link>
+                          <div
+                            // className={`modal fade ${showModal ? 'show' : ''}`}
+                            // style={{ display: showModal ? 'block' : 'none' }}
+                            className={`modal fade  ${
+                              activeModal === `modal-${index}` ? 'show' : ''
+                            }`}
+                            style={{
+                              display:
+                                activeModal === `modal-${index}`
+                                  ? 'block'
+                                  : 'none',
+                            }}
+                            tabIndex="-1"
+                            role="dialog"
+                            aria-labelledby="deleteModal"
+                            aria-hidden={!showModal}
+                          >
+                            <div className=" modal-dialog modal-dialog-centered modal-dialog-sm">
+                              <div className="modal-content">
+                                <div className="modal-header">
+                                  <h5
+                                    className="modal-title text-dark "
+                                    id="deleteModalLabel"
+                                  >
+                                    {dayExpense.expense}
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    // onClick={() => setShowModal(false)}
+                                    onClick={closeModal}
+                                  ></button>
+                                </div>
+                                <div className="modal-body w-80 m-auto p-2">
+                                  <img
+                                    src={dayExpense.img}
+                                    alt={`${dayExpense.expense} Bill`}
+                                    style={{ maxWidth: '300px' }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* --------------------bill modal---------------------------------- */}
+
+                          {/* <button
                               type="button"
                               className="btn btn-sm btn-success p-1 m-1"
+                              // data-bs-toggle="modal"
+                              // data-bs-target={`#exampleModal_${index}`}
                               data-bs-toggle="modal"
-                              data-bs-target={`#exampleModal_${index}`}
+                              data-bs-target="#exampleModal"
                             >
                               <IoEyeOutline />
-                            </button>
-                            <div
+                            </button> */}
+
+                          {/* <div
                               className="modal fade"
+                              style={{ zIndex: '2', backdropFilter: 'none' }}
                               id={`exampleModal_${index}`}
                               tabIndex="-1"
                               aria-labelledby={`exampleModal_${index}`}
@@ -414,25 +485,14 @@ const NewExpense = () => {
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </>
-                        ) : (
-                          ''
-                        )}
+                            </div> */}
+                        </>
+                      ) : (
+                        ''
+                      )}
 
-                        {loadingDocumentUpload ? (
-                          <>
-                            <input
-                              type="file"
-                              id={`profile-${index}`}
-                              placeholder="profile"
-                              onChange={(e) => UploadBillImage(e, index)}
-                              className=""
-                            />
-                            &nbsp;
-                            <LoadingBox4 />
-                          </>
-                        ) : (
+                      {loadingDocumentUpload ? (
+                        <>
                           <input
                             type="file"
                             id={`profile-${index}`}
@@ -440,8 +500,22 @@ const NewExpense = () => {
                             onChange={(e) => UploadBillImage(e, index)}
                             className=""
                           />
-                        )}
-                      </div>
+                          &nbsp;
+                          <LoadingBox4 />
+                        </>
+                      ) : (
+                        <>
+                          &nbsp;&nbsp;
+                          <input
+                            type="file"
+                            id={`profile-${index}`}
+                            placeholder="profile"
+                            onChange={(e) => UploadBillImage(e, index)}
+                            className=""
+                          />
+                        </>
+                      )}
+                      {/* </div> */}
                     </td>
                     <td>
                       <div className="d-flex">

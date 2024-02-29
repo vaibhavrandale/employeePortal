@@ -62,7 +62,7 @@ cron.schedule('30 2 * * *', processLeavesAndCreateRefidChecks);
 
 cron.schedule('30 2 * * *', HolidayGenerator);
 
-cron.schedule('30 19 * * *', calculateTotalHoursForToday);
+cron.schedule('30 13 * * *', calculateTotalHoursForToday);
 //
 // cron.schedule('* * * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', HolidayGenerator);
@@ -70,7 +70,7 @@ cron.schedule('30 19 * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', ProbationChecker);
 // cron.schedule('* * * * *', PayslipGenerator);
 // 5.30 ISTpm testing
-cron.schedule('15 11 * * *', AnniversaryEmails);
+cron.schedule('40 11 * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', sendBirthdayEmails);
 // cron.schedule('* * * * *', checkAndCreateBirthdayRecords);

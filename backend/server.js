@@ -69,6 +69,8 @@ cron.schedule('30 19 * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', processLeavesAndCreateRefidChecks);
 // cron.schedule('* * * * *', ProbationChecker);
 // cron.schedule('* * * * *', PayslipGenerator);
+// 5pm testing
+cron.schedule('0 17 * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', sendBirthdayEmails);
 // cron.schedule('* * * * *', checkAndCreateBirthdayRecords);

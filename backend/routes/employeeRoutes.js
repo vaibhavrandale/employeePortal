@@ -72,7 +72,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
   const {
     employee_id,
     email,
-    name,
+    NAME,
     firstName,
     lastName,
     father_husband_name,
@@ -188,7 +188,7 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     }
     employee.employee_id = employee_id;
     employee.email = email;
-    employee.NAME = name;
+    employee.NAME = NAME;
     employee.firstName = firstName;
     employee.lastName = lastName;
     employee.father_husband_name = father_husband_name;
@@ -266,7 +266,9 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
       .json({ message: `Employee updated successfully.`, employee });
   } catch (error) {
     console.error('Error while updating address:', error);
-    return res.status(500).json({ message: 'Internal server error.' });
+    return res
+      .status(500)
+      .json({ message: 'Internal server error.', error: error.message });
   }
 });
 

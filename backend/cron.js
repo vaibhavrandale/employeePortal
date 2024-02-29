@@ -428,7 +428,8 @@ const AnniversaryEmails = async () => {
       transporter
         .sendMail({
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-          to: employee.email,
+
+          to: `${employee.email},${employee.personal_email}`,
           subject: 'Happy Anniversary🎉🎉',
           html: `<!DOCTYPE html>
                     <html lang="en">
@@ -622,16 +623,19 @@ const AnniversaryEmails = async () => {
         .then((info) => {
           if (info.envelope.to.includes(employee.email)) {
             console.log(
-              `Anniversary email successfully sent to ${employee.email}`
+              `Anniversary email successfully sent to ${employee.email},${employee.personal_email}`
             );
           } else {
             console.log(
-              `Failed to send Anniversary email to ${employee.email}`
+              `Failed to send Anniversary email to ${employee.email},${employee.personal_email}`
             );
           }
         })
         .catch((error) => {
-          console.error(`Error sending email to ${employee.email}:`, error);
+          console.error(
+            `Error sending email to ${employee.email},${employee.personal_email}:`,
+            error
+          );
         });
     }
   } catch (error) {

@@ -434,7 +434,7 @@ const UpdateEmployee = () => {
           employee_id,
           UID,
           email,
-          name: `${firstName} ${lastName}`,
+          NAME: `${firstName} ${lastName}`,
           firstName,
           lastName,
           father_husband_name,

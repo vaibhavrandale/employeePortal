@@ -37,18 +37,14 @@ const NewAttendance = () => {
         setAttendanceData(data);
         console.log(`data ${data}`);
 
-        // const Employeeresponse = await axios.get(`/api/employees/`);
-        // console.log(Employeeresponse.data.employees);
-
-        // const Employeedata = Employeeresponse.data.employees;
-        // setEmployeeData(Employeedata);
-        // console.log(`Employee data ${Employeedata}`);
-
         // Update the number of days in the month
         const daysResponse = await axios.get(
-          `/api/attendence/getDaysInMonth/${month}/${year}`
+          `/api/attendence/getDaysInMonth/${selectedMonth || month}/${
+            year || selectedYear
+          }`
         );
         const daysData = daysResponse.data.daysInMonth;
+        console.log(`day in month ${daysData}`);
         setDaysInMonth(daysData);
       } catch (error) {
         console.error('Error fetching attendance data', error);
@@ -58,7 +54,7 @@ const NewAttendance = () => {
     };
 
     fetchData();
-  }, [month, year]);
+  }, [month, selectedMonth, selectedYear, year]);
 
   const filteredData = attendanceData.filter((entry) => {
     if (searchTerm) {
@@ -144,7 +140,9 @@ const NewAttendance = () => {
           ) : (
             <div className="d-flex ">
               <DownloadTableExcel
-                filename={`AttendanceData_${month}-${year}`}
+                filename={`AttendanceData_${selectedMonth || month}-${
+                  selectedYear || year
+                }`}
                 sheet="users"
                 currentTableRef={tableRef.current}
               >

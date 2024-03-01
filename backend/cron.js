@@ -47,7 +47,7 @@ const sendBirthdayEmails = async () => {
       transporter
         .sendMail({
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-          to: employee.email,
+          to: `${employee.email},${employee.personal_email}`,
           subject: 'Happy Birthday🥂🎂',
           html: `<!DOCTYPE html>
           <html lang="en">
@@ -84,7 +84,7 @@ const sendBirthdayEmails = async () => {
                 >
                   <div id="logo" style="display: flex; justify-content: end">
                     <img
-                      src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1706849335/gpqnrykjt2zgpyackb1q.svg"
+                      src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709278591/pjprlwmrv9dwtbel1rti.png"
                       alt="logo"
                       style="
                         max-width: 12vmax;
@@ -330,6 +330,7 @@ const sendEmail = (employee) => {
 };
 
 const checkAndCreateBirthdayRecords = async () => {
+  console.log('checkAndCreateBirthdayRecords function reached');
   // cron.schedule('* * * * *', async () => {
   try {
     const currentDate = new Date();
@@ -735,7 +736,7 @@ const Intern = () => {
               <h2>
                 <img
                   id="img"
-                  style="width: 30%; margin: auto"
+                  style="width: 30%; margin: auto;"
                   src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
                   alt="Embedded Image"
                   class="birthday-image"
@@ -1076,6 +1077,102 @@ const ProbationChecker = async () => {
   }
 };
 
+// const processLeavesAndCreateRefidChecks = async () => {
+//   try {
+//     // Fetch all leaves from Leaves table
+//     const allLeaves = await Leaves.findAll({
+//       where: {
+//         approved: 1,
+//       },
+//     });
+
+//     console.log(`leave found :${allLeaves.length}`);
+
+//     // Iterate through each leave and create RefidChecks if conditions are met
+//     for (const leaveInstance of allLeaves) {
+//       const leave = leaveInstance.get(); // Convert Sequelize instance to plain JavaScript object
+//       console.log('Processing leave:', leave.id);
+
+// const currentDate = new Date();
+
+// const currentYear = currentDate.getFullYear();
+// const currentMonth = currentDate.getMonth() + 1;
+// const currentDay = currentDate.getDate();
+// const InTime = '09:00:00';
+// const OutTime = '18:00:00';
+
+// const DefaultInLattitude = '18.6483599';
+// const DefaultInLongitude = '73.8313038';
+
+// const DefaultOutLattitude = '18.6483599';
+// const DefaultOutLongitude = '73.8313038';
+
+//       const expectedDateOfLeave = new Date(leave.expectedDateOfLeave);
+//       const startDate = expectedDateOfLeave.toLocaleDateString('en-US', {
+//         year: 'numeric',
+//         month: '2-digit',
+//         day: '2-digit',
+//       });
+
+//       const expectedDateOfreturn = new Date(leave.expectedDateOfreturn);
+
+//       const EndDate = expectedDateOfreturn.toLocaleDateString('en-US', {
+//         year: 'numeric',
+//         month: '2-digit',
+//         day: '2-digit',
+//       });
+
+//       // if (leave) {
+//       const employee = await Employee.findOne({
+//         where: {
+//           employee_id: leave.employee_id,
+//         },
+//       });
+
+//       if (
+//         currentDate >= expectedDateOfLeave &&
+//         currentDate <= expectedDateOfreturn
+//       ) {
+//         // Create a record in RefidChecks table
+//         const rfidCheck = await RfidCkeck.create({
+// IN_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${InTime}`,
+// OUT_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${OutTime}`,
+// totalHours: 8,
+// isLeave: 1,
+// LeaveType: leave.type,
+// Name: leave.name,
+// employee_id: leave.employee_id,
+// UID: employee.UID,
+// IN_LATTITUDE_1: DefaultInLattitude,
+// IN_LONGITUDE_1: DefaultInLongitude,
+// OUT_LATTITUDE_1: DefaultOutLattitude,
+// OUT_LONGITUDE_1: DefaultOutLongitude,
+// year: currentYear,
+// month: currentMonth,
+// day: currentDay,
+//         });
+
+//         // console.log('Creating RefidCheck:', rfidCheck);
+
+//         const leaveRecord = await rfidCheck.save();
+//         if (!leaveRecord) {
+//           console.error(
+//             'Failed to create RefidCheck. Validation errors:',
+//             rfidCheck.errors
+//           );
+//         } else {
+//           console.log('Leave record created successfully:');
+//         }
+//         console.log('Leave record created:');
+//       } else {
+//         console.log('Did not found');
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error fetching or processing leaves:', error);
+//   }
+// };
+
 const processLeavesAndCreateRefidChecks = async () => {
   try {
     // Fetch all leaves from Leaves table
@@ -1085,14 +1182,15 @@ const processLeavesAndCreateRefidChecks = async () => {
       },
     });
 
-    console.log(`leave found ${allLeaves}`);
+    console.log(`Leaves found: ${allLeaves.length}`);
 
     // Iterate through each leave and create RefidChecks if conditions are met
     for (const leaveInstance of allLeaves) {
       const leave = leaveInstance.get(); // Convert Sequelize instance to plain JavaScript object
-      console.log('Processing leave:', leave);
+      // console.log('Processing leave:', leave.id);
 
       const currentDate = new Date();
+      // console.log('Current date:', currentDate);
 
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
@@ -1107,33 +1205,40 @@ const processLeavesAndCreateRefidChecks = async () => {
       const DefaultOutLongitude = '73.8313038';
 
       const expectedDateOfLeave = new Date(leave.expectedDateOfLeave);
+      const expectedDateOfreturn = new Date(leave.expectedDateOfreturn);
+
+      // console.log('Expected Date of Leave:', expectedDateOfLeave);
+      // console.log('Expected Date of Return:', expectedDateOfreturn);
+
+      // Set the time component of expectedDateOfreturn to the end of the day
+      expectedDateOfreturn.setHours(23, 59, 59, 999);
+
+      // console.log('Modified Expected Date of Return:', expectedDateOfreturn);
+
       const startDate = expectedDateOfLeave.toLocaleDateString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
       });
 
-      const expectedDateOfreturn = new Date(leave.expectedDateOfreturn);
-
-      const EndDate = expectedDateOfreturn.toLocaleDateString('en-US', {
+      const endDate = expectedDateOfreturn.toLocaleDateString('en-US', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
       });
 
-      console.log(startDate, EndDate);
-
       // if (leave) {
       const employee = await Employee.findOne({
         where: {
           employee_id: leave.employee_id,
+          isProbation: 1,
         },
       });
-      console.log(employee.employee_id);
-      // } else {
-      //   console.log(`Employeee Not Found :${leave.employee_id}`);
-      // }
-
+      if (!employee) {
+        return console.log(
+          'Employee is on probation period so their leave is not valid to add'
+        );
+      }
       if (
         currentDate >= expectedDateOfLeave &&
         currentDate <= expectedDateOfreturn
@@ -1157,8 +1262,6 @@ const processLeavesAndCreateRefidChecks = async () => {
           day: currentDay,
         });
 
-        // console.log('Creating RefidCheck:', rfidCheck);
-
         const leaveRecord = await rfidCheck.save();
         if (!leaveRecord) {
           console.error(
@@ -1168,9 +1271,8 @@ const processLeavesAndCreateRefidChecks = async () => {
         } else {
           console.log('Leave record created successfully:');
         }
-        console.log('Leave record created:');
       } else {
-        console.log('Did not found');
+        console.log('Did not find a leave for the current date.');
       }
     }
   } catch (error) {
@@ -1187,10 +1289,12 @@ const HolidayGenerator = async () => {
       where: sequelize.literal(`DATE(date) = CURDATE()`),
     });
 
-    console.log(`holiday ${existingHolidays}`);
-    console.log('current Day ' + currentDate.getDate());
-    console.log('current Month ' + (currentDate.getMonth() + 1));
-    console.log('current Year ' + currentDate.getFullYear());
+    // console.log(
+    //   existingHolidays  ? ` holiday found ` : `holiday not fouund`
+    // );
+    // console.log('current Day ' + currentDate.getDate());
+    // console.log('current Month ' + (currentDate.getMonth() + 1));
+    // console.log('current Year ' + currentDate.getFullYear());
 
     // If there are no existing holidays, create new records for the current month
     if (existingHolidays) {
@@ -1271,26 +1375,16 @@ const calculateTotalHoursForToday = async () => {
 
       const totalH = totalHTap1 + totalHTap2 + totalHTap3;
       const totalM = Math.floor((totalH % 1) * 60);
-      const totalHours = Math.floor(totalH);
+      const totalHour = Math.floor(totalH);
       // const totalHours = parseFloat(`${Math.floor(totalH)}.${totalM}`).toFixed(2);
 
-      let totalTime = `${totalHours}.${totalM}`;
-
-      await record.update({ totalTime });
-
-      // console.log(
-      //   `total Hour-${totalHours}.${totalM},tap1-${parseFloat(
-      //     (tap1 / (1000 * 60 * 60)).toFixed(2)
-      //   )},tap2-${parseFloat(
-      //     (tap2 / (1000 * 60 * 60)).toFixed(2)
-      //   )},tap3-${parseFloat((tap3 / (1000 * 60 * 60)).toFixed(2))}`
-      // );
+      let totalTime = `${totalHour}.${totalM}`;
+      const totalHours = (record.totalHours = totalTime);
+      await record.update({ totalHours });
     }
 
     console.log(
-      `Total hours calculation completed for the current day ,for total ${
-        records.length + 1
-      } employees`
+      `Total hours calculation completed for the current day ,for total ${records.length} employees`
     );
   } catch (error) {
     console.error('Error calculating total hours:', error);

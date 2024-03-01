@@ -33,6 +33,7 @@ import assetsRouter from './routes/assetRoutes.js';
 // import morgan from 'morgan';
 import pdf from './models/pdf.js';
 import expenseRouter from './routes/ExpenseRoutes.js';
+import CronJobRouter from './routes/cronJobRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -48,11 +49,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/files', express.static('files'));
 
 // Schedule the job
-cron.schedule('30 2 * * *', sendBirthdayEmails);
+cron.schedule('30 1 * * *', sendBirthdayEmails);
 
-cron.schedule('30 2 * * *', checkAndCreateBirthdayRecords);
+cron.schedule('30 1 * * *', checkAndCreateBirthdayRecords);
 
-cron.schedule('30 2 * * *', AnniversaryEmails);
+cron.schedule('30 1 * * *', AnniversaryEmails);
 
 cron.schedule('0 0 2 * *', PayslipGenerator);
 
@@ -60,7 +61,7 @@ cron.schedule('30 2 * * *', ProbationChecker);
 
 cron.schedule('30 2 * * *', processLeavesAndCreateRefidChecks);
 
-cron.schedule('30 2 * * *', HolidayGenerator);
+cron.schedule('30 0 * * *', HolidayGenerator);
 
 cron.schedule('30 13 * * *', calculateTotalHoursForToday);
 //
@@ -69,8 +70,6 @@ cron.schedule('30 13 * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', processLeavesAndCreateRefidChecks);
 // cron.schedule('* * * * *', ProbationChecker);
 // cron.schedule('* * * * *', PayslipGenerator);
-// 5.30 ISTpm testing
-cron.schedule('30 13 * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', AnniversaryEmails);
 // cron.schedule('* * * * *', sendBirthdayEmails);
 // cron.schedule('* * * * *', checkAndCreateBirthdayRecords);
@@ -93,6 +92,7 @@ app.use('/api/policy', PolicyRouter);
 app.use('/api/assets', assetsRouter);
 
 app.use('/api/expenses', expenseRouter);
+app.use('/api/manual-trigger', CronJobRouter);
 
 // ---------------upload----------------
 

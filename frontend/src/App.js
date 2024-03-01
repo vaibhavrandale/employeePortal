@@ -81,6 +81,7 @@ import UpdateExpense from './screens/expenses/UpdateExpense';
 import ApproveExpense from './screens/expenses/ApproveExpense';
 import SettleExpense from './screens/expenses/SettleExpense';
 import ExpenseExport from './screens/expenses/ExpenseExport';
+import Manualjobs from './screens/ManualJobs/Manualjobs';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -768,6 +769,17 @@ function AppRouter() {
           }
         />
         {/* ------------------expenses---------------- */}
+
+        {/* manual data update of cron job */}
+        <Route
+          path="/manual-jobs"
+          element={
+            <SuperAdminRoutes>
+              <Manualjobs />
+            </SuperAdminRoutes>
+          }
+        />
+        {/* manual data update of cron job */}
       </Routes>
     </>
   );

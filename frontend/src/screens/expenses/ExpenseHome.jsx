@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { getError } from '../../utils';
 
 import { FaFileExport } from 'react-icons/fa6';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -135,8 +136,11 @@ const ExpenseHome = () => {
       </div>
       <div className="table-responsive">
         {loading ? (
-          <div className="d-flex justify-content-center align-items-center">
-            <LoadingBox4 />
+          <div
+            className="d-flex justify-content-center align-items-center "
+            style={{ minHeight: '30vh' }}
+          >
+            <LoadingBox5 />
           </div>
         ) : currentItems.length === 0 ? (
           <div className="d-flex justify-content-center">

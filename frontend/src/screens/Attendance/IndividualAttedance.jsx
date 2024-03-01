@@ -130,7 +130,10 @@ const NewAttendance = () => {
       {/* Add other HTML elements and form for filtering */}
       <div class="table-responsive">
         <table className="table table-bordered">
-          <HeaderDays daysInMonth={daysInMonth} month={month} />
+          <HeaderDays
+            daysInMonth={daysInMonth}
+            month={selectedMonth || month}
+          />
 
           <tbody>
             {loading ? (

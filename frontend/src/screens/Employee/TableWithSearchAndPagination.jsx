@@ -179,7 +179,7 @@ const TableWithSearchAndPagination = () => {
   };
 
   return (
-    <div className="table-container">
+    <div className="table-container ">
       {isPopupOpen && (
         <div className="popup-container">
           <div className="popup">
@@ -203,7 +203,7 @@ const TableWithSearchAndPagination = () => {
         </div>
       )}
 
-      <h2 className="text-center">Employees Details</h2>
+      <h2 className="text-center ">Employees Details</h2>
       {loading ? (
         // <LoadingBox />
 
@@ -213,10 +213,12 @@ const TableWithSearchAndPagination = () => {
       ) : (
         <>
           <div className="form-group   mb-2  d-flex w-100 justify-content-between">
-            {userInfo && userInfo.isHr === 1 && (
+            {userInfo && userInfo.isHr === 1 ? (
               <Link id="AddBtn" onClick={popupHandle}>
                 ADD
               </Link>
+            ) : (
+              <div></div>
             )}
             <input
               type="text"

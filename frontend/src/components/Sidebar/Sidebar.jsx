@@ -62,21 +62,21 @@ const Sidebar = () => {
         )}
 
         <>
-          {userInfo &&
-            userInfo.isSuperAdmin === 1 &&
-            userInfo.isSuperAdmin === 1 && (
-              <li>
-                <Link to="/employees">
-                  <img
-                    src="/images/icons/employee.png"
-                    alt="employee"
-                    className="icon me-1"
-                    height={'23px'}
-                  />
-                  {hovered && <span>Employees</span>}
-                </Link>
-              </li>
-            )}
+          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
+            <li>
+              <Link to="/employees">
+                <img
+                  src="/images/icons/employee.png"
+                  alt="employee"
+                  className="icon me-1"
+                  height={'23px'}
+                />
+                {hovered && <span>Employees</span>}
+              </Link>
+            </li>
+          ) : (
+            ''
+          )}
 
           {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
             <li>
@@ -96,13 +96,15 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && userInfo.isSuperAdmin === 1 && (
+          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
             <li>
               <Link to="/new-attendancde">
                 <FcDataSheet color="red" className="icon me-2" />
                 {hovered && <span>Timeline</span>}
               </Link>
             </li>
+          ) : (
+            ''
           )}
 
           {userInfo && userInfo.isAdmin === 1 && (
@@ -119,7 +121,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && userInfo.isSuperAdmin === 1 && (
+          {userInfo && userInfo.isAdmin === 1 && (
             <li>
               <Link to={`/calender`}>
                 <img
@@ -149,7 +151,7 @@ const Sidebar = () => {
             ''
           )}
 
-          {userInfo && userInfo.isSuperAdmin === 1 && (
+          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
             <li>
               <Link to={`/assets-home`}>
                 <img
@@ -161,6 +163,8 @@ const Sidebar = () => {
                 {hovered && <span>Assets</span>}
               </Link>
             </li>
+          ) : (
+            ''
           )}
           {userInfo && userInfo.isAdmin === 1 && (
             <li>
@@ -176,7 +180,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && userInfo.isSuperAdmin === 1 && (
+          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
             <li>
               <Link to="/expenses-home">
                 <img
@@ -188,6 +192,8 @@ const Sidebar = () => {
                 {hovered && <span> Expenses</span>}
               </Link>
             </li>
+          ) : (
+            ''
           )}
 
           {userInfo && userInfo.isAdmin === 1 && (

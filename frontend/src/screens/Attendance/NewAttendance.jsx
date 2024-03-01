@@ -167,7 +167,10 @@ const NewAttendance = () => {
           ref={tableRef}
           style={{ overflowX: 'auto' }}
         >
-          <HeaderDays daysInMonth={daysInMonth} month={month} />
+          <HeaderDays
+            daysInMonth={daysInMonth}
+            month={selectedMonth || month}
+          />
 
           <tbody>
             {loading ? (

@@ -296,37 +296,43 @@ const ExpenseHome = () => {
                   </td>
                   <td className="text-center d-flex">
                     <Link
-                      className="btn btn-sm text-decoration-none btn-success mx-1"
+                      className="btn btn-sm text-decoration-none btn-success mx-1 py-0 d-flex justify-content-center align-items-center"
                       to={`/view-expense/${item.id}`}
                     >
                       <IoEyeOutline />
                     </Link>
                     <Link
-                      className="btn btn-sm text-decoration-none btn-warning text-light mx-1"
+                      className="btn btn-sm text-decoration-none btn-warning text-light mx-1 py-0 d-flex justify-content-center align-items-center"
                       to={`/update-expense/${item.id}`}
                     >
                       <FaRegEdit />
                     </Link>
 
-                    <button
+                    <Link
                       type="button"
-                      className="btn btn-danger btn-sm"
+                      className="btn btn-danger btn-sm py-0 d-flex justify-content-center align-items-center"
                       data-bs-toggle="modal"
                       data-bs-backdrop="false"
                       onClick={openModal}
                       data-bs-target={`#exampleModal_${item.id}`}
                     >
                       <MdDeleteOutline />
-                    </button>
+                    </Link>
 
-                    <Link
-                      className="btn btn-sm btn-success p-2 text-decoration-none mx-1"
+                    {/* <Link
+                      className="btn btn-sm btn-success m-1  text-decoration-none   d-flex justify-content-center align-items-center"
                       target="_blank"
                       to={`/export-expense/${item.id}`}
                     >
                       <FaFileExport />
-                    </Link>
+                    </Link> */}
 
+                    <Link
+                      className="btn btn-sm text-decoration-none btn-success text-light mx-1 py-2 d-flex justify-content-center align-items-center"
+                      to={`/export-expense/${item.id}`}
+                    >
+                      <FaFileExport />
+                    </Link>
                     <div
                       className={`modal fade${showModal ? ' show' : ''}`}
                       id={`exampleModal_${item.id}`}
@@ -378,10 +384,10 @@ const ExpenseHome = () => {
                       </div>
                     </div>
                   </td>
-                  {userInfo.isDirector === 1 || userInfo.isHr ? (
+                  {/* { userInfo.isHr || userInfo.isHr ? (
                     <td>
                       <Link
-                        className={`btn btn-sm btn-success  ${
+                        className={`btn btn-sm btn-success m-1  ${
                           item.status >= 2 ? 'disabled' : ''
                         }`}
                         to={`/approve-expense/${item.id}`}
@@ -392,23 +398,73 @@ const ExpenseHome = () => {
                     </td>
                   ) : (
                     ''
-                  )}
-
-                  {userInfo.isAccountant === 1 || userInfo.isHr ? (
-                    <td>
+                  )} */}
+                  <td>
+                    <div className="d-flex">
+                      {userInfo.isHr === 1 && item.status === 1 ? (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 ${
+                            item.status >= 2 ? 'disabled' : ''
+                          }`}
+                          to={`/approve-expense/${item.id}`}
+                          disabled={item.status >= 2}
+                        >
+                          Approve
+                        </Link>
+                      ) : (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 
+                        disabled`}
+                          disabled={item.status >= 2}
+                        >
+                          HR Approved
+                        </Link>
+                      )}
+                      {userInfo.isDirector === 1 && item.status === 0 ? (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 `}
+                          to={`/approve-expense/${item.id}`}
+                        >
+                          Approve
+                        </Link>
+                      ) : (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 
+                        disabled`}
+                          disabled={item.status >= 2}
+                        >
+                          Director Approved
+                        </Link>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    {userInfo.isAccountant === 1 && item.status === 2 ? (
                       <Link
-                        className={`btn btn-sm btn-success ${
-                          item.status === 2 ? '' : 'disabled'
-                        }`}
+                        className={`btn btn-sm btn-success m-1`}
                         to={`/settle-expense/${item.id}`}
                         // disabled={item.status > 2}
                       >
                         Settle
                       </Link>
-                    </td>
-                  ) : (
-                    ''
-                  )}
+                    ) : userInfo.isAdmin === 1 && item.status === 2 ? (
+                      <Link
+                        className={`btn btn-sm btn-success m-1 
+                        disabled`}
+                        disabled={item.status >= 2}
+                      >
+                        Settle
+                      </Link>
+                    ) : (
+                      <Link
+                        className={`btn btn-sm btn-success m-1 
+                        disabled`}
+                        disabled={item.status >= 2}
+                      >
+                        Settled
+                      </Link>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

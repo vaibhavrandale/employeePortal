@@ -65,6 +65,21 @@ const reducer = (state, action) => {
     case 'ACCESS_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'UPLOAD_DOCUMENT_REQUEST':
+      return { ...state, loadingDocumentUpload: true, errorDocumentUpload: '' };
+    case 'UPLOAD_DOCUMENT_SUCCESS':
+      return {
+        ...state,
+        loadingDocumentUpload: false,
+        errorDocumentUpload: '',
+      };
+    case 'UPLOAD_DOCUMENT_FAIL':
+      return {
+        ...state,
+        loadingDocumentUpload: false,
+        errorDocumentUpload: action.payload,
+      };
+
     default:
       return state;
   }
@@ -82,6 +97,11 @@ const UpdateEmployee = () => {
       loadingSalary,
       loadingDelete,
       loadingUpdate,
+
+      loadingUpload,
+
+      loadingDocumentUpload,
+      successDelete,
     },
     dispatch,
   ] = useReducer(reducer, {
@@ -644,6 +664,192 @@ const UpdateEmployee = () => {
     }
   };
 
+  // --------------educational documents----------------
+  const uploadtenththCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setTenth_marksheet([...tenth_marksheet, data.secure_url]);
+      } else {
+        setTenth_marksheet(data.secure_url);
+      }
+
+      toast.success('10th marksheet uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadtwelthordiplomaCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setTwelth_or_diploma_marksheet([
+          ...twelth_or_diploma_marksheet,
+          data.secure_url,
+        ]);
+      } else {
+        setTwelth_or_diploma_marksheet(data.secure_url);
+      }
+
+      toast.success('12th/diploma marksheet uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploaddegreeorPGCertificate = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/educationaldocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setUnder_geaduate_or_post_graduate_marksheet([
+          ...under_geaduate_or_post_graduate_marksheet,
+          data.secure_url,
+        ]);
+      } else {
+        setUnder_geaduate_or_post_graduate_marksheet(data.secure_url);
+      }
+
+      toast.success('UG/PG certifate uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  // --------------educational documents----------------
+
+  // ------------------------   identificationdocuments-----------------------
+
+  const uploadAddressProof = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setAddressProof([...addressProof, data.secure_url]);
+      } else {
+        setAddressProof(data.secure_url);
+      }
+
+      toast.success('Addres Proof uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
+  const uploadExperienceLetter = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    try {
+      dispatch({ type: 'UPLOAD_DOCUMENT_REQUEST' });
+      const { data } = await axios.post(
+        '/api/upload/identificationdocuments',
+        bodyFormData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      dispatch({ type: 'UPLOAD_DOCUMENT_SUCCESS' });
+
+      if (forImages) {
+        setExperience_letter([...experience_letter, data.secure_url]);
+      } else {
+        setExperience_letter(data.secure_url);
+      }
+
+      toast.success('Experience letter uploaded successfully.', {
+        position: 'top-right',
+      });
+    } catch (err) {
+      toast.success(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPLOAD_DOCUMENT_FAIL', payload: getError(err) });
+    }
+  };
+
   return (
     <div style={styles.container}>
       {loading ? (
@@ -876,14 +1082,13 @@ const UpdateEmployee = () => {
                   <td style={styles.label} className="ms-2">
                     10th Marksheet:
                   </td>
-                  <td>
+                  <td className="d-flex">
                     {tenth_marksheet ? (
                       <Link
                         type="button"
-                        style={{ width: '30px' }}
-                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
                         data-bs-toggle="modal"
-                        data-bs-target="#myModal_10thmarksheet"
+                        data-bs-target={`#myModal_10thCertificate`}
                         onClick={handleShowImage}
                       >
                         <IoEyeOutline />
@@ -891,11 +1096,27 @@ const UpdateEmployee = () => {
                     ) : (
                       ''
                     )}
+
+                    <div>
+                      <input
+                        style={{
+                          width: '50%',
+                          display: accessStatus === 0 ? 'block' : 'none',
+                        }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadtenththCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
                     <MyModal
                       showModal={showImageModal}
                       handleClose={handleCloseImageModal}
-                      data="10th marksheet"
-                      modalName="myModal_10thmarksheet"
+                      data="10th Marksheet"
+                      modalName="myModal_10thCertificate"
                       img={tenth_marksheet}
                     />
                   </td>
@@ -932,14 +1153,13 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>12th/Diploma marksheet:</td>
 
-                  <td>
+                  <td className="d-flex">
                     {twelth_or_diploma_marksheet ? (
                       <Link
                         type="button"
-                        style={{ width: '30px' }}
-                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
                         data-bs-toggle="modal"
-                        data-bs-target="#myModal_twelth_or_diploma_marksheet"
+                        data-bs-target="#myModal_12thCertificate"
                         onClick={handleShowImage}
                       >
                         <IoEyeOutline />
@@ -947,11 +1167,27 @@ const UpdateEmployee = () => {
                     ) : (
                       ''
                     )}
+
+                    <div>
+                      <input
+                        style={{
+                          width: '50%',
+                          display: accessStatus === 0 ? 'block' : 'none',
+                        }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadtwelthordiplomaCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
                     <MyModal
                       showModal={showImageModal}
                       handleClose={handleCloseImageModal}
-                      data="12th marksheet"
-                      modalName="myModal_twelth_or_diploma_marksheet"
+                      data="12th Marksheet"
+                      modalName="myModal_12thCertificate"
                       img={twelth_or_diploma_marksheet}
                     />
                   </td>
@@ -991,14 +1227,13 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>UG/PG Marksheet:</td>
 
-                  <td>
+                  <td className="d-flex">
                     {under_geaduate_or_post_graduate_marksheet ? (
                       <Link
                         type="button"
-                        style={{ width: '30px' }}
-                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
                         data-bs-toggle="modal"
-                        data-bs-target="#myModal_under_geaduate_or_post_graduate_marksheet"
+                        data-bs-target="#myModal_ugpgthCertificate"
                         onClick={handleShowImage}
                       >
                         <IoEyeOutline />
@@ -1006,11 +1241,27 @@ const UpdateEmployee = () => {
                     ) : (
                       ''
                     )}
+
+                    <div>
+                      <input
+                        style={{
+                          width: '50%',
+                          display: accessStatus === 0 ? 'block' : 'none',
+                        }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploaddegreeorPGCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
                     <MyModal
                       showModal={showImageModal}
                       handleClose={handleCloseImageModal}
-                      data="UG/PG marksheet"
-                      modalName="myModal_under_geaduate_or_post_graduate_marksheet"
+                      data="UG/PG Marksheet"
+                      modalName="myModal_ugpgthCertificate"
                       img={under_geaduate_or_post_graduate_marksheet}
                     />
                   </td>
@@ -1188,12 +1439,11 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Address Proof</td>
 
-                  <td>
+                  <td className="d-flex">
                     {addressProof ? (
                       <Link
                         type="button"
-                        style={{ width: '30px' }}
-                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
                         data-bs-toggle="modal"
                         data-bs-target="#myModal_addressProof"
                         onClick={handleShowImage}
@@ -1203,6 +1453,22 @@ const UpdateEmployee = () => {
                     ) : (
                       ''
                     )}
+
+                    <div>
+                      <input
+                        style={{
+                          width: '50%',
+                          display: accessStatus === 0 ? 'block' : 'none',
+                        }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadAddressProof}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
                     <MyModal
                       showModal={showImageModal}
                       handleClose={handleCloseImageModal}
@@ -1383,6 +1649,7 @@ const UpdateEmployee = () => {
                   <td style={styles.label}>Nominee Address:</td>
                   <td colSpan="3">
                     <textarea
+                      disabled={accessStatus === 0}
                       style={styles.input}
                       id="address"
                       placeholder="Enter Nominee address"

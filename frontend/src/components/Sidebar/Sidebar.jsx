@@ -62,7 +62,10 @@ const Sidebar = () => {
         )}
 
         <>
-          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
+          {userInfo &&
+          (userInfo.isSuperAdmin === 1 ||
+            userInfo.isHr === 1 ||
+            userInfo.isDirector === 1) ? (
             <li>
               <Link to="/employees">
                 <img
@@ -96,7 +99,10 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
+          {userInfo &&
+          (userInfo.isSuperAdmin === 1 ||
+            userInfo.isHr === 1 ||
+            userInfo.isDirector === 1) ? (
             <li>
               <Link to="/new-attendancde">
                 <FcDataSheet color="red" className="icon me-2" />
@@ -151,7 +157,10 @@ const Sidebar = () => {
             ''
           )}
 
-          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
+          {userInfo &&
+          (userInfo.isSuperAdmin === 1 ||
+            userInfo.isHr === 1 ||
+            userInfo.isDirector === 1) ? (
             <li>
               <Link to={`/assets-home`}>
                 <img
@@ -180,7 +189,10 @@ const Sidebar = () => {
             </li>
           )}
 
-          {userInfo && (userInfo.isHr === 1 || userInfo.isDirector === 1) ? (
+          {userInfo &&
+          (userInfo.isSuperAdmin === 1 ||
+            userInfo.isHr === 1 ||
+            userInfo.isDirector === 1) ? (
             <li>
               <Link to="/expenses-home">
                 <img

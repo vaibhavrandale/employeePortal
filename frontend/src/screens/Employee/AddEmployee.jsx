@@ -333,9 +333,9 @@ function AddEmployee() {
       missingFields.push('Experience');
     }
 
-    if (!experience_letter) {
-      missingFields.push('Experience Letter');
-    }
+    // if (!experience_letter) {
+    //   missingFields.push('Experience Letter');
+    // }
 
     if (!tenth_marksheet) {
       missingFields.push('10th Marksheet');

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { Store } from '../../Store';
@@ -24,18 +24,62 @@ const reducer = (state, action) => {
     case 'CREATE_FAIL':
       return { ...state, error: action.payload, loadingCreate: false };
 
+    case 'ACCESS_REQUEST':
+      return { ...state, loadingAccess: true };
+
+    case 'ACCESS_SUCCESS':
+      return { ...state, access: action.payload, loadingAccess: false };
+
+    case 'ACCESS_FAIL':
+      return { ...state, loadingAccess: false, error: action.payload };
+
+    case 'ACCESS_UPDATE_REQUEST':
+      return { ...state, loadingAccess: true };
+
+    case 'ACCESS_UPDATE_SUCCESS':
+      return { ...state, access: action.payload, loadingAccess: false };
+
+    case 'ACCESS_UPDATE_FAIL':
+      return { ...state, loadingAccess: false, error: action.payload };
+
     default:
       return state;
   }
 };
 
 const Manualjobs = () => {
-  const [{ loadingCreate }, dispatch] = useReducer(reducer, {
-    loadingCreate: false,
-    error: '',
-  });
+  const [{ loadingCreate, access, loadingAccess }, dispatch] = useReducer(
+    reducer,
+    {
+      access: {},
+      loadingCreate: false,
+      error: '',
+    }
+  );
   const { state } = useContext(Store);
   const { userInfo } = state;
+  const [accessStatus, setAccessStatus] = useState(0);
+
+  useEffect(() => {
+    // Simulate API call or data fetching
+    const StatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/1`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+          payload: accessresult.data.payslip,
+        });
+
+        setAccessStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
+
+    StatusData();
+  }, []);
 
   const BirthdayEmailHandler = async (e) => {
     e.preventDefault();
@@ -232,6 +276,59 @@ const Manualjobs = () => {
       dispatch({ type: 'CREATE_FAIL' });
     }
   };
+
+  const AccessActivatelHandler = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'ACCESS_REQUEST_SUCCESS',
+    });
+
+    try {
+      const { data } = await axios.put(`/api/access/activate/1`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      console.log(data);
+      dispatch({
+        type: 'ACCESS_UPDATE_SUCCESS',
+      });
+      toast.success(data.message, {
+        position: 'top-right',
+      });
+      window.location.reload();
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'ACCESS_UPDATE_FAIL' });
+    }
+  };
+  const AccessDeActivatelHandler = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'ACCESS_REQUEST_SUCCESS',
+    });
+
+    try {
+      const { data } = await axios.put(`/api/access/deactivate/1`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      console.log(data);
+      dispatch({
+        type: 'ACCESS_UPDATE_SUCCESS',
+      });
+
+      toast.success(data.message, {
+        position: 'top-right',
+      });
+
+      window.location.reload();
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'ACCESS_UPDATE_FAIL' });
+    }
+  };
   return (
     <div className="container">
       <h2 className="text-center">Manual Jobs</h2>
@@ -371,6 +468,43 @@ const Manualjobs = () => {
               ` Total Hours for Day`
             )}
           </Link>
+        </div>
+
+        <div className=" Manualcard m-1">
+          <div className="d-flex justify-content-center">
+            {' '}
+            <GiTimeBomb className=" text-danger  manualicon" />
+          </div>
+
+          {accessStatus === 1 ? (
+            <Link
+              className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+              onClick={AccessActivatelHandler}
+            >
+              {loadingAccess ? (
+                <>
+                  Update Employee On
+                  <LoadingBox4 />
+                </>
+              ) : (
+                ` Update Employee On`
+              )}
+            </Link>
+          ) : (
+            <Link
+              className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+              onClick={AccessDeActivatelHandler}
+            >
+              {loadingAccess ? (
+                <>
+                  Update Employee off
+                  <LoadingBox4 />
+                </>
+              ) : (
+                ` Update Employee off`
+              )}
+            </Link>
+          )}
         </div>
       </div>
     </div>

@@ -2419,7 +2419,7 @@ const UpdateEmployee = () => {
                 </div>
               </div>
             </div>
-
+            {/* 
             <button
               style={buttonStyle}
               onMouseEnter={handleMouseEnter}
@@ -2434,7 +2434,29 @@ const UpdateEmployee = () => {
               ) : (
                 'Update'
               )}
-            </button>
+            </button> */}
+
+            {loading ? (
+              <button
+                style={buttonStyle}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                type="submit"
+                disabled
+              >
+                updating...
+                <LoadingBox4 />
+              </button>
+            ) : (
+              <button
+                style={buttonStyle}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                type="submit"
+              >
+                Update
+              </button>
+            )}
           </form>
           <h2 style={styles.sectionHeader} ref={salaryRef}>
             Salary Details
@@ -2869,6 +2891,8 @@ const UpdateEmployee = () => {
             </button> */}
         </>
       )}
+
+      {/* <iframe title={image} src={image} width={700} height={600} /> */}
     </div>
   );
 };

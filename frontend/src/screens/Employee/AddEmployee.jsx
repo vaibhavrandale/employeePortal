@@ -54,14 +54,12 @@ const reducer = (state, action) => {
 };
 
 function AddEmployee() {
-  const [{ loadingUpload, loadingDocumentUpload }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loadingUpload, loadingDocumentUpload, loading }, dispatch] =
+    useReducer(reducer, {
       employees: [],
       loading: true,
       error: '',
-    }
-  );
+    });
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -2136,9 +2134,16 @@ function AddEmployee() {
           </div>
         </div>
 
-        <button style={styles.button} type="submit">
-          Submit
-        </button>
+        {loading ? (
+          <button style={styles.button} type="submit" disabled>
+            submiting..
+            <LoadingBox4 />
+          </button>
+        ) : (
+          <button style={styles.button} type="submit">
+            'submit'
+          </button>
+        )}
       </form>
     </div>
   );

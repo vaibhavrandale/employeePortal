@@ -1102,7 +1102,7 @@ function Dashboard() {
                                 fontWeight: '500',
                               }}
                             >
-                              Manual Jobs
+                              Advanced
                             </span>
                           </div>
                         </Link>

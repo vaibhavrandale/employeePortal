@@ -13,11 +13,13 @@ import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
-import { AiOutlineEye } from 'react-icons/ai';
-import { PiLinkThin } from 'react-icons/pi';
+
 import MyModal from './MyModal';
 
 import { IoEyeOutline } from 'react-icons/io5';
+import { getError } from '../../utils';
+import toast from 'react-hot-toast';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -45,6 +47,24 @@ const reducer = (state, action) => {
     case 'FETCH_SALARY_FAIL':
       return { ...state, loadingSalary: false, error: action.payload };
 
+    case 'UPDATE_REQUEST':
+      return { ...state, loadingUpdate: true };
+
+    case 'UPDATE_SUCCESS':
+      return { ...state, employees: action.payload, loadingUpdate: false };
+
+    case 'UPDATE_FAIL':
+      return { ...state, loadingUpdate: false, error: action.payload };
+
+    case 'ACCESS_REQUEST':
+      return { ...state, loading: true };
+
+    case 'ACCESS_SUCCESS':
+      return { ...state, access: action.payload, loading: false };
+
+    case 'ACCESS_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
     default:
       return state;
   }
@@ -54,11 +74,20 @@ const UpdateEmployee = () => {
 
   const { id } = useParams();
   const [
-    { loading, error, employees, payslip, loadingSalary, loadingDelete },
+    {
+      loading,
+      error,
+      employees,
+      payslip,
+      loadingSalary,
+      loadingDelete,
+      loadingUpdate,
+    },
     dispatch,
   ] = useReducer(reducer, {
     payslip: [],
     employees: {},
+    access: {},
     loading: true,
     error: '',
   });
@@ -167,6 +196,9 @@ const UpdateEmployee = () => {
   const [employer_pf, setEmployerPF] = useState('');
   const [employer_esi, setEmployer_esi] = useState('');
   const [bonus, setBonus] = useState('');
+
+  const [accessStatus, setAccessStatus] = useState(0);
+
   // employer_esi, bonus
 
   const [showImageModal, setShowImageModal] = useState(false);
@@ -214,6 +246,7 @@ const UpdateEmployee = () => {
         setIsVisitor(result.data.employee.isVisitor);
         setIsProduction(result.data.employee.isProduction);
         setIsAccountant(result.data.employee.isAccountant);
+        setIsHr(result.data.employee.isHr);
         setIfsc_code(result.data.employee.ifsc_code);
         setisSoftwareDevlopment(result.data.employee.isSoftwareDevlopment);
         setisHardwareDevlopment(result.data.employee.isHardwareDevlopment);
@@ -300,11 +333,26 @@ const UpdateEmployee = () => {
       }
     };
 
-    // fetchData();
+    const StatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/1`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+          payload: accessresult.data.payslip,
+        });
+
+        setAccessStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
 
     fetchData();
 
     SalaryData();
+    StatusData();
   }, [id]);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -492,6 +540,110 @@ const UpdateEmployee = () => {
     return b.id - a.id;
   });
 
+  const SubmitHandler = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'UPDATE_REQUEST',
+    });
+    try {
+      const { data } = await axios.put(
+        `/api/employees/updateemployee/${id}`,
+        {
+          employee_id,
+          UID,
+          email,
+          NAME: `${firstName} ${lastName}`,
+          firstName,
+          lastName,
+          father_husband_name,
+          gender,
+          birth_date,
+          marital_status,
+          address,
+          addressProof,
+          sub_locality,
+          district,
+
+          pinCode,
+          mobile_no,
+          nominee_name,
+          nominee_relationship,
+          nominee_address,
+          nominee_sub_locality,
+          nominee_district,
+          nominee_state,
+          nominee_mobile_no,
+          nominee_pinCode,
+          nominee_email,
+          no_of_family_members,
+          alternate_mobile_no,
+          personal_email,
+          aadhar_no,
+          pan_number,
+          bank_account_no,
+
+          aadhar_card_file,
+          pan_card_file,
+          bank_account_file,
+          pf_account_no,
+          image,
+          joiningDate,
+          designation,
+          age,
+          previous_company_name,
+          experience,
+          experience_letter,
+          isAdmin,
+          isSuperAdmin,
+          isSales,
+          isScm,
+          isDesign,
+          isProject,
+          isVisitor,
+          isProduction,
+          isAccountant,
+          isHr,
+          ifsc_code,
+          isSoftwareDevlopment,
+          isHardwareDevlopment,
+          isDirector,
+          tenth_marksheet,
+          tenth_schoolName,
+          twelth_or_diploma_marksheet,
+          twelth_or_diploma_collegeName,
+          under_geaduate_or_post_graduate_marksheet,
+          under_geaduate_or_post_graduate_collegeName,
+          tenth_grade,
+          twelth_or_diploma_grade,
+          under_geaduate_or_post_graduate_grade,
+          state: State,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      console.log(data);
+
+      // dispatch({ type: 'REFRESH_ADDRESS', payload: employees });
+      dispatch({
+        type: 'UPDATE_SUCCESS',
+        payload: data.employee,
+      });
+      setAddress(false);
+      const custommessage = data.message;
+
+      toast.success(custommessage, {
+        position: 'top-right',
+      });
+      // navigate(`/employees`);
+    } catch (err) {
+      toast.error(getError(err), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'UPDATE_FAIL' });
+    }
+  };
+
   return (
     <div style={styles.container}>
       {loading ? (
@@ -527,143 +679,171 @@ const UpdateEmployee = () => {
           <Helmet>
             <title>{`${employees.NAME} - ${employees.employee_id}`}</title>
           </Helmet>
-          <div style={styles.imageContainer}>
-            <>
-              <div className="m-2 p-1 text-center">
-                {' '}
-                {employees.activate === 1 ? (
-                  <>
-                    <span
-                      className={`badge bg-success `}
-                      style={{ fontSize: '15px' }}
-                    >
-                      activated
-                    </span>
-                  </>
+          <form onSubmit={SubmitHandler}>
+            <div style={styles.imageContainer}>
+              <>
+                <div className="m-2 p-1 text-center">
+                  {' '}
+                  {employees.activate === 1 ? (
+                    <>
+                      <span
+                        className={`badge bg-success `}
+                        style={{ fontSize: '15px' }}
+                      >
+                        activated
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span
+                        className={`badge bg-danger`}
+                        style={{ fontSize: '15px' }}
+                      >
+                        deactivated
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {image ? (
+                  <span className="d-flex flex-column">
+                    <img src={image} alt="profile" style={styles.image} />
+                  </span>
                 ) : (
-                  <>
-                    <span
-                      className={`badge bg-danger`}
-                      style={{ fontSize: '15px' }}
-                    >
-                      deactivated
-                    </span>
-                  </>
+                  <span className="d-flex flex-column">
+                    <img src={dummyimage} alt="dummy" style={styles.image} />
+                  </span>
                 )}
-              </div>
+              </>
+            </div>
+            <h2 style={styles.sectionHeader}>Personal Details</h2>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>First Name:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="firstName"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </td>
 
-              {image ? (
-                <span className="d-flex flex-column">
-                  <img src={image} alt="profile" style={styles.image} />
-                </span>
-              ) : (
-                <span className="d-flex flex-column">
-                  <img src={dummyimage} alt="dummy" style={styles.image} />
-                </span>
-              )}
-            </>
-          </div>
-          <h2 style={styles.sectionHeader}>Personal Details</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>First Name:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="firstName"
-                    placeholder="First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </td>
+                  <td style={styles.label} className="ms-2">
+                    Last Name:
+                  </td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="lastName"
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Age:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="number"
+                      id="age"
+                      placeholder="Age"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                    />
+                  </td>
 
-                <td style={styles.label} className="ms-2">
-                  Last Name:
-                </td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="lastName"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Age:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="number"
-                    id="age"
-                    placeholder="Age"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                </td>
+                  <td style={styles.label}>Gender:</td>
+                  <td>
+                    {accessStatus === 1 ? (
+                      <input
+                        disabled={accessStatus === 1}
+                        style={styles.input}
+                        type="text"
+                        id="gender"
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                      />
+                    ) : (
+                      <select
+                        name=""
+                        id=""
+                        style={styles.select}
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                    )}{' '}
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Date of Birth:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="birth_date"
+                      value={birth_date}
+                      onChange={(e) => setBirth_date(e.target.value)}
+                    />
+                  </td>
 
-                <td style={styles.label}>Gender:</td>
+                  <td style={styles.label}>Marital Status:</td>
+                  <td>
+                    {accessStatus === 1 ? (
+                      <input
+                        disabled={accessStatus === 1}
+                        style={styles.input}
+                        type="text"
+                        id="martial_status"
+                        value={marital_status}
+                        onChange={(e) => setMarital_status(e.target.value)}
+                      />
+                    ) : (
+                      <select
+                        name=""
+                        id=""
+                        style={styles.select}
+                        value={marital_status}
+                        onChange={(e) => setMarital_status(e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        <option value="male">Single</option>
+                        <option value="female">Married</option>
+                      </select>
+                    )}{' '}
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Father/Husband Name:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="father_husband_name"
+                      placeholder="Father/Husband Name"
+                      value={father_husband_name}
+                      onChange={(e) => setFather_husband_name(e.target.value)}
+                    />
+                  </td>
+                  {/* <td style={styles.label}>Profile Image:</td>
                 <td>
                   <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="gender"
-                    placeholder="gender"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Date of Birth:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="birth_date"
-                    value={birth_date}
-                    onChange={(e) => setBirth_date(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Marital Status:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="marital_status"
-                    placeholder="marital_status"
-                    value={marital_status}
-                    onChange={(e) => setMarital_status(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Father/Husband Name:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="father_husband_name"
-                    placeholder="Father/Husband Name"
-                    value={father_husband_name}
-                    onChange={(e) => setFather_husband_name(e.target.value)}
-                  />
-                </td>
-                {/* <td style={styles.label}>Profile Image:</td>
-                <td>
-                  <input
+                      disabled={accessStatus === 1}
                     disabled
                     style={styles.input}
                     type="text"
@@ -672,953 +852,1066 @@ const UpdateEmployee = () => {
                     value={image}
                   />
                 </td> */}
-              </tr>
-              {/* ... Add more fields as needed ... */}
-            </tbody>
-          </table>
-          <h2 style={styles.sectionHeader}>Educational Details</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>10th Grade:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="tenth_grade"
-                    placeholder="tenth_grade"
-                    value={tenth_grade}
-                    onChange={(e) => setTenth_grade(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label} className="ms-2">
-                  10th Marksheet:
-                </td>
-                <td>
-                  {tenth_marksheet ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_10thmarksheet"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="10th marksheet"
-                    modalName="myModal_10thmarksheet"
-                    img={tenth_marksheet}
-                  />
-                </td>
-              </tr>
-
-              <tr>
-                <td style={styles.label}>10th School Name:</td>
-                <td colSpan="3">
-                  <textarea
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="tenth_schoolname"
-                    placeholder="Enter 10 the School Nam"
-                    value={tenth_schoolName}
-                    onChange={(e) => setTenth_schoolName(e.target.value)}
-                  ></textarea>
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>12th/Diploma Grade:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="twelth_or_diploma_grade"
-                    placeholder="12th/Diploma Grade"
-                    value={twelth_or_diploma_grade}
-                    onChange={(e) => setTwelth_or_diploma_grade(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>12th/Diploma marksheet:</td>
-
-                <td>
-                  {twelth_or_diploma_marksheet ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_twelth_or_diploma_marksheet"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="12th marksheet"
-                    modalName="myModal_twelth_or_diploma_marksheet"
-                    img={twelth_or_diploma_marksheet}
-                  />
-                </td>
-              </tr>
-
-              <tr>
-                <td style={styles.label}>12th/Diploma College Name:</td>
-                <td colSpan="3">
-                  <textarea
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="twelth_or_diploma_marksheet_collegeName"
-                    placeholder="Enter 12th/Diploma College Name"
-                    value={twelth_or_diploma_collegeName}
-                    onChange={(e) =>
-                      setTwelth_or_diploma_collegeName(e.target.value)
-                    }
-                  ></textarea>
-                </td>
-              </tr>
-
-              <tr>
-                <td style={styles.label}>UG/PG Grade:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="under_geaduate_or_post_graduate_grade"
-                    placeholder="Enter Under Graduate/ Post Graduate Grade"
-                    value={under_geaduate_or_post_graduate_grade}
-                    onChange={(e) =>
-                      setUnder_geaduate_or_post_graduate_grade(e.target.value)
-                    }
-                  />
-                </td>
-                <td style={styles.label}>UG/PG Marksheet:</td>
-
-                <td>
-                  {under_geaduate_or_post_graduate_marksheet ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_under_geaduate_or_post_graduate_marksheet"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="UG/PG marksheet"
-                    modalName="myModal_under_geaduate_or_post_graduate_marksheet"
-                    img={under_geaduate_or_post_graduate_marksheet}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>UG/PG College Name:</td>
-
-                <td colSpan={3}>
-                  <textarea
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="under_geaduate_or_post_graduate_collegeName"
-                    placeholder="Enter Under Graduate/ Post Graduate College Name"
-                    value={under_geaduate_or_post_graduate_collegeName}
-                    onChange={(e) =>
-                      setUnder_geaduate_or_post_graduate_collegeName(
-                        e.target.value
-                      )
-                    }
-                  ></textarea>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h2 style={styles.sectionHeader}>Contact Information</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>Personal Email:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="email"
-                    id="email"
-                    placeholder="Enter personal email"
-                    value={personal_email}
-                    onChange={(e) => setPersonal_email(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Phone Number:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="tel"
-                    id="mobile_no"
-                    placeholder="Enter mobile number"
-                    value={mobile_no}
-                    onChange={(e) => setMobile_no(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Alternate Phone No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="tel"
-                    id="alternate_mobile_no"
-                    placeholder="Enter alternate mobile number"
-                    value={alternate_mobile_no}
-                    onChange={(e) => setAlternate_mobile_no(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Sub Locality:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="tel"
-                    id="alternate_mobile_no"
-                    placeholder="Enter Sub Locality"
-                    value={sub_locality}
-                    onChange={(e) => setSub_locality(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>District:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="tel"
-                    id="alternate_mobile_no"
-                    placeholder="Enter district"
-                    value={district}
-                    onChange={(e) => setDistrict(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>State:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="State"
-                    placeholder="Enter district"
-                    value={State}
-                    onChange={(e) => setState(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Pin Code:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter Pin code"
-                    value={pinCode}
-                    onChange={(e) => setPinCode(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>No Of family members:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Number of family Members"
-                    value={no_of_family_members}
-                    onChange={(e) => setNo_of_family_members(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Address Proof</td>
-
-                <td>
-                  {addressProof ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_addressProof"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="Address Proof"
-                    modalName="myModal_addressProof"
-                    img={addressProof}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Address:</td>
-                <td colSpan="3">
-                  <textarea
-                    disabled
-                    style={styles.input}
-                    id="address"
-                    placeholder="Enter address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </td>
-              </tr>
-              {/* ... Add more fields as needed ... */}
-            </tbody>
-          </table>
-          <h2 style={styles.sectionHeader}>Emergency/Nominee Details</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>Nominee Name:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter nominee name"
-                    value={nominee_name}
-                    onChange={(e) => setNominee_name(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Nominee Relationship:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Nominee Relationship"
-                    value={nominee_relationship}
-                    onChange={(e) => setNominee_relationship(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Nominee Mobile No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter nominee Mobile no"
-                    value={nominee_mobile_no}
-                    onChange={(e) => setNominee_mobile_no(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Nominee Email:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter nominee email"
-                    value={nominee_email}
-                    onChange={(e) => setNominee_email(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Nominee sub locality:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="experience"
-                    placeholder="nominee sub locality"
-                    value={nominee_sub_locality}
-                    onChange={(e) => setNominee_sub_locality(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Nominee district:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="joiningDate"
-                    placeholder="nominee district"
-                    value={nominee_district}
-                    onChange={(e) => setNominee_district(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Nominee State:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="nominee_state"
-                    placeholder="Enter nominee_state"
-                    value={nominee_state}
-                    onChange={(e) => setNominee_state(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Nominee Pin Code:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter Nominee Pin code"
-                    value={nominee_pinCode}
-                    onChange={(e) => setNominee_pinCode(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Nominee Address:</td>
-                <td colSpan="3">
-                  <textarea
-                    disabled
-                    style={styles.input}
-                    id="address"
-                    placeholder="Enter Nominee address"
-                    value={nominee_address}
-                    onChange={(e) => setNominee_address(e.target.value)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h2 style={styles.sectionHeader}>Work Details</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>Employee ID:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Employee ID"
-                    value={employee_id}
-                    onChange={(e) => setEmployee_id(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Employee UID:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="UID"
-                    placeholder="Employee UID"
-                    value={UID}
-                    onChange={(e) => setUID(e.target.value)}
-                  />
-                </td>
-              </tr>
-
-              <tr>
-                <td style={styles.label}>Designation:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Designation"
-                    value={designation}
-                    onChange={(e) => setDesignation(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Company mail:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter company mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </td>
-              </tr>
-
-              <tr>
-                <td style={styles.label}>Experience:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="experience"
-                    placeholder="Experience"
-                    value={experience}
-                    onChange={(e) => setExperience(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>Joining Date:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="joiningDate"
-                    value={joiningDate}
-                    onChange={(e) => setJoiningDate(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Experience Letter:</td>
-
-                <td>
-                  {experience_letter ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_experience_letter"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="Experience Letter"
-                    modalName="myModal_experience_letter"
-                    img={experience_letter}
-                  />
-                </td>
-
-                <td style={styles.label}>Previous Company :</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="joiningDate"
-                    placeholder="Enter Previous Company "
-                    value={previous_company_name}
-                    onChange={(e) => setPrevious_company_name(e.target.value)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <h2 style={styles.sectionHeader}>Identification Documents</h2>
-          <table style={styles.table}>
-            <tbody>
-              <tr>
-                <td style={styles.label}>Aadhar No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter Adhar No"
-                    value={aadhar_no}
-                    onChange={(e) => setAdharno(e.target.value)}
-                  />
-                </td>
-
-                <td style={styles.label}>Pan Number:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="designation"
-                    placeholder="Enter Pan Number"
-                    value={pan_number}
-                    onChange={(e) => setPan_number(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>View Aadhar :</td>
-
-                <td>
-                  {aadhar_card_file ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className=" p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_aadhar_card_file"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="Adhar Card"
-                    modalName="myModal_aadhar_card_file"
-                    img={aadhar_card_file}
-                  />
-                </td>
-
-                <td style={styles.label}>View PAN :</td>
-
-                <td>
-                  {pan_card_file ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_pan_card_file"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="Pan Card"
-                    modalName="myModal_pan_card_file"
-                    img={pan_card_file}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>Bank Account No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="employee_id"
-                    placeholder="Enter bank account no"
-                    value={bank_account_no}
-                    onChange={(e) => setBank_account_no(e.target.value)}
-                  />
-                </td>
-                <td style={styles.label}>IFSC code:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="ifsc_code"
-                    placeholder="Enter bank ifsc code"
-                    value={ifsc_code}
-                    onChange={(e) => setIfsc_code(e.target.value)}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td style={styles.label}>View Bank :</td>
-
-                <td>
-                  {bank_account_file ? (
-                    <Link
-                      type="button"
-                      style={{ width: '30px' }}
-                      className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#myModal_bank_account_file"
-                      onClick={handleShowImage}
-                    >
-                      <IoEyeOutline />
-                    </Link>
-                  ) : (
-                    ''
-                  )}
-                  <MyModal
-                    showModal={showImageModal}
-                    handleClose={handleCloseImageModal}
-                    data="Bank Passbook"
-                    modalName="myModal_bank_account_file"
-                    img={bank_account_file}
-                  />
-                </td>
-                <td style={styles.label}>PF Account No:</td>
-                <td>
-                  <input
-                    disabled
-                    style={styles.input}
-                    type="text"
-                    id="experience"
-                    placeholder="PF Account Number"
-                    value={pf_account_no}
-                    onChange={(e) => setPf_account_no(e.target.value)}
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div className="employee-form-container">
-            <div className="form-section">
-              <h4>Assign Role</h4>
-              <div className="role-row">
-                {isAdmin === 1 ? (
-                  <div className="role-item">
+                </tr>
+                {/* ... Add more fields as needed ... */}
+              </tbody>
+            </table>
+            <h2 style={styles.sectionHeader}>Educational Details</h2>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>10th Grade:</td>
+                  <td>
                     <input
-                      disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isAdmin}
-                      onChange={(e) => setIsAdmin(e.target.checked)}
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="tenth_grade"
+                      placeholder="tenth_grade"
+                      value={tenth_grade}
+                      onChange={(e) => setTenth_grade(e.target.value)}
                     />
-                    <label htmlFor="isAdmin">Admin</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {isSuperAdmin === 1 ? (
-                  <div className="role-item">
-                    <input
-                      disabled
-                      type="checkbox"
-                      id="isSuperAdmin"
-                      className="input3"
-                      checked={isSuperAdmin}
-                      onChange={(e) => setIsSuperAdmin(e.target.checked)}
+                  </td>
+
+                  <td style={styles.label} className="ms-2">
+                    10th Marksheet:
+                  </td>
+                  <td>
+                    {tenth_marksheet ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_10thmarksheet"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="10th marksheet"
+                      modalName="myModal_10thmarksheet"
+                      img={tenth_marksheet}
                     />
-                    <label htmlFor="isSuperAdmin">Super</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {isHr === 1 ? (
-                  <div className="role-item">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>10th School Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="tenth_schoolname"
+                      placeholder="Enter 10 the School Nam"
+                      value={tenth_schoolName}
+                      onChange={(e) => setTenth_schoolName(e.target.value)}
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>12th/Diploma Grade:</td>
+                  <td>
                     <input
-                      disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isHr}
-                      onChange={(e) => setIsHr(e.target.checked)}
-                    />
-                    <label htmlFor="isAdmin"> HR</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {isSoftwareDevlopment === 1 ? (
-                  <div className="role-item">
-                    <input
-                      disabled
-                      type="checkbox"
-                      id="software"
-                      className="input3"
-                      checked={isSoftwareDevlopment}
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_grade"
+                      placeholder="12th/Diploma Grade"
+                      value={twelth_or_diploma_grade}
                       onChange={(e) =>
-                        setisSoftwareDevlopment(e.target.checked)
+                        setTwelth_or_diploma_grade(e.target.value)
                       }
                     />
-                    <label htmlFor="isAdmin"> Software Dev.</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+                  <td style={styles.label}>12th/Diploma marksheet:</td>
 
-                {isHardwareDevlopment === 1 ? (
-                  <div className="role-item">
-                    <input
-                      disabled
-                      type="checkbox"
-                      id="hardware"
-                      className="input3"
-                      checked={isHardwareDevlopment}
+                  <td>
+                    {twelth_or_diploma_marksheet ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_twelth_or_diploma_marksheet"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="12th marksheet"
+                      modalName="myModal_twelth_or_diploma_marksheet"
+                      img={twelth_or_diploma_marksheet}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>12th/Diploma College Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_marksheet_collegeName"
+                      placeholder="Enter 12th/Diploma College Name"
+                      value={twelth_or_diploma_collegeName}
                       onChange={(e) =>
-                        setisHardwareDevlopment(e.target.checked)
+                        setTwelth_or_diploma_collegeName(e.target.value)
+                      }
+                    ></textarea>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>UG/PG Grade:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_grade"
+                      placeholder="Enter Under Graduate/ Post Graduate Grade"
+                      value={under_geaduate_or_post_graduate_grade}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_grade(e.target.value)
                       }
                     />
-                    <label htmlFor="isAdmin">Hardware Dev.</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+                  <td style={styles.label}>UG/PG Marksheet:</td>
 
-                {isDirector === 1 ? (
-                  <div className="role-item">
+                  <td>
+                    {under_geaduate_or_post_graduate_marksheet ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_under_geaduate_or_post_graduate_marksheet"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="UG/PG marksheet"
+                      modalName="myModal_under_geaduate_or_post_graduate_marksheet"
+                      img={under_geaduate_or_post_graduate_marksheet}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>UG/PG College Name:</td>
+
+                  <td colSpan={3}>
+                    <textarea
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_collegeName"
+                      placeholder="Enter Under Graduate/ Post Graduate College Name"
+                      value={under_geaduate_or_post_graduate_collegeName}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_collegeName(
+                          e.target.value
+                        )
+                      }
+                    ></textarea>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h2 style={styles.sectionHeader}>Contact Information</h2>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Personal Email:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="email"
+                      id="email"
+                      placeholder="Enter personal email"
+                      value={personal_email}
+                      onChange={(e) => setPersonal_email(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Phone Number:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="tel"
+                      id="mobile_no"
+                      placeholder="Enter mobile number"
+                      value={mobile_no}
+                      onChange={(e) => setMobile_no(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Alternate Phone No:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter alternate mobile number"
+                      value={alternate_mobile_no}
+                      onChange={(e) => setAlternate_mobile_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Sub Locality:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter Sub Locality"
+                      value={sub_locality}
+                      onChange={(e) => setSub_locality(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>District:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter district"
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>State:</td>
+                  <td>
+                    <select
+                      name="state"
+                      id="state"
+                      style={styles.select}
+                      value={State}
+                      disabled={accessStatus === 1}
+                      onChange={(e) => setState(e.target.value)}
+                    >
+                      <option value="">select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Pin Code:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Pin code"
+                      value={pinCode}
+                      onChange={(e) => setPinCode(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>No Of family members:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Number of family Members"
+                      value={no_of_family_members}
+                      onChange={(e) => setNo_of_family_members(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Address Proof</td>
+
+                  <td>
+                    {addressProof ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_addressProof"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Address Proof"
+                      modalName="myModal_addressProof"
+                      img={addressProof}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Address:</td>
+                  <td colSpan="3">
+                    <textarea
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      id="address"
+                      placeholder="Enter address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                {/* ... Add more fields as needed ... */}
+              </tbody>
+            </table>
+            <h2 style={styles.sectionHeader}>Emergency/Nominee Details</h2>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Nominee Name:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee name"
+                      value={nominee_name}
+                      onChange={(e) => setNominee_name(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Nominee Relationship:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Nominee Relationship"
+                      value={nominee_relationship}
+                      onChange={(e) => setNominee_relationship(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee Mobile No:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee Mobile no"
+                      value={nominee_mobile_no}
+                      onChange={(e) => setNominee_mobile_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Nominee Email:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee email"
+                      value={nominee_email}
+                      onChange={(e) => setNominee_email(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee sub locality:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="nominee sub locality"
+                      value={nominee_sub_locality}
+                      onChange={(e) => setNominee_sub_locality(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Nominee district:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      placeholder="nominee district"
+                      value={nominee_district}
+                      onChange={(e) => setNominee_district(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee State:</td>
+                  <td>
+                    <select
+                      name="state"
+                      id="state"
+                      style={styles.select}
+                      value={nominee_state}
+                      disabled={accessStatus === 1}
+                      onChange={(e) => setNominee_state(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </td>
+                  <td style={styles.label}>Nominee Pin Code:</td>
+                  <td>
+                    <input
+                      disabled={accessStatus === 1}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Nominee Pin code"
+                      value={nominee_pinCode}
+                      onChange={(e) => setNominee_pinCode(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee Address:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      id="address"
+                      placeholder="Enter Nominee address"
+                      value={nominee_address}
+                      onChange={(e) => setNominee_address(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h2 style={styles.sectionHeader}>Work Details</h2>
+            <span className="text muted text-danger">
+              (if you want to update this section please contact to admin)
+            </span>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Employee ID:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="hardware"
-                      className="input3"
-                      checked={isDirector}
-                      onChange={(e) => setIsDirector(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Employee ID"
+                      value={employee_id}
+                      onChange={(e) => setEmployee_id(e.target.value)}
                     />
-                    <label htmlFor="isAdmin">Director</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {isAccountant === 1 ? (
-                  <div className="role-item">
+                  </td>
+                  <td style={styles.label}>Employee UID:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isAccountant}
-                      onChange={(e) => setIsAccountant(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="UID"
+                      placeholder="Employee UID"
+                      value={UID}
+                      onChange={(e) => setUID(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Account</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+                </tr>
 
-                {isScm === 1 ? (
-                  <div className="role-item">
+                <tr>
+                  <td style={styles.label}>Designation:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isScm}
-                      onChange={(e) => setIsScm(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Designation"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> SCM</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
 
-                {isDesign === 1 ? (
-                  <div className="role-item">
+                  <td style={styles.label}>Company mail:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isDesign}
-                      onChange={(e) => setIsDesign(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter company mail"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Design</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+                </tr>
 
-                {isProduction === 1 ? (
-                  <div className="role-item">
+                <tr>
+                  <td style={styles.label}>Experience:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isProduction}
-                      onChange={(e) => setIsProduction(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="Experience"
+                      value={experience}
+                      onChange={(e) => setExperience(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Production</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {isProject === 1 ? (
-                  <div className="role-item">
+                  </td>
+                  <td style={styles.label}>Joining Date:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isProject}
-                      onChange={(e) => setIsProject(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      value={joiningDate}
+                      onChange={(e) => setJoiningDate(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Project</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+                </tr>
+                <tr>
+                  {experience === 'fresher' ? (
+                    ''
+                  ) : (
+                    <>
+                      <td style={styles.label}>Experience Letter:</td>
+                      <td>
+                        <Link
+                          type="button"
+                          style={{ width: '30px' }}
+                          className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_experience_letter"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
 
-                {isSales === 1 ? (
-                  <div className="role-item">
+                        <MyModal
+                          showModal={showImageModal}
+                          handleClose={handleCloseImageModal}
+                          data="Experience Letter"
+                          modalName="myModal_experience_letter"
+                          img={experience_letter}
+                        />
+                      </td>
+                    </>
+                  )}
+
+                  <td style={styles.label}>Previous Company :</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isSales}
-                      onChange={(e) => setIsSales(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      placeholder="Enter Previous Company "
+                      value={previous_company_name}
+                      onChange={(e) => setPrevious_company_name(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Sales</label>
-                  </div>
-                ) : (
-                  ''
-                )}
-
-                {isVisitor === 1 ? (
-                  <div className="role-item">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <h2 style={styles.sectionHeader}>Identification Documents</h2>{' '}
+            <span className="text muted text-danger">
+              (if you want to update this section please contact to admin)
+            </span>
+            <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Aadhar No:</td>
+                  <td>
                     <input
                       disabled
-                      type="checkbox"
-                      id="isAdmin"
-                      className="input3"
-                      checked={isVisitor}
-                      onChange={(e) => setIsVisitor(e.target.checked)}
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Adhar No"
+                      value={aadhar_no}
+                      onChange={(e) => setAdharno(e.target.value)}
                     />
-                    <label htmlFor="isAdmin"> Visitor</label>
-                  </div>
-                ) : (
-                  ''
-                )}
+                  </td>
+
+                  <td style={styles.label}>Pan Number:</td>
+                  <td>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Pan Number"
+                      value={pan_number}
+                      onChange={(e) => setPan_number(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>View Aadhar :</td>
+
+                  <td>
+                    {aadhar_card_file ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className=" p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_aadhar_card_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Adhar Card"
+                      modalName="myModal_aadhar_card_file"
+                      img={aadhar_card_file}
+                    />
+                  </td>
+
+                  <td style={styles.label}>View PAN :</td>
+
+                  <td>
+                    {pan_card_file ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_pan_card_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Pan Card"
+                      modalName="myModal_pan_card_file"
+                      img={pan_card_file}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Bank Account No:</td>
+                  <td>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter bank account no"
+                      value={bank_account_no}
+                      onChange={(e) => setBank_account_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>IFSC code:</td>
+                  <td>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="ifsc_code"
+                      placeholder="Enter bank ifsc code"
+                      value={ifsc_code}
+                      onChange={(e) => setIfsc_code(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>View Bank :</td>
+
+                  <td>
+                    {bank_account_file ? (
+                      <Link
+                        type="button"
+                        style={{ width: '30px' }}
+                        className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_bank_account_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Bank Passbook"
+                      modalName="myModal_bank_account_file"
+                      img={bank_account_file}
+                    />
+                  </td>
+                  <td style={styles.label}>PF Account No:</td>
+                  <td>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="PF Account Number"
+                      value={pf_account_no}
+                      onChange={(e) => setPf_account_no(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="employee-form-container">
+              <div className="form-section">
+                <h4>Assign Role</h4>
+                <div className="role-row">
+                  {/* {isAdmin === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isAdmin}
+                        onChange={(e) => setIsAdmin(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin">Admin</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {isSuperAdmin === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isSuperAdmin"
+                        className="input3"
+                        checked={isSuperAdmin}
+                        onChange={(e) => setIsSuperAdmin(e.target.checked)}
+                      />
+                      <label htmlFor="isSuperAdmin">Super</label>
+                    </div>
+                  ) : (
+                    ''
+                  )} */}
+                  {isHr === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isHr}
+                        onChange={(e) => setIsHr(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> HR</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {isSoftwareDevlopment === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="software"
+                        className="input3"
+                        checked={isSoftwareDevlopment}
+                        onChange={(e) =>
+                          setisSoftwareDevlopment(e.target.checked)
+                        }
+                      />
+                      <label htmlFor="isAdmin"> Software Dev.</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isHardwareDevlopment === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="hardware"
+                        className="input3"
+                        checked={isHardwareDevlopment}
+                        onChange={(e) =>
+                          setisHardwareDevlopment(e.target.checked)
+                        }
+                      />
+                      <label htmlFor="isAdmin">Hardware Dev.</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isDirector === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="hardware"
+                        className="input3"
+                        checked={isDirector}
+                        onChange={(e) => setIsDirector(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin">Director</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isAccountant === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isAccountant}
+                        onChange={(e) => setIsAccountant(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Account</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isScm === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isScm}
+                        onChange={(e) => setIsScm(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> SCM</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isDesign === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isDesign}
+                        onChange={(e) => setIsDesign(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Design</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isProduction === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isProduction}
+                        onChange={(e) => setIsProduction(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Production</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isProject === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isProject}
+                        onChange={(e) => setIsProject(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Project</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isSales === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isSales}
+                        onChange={(e) => setIsSales(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Sales</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {isVisitor === 1 ? (
+                    <div className="role-item">
+                      <input
+                        disabled
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isVisitor}
+                        onChange={(e) => setIsVisitor(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Visitor</label>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-          <h2 style={styles.sectionHeader} ref={salaryRef}>
+            {accessStatus === 0 ? (
+              <button
+                style={buttonStyle}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                type="submit"
+              >
+                {loadingUpdate ? (
+                  <>
+                    updating..
+                    <LoadingBox4 />
+                  </>
+                ) : (
+                  'Update'
+                )}{' '}
+              </button>
+            ) : (
+              ''
+            )}
+          </form>
+          {/* <h2 style={styles.sectionHeader} ref={salaryRef}>
             Salary Details
           </h2>
           <div style={{ overflowX: 'scroll' }}>
@@ -1651,7 +1944,6 @@ const UpdateEmployee = () => {
                         <AiOutlineEye />
                       </button>
 
-                      {/* ------------------------------view salary breakup-------------------------- */}
                       <div
                         class="modal fade"
                         id={`viewSalary${item.id}`}
@@ -1952,13 +2244,13 @@ const UpdateEmployee = () => {
                           </div>
                         </div>
                       </div>
-                      {/* ------------------------------view salary breakup-------------------------- */}
+                     
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </div> */}
           {/* <button
               style={buttonStyle}
               onMouseEnter={handleMouseEnter}

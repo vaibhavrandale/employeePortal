@@ -221,6 +221,7 @@ const data = {
   Anniversary: [],
   attendanceData: [],
   AttendanceRecord: [],
+  Access: [],
   SiteSurvey: [
     // {
     //   projectCode: 'your_project_code',

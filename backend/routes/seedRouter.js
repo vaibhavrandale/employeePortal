@@ -12,6 +12,7 @@ import Anniversary from '../models/Anniversary.js';
 import Holidays from '../models/Holidays.js';
 import EmployeeAssets from '../models/EmployeeAssets.js';
 import { DaywiseExpenses, EmployeeExpense } from '../models/expenseModels.js';
+import Access from '../models/AccessModel.js';
 
 const seedRouter = express.Router();
 
@@ -66,6 +67,10 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await DaywiseExpenses.destroy({ where: {}, truncate: true });
     await DaywiseExpenses.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await Access.destroy({ where: {}, truncate: true });
+    await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
     // Insert data into the Employee table
     const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
@@ -89,6 +94,8 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       data.DaywiseExpenses
     );
 
+    const createdAccess = await Access.bulkCreate(data.Access);
+
     res.send({
       createdEmployees,
       createdNotices,
@@ -102,6 +109,7 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       createdEmployeeAssets,
       createdEmployeeExpense,
       createdDaywiseExpense,
+      createdAccess,
     });
   } catch (error) {
     console.error(error);

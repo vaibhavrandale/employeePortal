@@ -34,13 +34,35 @@ const reducer = (state, action) => {
       return { ...state, loadingAccess: false, error: action.payload };
 
     case 'ACCESS_UPDATE_REQUEST':
-      return { ...state, loadingAccess: true };
+      return { ...state, loadingAccess: true, successAccess: false };
 
     case 'ACCESS_UPDATE_SUCCESS':
-      return { ...state, access: action.payload, loadingAccess: false };
+      return {
+        ...state,
+        access: action.payload,
+        loadingAccess: false,
+        successAccess: true,
+      };
 
     case 'ACCESS_UPDATE_FAIL':
-      return { ...state, loadingAccess: false, error: action.payload };
+      return {
+        ...state,
+        loadingAccess: false,
+        error: action.payload,
+        successAccess: false,
+      };
+
+    // case 'DELETE_REQUEST':
+    //   return { ...state, loadingDelete: true, successDelete: false };
+
+    // case 'DELETE_SUCCESS':
+    //   return { ...state, loadingDelete: false, successDelete: true };
+
+    // case 'DELETE_FAIL':
+    //   return { ...state, loadingDelete: false };
+
+    case 'ACCESS_RESET':
+      return { ...state, loadingDelete: false, successAccess: false };
 
     default:
       return state;
@@ -48,14 +70,12 @@ const reducer = (state, action) => {
 };
 
 const Manualjobs = () => {
-  const [{ loadingCreate, access, loadingAccess }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loadingCreate, access, loadingAccess, successAccess }, dispatch] =
+    useReducer(reducer, {
       access: {},
       loadingCreate: false,
       error: '',
-    }
-  );
+    });
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [accessStatus, setAccessStatus] = useState(0);
@@ -78,8 +98,14 @@ const Manualjobs = () => {
       }
     };
 
-    StatusData();
-  }, []);
+    //
+
+    if (successAccess) {
+      dispatch({ type: 'ACCESS_RESET' });
+    } else {
+      StatusData();
+    }
+  }, [successAccess]);
 
   const BirthdayEmailHandler = async (e) => {
     e.preventDefault();
@@ -294,7 +320,7 @@ const Manualjobs = () => {
       toast.success(data.message, {
         position: 'top-right',
       });
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       toast.error(getError(error), {
         position: 'top-right',
@@ -321,7 +347,7 @@ const Manualjobs = () => {
         position: 'top-right',
       });
 
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       toast.error(getError(error), {
         position: 'top-right',

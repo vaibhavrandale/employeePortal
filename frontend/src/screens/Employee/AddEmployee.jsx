@@ -14,13 +14,13 @@ import { IoEyeOutline } from 'react-icons/io5';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
-      return { ...state, loading: true };
+      return { ...state, createloading: true };
 
     case 'CREATE_SUCCESS':
-      return { ...state, employees: action.payload, loading: false };
+      return { ...state, employees: action.payload, createloading: false };
 
     case 'CREATE_FAIL':
-      return { ...state, loading: false, error: action.payload };
+      return { ...state, createloading: false, error: action.payload };
 
     case 'UPLOAD_REQUEST':
       return { ...state, loadingUpload: true, errorUpload: '' };
@@ -54,12 +54,14 @@ const reducer = (state, action) => {
 };
 
 function AddEmployee() {
-  const [{ loadingUpload, loadingDocumentUpload, loading }, dispatch] =
-    useReducer(reducer, {
-      employees: [],
-      loading: true,
-      error: '',
-    });
+  const [
+    { loadingUpload, loadingDocumentUpload, loadin, createloadingg },
+    dispatch,
+  ] = useReducer(reducer, {
+    employees: [],
+    loading: true,
+    error: '',
+  });
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -1797,18 +1799,7 @@ function AddEmployee() {
           </tbody>
         </table>
 
-        <h2 style={styles.sectionHeader}>
-          Identification Documents{' '}
-          {/*[
-           <Link
-            to="https://drive.google.com/drive/folders/1vJGTA8x9F0zHOK2BSFinTNUdVCEchJMR?usp=sharing"
-            target="blank"
-            className="m-1 text-decoration-none"
-          >
-            G-drive
-          </Link> 
-          ]*/}
-        </h2>
+        <h2 style={styles.sectionHeader}>Identification Documents </h2>
         <table style={styles.table}>
           <tbody>
             <tr>
@@ -2134,14 +2125,14 @@ function AddEmployee() {
           </div>
         </div>
 
-        {loading ? (
+        {createloadingg ? (
           <button style={styles.button} type="submit" disabled>
             submiting..
             <LoadingBox4 />
           </button>
         ) : (
           <button style={styles.button} type="submit">
-            'submit'
+            submit
           </button>
         )}
       </form>

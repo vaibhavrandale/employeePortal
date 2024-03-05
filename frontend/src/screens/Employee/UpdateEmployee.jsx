@@ -2078,17 +2078,7 @@ const UpdateEmployee = () => {
               </tbody>
             </table>
 
-            <h2 style={styles.sectionHeader}>
-              Identification Documents [
-              <Link
-                to="https://drive.google.com/drive/folders/1vJGTA8x9F0zHOK2BSFinTNUdVCEchJMR?usp=sharing"
-                target="blank"
-                className="m-1 text-decoration-none"
-              >
-                G-drive
-              </Link>
-              ]
-            </h2>
+            <h2 style={styles.sectionHeader}>Identification Documents</h2>
             <table style={styles.table}>
               <tbody>
                 <tr>
@@ -2436,27 +2426,21 @@ const UpdateEmployee = () => {
               )}
             </button> */}
 
-            {loading ? (
-              <button
-                style={buttonStyle}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                type="submit"
-                disabled
-              >
-                updating...
-                <LoadingBox4 />
-              </button>
-            ) : (
-              <button
-                style={buttonStyle}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                type="submit"
-              >
-                Update
-              </button>
-            )}
+            <button
+              style={buttonStyle}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              type="submit"
+            >
+              {loadingUpdate ? (
+                <>
+                  updating..
+                  <LoadingBox4 />
+                </>
+              ) : (
+                'Update'
+              )}{' '}
+            </button>
           </form>
           <h2 style={styles.sectionHeader} ref={salaryRef}>
             Salary Details

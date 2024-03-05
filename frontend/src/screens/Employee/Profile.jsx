@@ -1649,7 +1649,7 @@ const UpdateEmployee = () => {
                   <td style={styles.label}>Nominee Address:</td>
                   <td colSpan="3">
                     <textarea
-                      disabled={accessStatus === 0}
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       id="address"
                       placeholder="Enter Nominee address"

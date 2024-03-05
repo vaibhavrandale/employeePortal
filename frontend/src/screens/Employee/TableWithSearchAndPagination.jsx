@@ -231,8 +231,8 @@ const TableWithSearchAndPagination = () => {
 
           <div class="table-responsive">
             <table
-              className="table table-bordered table-responsive"
-              style={{ minWidth: '1050px' }}
+              className="table table-bordered "
+              // style={{ minWidth: '1050px' }}
             >
               <thead>
                 <tr>

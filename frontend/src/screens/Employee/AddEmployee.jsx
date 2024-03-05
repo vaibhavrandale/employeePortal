@@ -11,6 +11,7 @@ import dummyimage from './images.jpg';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MyModal from './MyModal'; // Adjust the path accordingly
 import { IoEyeOutline } from 'react-icons/io5';
+
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -55,7 +56,7 @@ const reducer = (state, action) => {
 
 function AddEmployee() {
   const [
-    { loadingUpload, loadingDocumentUpload, loadin, createloadingg },
+    { loadingUpload, loadingDocumentUpload, loading, createloadingg },
     dispatch,
   ] = useReducer(reducer, {
     employees: [],
@@ -66,23 +67,73 @@ function AddEmployee() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
+  const [address, setAddress] = useState('NA');
+  const [addressProof, setAddresProof] = useState('/images/address_proof.png');
+  const [State, setState] = useState('Maharashtra');
+  const [mobile_no, setMobile_no] = useState('0');
+  const [father_husband_name, setFather_husband_name] = useState('NA');
+  const [marital_status, setMarital_status] = useState('single');
+  const [sub_locality, setSub_locality] = useState('NA');
+  const [district, setDistrict] = useState('NA');
+  const [pinCode, setPinCode] = useState('0');
+  const [nominee_name, setNominee_name] = useState('NA');
+  const [nominee_relationship, setNominee_relationship] = useState('NA');
+  const [nominee_address, setNominee_address] = useState('NA');
+  const [nominee_sub_locality, setNominee_sub_locality] = useState('NA');
+  const [nominee_district, setNominee_district] = useState('NA');
+  const [nominee_state, setNominee_state] = useState('Maharashtra');
+  const [nominee_mobile_no, setNominee_mobile_no] = useState('0');
+  const [nominee_pinCode, setNominee_pinCode] = useState('0');
+  const [nominee_email, setNominee_email] = useState('na@gmail.com');
+  const [no_of_family_members, setNo_of_family_members] = useState('0');
+  const [alternate_mobile_no, setAlternate_mobile_no] = useState('0');
+  const [personal_email, setPersonal_email] = useState('na@gmail.com');
+  const [tenth_grade, setTenth_grade] = useState('0');
+  const [tenth_marksheet, setTenth_marksheet] = useState(
+    '/images/tenth_marksheet.png'
+  );
+  const [tenth_schoolName, setTenth_schoolName] = useState('NA');
+  const [twelth_or_diploma_grade, setTwelth_or_diploma_grade] = useState('0');
+  const [twelth_or_diploma_marksheet, setTwelth_or_diploma_marksheet] =
+    useState('/images/twelth_marksheet.png');
+  const [twelth_or_diploma_collegeName, setTwelth_or_diploma_collegeName] =
+    useState('NA');
+
+  const [
+    under_geaduate_or_post_graduate_grade,
+    setUnder_geaduate_or_post_graduate_grade,
+  ] = useState('0');
+  const [
+    under_geaduate_or_post_graduate_marksheet,
+    setUnder_geaduate_or_post_graduate_marksheet,
+  ] = useState('/images/ug_pg_marksheet.PNG');
+  const [
+    under_geaduate_or_post_graduate_collegeName,
+    setUnder_geaduate_or_post_graduate_collegeName,
+  ] = useState('NA');
+  const [gender, setGender] = useState('male');
+
+  const [experience, setExperience] = useState('');
+
+  const [experience_letter, setExperience_letter] = useState(
+    experience === 0 || experience === 'fresher' || experience === 'Fresher'
+      ? 'fresher'
+      : ''
+  );
+
   const [employee_id, setEmployee_id] = useState('');
   const [UID, setUID] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [image, setImage] = useState('');
   const [email, setEmail] = useState('');
-  const [experience, setExperience] = useState('');
+
   const [joiningDate, setJoiningDate] = useState('');
-  const [address, setAddress] = useState('');
-  const [addressProof, setAddresProof] = useState('');
   const [age, setAge] = useState('');
   const [designation, setDesignation] = useState('');
-  const [gender, setGender] = useState('');
-  const [State, setState] = useState('');
+
   const [birth_date, setBirth_date] = useState('');
   const [aadhar_no, setAdharno] = useState('');
-  const [mobile_no, setMobile_no] = useState('');
   const [activate, setActivate] = useState(0);
   const [leaves, setLeaves] = useState(18);
   const [pf_account_no, setPf_account_no] = useState('');
@@ -105,51 +156,10 @@ function AddEmployee() {
   const [isHardwareDevlopment, setIsHardwareDevlopment] = useState(0);
   const [isDirector, setIsDirector] = useState(0);
 
-  const [father_husband_name, setFather_husband_name] = useState('');
-  const [marital_status, setMarital_status] = useState('');
-  const [sub_locality, setSub_locality] = useState('');
-  const [district, setDistrict] = useState('');
-  const [pinCode, setPinCode] = useState('');
-  const [nominee_name, setNominee_name] = useState('');
-  const [nominee_relationship, setNominee_relationship] = useState('');
-  const [nominee_address, setNominee_address] = useState('');
-  const [nominee_sub_locality, setNominee_sub_locality] = useState('');
-  const [nominee_district, setNominee_district] = useState('');
-  const [nominee_state, setNominee_state] = useState('');
-  const [nominee_mobile_no, setNominee_mobile_no] = useState('');
-  const [nominee_pinCode, setNominee_pinCode] = useState('');
-  const [nominee_email, setNominee_email] = useState('');
-  const [no_of_family_members, setNo_of_family_members] = useState('');
-  const [alternate_mobile_no, setAlternate_mobile_no] = useState('');
-  const [personal_email, setPersonal_email] = useState('');
   const [aadhar_card_file, setAadhar_card_file] = useState('');
   const [pan_card_file, setPan_card_file] = useState('');
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
-  const [experience_letter, setExperience_letter] = useState('');
-
-  const [tenth_grade, setTenth_grade] = useState('');
-  const [tenth_marksheet, setTenth_marksheet] = useState('');
-  const [tenth_schoolName, setTenth_schoolName] = useState('');
-
-  const [twelth_or_diploma_grade, setTwelth_or_diploma_grade] = useState('');
-  const [twelth_or_diploma_marksheet, setTwelth_or_diploma_marksheet] =
-    useState('');
-  const [twelth_or_diploma_collegeName, setTwelth_or_diploma_collegeName] =
-    useState('');
-
-  const [
-    under_geaduate_or_post_graduate_grade,
-    setUnder_geaduate_or_post_graduate_grade,
-  ] = useState('');
-  const [
-    under_geaduate_or_post_graduate_marksheet,
-    setUnder_geaduate_or_post_graduate_marksheet,
-  ] = useState('');
-  const [
-    under_geaduate_or_post_graduate_collegeName,
-    setUnder_geaduate_or_post_graduate_collegeName,
-  ] = useState('');
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');

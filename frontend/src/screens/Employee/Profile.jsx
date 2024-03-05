@@ -1746,48 +1746,63 @@ const UpdateEmployee = () => {
                     />
                   </td>
                 </tr>
-                <tr>
-                  {experience === 'fresher' ? (
-                    ''
-                  ) : (
-                    <>
-                      <td style={styles.label}>Experience Letter:</td>
-                      <td>
+                {experience === '0' ||
+                experience === 'fresher' ||
+                experience === 'Fresher' ? (
+                  ''
+                ) : (
+                  <tr>
+                    <td style={styles.label}>Experience Letter </td>
+                    <td className="d-flex">
+                      {experience_letter ? (
                         <Link
                           type="button"
-                          style={{ width: '30px' }}
-                          className="p-2 badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
                           data-bs-toggle="modal"
                           data-bs-target="#myModal_experience_letter"
                           onClick={handleShowImage}
                         >
                           <IoEyeOutline />
                         </Link>
+                      ) : (
+                        ''
+                      )}
 
-                        <MyModal
-                          showModal={showImageModal}
-                          handleClose={handleCloseImageModal}
-                          data="Experience Letter"
-                          modalName="myModal_experience_letter"
-                          img={experience_letter}
+                      <div>
+                        <input
+                          style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="profile"
+                          onChange={uploadExperienceLetter}
+                          className="my-2 mx-2"
                         />
-                      </td>
-                    </>
-                  )}
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
 
-                  <td style={styles.label}>Previous Company :</td>
-                  <td>
-                    <input
-                      disabled
-                      style={styles.input}
-                      type="text"
-                      id="joiningDate"
-                      placeholder="Enter Previous Company "
-                      value={previous_company_name}
-                      onChange={(e) => setPrevious_company_name(e.target.value)}
-                    />
-                  </td>
-                </tr>
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Address Proof"
+                        modalName="myModal_experience_letter"
+                        img={experience_letter}
+                      />
+                    </td>
+                    <td style={styles.label}>Previous Company :</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="joiningDate"
+                        placeholder="Enter Previous Company "
+                        value={previous_company_name}
+                        onChange={(e) =>
+                          setPrevious_company_name(e.target.value)
+                        }
+                      />
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
             <h2 style={styles.sectionHeader}>Identification Documents</h2>{' '}

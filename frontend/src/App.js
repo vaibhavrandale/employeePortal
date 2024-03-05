@@ -82,6 +82,8 @@ import ApproveExpense from './screens/expenses/ApproveExpense';
 import SettleExpense from './screens/expenses/SettleExpense';
 import ExpenseExport from './screens/expenses/ExpenseExport';
 import Manualjobs from './screens/ManualJobs/Manualjobs';
+import RfidCardUpdate from './screens/UpdateAll/RfidCardUpdate';
+import UpdateUID from './screens/UpdateAll/UpdateUID';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -213,6 +215,25 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+        {/* -------------------------update UID card------------------------ */}
+        <Route
+          path="/update-rfid"
+          element={
+            <SuperAdminRoutes>
+              <RfidCardUpdate />
+            </SuperAdminRoutes>
+          }
+        />
+
+        <Route
+          path="/update-rfid/:id"
+          element={
+            <SuperAdminRoutes>
+              <UpdateUID />
+            </SuperAdminRoutes>
+          }
+        />
+        {/* -------------------------update UID card------------------------ */}
 
         <Route
           path="/addnewSalary/:employeeid"

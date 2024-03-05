@@ -139,3 +139,7 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+h4 {
+  text-decoration: none;
+}

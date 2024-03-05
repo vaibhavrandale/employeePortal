@@ -13,6 +13,7 @@ import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import { FcLeave } from 'react-icons/fc';
 import { FaPlaneDeparture } from 'react-icons/fa';
 import { GiTimeBomb } from 'react-icons/gi';
+import { FaRegAddressCard } from 'react-icons/fa';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -531,6 +532,18 @@ const Manualjobs = () => {
               )}
             </Link>
           )}
+        </div>
+
+        <div className=" Manualcard m-1">
+          <div className="d-flex justify-content-center">
+            <FaRegAddressCard className=" text-danger  manualicon" />
+          </div>
+          <Link
+            to="/update-rfid"
+            className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+          >
+            Update RFID
+          </Link>
         </div>
       </div>
     </div>

@@ -95,13 +95,28 @@ const TableWithSearchAndPagination = () => {
     // fetchData();
   }, [successDelete, userInfo]);
 
-  const filteredData = employees.filter(
-    (item) =>
-      item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.employee_id.includes(searchTerm) ||
-      item.joiningDate.includes(searchTerm)
-  );
+  // const filteredData = employees.filter(
+  //   (item) =>
+  //     item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     item.employee_id.includes(searchTerm) ||
+  //     item.joiningDate.includes(searchTerm)
+  // );
+
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const filteredData = employees
+    .filter(
+      (item) =>
+        item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.employee_id.includes(searchTerm) ||
+        item.joiningDate.includes(searchTerm) ||
+        item.employee_id.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => a.employee_id.localeCompare(b.employee_id));
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -212,17 +227,20 @@ const TableWithSearchAndPagination = () => {
         <AlertBox className="alert alert-danger">{error}</AlertBox>
       ) : (
         <>
-          <div className="form-group   mb-2  d-flex w-100 justify-content-between">
+          <div className="form-group   mb-2  d-flex w-100 justify-content-between  align-items-center">
             {userInfo && userInfo.isHr === 1 ? (
-              <Link id="AddBtn" onClick={popupHandle}>
-                ADD
-              </Link>
+              <div>
+                <Link id="" className="NewBtn" onClick={popupHandle}>
+                  ADD
+                </Link>
+              </div>
             ) : (
               <div></div>
             )}
             <input
               type="text"
-              className="form-control search w-50"
+              className="inputField search "
+              style={{ width: '250px' }}
               placeholder="Search Employee.."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}

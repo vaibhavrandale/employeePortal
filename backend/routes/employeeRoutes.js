@@ -26,6 +26,7 @@ import AttendanceRecord from '../models/AttendanceRecord.js';
 import Payslip from '../models/Payslip.js';
 import RfidReg from '../models/RfidReg.js';
 import Anniversary from '../models/Anniversary.js';
+import UIDCard from '../models/UIDCard.js';
 // import Wish from '../models/Wish.js';
 // import emoji from '../welcome_image.jpg';
 
@@ -1992,6 +1993,16 @@ emplyeeRouter.post('/', async (req, res) => {
 
     const savedRfidReg = await newRfidReg.save();
 
+    const newUIDCard = new UIDCard({
+      Name: NAME,
+      employee_id: employee_id,
+      current_uid: UID,
+      prevoius_uid: UID,
+      updatedBy: req.body.updatedBy,
+    });
+
+    const savednewUIDCard = await newUIDCard.save();
+
     // --------------rfid reg
 
     // ----------------email---------------------------------
@@ -2178,186 +2189,6 @@ emplyeeRouter.post('/', async (req, res) => {
 </html>
 
         `,
-        //         html: `
-        //         <!DOCTYPE html>
-        //         <html lang="en">
-        //           <head>
-        //             <meta charset="UTF-8" />
-        //             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        //             <title>Welcome to Taypro</title>
-        //             <style></style>
-        //           </head>
-
-        //           <body>
-        //             <div
-        //               class="container"
-        //               style="
-        //                 max-width: 600px;
-        //                 min-height: 100vh;
-        //                 font-family: Arial, sans-serif;
-        //                 margin: auto;
-        //                 padding: 10px;
-        //                 border-radius: 10px;
-        //                 background-color: #f8f8f8;
-        //               "
-        //             >
-        //               <div class="header">
-        //               <div style="display:flex;justify-content-end">
-        //   <img
-        //     src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
-        //     alt="Embedded Image"
-        //     style="
-        //       height: 120px;
-        //       width: 120px;
-        //       object-fit: contain;
-        //       margin: 1px 0px;
-
-        //     "
-        //   />
-        // </div>
-
-        //                 <div style="width: 25%; margin: auto">
-        //                   <img
-        //                     style="
-        //                       height: 150px;
-        //                       width: 150px;
-        //                       object-fit: cover;
-        //                       margin: 10px 0px;
-
-        //                       border-radius: 50%;
-        //                     "
-        //                     src=${savedEmployee.image}  />
-        //                 </div>
-
-        //                 <p style="padding: 10px 20px">
-        //                   Hii <b style="color: crimson">${savedEmployee.NAME}</b>,Welcome to
-        //                   Taypro! We are excited to have you on board.
-        //                 </p>
-
-        //                 <p style="padding: 10px 20px; display: flex; justify-content: center">
-        //                   <b style="padding: 10px 20px; text-align: center; color: tomato">
-        //                     "Your journey with us begins now, and we're here to support you
-        //                     every step of the way."</b
-        //                   >
-        //                 </p>
-
-        //                 <p style="padding: 10px 20px">
-        //                   Here are some details about your account
-        //                 </p>
-
-        //                 <table style="border-collapse: collapse; width: 80%; margin: auto">
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Employee portal</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <a href="https://employee.taypro.in" target="blank"
-        //       >click here</a
-        //     >
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Employee ID</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.employee_id}
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Name</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.NAME}
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Email</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.email}
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Designation</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.designation}
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Date of joining</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.joiningDate}
-        //   </td>
-        // </tr>
-        // <tr>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     <strong>Default password</strong>
-        //   </td>
-        //   <td
-        //     style="border: 1px solid #dddddd; text-align: left; padding: 8px"
-        //   >
-        //     ${savedEmployee.employee_id}
-        //   </td>
-        // </tr>
-        //                   <!-- Add more rows as needed -->
-        //                 </table>
-
-        //                 <p style="padding: 10px 20px">
-        //                   If you have any questions or need assistance, feel free to contact us.
-        //                 </p>
-        //                 <p style="padding: 0px 20px">
-        //                   Contact : <b><a mailto="hr@taypro.in">hr@taypro.in</a></b>
-        //                 </p>
-        //               </div>
-        //               <div style="padding: 10px 20px">
-        //                 <br />
-        //                 <span style="color: black; font-weight: 600">Best Regards,</span><br />
-        //                 <span style="color: crimson; font-weight: 600">HR TAYPRO,</span><br />
-        //                 <span style="color: rgb(0, 0, 0); font-weight: 600"
-        //                   >TAYPRO PRIVATE LIMITED</span
-        //                 ><br />
-        //                 <span style="color: green; font-weight: 600"
-        //                   ><b>We make green energy greener!!</b></span
-        //                 ><br />
-        //               </div>
-        //             </div>
-        //           </body>
-        //         </html>
-
-        //       `,
       })
       .then((info) => {
         if (info.accepted.includes(savedEmployee.email)) {
@@ -2384,6 +2215,7 @@ emplyeeRouter.post('/', async (req, res) => {
       employee: savedEmployee,
       payslip: savedPayslip,
       RfidReg: savedRfidReg,
+      UIDData: savednewUIDCard,
       message:
         'Employee Created Successfully ,payslip record created,data added to RFID Reg ',
     });

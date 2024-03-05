@@ -222,6 +222,7 @@ const data = {
   attendanceData: [],
   AttendanceRecord: [],
   Access: [],
+  UIDCard: [],
   SiteSurvey: [
     // {
     //   projectCode: 'your_project_code',

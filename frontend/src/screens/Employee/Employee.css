@@ -45,3 +45,36 @@ h4 {
   align-items: center;
   gap: 0.5rem;
 }
+
+.form-control:focus {
+  outline: none;
+  border: none;
+  /* border-bottom: 2px solid rgb(199, 114, 255); */
+}
+
+.form-control {
+  /* border: none; */
+  /* border-bottom: 2px solid rgb(199, 114, 255); */
+}
+
+.NewBtn {
+  padding: 5px 15px;
+  background: #fc129f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  margin-top: 15px;
+  display: block;
+  margin-left: auto;
+  -webkit-transition: background-color 0.3s ease-in-out;
+  -moz-transition: background-color 0.3s ease-in-out;
+  -ms-transition: background-color 0.3s ease-in-out;
+  -o-transition: background-color 0.3s ease-in-out;
+}
+
+.NewBtn:hover {
+  color: #fff;
+}

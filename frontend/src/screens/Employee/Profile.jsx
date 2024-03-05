@@ -1746,7 +1746,8 @@ const UpdateEmployee = () => {
                     />
                   </td>
                 </tr>
-                {experience === '0' ||
+                {experience === 'NA' ||
+                experience === 0 ||
                 experience === 'fresher' ||
                 experience === 'Fresher' ? (
                   ''

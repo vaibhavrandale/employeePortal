@@ -116,7 +116,10 @@ function AddEmployee() {
   const [experience, setExperience] = useState('');
 
   const [experience_letter, setExperience_letter] = useState(
-    experience === 0 || experience === 'fresher' || experience === 'Fresher'
+    experience === 'NA' ||
+      experience === 0 ||
+      experience === 'fresher' ||
+      experience === 'Fresher'
       ? 'fresher'
       : ''
   );

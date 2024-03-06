@@ -1815,8 +1815,12 @@ emplyeeRouter.post('/', async (req, res) => {
     const bonus = ((basic * 8.33) / 100).toFixed(2);
 
     // Format birth_date and joiningDate using moment.js
-    const formattedBirthDate = moment(birth_date).format('DD/MM/YYYY');
-    const formattedJoiningDate = moment(joiningDate).format('DD/MM/YYYY');
+    const formattedBirthDate = moment(birth_date, 'DD-MM-YYYY').format(
+      'DD/MM/YYYY'
+    );
+    const formattedJoiningDate = moment(joiningDate, 'DD-MM-YYYY').format(
+      'DD/MM/YYYY'
+    );
 
     // Create a new employee instance
     const newEmployee = new Employee({

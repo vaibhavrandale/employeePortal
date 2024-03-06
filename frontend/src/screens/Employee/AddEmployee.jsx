@@ -11,6 +11,7 @@ import dummyimage from './images.jpg';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import MyModal from './MyModal'; // Adjust the path accordingly
 import { IoEyeOutline } from 'react-icons/io5';
+import { PiLinkThin } from 'react-icons/pi';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -981,7 +982,7 @@ function AddEmployee() {
 
         {/* <p className="text-center"> Profile Image</p> */}
       </div>
-      <form onSubmit={SubmitHandler}>
+      {/* <form onSubmit={SubmitHandler}>
         <h2 style={styles.sectionHeader}>Personal Details</h2>
         <table style={styles.table}>
           <tbody>
@@ -1090,7 +1091,7 @@ function AddEmployee() {
                 />
               </td>
             </tr>
-            {/* ... Add more fields as needed ... */}
+         
           </tbody>
         </table>
 
@@ -1298,8 +1299,7 @@ function AddEmployee() {
                 ></textarea>
               </td>
             </tr>
-            {/* ... Add more fields as needed ... */}
-          </tbody>
+              </tbody>
         </table>
         <h2 style={styles.sectionHeader}>Contact Information</h2>
         <table style={styles.table}>
@@ -1491,8 +1491,7 @@ function AddEmployee() {
                 />
               </td>
             </tr>
-            {/* ... Add more fields as needed ... */}
-          </tbody>
+               </tbody>
         </table>
 
         <h2 style={styles.sectionHeader}>Emergency/Nominee Details</h2>
@@ -2152,6 +2151,2374 @@ function AddEmployee() {
             submit
           </button>
         )}
+      </form> */}
+
+      <form onSubmit={SubmitHandler}>
+        <h2 style={styles.sectionHeader}>
+          Personal Details [{' '}
+          <Link
+            className="text-center   text-decoration-none "
+            to={`/leave-application/${employee_id}`}
+          >
+            Leaves
+          </Link>{' '}
+          ]
+        </h2>
+
+        {/* <div className="table-responsive">
+              <table className="table table-borderless">
+                <tbody>
+                  <tr>
+                    <td style={styles.label}>First Name:</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="firstName"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      />
+                    </td>
+
+                    <td style={styles.label} className="ms-2">
+                      Last Name:
+                    </td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="lastName"
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styles.label}>Age:</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="number"
+                        id="age"
+                        placeholder="Age"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                      />
+                    </td>
+
+                    <td style={styles.label}>Gender:</td>
+                    <td>
+                      <select
+                        name=""
+                        id=""
+                        style={styles.select}
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styles.label}>Date of Birth:</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="birth_date"
+                        value={birth_date}
+                        onChange={(e) => setBirth_date(e.target.value)}
+                      />
+                    </td>
+
+                    <td style={styles.label}>Marital Status:</td>
+                    <td>
+                      <select
+                        name=""
+                        id=""
+                        style={styles.select}
+                        value={marital_status}
+                        onChange={(e) => setMarital_status(e.target.value)}
+                      >
+                        <option value="">Select</option>
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style={styles.label}>Father/Husband Name:</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="father_husband_name"
+                        placeholder="Father/Husband Name"
+                        value={father_husband_name}
+                        onChange={(e) => setFather_husband_name(e.target.value)}
+                      />
+                    </td>
+                    <td style={styles.label}>
+                      Profile Image
+                      {image ? (
+                        <Link
+                          target="blank"
+                          to={`${image}`}
+                          className="fs-4"
+                          style={styles.link}
+                        >
+                          <PiLinkThin />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+                      :
+                    </td>
+                    <td>
+                      <input
+                        style={styles.file}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadFileHandler}
+                      />
+                    </td>
+                  </tr>
+                                </tbody>
+              </table>
+            </div> */}
+
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">First Name:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="firstName"
+                  placeholder="First Name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Age:</label>
+                <input
+                  className="form-control"
+                  type="number"
+                  id="age"
+                  placeholder="Age"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Date of Birth:</label>
+                <input
+                  className="form-control"
+                  type="date"
+                  id="birth_date"
+                  value={birth_date}
+                  onChange={(e) => setBirth_date(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Father/Husband Name:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="father_husband_name"
+                  placeholder="Father/Husband Name"
+                  value={father_husband_name}
+                  onChange={(e) => setFather_husband_name(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Last Name:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="lastName"
+                  placeholder="Last Name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Gender:</label>
+                <select
+                  className="form-select"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Marital Status:</label>
+                <select
+                  className="form-select"
+                  value={marital_status}
+                  onChange={(e) => setMarital_status(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="single">Single</option>
+                  <option value="married">Married</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Profile Image:</label>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="profile"
+                  placeholder="Profile"
+                  onChange={uploadFileHandler}
+                />
+                {image && (
+                  <Link
+                    target="_blank"
+                    to={`${image}`}
+                    className="fs-4"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <PiLinkThin />
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style={styles.sectionHeader}>Educational Details</h2>
+        {/* <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Tenth Grade:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="tenth_grade"
+                      placeholder="tenth_grade"
+                      value={tenth_grade}
+                      onChange={(e) => setTenth_grade(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label} className="ms-2">
+                    10th Marksheet:
+                  </td>
+                  <td className="d-flex">
+                    {tenth_marksheet ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#myModal_10thCertificate`}
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadtenththCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="10th Marksheet"
+                      modalName="myModal_10thCertificate"
+                      img={tenth_marksheet}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>10th School Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="tenth_schoolname"
+                      placeholder="Enter 10 the School Nam"
+                      value={tenth_schoolName}
+                      onChange={(e) => setTenth_schoolName(e.target.value)}
+                    ></textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>12th/Diploma Grade:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_grade"
+                      placeholder="12th/Diploma Grade"
+                      value={twelth_or_diploma_grade}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_marksheet(e.target.value)
+                      }
+                    />
+                  </td>
+                  <td style={styles.label}>12th/Diploma marksheet:</td>
+                  <td className="d-flex">
+                    {twelth_or_diploma_marksheet ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_12thCertificate"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadtwelthordiplomaCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="12th Marksheet"
+                      modalName="myModal_12thCertificate"
+                      img={twelth_or_diploma_marksheet}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>12th/Diploma College Name:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="twelth_or_diploma_marksheet_collegeName"
+                      placeholder="Enter 12th/Diploma College Name"
+                      value={twelth_or_diploma_collegeName}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_collegeName(e.target.value)
+                      }
+                    ></textarea>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>UG/PG Grade:</td>
+                  <td>
+                    {' '}
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_grade"
+                      placeholder="Enter Under Graduate/ Post Graduate Grade"
+                      value={under_geaduate_or_post_graduate_grade}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_grade(e.target.value)
+                      }
+                    />
+                  </td>
+                  <td style={styles.label}>UG/PG Marksheet:</td>
+                  <td className="d-flex">
+                    {under_geaduate_or_post_graduate_marksheet ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_ugpgthCertificate"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploaddegreeorPGCertificate}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="UG/PG Marksheet"
+                      modalName="myModal_ugpgthCertificate"
+                      img={under_geaduate_or_post_graduate_marksheet}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>UG/PG College Name:</td>
+
+                  <td colSpan={3}>
+                    <textarea
+                      style={styles.input}
+                      type="text"
+                      id="under_geaduate_or_post_graduate_collegeName"
+                      placeholder="Enter Under Graduate/ Post Graduate College Name"
+                      value={under_geaduate_or_post_graduate_collegeName}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_collegeName(
+                          e.target.value
+                        )
+                      }
+                    ></textarea>
+                  </td>
+                </tr>
+                </tbody>
+            </table> */}
+
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Tenth Grade:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="tenth_grade"
+                  placeholder="Tenth Grade"
+                  value={tenth_grade}
+                  onChange={(e) => setTenth_grade(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">10th Marksheet:</label>
+                <div className="d-flex align-items-center">
+                  {tenth_marksheet ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target={`#myModal_10thCertificate`}
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="Profile"
+                      onChange={uploadtenththCertificate}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="10th Marksheet"
+                    modalName="myModal_10thCertificate"
+                    img={tenth_marksheet}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">10th School Name:</label>
+                <textarea
+                  className="form-control"
+                  id="tenth_schoolname"
+                  placeholder="Enter 10th School Name"
+                  value={tenth_schoolName}
+                  onChange={(e) => setTenth_schoolName(e.target.value)}
+                ></textarea>
+              </div>
+
+              <div className="mb-3 ">
+                <label className="form-label">UG/PG Grade:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="under_geaduate_or_post_graduate_grade"
+                  placeholder="UG/PG Grade"
+                  value={under_geaduate_or_post_graduate_grade}
+                  onChange={(e) =>
+                    setUnder_geaduate_or_post_graduate_grade(e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">UG/PG Marksheet:</label>
+                <div className="d-flex align-items-center">
+                  {under_geaduate_or_post_graduate_marksheet ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_ugpgthCertificate"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      // style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="Profile"
+                      onChange={uploaddegreeorPGCertificate}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="UG/PG Marksheet"
+                    modalName="myModal_ugpgthCertificate"
+                    img={under_geaduate_or_post_graduate_marksheet}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">12th/Diploma Grade:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="twelth_or_diploma_grade"
+                  placeholder="12th/Diploma Grade"
+                  value={twelth_or_diploma_grade}
+                  onChange={(e) =>
+                    setTwelth_or_diploma_marksheet(e.target.value)
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">12th/Diploma Marksheet:</label>
+                <div className="d-flex align-items-center">
+                  {twelth_or_diploma_marksheet ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_12thCertificate"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      // style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="Profile"
+                      onChange={uploadtwelthordiplomaCertificate}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="12th Marksheet"
+                    modalName="myModal_12thCertificate"
+                    img={twelth_or_diploma_marksheet}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">12th/Diploma College Name:</label>
+                <textarea
+                  className="form-control"
+                  id="twelth_or_diploma_marksheet_collegeName"
+                  placeholder="Enter 12th/Diploma College Name"
+                  value={twelth_or_diploma_collegeName}
+                  onChange={(e) =>
+                    setTwelth_or_diploma_collegeName(e.target.value)
+                  }
+                ></textarea>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">UG/PG College Name:</label>
+                <textarea
+                  className="form-control"
+                  id="under_geaduate_or_post_graduate_collegeName"
+                  placeholder="Enter UG/PG College Name"
+                  value={under_geaduate_or_post_graduate_collegeName}
+                  onChange={(e) =>
+                    setUnder_geaduate_or_post_graduate_collegeName(
+                      e.target.value
+                    )
+                  }
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Personal Email:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="email"
+                      id="email"
+                      placeholder="Enter personal email"
+                      value={personal_email}
+                      onChange={(e) => setPersonal_email(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Phone Number:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="mobile_no"
+                      placeholder="Enter mobile number"
+                      value={mobile_no}
+                      onChange={(e) => setMobile_no(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Alternate Phone No:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter alternate mobile number"
+                      value={alternate_mobile_no}
+                      onChange={(e) => setAlternate_mobile_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Sub Locality:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter Sub Locality"
+                      value={sub_locality}
+                      onChange={(e) => setSub_locality(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>District:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter district"
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>State:</td>
+                  <td>
+                    <select
+                      name="state"
+                      id="state"
+                      style={styles.select}
+                      value={State}
+                      onChange={(e) => setState(e.target.value)}
+                    >
+                      <option value="">select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Pin Code:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Pin code"
+                      value={pinCode}
+                      onChange={(e) => setPinCode(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>No Of family members:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Number of family Members"
+                      value={no_of_family_members}
+                      onChange={(e) => setNo_of_family_members(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Address:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      id="address"
+                      placeholder="Enter address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  {' '}
+                  <td style={styles.label}>Address Proof:</td>
+                  <td className="d-flex">
+                    {addressProof ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_addressProof"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadAddressProof}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Address Proof"
+                      modalName="myModal_addressProof"
+                      img={addressProof}
+                    />
+                  </td>
+                </tr>
+                
+              </tbody>
+            </table> */}
+
+        {/* <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Nominee Name:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee name"
+                      value={nominee_name}
+                      onChange={(e) => setNominee_name(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Nominee Relationship:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Nominee Relationship"
+                      value={nominee_relationship}
+                      onChange={(e) => setNominee_relationship(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee Mobile No:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee Mobile no"
+                      value={nominee_mobile_no}
+                      onChange={(e) => setNominee_mobile_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Nominee Email:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee email"
+                      value={nominee_email}
+                      onChange={(e) => setNominee_email(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee sub locality:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="nominee sub locality"
+                      value={nominee_sub_locality}
+                      onChange={(e) => setNominee_sub_locality(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Nominee district:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      placeholder="nominee district"
+                      value={nominee_district}
+                      onChange={(e) => setNominee_district(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee State:</td>
+                  <td>
+                    <select
+                      name="state"
+                      id="state"
+                      style={styles.select}
+                      value={nominee_state}
+                      onChange={(e) => setNominee_state(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </td>
+                  <td style={styles.label}>Nominee Pin Code:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Nominee Pin code"
+                      value={nominee_pinCode}
+                      onChange={(e) => setNominee_pinCode(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Nominee Address:</td>
+                  <td colSpan="3">
+                    <textarea
+                      style={styles.input}
+                      id="address"
+                      placeholder="Enter Nominee address"
+                      value={nominee_address}
+                      onChange={(e) => setNominee_address(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table> */}
+        <h2 style={styles.sectionHeader}>Contact Information</h2>
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Personal Email:</label>
+                <input
+                  style={styles.input}
+                  type="email"
+                  id="email"
+                  placeholder="Enter personal email"
+                  value={personal_email}
+                  onChange={(e) => setPersonal_email(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Alternate Phone No:</label>
+                <input
+                  style={styles.input}
+                  type="tel"
+                  id="alternate_mobile_no"
+                  placeholder="Enter alternate mobile number"
+                  value={alternate_mobile_no}
+                  onChange={(e) => setAlternate_mobile_no(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">District:</label>
+                <input
+                  style={styles.input}
+                  type="tel"
+                  id="alternate_mobile_no"
+                  placeholder="Enter district"
+                  value={district}
+                  onChange={(e) => setDistrict(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Pin Code:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter Pin code"
+                  value={pinCode}
+                  onChange={(e) => setPinCode(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Address:</label>
+                <textarea
+                  style={styles.input}
+                  id="address"
+                  placeholder="Enter address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Phone Number:</label>
+                <input
+                  style={styles.input}
+                  type="tel"
+                  id="mobile_no"
+                  placeholder="Enter mobile number"
+                  value={mobile_no}
+                  onChange={(e) => setMobile_no(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Sub Locality:</label>
+                <input
+                  style={styles.input}
+                  type="tel"
+                  id="alternate_mobile_no"
+                  placeholder="Enter Sub Locality"
+                  value={sub_locality}
+                  onChange={(e) => setSub_locality(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">State:</label>
+                <select
+                  name="state"
+                  id="state"
+                  style={styles.select}
+                  value={State}
+                  onChange={(e) => setState(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Andaman and Nicobar Islands">
+                    Andaman and Nicobar Islands
+                  </option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Dadra and Nagar Haveli">
+                    Dadra and Nagar Haveli
+                  </option>
+                  <option value="Daman and Diu">Daman and Diu</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Puducherry">Puducherry</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">No Of family members:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="designation"
+                  placeholder="Enter Number of family Members"
+                  value={no_of_family_members}
+                  onChange={(e) => setNo_of_family_members(e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Address Proof:</label>
+                <div className="d-flex align-items-center">
+                  {addressProof ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_addressProof"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="profile"
+                      onChange={uploadAddressProof}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Address Proof"
+                    modalName="myModal_addressProof"
+                    img={addressProof}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h2 style={styles.sectionHeader}>Emergency/Nominee Details</h2>
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Nominee Name:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter nominee name"
+                  value={nominee_name}
+                  onChange={(e) => setNominee_name(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee Mobile No:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter nominee Mobile no"
+                  value={nominee_mobile_no}
+                  onChange={(e) => setNominee_mobile_no(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee sub locality:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="experience"
+                  placeholder="nominee sub locality"
+                  value={nominee_sub_locality}
+                  onChange={(e) => setNominee_sub_locality(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee State:</label>
+                <select
+                  name="state"
+                  id="state"
+                  className="form-select"
+                  value={nominee_state}
+                  onChange={(e) => setNominee_state(e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                  <option value="Assam">Assam</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="Chhattisgarh">Chhattisgarh</option>
+                  <option value="Goa">Goa</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Himachal Pradesh">Himachal Pradesh</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Manipur">Manipur</option>
+                  <option value="Meghalaya">Meghalaya</option>
+                  <option value="Mizoram">Mizoram</option>
+                  <option value="Nagaland">Nagaland</option>
+                  <option value="Odisha">Odisha</option>
+                  <option value="Punjab">Punjab</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Sikkim">Sikkim</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Tripura">Tripura</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Uttarakhand">Uttarakhand</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Andaman and Nicobar Islands">
+                    Andaman and Nicobar Islands
+                  </option>
+                  <option value="Chandigarh">Chandigarh</option>
+                  <option value="Dadra and Nagar Haveli">
+                    Dadra and Nagar Haveli
+                  </option>
+                  <option value="Daman and Diu">Daman and Diu</option>
+                  <option value="Lakshadweep">Lakshadweep</option>
+                  <option value="Delhi">Delhi</option>
+                  <option value="Puducherry">Puducherry</option>
+                </select>
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee Address:</label>
+                <textarea
+                  className="form-control"
+                  id="address"
+                  placeholder="Enter Nominee address"
+                  value={nominee_address}
+                  onChange={(e) => setNominee_address(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label className="form-label">Nominee Relationship:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="designation"
+                  placeholder="Nominee Relationship"
+                  value={nominee_relationship}
+                  onChange={(e) => setNominee_relationship(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee Email:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter nominee email"
+                  value={nominee_email}
+                  onChange={(e) => setNominee_email(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee district:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="joiningDate"
+                  placeholder="nominee district"
+                  value={nominee_district}
+                  onChange={(e) => setNominee_district(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label">Nominee Pin Code:</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter Nominee Pin code"
+                  value={nominee_pinCode}
+                  onChange={(e) => setNominee_pinCode(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 style={styles.sectionHeader}>Work Details</h2>
+        {/* <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Employee ID:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Employee ID"
+                      value={employee_id}
+                      onChange={(e) => setEmployee_id(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Employee UID:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="UID"
+                      placeholder="Employee UID"
+                      value={UID}
+                      onChange={(e) => setUID(e.target.value)}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>Designation:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Designation"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Company mail:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter company mail"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td style={styles.label}>Experience:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="Experience"
+                      value={experience}
+                      onChange={(e) => setExperience(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>Joining Date:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      value={joiningDate}
+                      onChange={(e) => setJoiningDate(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                {experience === 'NA' ||
+                experience === 0 ||
+                experience === 'fresher' ||
+                experience === 'Fresher' ? (
+                  ''
+                ) : (
+                  <tr>
+                    <td style={styles.label}>Experience Letter </td>
+                    <td className="d-flex">
+                      {experience_letter ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_experience_letter"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="profile"
+                          onChange={uploadExperienceLetter}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Address Proof"
+                        modalName="myModal_experience_letter"
+                        img={experience_letter}
+                      />
+                    </td>
+                    <td style={styles.label}>Previous Company :</td>
+                    <td>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="joiningDate"
+                        placeholder="Enter Previous Company "
+                        value={previous_company_name}
+                        onChange={(e) =>
+                          setPrevious_company_name(e.target.value)
+                        }
+                      />
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table> */}
+
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label style={styles.label}>Employee ID:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="employee_id"
+                  placeholder="Employee ID"
+                  value={employee_id}
+                  onChange={(e) => setEmployee_id(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Designation:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="designation"
+                  placeholder="Designation"
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>CTC [COST TO COMPANY]:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="ctc"
+                  placeholder="Enter CTC"
+                  value={ctc}
+                  onChange={(e) => setCtc(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Experience:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="experience"
+                  placeholder="Experience"
+                  value={experience}
+                  onChange={(e) => setExperience(e.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label style={styles.label}>Joining Date:</label>
+                <input
+                  style={styles.input}
+                  type="date"
+                  id="joiningDate"
+                  value={joiningDate}
+                  onChange={(e) => setJoiningDate(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label style={styles.label}>Employee UID:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="UID"
+                  placeholder="Employee UID"
+                  value={UID}
+                  onChange={(e) => setUID(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Company mail:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="designation"
+                  placeholder="Enter company mail"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Salary Group</label>
+                <select
+                  id="state"
+                  style={styles.select}
+                  value={salarygroup}
+                  onChange={(e) => setSalarygroup(e.target.value)}
+                >
+                  <option value="default">Select</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+
+              {experience === 'NA' ||
+              experience === 0 ||
+              experience === 'fresher' ||
+              experience === 'Fresher' ? (
+                ''
+              ) : (
+                <>
+                  <div className="mb-3">
+                    <label style={styles.label}>Experience Letter</label>
+                    <div className="d-flex align-items-center">
+                      {experience_letter ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_experience_letter"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="profile"
+                          onChange={uploadExperienceLetter}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Experience Letter"
+                        modalName="myModal_experience_letter"
+                        img={experience_letter}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Previous Company:</label>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      placeholder="Enter Previous Company"
+                      value={previous_company_name}
+                      onChange={(e) => setPrevious_company_name(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <h2 style={styles.sectionHeader}>Identification Documents</h2>
+        {/* <table style={styles.table}>
+              <tbody>
+                <tr>
+                  <td style={styles.label}>Aadhar No:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Adhar No"
+                      value={aadhar_no}
+                      onChange={(e) => setAdharno(e.target.value)}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Pan Number:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Pan Number"
+                      value={pan_number}
+                      onChange={(e) => setPan_number(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Upload Aadhar File</td>
+                  <td className="d-flex">
+                    {aadhar_card_file ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_aadhar_card_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadAdharCard}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Aaadhar card"
+                      modalName="myModal_aadhar_card_file"
+                      img={aadhar_card_file}
+                    />
+                  </td>
+
+                  <td style={styles.label}>Upload PAN File </td>
+                  <td className="d-flex">
+                    {pan_card_file ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_pan_card_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadPanCard}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Pan card"
+                      modalName="myModal_pan_card_file"
+                      img={pan_card_file}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Bank Account No:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter bank account no"
+                      value={bank_account_no}
+                      onChange={(e) => setBank_account_no(e.target.value)}
+                    />
+                  </td>
+                  <td style={styles.label}>IFSC code:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="ifsc_code"
+                      placeholder="Enter ifsc code"
+                      value={ifsc_code}
+                      onChange={(e) => setIfsc_code(e.target.value)}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td style={styles.label}>Upload Bank File</td>
+                  <td className="d-flex">
+                    {bank_account_file ? (
+                      <Link
+                        type="button"
+                        className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal_bank_account_file"
+                        onClick={handleShowImage}
+                      >
+                        <IoEyeOutline />
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+
+                    <div>
+                      <input
+                        style={{ width: '50%' }}
+                        type="file"
+                        id="profile"
+                        placeholder="profile"
+                        onChange={uploadBankPassbook}
+                        className="my-2 mx-2"
+                      />
+                      {loadingDocumentUpload && <LoadingBox4 />}
+                    </div>
+
+                    <MyModal
+                      showModal={showImageModal}
+                      handleClose={handleCloseImageModal}
+                      data="Bank Account"
+                      modalName="myModal_bank_account_file"
+                      img={bank_account_file}
+                    />
+                  </td>
+                  <td style={styles.label}>PF Account No:</td>
+                  <td>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="PF Account Number"
+                      value={pf_account_no}
+                      onChange={(e) => setPf_account_no(e.target.value)}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table> */}
+
+        <div className="">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label style={styles.label}>Aadhar No:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter Adhar No"
+                  value={aadhar_no}
+                  onChange={(e) => setAdharno(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Upload Aadhar File</label>
+                <div className="d-flex align-items-center">
+                  {aadhar_card_file ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_aadhar_card_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="profile"
+                      onChange={uploadAdharCard}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Aaadhar card"
+                    modalName="myModal_aadhar_card_file"
+                    img={aadhar_card_file}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Bank Account No:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="employee_id"
+                  placeholder="Enter bank account no"
+                  value={bank_account_no}
+                  onChange={(e) => setBank_account_no(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Upload Bank File</label>
+                <div className="d-flex align-items-center">
+                  {bank_account_file ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_bank_account_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="profile"
+                      onChange={uploadBankPassbook}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Bank Account"
+                    modalName="myModal_bank_account_file"
+                    img={bank_account_file}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mb-3">
+                <label style={styles.label}>Pan Number:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="designation"
+                  placeholder="Enter Pan Number"
+                  value={pan_number}
+                  onChange={(e) => setPan_number(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>Upload PAN File </label>
+                <div className="d-flex align-items-center">
+                  {pan_card_file ? (
+                    <Link
+                      type="button"
+                      className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#myModal_pan_card_file"
+                      onClick={handleShowImage}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                  ) : (
+                    ''
+                  )}
+
+                  <div>
+                    <input
+                      style={{ width: '50%' }}
+                      type="file"
+                      id="profile"
+                      placeholder="profile"
+                      onChange={uploadPanCard}
+                      className="my-2 mx-2"
+                    />
+                    {loadingDocumentUpload && <LoadingBox4 />}
+                  </div>
+
+                  <MyModal
+                    showModal={showImageModal}
+                    handleClose={handleCloseImageModal}
+                    data="Pan card"
+                    modalName="myModal_pan_card_file"
+                    img={pan_card_file}
+                  />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>IFSC code:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="ifsc_code"
+                  placeholder="Enter ifsc code"
+                  value={ifsc_code}
+                  onChange={(e) => setIfsc_code(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3">
+                <label style={styles.label}>PF Account No:</label>
+                <input
+                  style={styles.input}
+                  type="text"
+                  id="experience"
+                  placeholder="PF Account Number"
+                  value={pf_account_no}
+                  onChange={(e) => setPf_account_no(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="employee-form-container">
+              <div className="form-section">
+                <h4>Assign Role</h4>
+                <div className="role-row">
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isAdmin}
+                      onChange={(e) => setIsAdmin(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin">Admin</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isSuperAdmin"
+                      className="input3"
+                      checked={isSuperAdmin}
+                      onChange={(e) => setIsSuperAdmin(e.target.checked)}
+                    />
+                    <label htmlFor="isSuperAdmin">Manager</label>
+                  </div>
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="hr"
+                      className="input3"
+                      checked={isHr}
+                      onChange={(e) => setIsHr(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> HR</label>
+                  </div>
+             
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isSoftwareDevlopment"
+                      className="input3"
+                      checked={isSoftwareDevlopment}
+                      onChange={(e) =>
+                        setIsSoftwareDevlopment(e.target.checked)
+                      }
+                    />
+                    <label htmlFor="softwaredev"> Software Dev.</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isHardwareDevlopment"
+                      className="input3"
+                      checked={isHardwareDevlopment}
+                      onChange={(e) =>
+                        setIsHardwareDevlopment(e.target.checked)
+                      }
+                    />
+                    <label htmlFor="softwaredev"> Hardware Dev.</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isDirector"
+                      className="input3"
+                      checked={isDirector}
+                      onChange={(e) => setIsDirector(e.target.checked)}
+                    />
+                    <label htmlFor="softwaredev"> Director</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isAccountant}
+                      onChange={(e) => setIsAccountant(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Account</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isScm}
+                      onChange={(e) => setIsScm(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> SCM</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isDesign}
+                      onChange={(e) => setIsDesign(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Design</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isProduction}
+                      onChange={(e) => setIsProduction(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Production</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isProject}
+                      onChange={(e) => setIsProject(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Project</label>
+                  </div>
+
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isSales}
+                      onChange={(e) => setIsSales(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Sales</label>
+                  </div>
+                  <div className="role-item">
+                    <input
+                      type="checkbox"
+                      id="isAdmin"
+                      className="input3"
+                      checked={isVisitor}
+                      onChange={(e) => setIsVisitor(e.target.checked)}
+                    />
+                    <label htmlFor="isAdmin"> Visitor</label>
+                  </div>
+                </div>
+              </div>
+            </div> */}
+
+        <div className="">
+          <div className="row">
+            <div className="col-md-12">
+              <div className="employee-form-container">
+                <div className="form-section">
+                  <h4>Assign Role</h4>
+                  <div className="role-row row">
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isAdmin}
+                        onChange={(e) => setIsAdmin(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin">USER</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isSuperAdmin"
+                        className="input3"
+                        checked={isSuperAdmin}
+                        onChange={(e) => setIsSuperAdmin(e.target.checked)}
+                      />
+                      <label htmlFor="isSuperAdmin">ADMIN</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isDirector"
+                        className="input3"
+                        checked={isDirector}
+                        onChange={(e) => setIsDirector(e.target.checked)}
+                      />
+                      <label htmlFor="softwaredev"> Director</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="hr"
+                        className="input3"
+                        checked={isHr}
+                        onChange={(e) => setIsHr(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> HR</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isSoftwareDevlopment"
+                        className="input3"
+                        checked={isSoftwareDevlopment}
+                        onChange={(e) =>
+                          setIsSoftwareDevlopment(e.target.checked)
+                        }
+                      />
+                      <label htmlFor="softwaredev"> S/W</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isHardwareDevlopment"
+                        className="input3"
+                        checked={isHardwareDevlopment}
+                        onChange={(e) =>
+                          setIsHardwareDevlopment(e.target.checked)
+                        }
+                      />
+                      <label htmlFor="softwaredev"> H/W</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isAccountant}
+                        onChange={(e) => setIsAccountant(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Account</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isScm}
+                        onChange={(e) => setIsScm(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> SCM</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isDesign}
+                        onChange={(e) => setIsDesign(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Design</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isProduction}
+                        onChange={(e) => setIsProduction(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Production</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isProject}
+                        onChange={(e) => setIsProject(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Project</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isSales}
+                        onChange={(e) => setIsSales(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Sales</label>
+                    </div>
+
+                    <div className="role-item col-md-4">
+                      <input
+                        type="checkbox"
+                        id="isAdmin"
+                        className="input3"
+                        checked={isVisitor}
+                        onChange={(e) => setIsVisitor(e.target.checked)}
+                      />
+                      <label htmlFor="isAdmin"> Visitor</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-end m-1">
+          <button type="submit" className="btn btn-warning px-2 fw-bold  ">
+            {createloadingg ? (
+              <>
+                Submitting..
+                <LoadingBox4 />
+              </>
+            ) : (
+              'Submit'
+            )}{' '}
+          </button>
+        </div>
       </form>
     </div>
   );

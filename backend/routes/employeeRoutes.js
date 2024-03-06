@@ -2,7 +2,7 @@ import express from 'express';
 import cron from 'node-cron';
 import Employee from '../models/employeeModel.js';
 import expressAsyncHandler from 'express-async-handler';
-import moment from 'moment-timezone';
+import moment from 'moment';
 import { format } from 'date-fns'; // Import format from date-fns
 import BirthdayWish from '../models/BirthdayWish.js';
 import RfidCkeck from '../models/RfidCkeck.js';
@@ -146,37 +146,13 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
   const defaultPassword = employee_id;
   const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
 
-  const parseDate = (dateStr) => {
-    let day, month, year;
-    if (dateStr.includes('-')) {
-      [day, month, year] = dateStr.split('-').map(Number);
-    } else if (dateStr.includes('/')) {
-      [day, month, year] = dateStr.split('/').map(Number);
-    } else {
-      return null; // Invalid date format
-    }
-    return new Date(year, month - 1, day);
-  };
-
-  const parsedBirthDate = parseDate(birth_date);
-  const parsedJoiningDate = parseDate(joiningDate);
-
-  if (!parsedBirthDate || !parsedJoiningDate) {
-    return res
-      .status(400)
-      .json({ success: false, error: 'Invalid date format' });
-  }
-
-  // Function to format date as "DD/MM/YYYY"
-  const formatDate = (date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-
-  const formattedBirthDate = formatDate(parsedBirthDate);
-  const formattedJoiningDate = formatDate(parsedJoiningDate);
+  // Format birth_date and joiningDate using moment.js
+  const formattedBirthDate = moment(birth_date, 'DD-MM-YYYY').format(
+    'DD/MM/YYYY'
+  );
+  const formattedJoiningDate = moment(joiningDate, 'DD-MM-YYYY').format(
+    'DD/MM/YYYY'
+  );
 
   try {
     // Find the employee by ID
@@ -1807,39 +1783,6 @@ emplyeeRouter.post('/', async (req, res) => {
     const defaultPassword = employee_id;
     const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
 
-    // // Parse birth date and joining date
-    // const parseDate = (dateStr) => {
-    //   let day, month, year;
-    //   if (dateStr.includes('-')) {
-    //     [day, month, year] = dateStr.split('-').map(Number);
-    //   } else if (dateStr.includes('/')) {
-    //     [day, month, year] = dateStr.split('/').map(Number);
-    //   } else {
-    //     return null; // Invalid date format
-    //   }
-    //   return new Date(year, month - 1, day);
-    // };
-
-    // const parsedBirthDate = parseDate(birth_date);
-    // const parsedJoiningDate = parseDate(joiningDate);
-
-    // if (!parsedBirthDate || !parsedJoiningDate) {
-    //   return res
-    //     .status(400)
-    //     .json({ success: false, error: 'Invalid date format' });
-    // }
-
-    // // Function to format date as "DD/MM/YYYY"
-    // const formatDate = (date) => {
-    //   const day = date.getDate().toString().padStart(2, '0');
-    //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    //   const year = date.getFullYear();
-    //   return `${day}/${month}/${year}`;
-    // };
-
-    // const formattedBirthDate = formatDate(parsedBirthDate);
-    // const formattedJoiningDate = formatDate(parsedJoiningDate);
-
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
@@ -1871,6 +1814,10 @@ emplyeeRouter.post('/', async (req, res) => {
     const employeresi = ((basic * 4.25) / 100).toFixed(2);
     const bonus = ((basic * 8.33) / 100).toFixed(2);
 
+    // Format birth_date and joiningDate using moment.js
+    const formattedBirthDate = moment(birth_date).format('DD/MM/YYYY');
+    const formattedJoiningDate = moment(joiningDate).format('DD/MM/YYYY');
+
     // Create a new employee instance
     const newEmployee = new Employee({
       employee_id,
@@ -1881,8 +1828,8 @@ emplyeeRouter.post('/', async (req, res) => {
       lastName,
       father_husband_name,
       gender,
-      birth_date,
-      joiningDate,
+      birth_date: formattedBirthDate,
+      joiningDate: formattedJoiningDate,
       marital_status,
       address,
       addressProof,

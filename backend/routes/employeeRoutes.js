@@ -449,7 +449,7 @@ emplyeeRouter.post(
               >
                 <div id="logo" style="display: flex; justify-content: end">
                   <img
-                    src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                    src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
                     alt="logo"
                     style="
                       width: 110px;
@@ -1991,6 +1991,8 @@ emplyeeRouter.post('/', async (req, res) => {
       Contact_No: mobile_no,
     });
 
+    // --------------rfid reg
+
     const savedRfidReg = await newRfidReg.save();
 
     const newUIDCard = new UIDCard({
@@ -2002,8 +2004,6 @@ emplyeeRouter.post('/', async (req, res) => {
     });
 
     const savednewUIDCard = await newUIDCard.save();
-
-    // --------------rfid reg
 
     // ----------------email---------------------------------
 
@@ -2212,12 +2212,12 @@ emplyeeRouter.post('/', async (req, res) => {
     // Send the newly created employee as the response
     res.status(201).json({
       success: true,
+      message:
+        'Employee Created Successfully ,payslip record created,data added to RFID Reg,UID data added ',
       employee: savedEmployee,
       payslip: savedPayslip,
       RfidReg: savedRfidReg,
       UIDData: savednewUIDCard,
-      message:
-        'Employee Created Successfully ,payslip record created,data added to RFID Reg ',
     });
   } catch (error) {
     console.error(error);

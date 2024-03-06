@@ -3,7 +3,7 @@ import PolicyFooter from './PolicyFooter';
 
 const OfficeRules = () => {
   const logo =
-    'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
+    'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png';
 
   return (
     <div className="policy-container py-1">

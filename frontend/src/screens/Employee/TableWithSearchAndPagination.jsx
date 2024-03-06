@@ -254,7 +254,7 @@ const TableWithSearchAndPagination = () => {
             >
               <thead>
                 <tr>
-                  <th className="col-md-1 text-center">ID</th>
+                  <th className="col-md-1 text-center">Employee ID</th>
                   <th className="col-md-1 text-center">Image</th>
                   <th className="col-md-3 text-center">Name</th>
                   <th className="col-md-2 text-center">Designation</th>

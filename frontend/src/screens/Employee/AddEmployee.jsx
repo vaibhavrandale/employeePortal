@@ -163,6 +163,7 @@ function AddEmployee() {
   const [pan_card_file, setPan_card_file] = useState('');
   const [bank_account_file, setBank_account_file] = useState('');
   const [previous_company_name, setPrevious_company_name] = useState('');
+  const [updatedBy, setUpdatedBy] = useState('');
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');
@@ -478,6 +479,7 @@ function AddEmployee() {
           under_geaduate_or_post_graduate_grade,
           ctc,
           salarygroup,
+          updatedBy: userInfo.NAME,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },

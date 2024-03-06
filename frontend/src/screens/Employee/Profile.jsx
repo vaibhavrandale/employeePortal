@@ -13,7 +13,7 @@ import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
-
+import { PiLinkThin } from 'react-icons/pi';
 import MyModal from './MyModal';
 
 import { IoEyeOutline } from 'react-icons/io5';
@@ -923,7 +923,7 @@ const UpdateEmployee = () => {
               </>
             </div>
             <h2 style={styles.sectionHeader}>Personal Details</h2>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>First Name:</td>
@@ -1057,13 +1057,126 @@ const UpdateEmployee = () => {
                     placeholder="profile"
                     value={image}
                   />
-                </td> */}
+                </td> 
                 </tr>
-                {/* ... Add more fields as needed ... */}
+               
               </tbody>
-            </table>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">First Name:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="firstName"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Age:</label>
+                    <input
+                      className="form-control"
+                      type="number"
+                      id="age"
+                      placeholder="Age"
+                      value={age}
+                      onChange={(e) => setAge(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Date of Birth:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="birth_date"
+                      value={birth_date}
+                      onChange={(e) => setBirth_date(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Father/Husband Name:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="father_husband_name"
+                      placeholder="Father/Husband Name"
+                      value={father_husband_name}
+                      onChange={(e) => setFather_husband_name(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Last Name:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="lastName"
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Gender:</label>
+                    <select
+                      className="form-select"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Marital Status:</label>
+                    <select
+                      className="form-select"
+                      value={marital_status}
+                      onChange={(e) => setMarital_status(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="single">Single</option>
+                      <option value="married">Married</option>
+                    </select>
+                  </div>
+
+                  {/* <div className="mb-3">
+                    <label className="form-label">Profile Image:</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="profile"
+                      placeholder="Profile"
+                      onChange={uploadFileHandler}
+                    />
+                    {image && (
+                      <Link
+                        target="_blank"
+                        to={`${image}`}
+                        className="fs-4"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <PiLinkThin />
+                      </Link>
+                    )}
+                  </div> */}
+                </div>
+              </div>
+            </div>
             <h2 style={styles.sectionHeader}>Educational Details</h2>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>10th Grade:</td>
@@ -1286,9 +1399,216 @@ const UpdateEmployee = () => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Tenth Grade:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="tenth_grade"
+                      placeholder="Tenth Grade"
+                      value={tenth_grade}
+                      onChange={(e) => setTenth_grade(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">10th Marksheet:</label>
+                    <div className="d-flex align-items-center">
+                      {tenth_marksheet ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target={`#myModal_10thCertificate`}
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="Profile"
+                          onChange={uploadtenththCertificate}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="10th Marksheet"
+                        modalName="myModal_10thCertificate"
+                        img={tenth_marksheet}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">10th School Name:</label>
+                    <textarea
+                      className="form-control"
+                      id="tenth_schoolname"
+                      placeholder="Enter 10th School Name"
+                      value={tenth_schoolName}
+                      onChange={(e) => setTenth_schoolName(e.target.value)}
+                    ></textarea>
+                  </div>
+
+                  <div className="mb-3 ">
+                    <label className="form-label">UG/PG Grade:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="under_geaduate_or_post_graduate_grade"
+                      placeholder="UG/PG Grade"
+                      value={under_geaduate_or_post_graduate_grade}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_grade(e.target.value)
+                      }
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">UG/PG Marksheet:</label>
+                    <div className="d-flex align-items-center">
+                      {under_geaduate_or_post_graduate_marksheet ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_ugpgthCertificate"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          // style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="Profile"
+                          onChange={uploaddegreeorPGCertificate}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="UG/PG Marksheet"
+                        modalName="myModal_ugpgthCertificate"
+                        img={under_geaduate_or_post_graduate_marksheet}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">12th/Diploma Grade:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="twelth_or_diploma_grade"
+                      placeholder="12th/Diploma Grade"
+                      value={twelth_or_diploma_grade}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_marksheet(e.target.value)
+                      }
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">
+                      12th/Diploma Marksheet:
+                    </label>
+                    <div className="d-flex align-items-center">
+                      {twelth_or_diploma_marksheet ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_12thCertificate"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          // style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="Profile"
+                          onChange={uploadtwelthordiplomaCertificate}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="12th Marksheet"
+                        modalName="myModal_12thCertificate"
+                        img={twelth_or_diploma_marksheet}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">
+                      12th/Diploma College Name:
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="twelth_or_diploma_marksheet_collegeName"
+                      placeholder="Enter 12th/Diploma College Name"
+                      value={twelth_or_diploma_collegeName}
+                      onChange={(e) =>
+                        setTwelth_or_diploma_collegeName(e.target.value)
+                      }
+                    ></textarea>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">UG/PG College Name:</label>
+                    <textarea
+                      className="form-control"
+                      id="under_geaduate_or_post_graduate_collegeName"
+                      placeholder="Enter UG/PG College Name"
+                      value={under_geaduate_or_post_graduate_collegeName}
+                      onChange={(e) =>
+                        setUnder_geaduate_or_post_graduate_collegeName(
+                          e.target.value
+                        )
+                      }
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
             <h2 style={styles.sectionHeader}>Contact Information</h2>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>Personal Email:</td>
@@ -1491,11 +1811,204 @@ const UpdateEmployee = () => {
                     />
                   </td>
                 </tr>
-                {/* ... Add more fields as needed ... */}
-              </tbody>
-            </table>
+                </tbody>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Personal Email:</label>
+                    <input
+                      style={styles.input}
+                      type="email"
+                      id="email"
+                      placeholder="Enter personal email"
+                      value={personal_email}
+                      onChange={(e) => setPersonal_email(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Alternate Phone No:</label>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter alternate mobile number"
+                      value={alternate_mobile_no}
+                      onChange={(e) => setAlternate_mobile_no(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">District:</label>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter district"
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Pin Code:</label>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Pin code"
+                      value={pinCode}
+                      onChange={(e) => setPinCode(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Address:</label>
+                    <textarea
+                      style={styles.input}
+                      id="address"
+                      placeholder="Enter address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Phone Number:</label>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="mobile_no"
+                      placeholder="Enter mobile number"
+                      value={mobile_no}
+                      onChange={(e) => setMobile_no(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Sub Locality:</label>
+                    <input
+                      style={styles.input}
+                      type="tel"
+                      id="alternate_mobile_no"
+                      placeholder="Enter Sub Locality"
+                      value={sub_locality}
+                      onChange={(e) => setSub_locality(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">State:</label>
+                    <select
+                      name="state"
+                      id="state"
+                      style={styles.select}
+                      value={State}
+                      onChange={(e) => setState(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">No Of family members:</label>
+                    <input
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Number of family Members"
+                      value={no_of_family_members}
+                      onChange={(e) => setNo_of_family_members(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Address Proof:</label>
+                    <div className="d-flex align-items-center">
+                      {addressProof ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_addressProof"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <input
+                          style={{ width: '50%' }}
+                          type="file"
+                          id="profile"
+                          placeholder="profile"
+                          onChange={uploadAddressProof}
+                          className="my-2 mx-2"
+                        />
+                        {loadingDocumentUpload && <LoadingBox4 />}
+                      </div>
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Address Proof"
+                        modalName="myModal_addressProof"
+                        img={addressProof}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <h2 style={styles.sectionHeader}>Emergency/Nominee Details</h2>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>Nominee Name:</td>
@@ -1659,7 +2172,163 @@ const UpdateEmployee = () => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Name:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee name"
+                      value={nominee_name}
+                      onChange={(e) => setNominee_name(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Mobile No:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee Mobile no"
+                      value={nominee_mobile_no}
+                      onChange={(e) => setNominee_mobile_no(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee sub locality:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="experience"
+                      placeholder="nominee sub locality"
+                      value={nominee_sub_locality}
+                      onChange={(e) => setNominee_sub_locality(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee State:</label>
+                    <select
+                      name="state"
+                      id="state"
+                      className="form-select"
+                      value={nominee_state}
+                      onChange={(e) => setNominee_state(e.target.value)}
+                    >
+                      <option value="">Select</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Arunachal Pradesh">
+                        Arunachal Pradesh
+                      </option>
+                      <option value="Assam">Assam</option>
+                      <option value="Bihar">Bihar</option>
+                      <option value="Chhattisgarh">Chhattisgarh</option>
+                      <option value="Goa">Goa</option>
+                      <option value="Gujarat">Gujarat</option>
+                      <option value="Haryana">Haryana</option>
+                      <option value="Himachal Pradesh">Himachal Pradesh</option>
+                      <option value="Jharkhand">Jharkhand</option>
+                      <option value="Karnataka">Karnataka</option>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Madhya Pradesh">Madhya Pradesh</option>
+                      <option value="Maharashtra">Maharashtra</option>
+                      <option value="Manipur">Manipur</option>
+                      <option value="Meghalaya">Meghalaya</option>
+                      <option value="Mizoram">Mizoram</option>
+                      <option value="Nagaland">Nagaland</option>
+                      <option value="Odisha">Odisha</option>
+                      <option value="Punjab">Punjab</option>
+                      <option value="Rajasthan">Rajasthan</option>
+                      <option value="Sikkim">Sikkim</option>
+                      <option value="Tamil Nadu">Tamil Nadu</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Tripura">Tripura</option>
+                      <option value="Uttar Pradesh">Uttar Pradesh</option>
+                      <option value="Uttarakhand">Uttarakhand</option>
+                      <option value="West Bengal">West Bengal</option>
+                      <option value="Andaman and Nicobar Islands">
+                        Andaman and Nicobar Islands
+                      </option>
+                      <option value="Chandigarh">Chandigarh</option>
+                      <option value="Dadra and Nagar Haveli">
+                        Dadra and Nagar Haveli
+                      </option>
+                      <option value="Daman and Diu">Daman and Diu</option>
+                      <option value="Lakshadweep">Lakshadweep</option>
+                      <option value="Delhi">Delhi</option>
+                      <option value="Puducherry">Puducherry</option>
+                    </select>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Address:</label>
+                    <textarea
+                      className="form-control"
+                      id="address"
+                      placeholder="Enter Nominee address"
+                      value={nominee_address}
+                      onChange={(e) => setNominee_address(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Relationship:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="designation"
+                      placeholder="Nominee Relationship"
+                      value={nominee_relationship}
+                      onChange={(e) => setNominee_relationship(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Email:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter nominee email"
+                      value={nominee_email}
+                      onChange={(e) => setNominee_email(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee district:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="joiningDate"
+                      placeholder="nominee district"
+                      value={nominee_district}
+                      onChange={(e) => setNominee_district(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label">Nominee Pin Code:</label>
+                    <input
+                      className="form-control"
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Nominee Pin code"
+                      value={nominee_pinCode}
+                      onChange={(e) => setNominee_pinCode(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
             <h2 style={styles.sectionHeader}>Work Details</h2>
             <span className="text muted text-danger">
               (if you want to update this section please contact to admin)

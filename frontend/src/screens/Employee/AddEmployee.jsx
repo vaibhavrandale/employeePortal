@@ -15,13 +15,13 @@ import { IoEyeOutline } from 'react-icons/io5';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
-      return { ...state, createloading: true };
+      return { ...state, createloadingg: true };
 
     case 'CREATE_SUCCESS':
-      return { ...state, employees: action.payload, createloading: false };
+      return { ...state, employees: action.payload, createloadingg: false };
 
     case 'CREATE_FAIL':
-      return { ...state, createloading: false, error: action.payload };
+      return { ...state, createloadingg: false, error: action.payload };
 
     case 'UPLOAD_REQUEST':
       return { ...state, loadingUpload: true, errorUpload: '' };
@@ -87,7 +87,7 @@ function AddEmployee() {
   const [nominee_email, setNominee_email] = useState('na@gmail.com');
   const [no_of_family_members, setNo_of_family_members] = useState('0');
   const [alternate_mobile_no, setAlternate_mobile_no] = useState('0');
-  const [personal_email, setPersonal_email] = useState('na@gmail.com');
+  const [personal_email, setPersonal_email] = useState('');
   const [tenth_grade, setTenth_grade] = useState('0');
   const [tenth_marksheet, setTenth_marksheet] = useState(
     '/images/tenth_marksheet.png'
@@ -406,7 +406,9 @@ function AddEmployee() {
       );
       return;
     }
-
+    dispatch({
+      type: 'CREATE_REQUEST',
+    });
     try {
       const { data } = await axios.post(
         `api/employees`,

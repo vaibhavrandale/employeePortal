@@ -1807,38 +1807,38 @@ emplyeeRouter.post('/', async (req, res) => {
     const defaultPassword = employee_id;
     const hashedPassword = bcrypt.hashSync(defaultPassword, 10); // Use an appropriate saltRounds value
 
-    // Parse birth date and joining date
-    const parseDate = (dateStr) => {
-      let day, month, year;
-      if (dateStr.includes('-')) {
-        [day, month, year] = dateStr.split('-').map(Number);
-      } else if (dateStr.includes('/')) {
-        [day, month, year] = dateStr.split('/').map(Number);
-      } else {
-        return null; // Invalid date format
-      }
-      return new Date(year, month - 1, day);
-    };
+    // // Parse birth date and joining date
+    // const parseDate = (dateStr) => {
+    //   let day, month, year;
+    //   if (dateStr.includes('-')) {
+    //     [day, month, year] = dateStr.split('-').map(Number);
+    //   } else if (dateStr.includes('/')) {
+    //     [day, month, year] = dateStr.split('/').map(Number);
+    //   } else {
+    //     return null; // Invalid date format
+    //   }
+    //   return new Date(year, month - 1, day);
+    // };
 
-    const parsedBirthDate = parseDate(birth_date);
-    const parsedJoiningDate = parseDate(joiningDate);
+    // const parsedBirthDate = parseDate(birth_date);
+    // const parsedJoiningDate = parseDate(joiningDate);
 
-    if (!parsedBirthDate || !parsedJoiningDate) {
-      return res
-        .status(400)
-        .json({ success: false, error: 'Invalid date format' });
-    }
+    // if (!parsedBirthDate || !parsedJoiningDate) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, error: 'Invalid date format' });
+    // }
 
-    // Function to format date as "DD/MM/YYYY"
-    const formatDate = (date) => {
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
-    };
+    // // Function to format date as "DD/MM/YYYY"
+    // const formatDate = (date) => {
+    //   const day = date.getDate().toString().padStart(2, '0');
+    //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    //   const year = date.getFullYear();
+    //   return `${day}/${month}/${year}`;
+    // };
 
-    const formattedBirthDate = formatDate(parsedBirthDate);
-    const formattedJoiningDate = formatDate(parsedJoiningDate);
+    // const formattedBirthDate = formatDate(parsedBirthDate);
+    // const formattedJoiningDate = formatDate(parsedJoiningDate);
 
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -1881,8 +1881,8 @@ emplyeeRouter.post('/', async (req, res) => {
       lastName,
       father_husband_name,
       gender,
-      birth_date: formattedBirthDate,
-      joiningDate: formattedJoiningDate,
+      birth_date,
+      joiningDate,
       marital_status,
       address,
       addressProof,

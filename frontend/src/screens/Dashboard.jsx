@@ -754,28 +754,6 @@ function Dashboard() {
                     ''
                   )}
 
-                  {/* <div className="col">
-                  <div className="card border border-0 quicklikCard">
-                    <Link to="sitelist" className="p-1 text-decoration-none">
-                      <img
-                        src="/images/icons/survey.png"
-                        className="card-img-top quicklikCardImg"
-                        height={50}
-                        style={{ objectFit: 'contain' }}
-                        alt="..."
-                      />
-                      <div className="card-body text-center ">
-                        <span
-                          className="card-title"
-                          style={{ color: '#2749f5', fontWeight: '500' }}
-                        >
-                          {' '}
-                          Survey
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                </div> */}
                   {userInfo && userInfo.isVisitor === 0 && (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
@@ -1137,6 +1115,41 @@ function Dashboard() {
                         </Link>
                       </div>
                     </div>
+                  )}
+
+                  {userInfo &&
+                  (userInfo.isSuperAdmin === 1 ||
+                    userInfo.isHr === 1 ||
+                    userInfo.isDirector === 1) ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          to="/birthday-calender"
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/birthday.png"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Birthday Calender
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
                   )}
                 </div>
 

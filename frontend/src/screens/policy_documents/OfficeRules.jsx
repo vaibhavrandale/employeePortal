@@ -29,7 +29,7 @@ const OfficeRules = () => {
             <br />
           </span>
           <span className="second-para px-4">
-            The Firm encourages a Six-day’ work week for its professional
+            The Firm encourages a Six-day’s work week for its professional
             employers with week-ends off. However, the office is open on Sunday
             and you may attend work if you feel the need to and/or when required
             to by your Reporting Respective Manager / Management.
@@ -57,11 +57,11 @@ const OfficeRules = () => {
             <br />
             <span style={{ wordSpacing: '2px' }}>
               {' '}
-              The official Lunch Break is between 1.00 p.m. to 1:45 Lunch break
-              is taken during the specified time. In are circumstances when you
-              need to break for lunch at a different time, you may do so in a
-              considerate manner such that visitors to the office and/or your
-              colleagues are not inconvenienced in any way.
+              The official Lunch Break is between 1.00 p.m. to 1:45 p.m. Lunch
+              break is taken during the specified time. In are circumstances
+              when you need to break for lunch at a different time, you may do
+              so in a considerate manner such that visitors to the office and/or
+              your colleagues are not inconvenienced in any way.
             </span>
             <br />
             <span style={{ marginLeft: '16rem', wordSpacing: '2px' }}>

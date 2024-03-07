@@ -142,6 +142,9 @@ const PaidLeaves = () => {
               <li style={{ listStyleType: 'square' }} className="py-2">
                 SICK LEAVE -03
               </li>
+              <li style={{ listStyleType: 'square' }} className="py-2">
+                SHORT LEAVE -02 (in Month)
+              </li>
             </ul>
           </span>
           <br />

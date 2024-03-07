@@ -5,6 +5,7 @@ import EmployeeCard from './EmployeeCard';
 import noimg from './noresult.jpg';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -98,13 +99,7 @@ const CompanyProfile = () => {
 
   const renderEmployeeCards = () => {
     if (loading) {
-      return (
-        <div style={{ minHeight: '350px' }}>
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      );
+      return <LoadingBox5 />;
     }
 
     if (filteredEmployees.length > 0) {

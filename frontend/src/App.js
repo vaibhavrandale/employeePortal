@@ -84,6 +84,7 @@ import ExpenseExport from './screens/expenses/ExpenseExport';
 import Manualjobs from './screens/ManualJobs/Manualjobs';
 import RfidCardUpdate from './screens/UpdateAll/RfidCardUpdate';
 import UpdateUID from './screens/UpdateAll/UpdateUID';
+import BirthdayHome from './screens/Birthday_calender/BirthdayHome';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -801,6 +802,17 @@ function AppRouter() {
           }
         />
         {/* manual data update of cron job */}
+
+        {/* ----------------employee birthday calender------------- */}
+        <Route
+          path="/birthday-calender"
+          element={
+            <SuperAdminRoutes>
+              <BirthdayHome />
+            </SuperAdminRoutes>
+          }
+        />
+        {/* ----------------employee birthday calender------------- */}
       </Routes>
     </>
   );

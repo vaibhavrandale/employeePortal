@@ -1,13 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import './profile.css';
 import EmployeeCard from './EmployeeCard';
-import employees from './employee.js';
+// import employees from './employee.js';
 import noimg from './noresult.jpg';
 import { Helmet } from 'react-helmet';
+import axios from 'axios';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_SUCCESS':
+      return { ...state, employees: action.payload, loading: false };
+
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 const CompanyProfile = () => {
+  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
+    employees: [],
+    loading: true,
+    error: '',
+  });
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png';
 
@@ -15,12 +37,30 @@ const CompanyProfile = () => {
     setSelectedDepartment(department);
   };
 
+  // useEffect(() => {
+  //   // Simulate an API call or any asynchronous operation
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1000); // Simulating a 1-second delay
+  // }, [selectedDepartment]);
+
+  //new
   useEffect(() => {
-    // Simulate an API call or any asynchronous operation
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000); // Simulating a 1-second delay
+    // Simulate API call or data fetching
+    const fetchData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+
+      try {
+        const result = await axios.get('/api/employees');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
+        console.log(result.data);
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+    };
+
+    fetchData();
   }, [selectedDepartment]);
 
   const departmentMap = {
@@ -48,12 +88,12 @@ const CompanyProfile = () => {
     ? employees.filter(
         (employee) =>
           getDepartmentName(employee) === selectedDepartment &&
-          employee.isActivate === 1
+          employee.activate === 1
       )
-    : employees.filter((employee) => employee.isActivate === 1);
+    : employees.filter((employee) => employee.activate === 1);
 
   const directors = employees.filter(
-    (employee) => employee.Designation === 'Director'
+    (employee) => employee.designation === 'Director'
   );
 
   const renderEmployeeCards = () => {
@@ -71,9 +111,9 @@ const CompanyProfile = () => {
       return filteredEmployees.map((item, index) => (
         <EmployeeCard
           key={index}
-          name={item.NAME}
-          img={item.img}
-          designation={item.Designation}
+          NAME={item.NAME}
+          img={item.image}
+          designation={item.designation}
           employee_id={item.employee_id}
           email={item.email}
         />
@@ -82,7 +122,7 @@ const CompanyProfile = () => {
       return (
         <EmployeeCard
           img={noimg}
-          name=""
+          NAME=""
           designation="No employees associated with the selected department."
           employee_id=""
         />
@@ -112,9 +152,9 @@ const CompanyProfile = () => {
         {directors.map((item, index) => (
           <EmployeeCard
             key={index}
-            name={item.NAME}
-            img={item.img}
-            designation={item.Designation}
+            NAME={item.NAME}
+            img={item.image}
+            designation={item.designation}
             employee_id={item.employee_id}
             email={item.email}
           />

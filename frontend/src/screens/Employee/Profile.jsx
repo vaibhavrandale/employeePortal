@@ -980,7 +980,7 @@ const UpdateEmployee = () => {
                         onChange={(e) => setGender(e.target.value)}
                       />
                     ) : (
-                      <select
+                      <select   disabled={accessStatus === 1}
                         name=""
                         id=""
                         style={styles.select}
@@ -1019,7 +1019,7 @@ const UpdateEmployee = () => {
                         onChange={(e) => setMarital_status(e.target.value)}
                       />
                     ) : (
-                      <select
+                      <select   disabled={accessStatus === 1}
                         name=""
                         id=""
                         style={styles.select}
@@ -1068,6 +1068,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">First Name:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="firstName"
@@ -1080,6 +1081,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Age:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="number"
                       id="age"
@@ -1092,6 +1094,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Date of Birth:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="birth_date"
@@ -1103,6 +1106,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Father/Husband Name:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="father_husband_name"
@@ -1117,6 +1121,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Last Name:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="lastName"
@@ -1129,6 +1134,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Gender:</label>
                     <select
+                      disabled={accessStatus === 1}
                       className="form-select"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
@@ -1142,6 +1148,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Marital Status:</label>
                     <select
+                      disabled={accessStatus === 1}
                       className="form-select"
                       value={marital_status}
                       onChange={(e) => setMarital_status(e.target.value)}
@@ -1154,7 +1161,7 @@ const UpdateEmployee = () => {
 
                   {/* <div className="mb-3">
                     <label className="form-label">Profile Image:</label>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       className="form-control"
                       type="file"
                       id="profile"
@@ -1181,7 +1188,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>10th Grade:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -1211,7 +1218,7 @@ const UpdateEmployee = () => {
                     )}
 
                     <div>
-                      <input
+                      <input    disabled={accessStatus === 1}
                         style={{
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
@@ -1252,7 +1259,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>12th/Diploma Grade:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -1282,7 +1289,7 @@ const UpdateEmployee = () => {
                     )}
 
                     <div>
-                      <input
+                      <input    disabled={accessStatus === 1}
                         style={{
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
@@ -1326,7 +1333,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>UG/PG Grade:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -1356,7 +1363,7 @@ const UpdateEmployee = () => {
                     )}
 
                     <div>
-                      <input
+                      <input    disabled={accessStatus === 1}
                         style={{
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
@@ -1406,6 +1413,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Tenth Grade:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="tenth_grade"
@@ -1434,7 +1442,10 @@ const UpdateEmployee = () => {
 
                       <div>
                         <input
-                          style={{ width: '50%' }}
+                          style={{
+                            width: '50%',
+                            display: accessStatus === 1 ? 'none' : 'block',
+                          }}
                           type="file"
                           id="profile"
                           placeholder="Profile"
@@ -1457,6 +1468,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">10th School Name:</label>
                     <textarea
+                      disabled={accessStatus === 1}
                       className="form-control"
                       id="tenth_schoolname"
                       placeholder="Enter 10th School Name"
@@ -1468,6 +1480,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3 ">
                     <label className="form-label">UG/PG Grade:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="under_geaduate_or_post_graduate_grade"
@@ -1498,7 +1511,10 @@ const UpdateEmployee = () => {
 
                       <div>
                         <input
-                          // style={{ width: '50%' }}
+                          style={{
+                            width: '50%',
+                            display: accessStatus === 1 ? 'none' : 'block',
+                          }}
                           type="file"
                           id="profile"
                           placeholder="Profile"
@@ -1523,13 +1539,14 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">12th/Diploma Grade:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
-                      type="text"
+                      type="number"
                       id="twelth_or_diploma_grade"
                       placeholder="12th/Diploma Grade"
                       value={twelth_or_diploma_grade}
                       onChange={(e) =>
-                        setTwelth_or_diploma_marksheet(e.target.value)
+                        setTwelth_or_diploma_grade(e.target.value)
                       }
                     />
                   </div>
@@ -1555,7 +1572,10 @@ const UpdateEmployee = () => {
 
                       <div>
                         <input
-                          // style={{ width: '50%' }}
+                          style={{
+                            width: '50%',
+                            display: accessStatus === 1 ? 'none' : 'block',
+                          }}
                           type="file"
                           id="profile"
                           placeholder="Profile"
@@ -1580,6 +1600,7 @@ const UpdateEmployee = () => {
                       12th/Diploma College Name:
                     </label>
                     <textarea
+                      disabled={accessStatus === 1}
                       className="form-control"
                       id="twelth_or_diploma_marksheet_collegeName"
                       placeholder="Enter 12th/Diploma College Name"
@@ -1593,6 +1614,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">UG/PG College Name:</label>
                     <textarea
+                      disabled={accessStatus === 1}
                       className="form-control"
                       id="under_geaduate_or_post_graduate_collegeName"
                       placeholder="Enter UG/PG College Name"
@@ -1613,7 +1635,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Personal Email:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="email"
@@ -1625,7 +1647,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>Phone Number:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
@@ -1639,7 +1661,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Alternate Phone No:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
@@ -1651,7 +1673,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>Sub Locality:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
@@ -1665,7 +1687,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>District:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
@@ -1677,7 +1699,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>State:</td>
                   <td>
-                    <select
+                    <select   disabled={accessStatus === 1}
                       name="state"
                       id="state"
                       style={styles.select}
@@ -1733,7 +1755,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Pin Code:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -1745,7 +1767,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>No Of family members:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -1775,7 +1797,7 @@ const UpdateEmployee = () => {
                     )}
 
                     <div>
-                      <input
+                      <input    disabled={accessStatus === 1}
                         style={{
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
@@ -1819,6 +1841,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Personal Email:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="email"
                       id="email"
@@ -1831,6 +1854,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Alternate Phone No:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
                       id="alternate_mobile_no"
@@ -1843,6 +1867,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">District:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
                       id="alternate_mobile_no"
@@ -1855,6 +1880,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Pin Code:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
                       id="employee_id"
@@ -1867,6 +1893,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Address:</label>
                     <textarea
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       id="address"
                       placeholder="Enter address"
@@ -1880,6 +1907,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Phone Number:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
                       id="mobile_no"
@@ -1892,6 +1920,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Sub Locality:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="tel"
                       id="alternate_mobile_no"
@@ -1904,6 +1933,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">State:</label>
                     <select
+                      disabled={accessStatus === 1}
                       name="state"
                       id="state"
                       style={styles.select}
@@ -1958,6 +1988,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">No Of family members:</label>
                     <input
+                      disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
                       id="designation"
@@ -1985,7 +2016,10 @@ const UpdateEmployee = () => {
 
                       <div>
                         <input
-                          style={{ width: '50%' }}
+                          style={{
+                            width: '50%',
+                            display: accessStatus === 1 ? 'none' : 'block',
+                          }}
                           type="file"
                           id="profile"
                           placeholder="profile"
@@ -2013,7 +2047,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Nominee Name:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2026,7 +2060,7 @@ const UpdateEmployee = () => {
 
                   <td style={styles.label}>Nominee Relationship:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2040,7 +2074,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Nominee Mobile No:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2052,7 +2086,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>Nominee Email:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2066,7 +2100,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Nominee sub locality:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2079,7 +2113,7 @@ const UpdateEmployee = () => {
 
                   <td style={styles.label}>Nominee district:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2093,7 +2127,7 @@ const UpdateEmployee = () => {
                 <tr>
                   <td style={styles.label}>Nominee State:</td>
                   <td>
-                    <select
+                    <select   disabled={accessStatus === 1}
                       name="state"
                       id="state"
                       style={styles.select}
@@ -2147,7 +2181,7 @@ const UpdateEmployee = () => {
                   </td>
                   <td style={styles.label}>Nominee Pin Code:</td>
                   <td>
-                    <input
+                    <input    disabled={accessStatus === 1}
                       disabled={accessStatus === 1}
                       style={styles.input}
                       type="text"
@@ -2179,6 +2213,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Name:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="employee_id"
@@ -2191,6 +2226,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Mobile No:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="employee_id"
@@ -2203,6 +2239,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee sub locality:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="experience"
@@ -2215,6 +2252,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee State:</label>
                     <select
+                      disabled={accessStatus === 1}
                       name="state"
                       id="state"
                       className="form-select"
@@ -2282,6 +2320,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Relationship:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="designation"
@@ -2294,6 +2333,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Email:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="employee_id"
@@ -2306,6 +2346,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee district:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="joiningDate"
@@ -2318,6 +2359,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Pin Code:</label>
                     <input
+                      disabled={accessStatus === 1}
                       className="form-control"
                       type="text"
                       id="employee_id"
@@ -2440,7 +2482,10 @@ const UpdateEmployee = () => {
 
                       <div>
                         <input
-                          style={{ width: '50%' }}
+                          style={{
+                            width: '50%',
+                            display: accessStatus === 1 ? 'none' : 'block',
+                          }}
                           type="file"
                           id="profile"
                           placeholder="profile"

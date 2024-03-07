@@ -6,6 +6,7 @@ import noimg from './noresult.jpg';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -98,9 +99,13 @@ const CompanyProfile = () => {
   );
 
   const renderEmployeeCards = () => {
-    if (loading) {
-      return <LoadingBox5 />;
-    }
+    // if (loading) {
+    //   return (
+    //     <div style={{ Height: '20vh' }}>
+    //       <LoadingBox5 />
+    //     </div>
+    //   );
+    // }
 
     if (filteredEmployees.length > 0) {
       return filteredEmployees.map((item, index) => (
@@ -144,16 +149,20 @@ const CompanyProfile = () => {
       <h3 className="my-3 text-center">Directors</h3>
 
       <div className="d-flex justify-content-center flex-wrap">
-        {directors.map((item, index) => (
-          <EmployeeCard
-            key={index}
-            NAME={item.NAME}
-            img={item.image}
-            designation={item.designation}
-            employee_id={item.employee_id}
-            email={item.email}
-          />
-        ))}
+        {loading ? (
+          <LoadingBox4 />
+        ) : (
+          directors.map((item, index) => (
+            <EmployeeCard
+              key={index}
+              NAME={item.NAME}
+              img={item.image}
+              designation={item.designation}
+              employee_id={item.employee_id}
+              email={item.email}
+            />
+          ))
+        )}
       </div>
 
       <h3 className="my-3 text-center">Team Tour</h3>
@@ -196,7 +205,7 @@ const CompanyProfile = () => {
         className="d-flex justify-content-center flex-wrap"
         // style={{ minHeight: '0px' }}
       >
-        {renderEmployeeCards()}
+        {loading ? <LoadingBox4 /> : renderEmployeeCards()}
       </div>
     </div>
   );

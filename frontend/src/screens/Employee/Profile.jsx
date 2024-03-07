@@ -13,7 +13,6 @@ import MsgBox from '../../components/MessageBox/MsgBox';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import { Helmet } from 'react-helmet';
 import dummyimage from './images.jpg';
-import { PiLinkThin } from 'react-icons/pi';
 import MyModal from './MyModal';
 
 import { IoEyeOutline } from 'react-icons/io5';
@@ -85,8 +84,6 @@ const reducer = (state, action) => {
   }
 };
 const UpdateEmployee = () => {
-  let salaryRef = useRef();
-
   const { id } = useParams();
   const [
     {
@@ -94,14 +91,10 @@ const UpdateEmployee = () => {
       error,
       employees,
       payslip,
-      loadingSalary,
-      loadingDelete,
+
       loadingUpdate,
 
-      loadingUpload,
-
       loadingDocumentUpload,
-      successDelete,
     },
     dispatch,
   ] = useReducer(reducer, {
@@ -2654,7 +2647,7 @@ const UpdateEmployee = () => {
 
                           <div>
                             <input
-                              style={{ width: '50%' }}
+                              style={{ width: '50%', display: 'none' }}
                               type="file"
                               accept=".jpg, .jpeg, .png"
                               id="profile"

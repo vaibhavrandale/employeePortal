@@ -42,7 +42,7 @@
 
 .directorCard {
   width: 180px;
-  min-height: 270px;
+  min-height: 300px;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.7s;

@@ -184,20 +184,14 @@ const ExpenseHome = () => {
                 <th scope="col" className="text-center">
                   Action
                 </th>
-                {userInfo.isDirector === 1 || userInfo.isHr ? (
-                  <th scope="col" className="text-center">
-                    Approve
-                  </th>
-                ) : (
-                  ''
-                )}
-                {userInfo.isAccountant === 1 || userInfo.isHr ? (
-                  <th scope="col" className="text-center">
-                    Settle
-                  </th>
-                ) : (
-                  ''
-                )}
+
+                <th scope="col" className="text-center">
+                  Approve
+                </th>
+
+                <th scope="col" className="text-center">
+                  Settle
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -333,6 +327,7 @@ const ExpenseHome = () => {
 
                     <Link
                       className="btn btn-sm text-decoration-none btn-success text-light mx-1 py-2 d-flex justify-content-center align-items-center"
+                      target="_blank"
                       to={`/export-expense/${item.id}`}
                     >
                       <FaFileExport />
@@ -403,7 +398,7 @@ const ExpenseHome = () => {
                   ) : (
                     ''
                   )} */}
-                  <td>
+                  {/* <td>
                     <div className="d-flex">
                       {userInfo.isHr === 1 && item.status === 1 ? (
                         <Link
@@ -411,7 +406,7 @@ const ExpenseHome = () => {
                             item.status >= 2 ? 'disabled' : ''
                           }`}
                           to={`/approve-expense/${item.id}`}
-                          disabled={item.status >= 2}
+                          disabled={item.status <= 2}
                         >
                           Approve
                         </Link>
@@ -463,6 +458,128 @@ const ExpenseHome = () => {
                       <Link
                         className={`btn btn-sm btn-success m-1 
                         disabled`}
+                        disabled={item.status >= 2}
+                      >
+                        Settled
+                      </Link>
+                    )}
+                  </td> */}
+
+                  {/* <td>
+                    <div className="d-flex justify-content-center align-items-center">
+                      <td>
+                        <div className="d-flex">
+                          {userInfo.isHr === 1 && item.status === 0 ? (
+                            <Link
+                              className={`btn btn-sm btn-success m-1 ${
+                                item.status >= 2 ? 'disabled' : ''
+                              }`}
+                              to={`/approve-expense/${item.id}`}
+                              disabled={item.status >= 2}
+                            >
+                              Approve
+                            </Link>
+                          ) : (
+                            <Link
+                              className={`btn btn-sm btn-success m-1 
+                    disabled`}
+                              disabled={item.status >= 2}
+                            >
+                              {item.status === 0
+                                ? 'Pending from HR'
+                                : 'HR Approved'}
+                            </Link>
+                          )}
+                        </div>
+                      </td>
+                       */}
+
+                  <td>
+                    <div className="d-flex justify-content-center align-items-center">
+                      {userInfo.isDirector === 1 && item.status === 0 ? (
+                        <Link className={`btn btn-sm btn-warning m-1 disabled`}>
+                          Pending from HR
+                        </Link>
+                      ) : userInfo.isHr === 1 && item.status === 1 ? (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 ${
+                            item.status >= 2 ? 'disabled' : ''
+                          }`}
+                          to={`/approve-expense/${item.id}`}
+                          disabled={item.status >= 2}
+                        >
+                          Approve
+                        </Link>
+                      ) : (userInfo.isDirector === 1 ||
+                          userInfo.isAccountant === 1) &&
+                        item.status === 1 ? (
+                        <Link
+                          className={`btn btn-sm btn-warning m-1
+                            disabled
+                          `}
+                          to={`/approve-expense/${item.id}`}
+                          disabled={item.status >= 2}
+                        >
+                          Pending
+                        </Link>
+                      ) : (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 
+          disabled`}
+                          disabled={item.status >= 2}
+                        >
+                          HR Approved
+                        </Link>
+                      )}
+
+                      {userInfo.isHr === 1 && item.status === 0 ? (
+                        <Link
+                          className={`btn btn-sm btn-warning m-1`}
+                          to={`/pending-from-hr/${item.id}`}
+                        >
+                          Pending from HR
+                        </Link>
+                      ) : userInfo.isDirector === 1 && item.status === 0 ? (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 ${
+                            item.status >= 2 ? 'disabled' : ''
+                          }`}
+                          to={`/approve-expense/${item.id}`}
+                          disabled={item.status >= 2}
+                        >
+                          Approve
+                        </Link>
+                      ) : (
+                        <Link
+                          className={`btn btn-sm btn-success m-1 
+          disabled`}
+                          disabled={item.status >= 2}
+                        >
+                          Director Approved
+                        </Link>
+                      )}
+                    </div>
+                  </td>
+
+                  <td>
+                    {userInfo.isAccountant === 1 && item.status === 2 ? (
+                      <Link
+                        className={`btn btn-sm btn-success m-1`}
+                        to={`/settle-expense/${item.id}`}
+                      >
+                        Settle
+                      </Link>
+                    ) : item.status <= 2 ? (
+                      <Link
+                        className={`btn btn-sm btn-warning m-1 disabled`}
+                        to={`/settle-expense/${item.id}`}
+                      >
+                        Pending
+                      </Link>
+                    ) : (
+                      <Link
+                        className={`btn btn-sm btn-success m-1 
+                    disabled`}
                         disabled={item.status >= 2}
                       >
                         Settled

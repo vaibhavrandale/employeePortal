@@ -2327,6 +2327,7 @@ const UpdateEmployee = () => {
                   <div className="mb-3">
                     <label className="form-label">Nominee Address:</label>
                     <textarea
+                      disabled={accessStatus === 1}
                       className="form-control"
                       id="address"
                       placeholder="Enter Nominee address"
@@ -2981,6 +2982,7 @@ const UpdateEmployee = () => {
                     <div className="mb-3">
                       <label style={styles.label}>PF Account No:</label>
                       <input
+                        disabled
                         style={styles.input}
                         type="text"
                         id="experience"

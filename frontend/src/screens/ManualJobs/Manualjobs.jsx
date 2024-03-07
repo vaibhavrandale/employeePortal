@@ -14,6 +14,7 @@ import { FcLeave } from 'react-icons/fc';
 import { FaPlaneDeparture } from 'react-icons/fa';
 import { GiTimeBomb } from 'react-icons/gi';
 import { FaRegAddressCard } from 'react-icons/fa';
+import { RiLoginBoxLine } from 'react-icons/ri';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -73,13 +74,14 @@ const reducer = (state, action) => {
 const Manualjobs = () => {
   const [{ loadingCreate, access, loadingAccess, successAccess }, dispatch] =
     useReducer(reducer, {
-      access: {},
+      access: [],
       loadingCreate: false,
       error: '',
     });
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [accessStatus, setAccessStatus] = useState(0);
+  const [LoginAccessStatus, setLoginAccessStatus] = useState(0);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -90,10 +92,24 @@ const Manualjobs = () => {
         console.log(accessresult.data);
         dispatch({
           type: 'ACCESS_SUCCESS',
-          payload: accessresult.data.payslip,
         });
 
         setAccessStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
+
+    const LoginStatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/2`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+        });
+
+        setLoginAccessStatus(accessresult.data.access.status);
       } catch (err) {
         dispatch({ type: 'ACCESS_FAIL', payload: err.message });
       }
@@ -105,8 +121,30 @@ const Manualjobs = () => {
       dispatch({ type: 'ACCESS_RESET' });
     } else {
       StatusData();
+      LoginStatusData();
     }
   }, [successAccess]);
+
+  const handleLoginAccessToggle = async () => {
+    dispatch({ type: 'ACCESS_UPDATE_REQUEST' });
+
+    try {
+      const apiEndpoint =
+        LoginAccessStatus === 1
+          ? '/api/access/deactivate-login/2'
+          : '/api/access/activate-login/2';
+
+      const { data } = await axios.put(apiEndpoint, null, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+
+      dispatch({ type: 'ACCESS_UPDATE_SUCCESS', payload: data.access });
+      toast.success(data.message, { position: 'top-right' });
+    } catch (error) {
+      dispatch({ type: 'ACCESS_UPDATE_FAIL', payload: getError(error) });
+      toast.error(getError(error), { position: 'top-right' });
+    }
+  };
 
   const BirthdayEmailHandler = async (e) => {
     e.preventDefault();
@@ -356,6 +394,7 @@ const Manualjobs = () => {
       dispatch({ type: 'ACCESS_UPDATE_FAIL' });
     }
   };
+
   return (
     <div className="container">
       <h2 className="text-center">Manual Jobs</h2>
@@ -543,6 +582,40 @@ const Manualjobs = () => {
             className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
           >
             Update RFID
+          </Link>
+        </div>
+
+        <div className="Manualcard m-1">
+          <div className="d-flex justify-content-center">
+            <RiLoginBoxLine className="text-danger manualicon" />
+          </div>
+          <Link
+            onClick={handleLoginAccessToggle}
+            className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+          >
+            {LoginAccessStatus === 1 ? (
+              <>
+                {loadingAccess ? (
+                  <>
+                    {' '}
+                    Login Access ON <LoadingBox4 />
+                  </>
+                ) : (
+                  'Login Access ON'
+                )}
+              </>
+            ) : (
+              <>
+                {loadingAccess ? (
+                  <>
+                    {' '}
+                    Login Access OFF <LoadingBox4 />
+                  </>
+                ) : (
+                  'Login Access OFF'
+                )}
+              </>
+            )}
           </Link>
         </div>
       </div>

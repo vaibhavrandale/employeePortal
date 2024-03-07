@@ -103,6 +103,7 @@ function Dashboard() {
   });
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [LoginAccessStatus, setLoginAccessStatus] = useState(0);
 
   var todayDate = new Date();
 
@@ -116,7 +117,25 @@ function Dashboard() {
 
   useEffect(() => {
     // Simulate API call or data fetching
-    const fetchData = async () => {
+
+    const LoginStatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/2`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+        });
+
+        setLoginAccessStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
+
+    LoginStatusData();
+
+    const fetchNoticeData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
@@ -135,7 +154,8 @@ function Dashboard() {
       }
     };
 
-    fetchData();
+    fetchNoticeData();
+
     const fetchBirthdayData = async () => {
       try {
         const response = await axios.get('/api/employees/birthday-check');
@@ -187,6 +207,7 @@ function Dashboard() {
         });
       }
     };
+
     if (successAttendance) {
       dispatch({ type: 'ENTRY_EXIT_RESET' });
     } else {
@@ -1167,251 +1188,259 @@ function Dashboard() {
             </div>
 
             {/* punchin */}
+            {LoginAccessStatus === 1 ? (
+              <>
+                {loadingAttendance ? (
+                  <LoadingBox4></LoadingBox4>
+                ) : (
+                  <div className="d-flex justify-content-center">
+                    {!AttendanceResponse ||
+                    (AttendanceResponse.IN_TIME_1 === null &&
+                      AttendanceResponse.IN_TIME_2 === null &&
+                      AttendanceResponse.IN_TIME_3 === null &&
+                      AttendanceResponse.OUT_TIME_1 === null &&
+                      AttendanceResponse.OUT_TIME_2 === null &&
+                      AttendanceResponse.OUT_TIME_3 === null) ? (
+                      <form onSubmit={entryOneHandler}>
+                        <input
+                          type="hidden"
+                          value={UID}
+                          onChange={(e) => setUID(e.target.value)}
+                        />
 
-            {loadingAttendance ? (
-              <LoadingBox4></LoadingBox4>
+                        <input
+                          type="hidden"
+                          value={IN_LATTITUDE_1}
+                          onChange={(e) => setIN_LATTITUDE_1(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_LONGITUDE_1}
+                          onChange={(e) => setIN_LONGITUDE_1(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_TIME_1}
+                          onChange={(e) => setIN_TIME_1(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={currentmonth}
+                          onChange={(e) => setCurrentMonth(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={currentday}
+                          onChange={(e) => setCurrentday(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={currentyear}
+                          onChange={(e) => setCurrentyear(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={Name}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={employee_id}
+                          onChange={(e) => setEmployee_id(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={isLeave}
+                          onChange={(e) => setLeave(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={totalHours}
+                          onChange={(e) => setTotalHours(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={LeaveType}
+                          onChange={(e) => setLeaveType(e.target.value)}
+                        />
+                        <button
+                          type="submit"
+                          className=" Loginbutton  btn-sm mx-1"
+                        >
+                          Tap 1
+                        </button>
+                      </form>
+                    ) : (
+                      ''
+                    )}
+
+                    {AttendanceResponse.IN_TIME_1 !== null &&
+                    AttendanceResponse.IN_TIME_2 === null &&
+                    AttendanceResponse.IN_TIME_3 === null &&
+                    AttendanceResponse.OUT_TIME_1 === null &&
+                    AttendanceResponse.OUT_TIME_2 === null &&
+                    AttendanceResponse.OUT_TIME_3 === null ? (
+                      <form onSubmit={exitOneHandler}>
+                        <input
+                          type="hidden"
+                          value={OUT_LATTITUDE_1}
+                          onChange={(e) => setOUT_LATTITUDE_1(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_LONGITUDE_1}
+                          onChange={(e) => setOUT_LONGITUDE_1(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_TIME_1}
+                          onChange={(e) => setOUT_TIME_1(e.target.value)}
+                        />
+
+                        <button className=" Loginbutton  mx-1" type="submit">
+                          Punch out 1
+                        </button>
+                      </form>
+                    ) : (
+                      ''
+                    )}
+
+                    {!AttendanceResponse ||
+                    (AttendanceResponse.IN_TIME_1 !== null &&
+                      AttendanceResponse.IN_TIME_2 === null &&
+                      AttendanceResponse.IN_TIME_3 === null &&
+                      AttendanceResponse.OUT_TIME_1 !== null &&
+                      AttendanceResponse.OUT_TIME_2 === null &&
+                      AttendanceResponse.OUT_TIME_3 === null) ? (
+                      <form onSubmit={entryTwoHandler}>
+                        <input
+                          type="hidden"
+                          value={IN_LATTITUDE_2}
+                          onChange={(e) => setIN_LATTITUDE_2(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_LONGITUDE_2}
+                          onChange={(e) => setIN_LONGITUDE_2(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_TIME_2}
+                          onChange={(e) => setIN_TIME_2(e.target.value)}
+                        />
+
+                        <button className=" Loginbutton  mx-1" type="submit">
+                          Punch in 2
+                        </button>
+                      </form>
+                    ) : (
+                      ''
+                    )}
+
+                    {!AttendanceResponse ||
+                    (AttendanceResponse.IN_TIME_1 !== null &&
+                      AttendanceResponse.IN_TIME_2 !== null &&
+                      AttendanceResponse.IN_TIME_3 === null &&
+                      AttendanceResponse.OUT_TIME_1 !== null &&
+                      AttendanceResponse.OUT_TIME_2 === null &&
+                      AttendanceResponse.OUT_TIME_3 === null) ? (
+                      <form onSubmit={exitTwoHandler}>
+                        <input
+                          type="hidden"
+                          value={OUT_LATTITUDE_2}
+                          onChange={(e) => setOUT_LATTITUDE_2(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_LONGITUDE_2}
+                          onChange={(e) => setOUT_LONGITUDE_2(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_TIME_2}
+                          onChange={(e) => setOUT_TIME_2(e.target.value)}
+                        />
+
+                        <button className=" Loginbutton  mx-1" type="submit">
+                          Punch out 2
+                        </button>
+                      </form>
+                    ) : (
+                      ''
+                    )}
+
+                    {!AttendanceResponse ||
+                    (AttendanceResponse.IN_TIME_1 !== null &&
+                      AttendanceResponse.IN_TIME_2 !== null &&
+                      AttendanceResponse.IN_TIME_3 === null &&
+                      AttendanceResponse.OUT_TIME_1 !== null &&
+                      AttendanceResponse.OUT_TIME_2 !== null &&
+                      AttendanceResponse.OUT_TIME_3 === null) ? (
+                      <form onSubmit={entryThreeHandler}>
+                        <input
+                          type="hidden"
+                          value={IN_LATTITUDE_3}
+                          onChange={(e) => setIN_LATTITUDE_3(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_LONGITUDE_3}
+                          onChange={(e) => setIN_LONGITUDE_3(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={IN_TIME_3}
+                          onChange={(e) => setIN_TIME_3(e.target.value)}
+                        />
+
+                        <button className=" Loginbutton  mx-1" type="submit">
+                          Punch in 3
+                        </button>
+                      </form>
+                    ) : (
+                      ''
+                    )}
+
+                    {AttendanceResponse.IN_TIME_1 !== null &&
+                    AttendanceResponse.OUT_TIME_1 !== null &&
+                    AttendanceResponse.OUT_TIME_1 !== null &&
+                    AttendanceResponse.OUT_TIME_2 !== null &&
+                    AttendanceResponse.IN_TIME_3 !== null &&
+                    AttendanceResponse.OUT_TIME_3 === null ? (
+                      <form onSubmit={exitThreeHandler}>
+                        <input
+                          type="hidden"
+                          value={OUT_LATTITUDE_3}
+                          onChange={(e) => setOUT_LATTITUDE_3(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_LONGITUDE_3}
+                          onChange={(e) => setOUT_LONGITUDE_3(e.target.value)}
+                        />
+                        <input
+                          type="hidden"
+                          value={OUT_TIME_3}
+                          onChange={(e) => setOUT_TIME_3(e.target.value)}
+                        />
+
+                        <button className=" Loginbutton  mx-1" type="submit">
+                          Punch out 3
+                        </button>
+                      </form>
+                    ) : (
+                      AttendanceResponse.IN_TIME_1 !== null &&
+                      AttendanceResponse.OUT_TIME_3 !== null && (
+                        <span className="badge bg-success p-2">
+                          Thank You! Have a Good Day...😊
+                        </span>
+                      )
+                    )}
+                  </div>
+                )}
+              </>
             ) : (
-              <div className="d-flex justify-content-center">
-                {!AttendanceResponse ||
-                (AttendanceResponse.IN_TIME_1 === null &&
-                  AttendanceResponse.IN_TIME_2 === null &&
-                  AttendanceResponse.IN_TIME_3 === null &&
-                  AttendanceResponse.OUT_TIME_1 === null &&
-                  AttendanceResponse.OUT_TIME_2 === null &&
-                  AttendanceResponse.OUT_TIME_3 === null) ? (
-                  <form onSubmit={entryOneHandler}>
-                    <input
-                      type="hidden"
-                      value={UID}
-                      onChange={(e) => setUID(e.target.value)}
-                    />
-
-                    <input
-                      type="hidden"
-                      value={IN_LATTITUDE_1}
-                      onChange={(e) => setIN_LATTITUDE_1(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_LONGITUDE_1}
-                      onChange={(e) => setIN_LONGITUDE_1(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_TIME_1}
-                      onChange={(e) => setIN_TIME_1(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={currentmonth}
-                      onChange={(e) => setCurrentMonth(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={currentday}
-                      onChange={(e) => setCurrentday(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={currentyear}
-                      onChange={(e) => setCurrentyear(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={Name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={employee_id}
-                      onChange={(e) => setEmployee_id(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={isLeave}
-                      onChange={(e) => setLeave(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={totalHours}
-                      onChange={(e) => setTotalHours(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={LeaveType}
-                      onChange={(e) => setLeaveType(e.target.value)}
-                    />
-                    <button type="submit" className=" Loginbutton  btn-sm mx-1">
-                      Tap 1
-                    </button>
-                  </form>
-                ) : (
-                  ''
-                )}
-
-                {AttendanceResponse.IN_TIME_1 !== null &&
-                AttendanceResponse.IN_TIME_2 === null &&
-                AttendanceResponse.IN_TIME_3 === null &&
-                AttendanceResponse.OUT_TIME_1 === null &&
-                AttendanceResponse.OUT_TIME_2 === null &&
-                AttendanceResponse.OUT_TIME_3 === null ? (
-                  <form onSubmit={exitOneHandler}>
-                    <input
-                      type="hidden"
-                      value={OUT_LATTITUDE_1}
-                      onChange={(e) => setOUT_LATTITUDE_1(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_LONGITUDE_1}
-                      onChange={(e) => setOUT_LONGITUDE_1(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_TIME_1}
-                      onChange={(e) => setOUT_TIME_1(e.target.value)}
-                    />
-
-                    <button className=" Loginbutton  mx-1" type="submit">
-                      Punch out 1
-                    </button>
-                  </form>
-                ) : (
-                  ''
-                )}
-
-                {!AttendanceResponse ||
-                (AttendanceResponse.IN_TIME_1 !== null &&
-                  AttendanceResponse.IN_TIME_2 === null &&
-                  AttendanceResponse.IN_TIME_3 === null &&
-                  AttendanceResponse.OUT_TIME_1 !== null &&
-                  AttendanceResponse.OUT_TIME_2 === null &&
-                  AttendanceResponse.OUT_TIME_3 === null) ? (
-                  <form onSubmit={entryTwoHandler}>
-                    <input
-                      type="hidden"
-                      value={IN_LATTITUDE_2}
-                      onChange={(e) => setIN_LATTITUDE_2(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_LONGITUDE_2}
-                      onChange={(e) => setIN_LONGITUDE_2(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_TIME_2}
-                      onChange={(e) => setIN_TIME_2(e.target.value)}
-                    />
-
-                    <button className=" Loginbutton  mx-1" type="submit">
-                      Punch in 2
-                    </button>
-                  </form>
-                ) : (
-                  ''
-                )}
-
-                {!AttendanceResponse ||
-                (AttendanceResponse.IN_TIME_1 !== null &&
-                  AttendanceResponse.IN_TIME_2 !== null &&
-                  AttendanceResponse.IN_TIME_3 === null &&
-                  AttendanceResponse.OUT_TIME_1 !== null &&
-                  AttendanceResponse.OUT_TIME_2 === null &&
-                  AttendanceResponse.OUT_TIME_3 === null) ? (
-                  <form onSubmit={exitTwoHandler}>
-                    <input
-                      type="hidden"
-                      value={OUT_LATTITUDE_2}
-                      onChange={(e) => setOUT_LATTITUDE_2(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_LONGITUDE_2}
-                      onChange={(e) => setOUT_LONGITUDE_2(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_TIME_2}
-                      onChange={(e) => setOUT_TIME_2(e.target.value)}
-                    />
-
-                    <button className=" Loginbutton  mx-1" type="submit">
-                      Punch out 2
-                    </button>
-                  </form>
-                ) : (
-                  ''
-                )}
-
-                {!AttendanceResponse ||
-                (AttendanceResponse.IN_TIME_1 !== null &&
-                  AttendanceResponse.IN_TIME_2 !== null &&
-                  AttendanceResponse.IN_TIME_3 === null &&
-                  AttendanceResponse.OUT_TIME_1 !== null &&
-                  AttendanceResponse.OUT_TIME_2 !== null &&
-                  AttendanceResponse.OUT_TIME_3 === null) ? (
-                  <form onSubmit={entryThreeHandler}>
-                    <input
-                      type="hidden"
-                      value={IN_LATTITUDE_3}
-                      onChange={(e) => setIN_LATTITUDE_3(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_LONGITUDE_3}
-                      onChange={(e) => setIN_LONGITUDE_3(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={IN_TIME_3}
-                      onChange={(e) => setIN_TIME_3(e.target.value)}
-                    />
-
-                    <button className=" Loginbutton  mx-1" type="submit">
-                      Punch in 3
-                    </button>
-                  </form>
-                ) : (
-                  ''
-                )}
-
-                {AttendanceResponse.IN_TIME_1 !== null &&
-                AttendanceResponse.OUT_TIME_1 !== null &&
-                AttendanceResponse.OUT_TIME_1 !== null &&
-                AttendanceResponse.OUT_TIME_2 !== null &&
-                AttendanceResponse.IN_TIME_3 !== null &&
-                AttendanceResponse.OUT_TIME_3 === null ? (
-                  <form onSubmit={exitThreeHandler}>
-                    <input
-                      type="hidden"
-                      value={OUT_LATTITUDE_3}
-                      onChange={(e) => setOUT_LATTITUDE_3(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_LONGITUDE_3}
-                      onChange={(e) => setOUT_LONGITUDE_3(e.target.value)}
-                    />
-                    <input
-                      type="hidden"
-                      value={OUT_TIME_3}
-                      onChange={(e) => setOUT_TIME_3(e.target.value)}
-                    />
-
-                    <button className=" Loginbutton  mx-1" type="submit">
-                      Punch out 3
-                    </button>
-                  </form>
-                ) : (
-                  AttendanceResponse.IN_TIME_1 !== null &&
-                  AttendanceResponse.OUT_TIME_3 !== null && (
-                    <span className="badge bg-success p-2">
-                      Thank You! Have a Good Day...😊
-                    </span>
-                  )
-                )}
-              </div>
+              ''
             )}
           </>
         )}

@@ -102,97 +102,56 @@ accessRouter.put('/deactivate/:id', async (req, res) => {
   }
 });
 
-// holidayRouter.get('/total/:month/:year', async (req, res) => {
-//   const { month, year } = req.params;
+// ------------------login button --------------------
+accessRouter.put('/activate-login/:id', async (req, res) => {
+  const id = req.params.id;
 
-//   try {
-//     // Count holidays for the specified month and year
-//     const holidayCount = await Holidays.count({
-//       where: {
-//         date: {
-//           [Op.and]: [
-//             Sequelize.where(
-//               Sequelize.fn('MONTH', Sequelize.col('date')),
-//               month
-//             ),
-//             Sequelize.where(Sequelize.fn('YEAR', Sequelize.col('date')), year),
-//           ],
-//         },
-//       },
-//     });
+  try {
+    const access = await Access.findByPk(id);
 
-//     // Send the count as the response
-//     res.status(200).send(holidayCount.toString()); // Convert to string if necessary
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send({ error: 'Internal Server Error' });
-//   }
-// });
+    if (!access) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'access not found' });
+    }
 
-// holidayRouter.put('/:id', async (req, res) => {
-//   const id = req.params.id;
-//   const { name, img, date } = req.body;
+    access.status = 1;
 
-//   try {
-//     const holiday = await Holidays.findByPk(id);
+    // Save the updated holiday to the database
+    const updatedaccess = await access.save();
 
-//     if (!holiday) {
-//       return res
-//         .status(404)
-//         .json({ success: false, error: 'holiday not found' });
-//     }
+    res.send({ message: `${access.name}: access activated `, updatedaccess });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+accessRouter.put('/deactivate-login/:id', async (req, res) => {
+  const id = req.params.id;
 
-//     holiday.img = img;
-//     holiday.name = name;
-//     holiday.date = date;
+  try {
+    const access = await Access.findByPk(id);
 
-//     // Save the updated holiday to the database
-//     const updatedholiday = await holiday.save();
+    if (!access) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'access not found' });
+    }
 
-//     res.send({ updatedholiday, message: 'holiday updated' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send({ error: 'Internal Server Error' });
-//   }
-// });
+    access.status = 0;
 
-// holidayRouter.delete(
-//   '/:id',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const holiday = await Holidays.findByPk(req.params.id);
+    // Save the updated holiday to the database
+    const updatedaccess = await access.save();
 
-//     if (!holiday) {
-//       res.status(404).send({ message: 'holiday not found' });
-//       return;
-//     }
-//     // If the employee is not protected, delete them
-//     const deletedholiday = await holiday.destroy();
-//     res.send({ message: 'holiday Deleted', deletedholiday });
-//   })
-// );
-
-// holidayRouter.post(
-//   '/',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const {
-//       name,
-//       img,
-//       date,
-//       // description
-//     } = req.body;
-//     const newholiday = new Holidays({
-//       name,
-//       img,
-//       date,
-//       // description
-//     });
-//     const holiday = await newholiday.save();
-//     res.send({ holiday, message: 'holiday Created' });
-//   })
-// );
+    res.send({
+      message: `${access.name}: access  deactivated `,
+      updatedaccess,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+// ------------------login button --------------------
 
 export default accessRouter;

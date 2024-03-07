@@ -77,13 +77,15 @@ const Addasset = () => {
 
   const [imageA, setImageA] = useState('');
   const [imageB, setImageB] = useState('');
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
   const [employeeId, setEmployeeId] = useState('');
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   const [status, setStatus] = useState(0);
   const [given_date, setGiven_date] = useState('');
   const [return_date, seReturn_date] = useState('');
   const [remark, setRemark] = useState('');
+
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   // const [description, setDescription] = useState('');
 
   useEffect(() => {
@@ -124,12 +126,12 @@ const Addasset = () => {
     });
     const missingFields = [];
 
-    if (!name) {
-      missingFields.push('Please select Name Of Asset');
-    }
-    if (!email) {
-      missingFields.push('Please select Email Of Asset');
-    }
+    // if (!name) {
+    //   missingFields.push('Please select Name Of Asset');
+    // }
+    // if (!email) {
+    //   missingFields.push('Please select Email Of Asset');
+    // }
     if (!imageA) {
       missingFields.push('Please upload Image for Asset');
     }
@@ -150,8 +152,8 @@ const Addasset = () => {
       const { data } = await axios.post(
         `/api/assets/create`,
         {
-          name,
-          email,
+          // name,
+          // email,
           employee_id: employeeId,
           given_date,
           return_date: '',
@@ -233,7 +235,14 @@ const Addasset = () => {
               className="form-select"
               id="employeeSelect"
               value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
+              onChange={(e) => {
+                setEmployeeId(e.target.value);
+                // Find the selected employee based on the employee_id
+                const selectedEmp = employees.find(
+                  (emp) => emp.employee_id === e.target.value
+                );
+                setSelectedEmployee(selectedEmp);
+              }}
             >
               <option value="">Select an employee</option>
               {employees.map((employee) => (
@@ -245,9 +254,16 @@ const Addasset = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="name" className="form-label text-dark fw-bold">
-              Select Employee name
+              Employee name
             </label>
-            <select
+            <input
+              type="text"
+              className="form-control"
+              id="employeeEmail"
+              value={selectedEmployee ? selectedEmployee.NAME : ''}
+              readOnly
+            />
+            {/* <select
               className="form-select"
               id="employeeSelect"
               value={name}
@@ -259,14 +275,22 @@ const Addasset = () => {
                   {employee.NAME}
                 </option>
               ))}
-            </select>
+            </select> */}
           </div>
 
           <div className="mb-3">
             <label htmlFor="name" className="form-label text-dark fw-bold">
-              Select Employee Email
+              Employee Email
             </label>
-            <select
+
+            <input
+              type="text"
+              className="form-control"
+              id="employeeEmail"
+              value={selectedEmployee ? selectedEmployee.email : ''}
+              readOnly
+            />
+            {/* <select
               className="form-select"
               id="employeeSelect"
               value={email}
@@ -278,7 +302,7 @@ const Addasset = () => {
                   {employee.email}
                 </option>
               ))}
-            </select>
+            </select> */}
           </div>
 
           <div className="mb-3">

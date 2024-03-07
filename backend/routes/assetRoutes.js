@@ -4,6 +4,7 @@ import { Sequelize, Op } from 'sequelize';
 import { isAuth, isAdmin } from '../utils.js';
 import dotenv from 'dotenv';
 import EmployeeAssets from '../models/EmployeeAssets.js';
+import Employee from '../models/employeeModel.js';
 
 const assetsRouter = express.Router();
 
@@ -28,15 +29,46 @@ assetsRouter.get('/:id', async (req, res) => {
   }
 });
 
+// assetsRouter.post(
+//   '/create',
+//   isAuth,
+//   isAdmin,
+//   expressAsyncHandler(async (req, res) => {
+//     const {
+//       name,
+//       employee_id,
+//       email,
+//       imageA,
+//       imageB,
+//       status,
+//       given_date,
+//       return_date,
+//       remark,
+//       // description
+//     } = req.body;
+//     const newasset = new EmployeeAssets({
+//       name,
+//       employee_id,
+//       email,
+//       imageA,
+//       imageB,
+//       status,
+//       given_date,
+//       return_date,
+//       remark,
+//     });
+//     const asset = await newasset.save();
+//     res.send({ message: 'asset Created', asset });
+//   })
+// );
+
 assetsRouter.post(
   '/create',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const {
-      name,
       employee_id,
-      email,
       imageA,
       imageB,
       status,
@@ -45,10 +77,20 @@ assetsRouter.post(
       remark,
       // description
     } = req.body;
-    const newasset = new EmployeeAssets({
-      name,
+
+    // Fetch employee details based on employee_id
+    const employee = await Employee.findOne({
+      where: { employee_id: employee_id },
+    });
+    if (!employee) {
+      return res.status(404).send({ message: 'Employee not found' });
+    }
+
+    // Create a new asset with employee details
+    const newAsset = new EmployeeAssets({
+      name: employee.NAME,
       employee_id,
-      email,
+      email: employee.email,
       imageA,
       imageB,
       status,
@@ -56,8 +98,11 @@ assetsRouter.post(
       return_date,
       remark,
     });
-    const asset = await newasset.save();
-    res.send({ message: 'asset Created', asset });
+
+    // Save the new asset
+    const asset = await newAsset.save();
+
+    res.send({ message: 'Asset Created', asset });
   })
 );
 

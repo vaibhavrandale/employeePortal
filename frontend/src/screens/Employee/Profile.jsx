@@ -2375,7 +2375,7 @@ const UpdateEmployee = () => {
             <span className="text muted text-danger">
               (if you want to update this section please contact to admin)
             </span>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>Employee ID:</td>
@@ -2519,12 +2519,157 @@ const UpdateEmployee = () => {
                   </tr>
                 )}
               </tbody>
-            </table>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label style={styles.label}>Employee ID:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Employee ID"
+                      value={employee_id}
+                      onChange={(e) => setEmployee_id(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Designation:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Designation"
+                      value={designation}
+                      onChange={(e) => setDesignation(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Experience:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="experience"
+                      placeholder="Experience"
+                      value={experience}
+                      onChange={(e) => setExperience(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label style={styles.label}>Joining Date:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="joiningDate"
+                      value={joiningDate}
+                      onChange={(e) => setJoiningDate(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label style={styles.label}>Employee UID:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="UID"
+                      placeholder="Employee UID"
+                      value={UID}
+                      onChange={(e) => setUID(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Company mail:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter company mail"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </div>
+
+                  {experience === 'NA' ||
+                  experience === 0 ||
+                  experience === 'fresher' ||
+                  experience === 'Fresher' ? (
+                    ''
+                  ) : (
+                    <>
+                      <div className="mb-3">
+                        <label style={styles.label}>Experience Letter</label>
+                        <div className="d-flex align-items-center">
+                          {experience_letter ? (
+                            <Link
+                              type="button"
+                              className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                              data-bs-toggle="modal"
+                              data-bs-target="#myModal_experience_letter"
+                              onClick={handleShowImage}
+                            >
+                              <IoEyeOutline />
+                            </Link>
+                          ) : (
+                            ''
+                          )}
+
+                          <div>
+                            <input
+                              style={{ width: '50%' }}
+                              type="file"
+                              id="profile"
+                              placeholder="profile"
+                              onChange={uploadExperienceLetter}
+                              className="my-2 mx-2"
+                            />
+                            {loadingDocumentUpload && <LoadingBox4 />}
+                          </div>
+
+                          <MyModal
+                            showModal={showImageModal}
+                            handleClose={handleCloseImageModal}
+                            data="Experience Letter"
+                            modalName="myModal_experience_letter"
+                            img={experience_letter}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="mb-3">
+                        <label style={styles.label}>Previous Company:</label>
+                        <input
+                          style={styles.input}
+                          type="text"
+                          id="joiningDate"
+                          placeholder="Enter Previous Company"
+                          value={previous_company_name}
+                          onChange={(e) =>
+                            setPrevious_company_name(e.target.value)
+                          }
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
             <h2 style={styles.sectionHeader}>Identification Documents</h2>{' '}
             <span className="text muted text-danger">
               (if you want to update this section please contact to admin)
             </span>
-            <table style={styles.table}>
+            {/* <table style={styles.table}>
               <tbody>
                 <tr>
                   <td style={styles.label}>Aadhar No:</td>
@@ -2672,7 +2817,161 @@ const UpdateEmployee = () => {
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </table> */}
+            <div className="">
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label style={styles.label}>Aadhar No:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter Adhar No"
+                      value={aadhar_no}
+                      onChange={(e) => setAdharno(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Upload Aadhar File</label>
+                    <div className="d-flex align-items-center">
+                      {aadhar_card_file ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_aadhar_card_file"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Aaadhar card"
+                        modalName="myModal_aadhar_card_file"
+                        img={aadhar_card_file}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Bank Account No:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="employee_id"
+                      placeholder="Enter bank account no"
+                      value={bank_account_no}
+                      onChange={(e) => setBank_account_no(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Upload Bank File</label>
+                    <div className="d-flex align-items-center">
+                      {bank_account_file ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_bank_account_file"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <MyModal
+                        showModal={showImageModal}
+                        handleClose={handleCloseImageModal}
+                        data="Bank Account"
+                        modalName="myModal_bank_account_file"
+                        img={bank_account_file}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-6">
+                  <div className="mb-3">
+                    <label style={styles.label}>Pan Number:</label>
+                    <input
+                      disabled
+                      style={styles.input}
+                      type="text"
+                      id="designation"
+                      placeholder="Enter Pan Number"
+                      value={pan_number}
+                      onChange={(e) => setPan_number(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label style={styles.label}>Upload PAN File </label>
+                    <div className="d-flex align-items-center">
+                      {pan_card_file ? (
+                        <Link
+                          type="button"
+                          className="badge bg-success text-decoration-none d-flex justify-content-center align-items-center my-2 mx-2"
+                          data-bs-toggle="modal"
+                          data-bs-target="#myModal_pan_card_file"
+                          onClick={handleShowImage}
+                        >
+                          <IoEyeOutline />
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+
+                      <div>
+                        <MyModal
+                          showModal={showImageModal}
+                          handleClose={handleCloseImageModal}
+                          data="Pan card"
+                          modalName="myModal_pan_card_file"
+                          img={pan_card_file}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="mb-3">
+                      <label style={styles.label}>IFSC code:</label>
+                      <input
+                        disabled
+                        style={styles.input}
+                        type="text"
+                        id="ifsc_code"
+                        placeholder="Enter ifsc code"
+                        value={ifsc_code}
+                        onChange={(e) => setIfsc_code(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label style={styles.label}>PF Account No:</label>
+                      <input
+                        style={styles.input}
+                        type="text"
+                        id="experience"
+                        placeholder="PF Account Number"
+                        value={pf_account_no}
+                        onChange={(e) => setPf_account_no(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div className="employee-form-container">
               <div className="form-section">
                 <h4>Assign Role</h4>

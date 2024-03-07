@@ -1,5 +1,6 @@
 import React from 'react';
 import PolicyFooter from './PolicyFooter';
+import { Helmet } from 'react-helmet';
 
 const PaidLeaves = () => {
   const logo =
@@ -7,6 +8,9 @@ const PaidLeaves = () => {
 
   return (
     <div className="policy-container py-1">
+      <Helmet>
+        <title>Paid Leaves Policy</title>
+      </Helmet>
       <div className=" policy-heading-container">
         <img src={logo} className="policy-logo " alt="" />
         <h3 className="policy-heading">Paid Leaves Policy</h3>
@@ -90,16 +94,17 @@ const PaidLeaves = () => {
             All regular and confirmed employees of the organisation are covered
             in the leave policy. Employees who are on probation or hired as
             trainees and whose age more than 60 years It will be not eligible
-            for type of leave only. Leave year begins from 1st of April to 31st
-            of March each year and will be available only upon completion of
-            each year of service. Leave will be credited to individual
-            employee’s leave account in advance at the beginning of the year (or
-            from the date of confirmation after 6 Month Probation Period), and
-            employees can avail of leave in advance during the year. Employees
-            who have joined during the year will be eligible for prorated leave
-            from the date of confirmation of employment. Any weekly offs or
-            declared holidays or national holidays that fall in between leave
-            applied by an employee will not be considered as leave days.
+            for type of leave only. Leave year begins from 1st of January to
+            31st of December each year and will be available only upon
+            completion of each year of service. Leave will be credited to
+            individual employee’s leave account in advance at the beginning of
+            the year (or from the date of confirmation after 6 Month Probation
+            Period), and employees can avail of leave in advance during the
+            year. Employees who have joined during the year will be eligible for
+            prorated leave from the date of confirmation of employment. Any
+            weekly offs or declared holidays or national holidays that fall in
+            between leave applied by an employee will not be considered as leave
+            days.
           </span>
           <br />
         </section>

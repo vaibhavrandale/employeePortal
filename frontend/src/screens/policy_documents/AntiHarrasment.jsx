@@ -1,5 +1,6 @@
 import React from 'react';
 import PolicyFooter from './PolicyFooter';
+import { Helmet } from 'react-helmet';
 
 // import logo from './Taypro.png';
 const AntiHarrasment = () => {
@@ -8,6 +9,9 @@ const AntiHarrasment = () => {
 
   return (
     <div className="policy-container py-1">
+      <Helmet>
+        <title>Anti Harrasment Policy</title>
+      </Helmet>
       <div className=" policy-heading-container">
         <img src={logo} className="policy-logo " alt="" />
         <h3 className="policy-heading">Anti Harrasment Policy</h3>

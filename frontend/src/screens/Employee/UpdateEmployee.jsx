@@ -2268,6 +2268,7 @@ const UpdateEmployee = () => {
                 </tr>
               </tbody>
             </table> */}
+
             <h2 style={styles.sectionHeader}>Contact Information</h2>
             <div className="">
               <div className="row">

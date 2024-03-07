@@ -1,5 +1,6 @@
 import React from 'react';
 import PolicyFooter from './PolicyFooter';
+import { Helmet } from 'react-helmet';
 
 const OfficeRules = () => {
   const logo =
@@ -7,6 +8,9 @@ const OfficeRules = () => {
 
   return (
     <div className="policy-container py-1">
+      <Helmet>
+        <title>Office Rules and Regulations</title>
+      </Helmet>
       <div className=" policy-heading-container">
         <img src={logo} className="policy-logo " alt="" />
         <h3 className="policy-heading"> Office Rules and Regulations</h3>
@@ -53,15 +57,14 @@ const OfficeRules = () => {
             <br />
             <span style={{ wordSpacing: '2px' }}>
               {' '}
-              The official Lunch Break is between 1.00 p.m. to 1:30 p.m. or 1.30
-              to 2.00 p.m. Lunch break is taken during the specified time. In
-              are circumstances when you need to break for lunch at a different
-              time, you may do so in a considerate manner such that visitors to
-              the office and/or your colleagues are not inconvenienced in any
-              way.
+              The official Lunch Break is between 1.00 p.m. to 1:45 Lunch break
+              is taken during the specified time. In are circumstances when you
+              need to break for lunch at a different time, you may do so in a
+              considerate manner such that visitors to the office and/or your
+              colleagues are not inconvenienced in any way.
             </span>
             <br />
-            <span style={{ marginLeft: '20rem', wordSpacing: '2px' }}>
+            <span style={{ marginLeft: '16rem', wordSpacing: '2px' }}>
               All employees working outside the firm’s offices must inform their
               Reporting Manager of their work location(s) and contact telephone
               numbers in advance. Any change in work location and/or contact

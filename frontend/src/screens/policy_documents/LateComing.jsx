@@ -1,5 +1,6 @@
 import React from 'react';
 import PolicyFooter from './PolicyFooter';
+import { Helmet } from 'react-helmet';
 
 const LateComing = () => {
   const logo =
@@ -7,6 +8,9 @@ const LateComing = () => {
 
   return (
     <div className="policy-container py-1">
+      <Helmet>
+        <title>Late Coming Policy</title>
+      </Helmet>
       <div className=" policy-heading-container">
         <img src={logo} className="policy-logo " alt="" />
         <h3 className="policy-heading">Late Coming Policy</h3>

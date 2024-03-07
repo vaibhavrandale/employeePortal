@@ -2628,8 +2628,8 @@ const UpdateEmployee = () => {
                     />
                   </div>
 
-                  {experience === 'NA' ||
-                  experience === 0 ||
+                  {experience === '0' ||
+                  experience === 'NA' ||
                   experience === 'fresher' ||
                   experience === 'Fresher' ? (
                     ''

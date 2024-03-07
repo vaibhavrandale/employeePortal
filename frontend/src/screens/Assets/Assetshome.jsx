@@ -200,7 +200,7 @@ const Assetshome = () => {
                             className="badge  bg-success p-2"
                             type="button"
                             data-bs-toggle="modal"
-                            data-bs-target="#exampleModalImageA"
+                            data-bs-target={`#exampleModalImageA${item.id}`}
                           >
                             <FaRegEye />
                           </span>
@@ -211,7 +211,7 @@ const Assetshome = () => {
                               className="badge  bg-success p-2"
                               type="button"
                               data-bs-toggle="modal"
-                              data-bs-target="#exampleModalImageB"
+                              data-bs-target={`#exampleModalImageB${item.id}`}
                             >
                               <FaRegEye />
                             </span>
@@ -228,9 +228,9 @@ const Assetshome = () => {
                         {/* -------------image A---------------- */}
                         <div
                           className="modal fade"
-                          id="exampleModalImageA"
+                          id={`exampleModalImageA${item.id}`}
                           tabindex="-1"
-                          aria-labelledby="exampleModalImageA"
+                          aria-labelledby={`exampleModalImageA${item.id}`}
                           aria-hidden="true"
                         >
                           <div className="modal-dialog modal-lg">
@@ -238,7 +238,7 @@ const Assetshome = () => {
                               <div className="modal-header">
                                 <h5
                                   className="modal-title"
-                                  id="exampleModalImageA"
+                                  id={`#exampleModalImageA${item.id}`}
                                 >
                                   Image A
                                 </h5>
@@ -268,9 +268,9 @@ const Assetshome = () => {
                         {/* -------------image B---------------- */}
                         <div
                           className="modal fade"
-                          id="exampleModalImageB"
+                          id={`exampleModalImageB${item.id}`}
                           tabindex="-1"
-                          aria-labelledby="exampleModalImageB"
+                          aria-labelledby={`exampleModalImageB${item.id}`}
                           aria-hidden="true"
                         >
                           <div className="modal-dialog modal-lg">
@@ -278,7 +278,7 @@ const Assetshome = () => {
                               <div className="modal-header">
                                 <h5
                                   className="modal-title"
-                                  id="exampleModalImageB"
+                                  id={`exampleModalImageB${item.id}`}
                                 >
                                   Image B
                                 </h5>

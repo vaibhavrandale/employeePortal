@@ -8,7 +8,7 @@ import './manual.css';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { GiGlassCelebration } from 'react-icons/gi';
-import { FaAmazonPay } from 'react-icons/fa6';
+import { FaAmazonPay, FaUsers } from 'react-icons/fa6';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import { FcLeave } from 'react-icons/fc';
 import { FaPlaneDeparture } from 'react-icons/fa';
@@ -500,7 +500,7 @@ const Manualjobs = () => {
         <div className=" Manualcard m-1">
           <div className="d-flex justify-content-center">
             {' '}
-            <GiTimeBomb className=" text-danger  manualicon" />
+            <FaUsers className=" text-danger  manualicon" />
           </div>
 
           {accessStatus === 1 ? (

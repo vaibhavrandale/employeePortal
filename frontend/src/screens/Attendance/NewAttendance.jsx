@@ -241,16 +241,6 @@ const NewAttendance = () => {
                             const inTime = attendance.IN_TIME_1.split(' ')[1];
                             const total = attendance.totalHours / 60;
 
-                            // const status = attendance.isLeave
-                            //   ? 'L'
-                            //   : inTime < '09:15:00' && attendance.totalHours >= 8
-                            //   ? 'P'
-                            //   : inTime < '09:15:00'
-                            //   ? 'P'
-                            //   : attendance.totalHours < 4
-                            //   ? 'P*'
-                            //   : 'H';
-
                             const status = attendance.isLeave
                               ? 'L'
                               : inTime >= '09:15:00' || total > 8

@@ -14,7 +14,7 @@ const birthday =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693764320/sp5vtxeqnqz4eb7n3gx7.jpg';
 
 const logo =
-  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png';
+  'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png';
 
 const sendBirthdayEmails = async () => {
   try {
@@ -271,7 +271,7 @@ const sendEmail = (employee) => {
             >
               <div id="logo" style="display: flex; justify-content: end">
                 <img
-                  src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                  src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
                   alt="logo"
                   style="
                     max-width: 13vmax;
@@ -536,7 +536,7 @@ const AnniversaryEmails = async () => {
               <img
                 class="logo"
                 style="width: 120px; margin: 15px"
-                src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
                 alt=""
               />
             </div>
@@ -737,7 +737,7 @@ const Intern = () => {
                 <img
                   id="img"
                   style="width: 30%; margin: auto;"
-                  src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+                  src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
                   alt="Embedded Image"
                   class="birthday-image"
                 />
@@ -1012,7 +1012,7 @@ const ProbationChecker = async () => {
       >
         <div id="logo" style="display: flex; justify-content: end">
           <img
-            src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1693812425/wzdesp1oce9ndc5yipep.png"
+            src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
             alt="logo"
             style="
               width: 10vmax;
@@ -1391,6 +1391,335 @@ const calculateTotalHoursForToday = async () => {
   }
 };
 
+// const WomensDay=async()={
+
+//   <!DOCTYPE html>
+// <html lang="en">
+//   <head>
+//     <meta charset="UTF-8" />
+//     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+//     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+//     <title>International Women's Day Celebration</title>
+//     <style></style>
+//   </head>
+//   <body
+//     style="
+//       font-family: Arial, sans-serif;
+//       background-color: #f4f4f4;
+//       margin: 0;
+//       padding: 0;
+//     "
+//   >
+//     <div
+//       class="container"
+//       style="
+//         max-width: 600px;
+//         margin: 20px auto;
+//         padding: 20px;
+//         background-color: #fff;
+//         border-radius: 8px;
+//         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+//       "
+//     >
+//       <div style="text-align: center; color: #333">
+//         <h1 style="font-weight: 600">International Women's Day</h1>
+//       </div>
+//       <br />
+//       <div style="margin-top: 20px; line-height: 1.6; color: #000000">
+//         <p>Dear <b>Prajakta R</b>,</p>
+//         <p>Happy International Women's Day!</p>
+//         <p>
+//           On this special occasion, we would like to take a moment to honor and
+//           appreciate the incredible contributions of our female team members.
+//           Your hard work, dedication, and unique perspectives play a crucial
+//           role in making our organization successful and diverse.
+//         </p>
+//         <!-- Add more content as needed -->
+
+//         <p>
+//           Thank you for being an integral part of our organization. Your
+//           commitment and dedication inspire us all. Happy International Women's
+//           Day!
+//         </p>
+//         <p style="font-weight: 600">
+//           Best regards,<br />Taypro Private Limited. <br />
+//           <span style="color: green">We make green energy greener!</span>
+//         </p>
+//       </div>
+//       <div style="width: 40%; margin: auto">
+//         <img
+//           src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
+//           alt="logo"
+//           style="width: 200px; height: 50px; object-fit: contain"
+//         />
+//       </div>
+//       <div style="margin-top: 20px; text-align: center; color: #777">
+//         <p>&copy;2024 | Taypro Private Limited | All rights reserved.</p>
+//       </div>
+//     </div>
+//   </body>
+// </html>
+
+// }
+
+const sendWomensDayEmail = async () => {
+  try {
+    const womensEmployees = await Employee.findAll({
+      where: { gender: 'female' },
+    });
+
+    console.log(`Found ${womensEmployees.length} women employees found.`);
+
+    for (let womenemployee of womensEmployees) {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com', // Use the Yandex service
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER, // Your Yandex email address
+          pass: process.env.MAIL_PASS, // Your Yandex email password
+        },
+      });
+
+      transporter
+        .sendMail({
+          from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
+          to: womenemployee.email,
+          subject: 'Happy International Womens Day!',
+          //           html: `
+          //           <!DOCTYPE html>
+          //           <html lang="en">
+
+          //           <head>
+          //               <meta charset="UTF-8" />
+          //               <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          //               <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          //               <title>International Women's Day Celebration</title>
+          //               <style>
+          //                   body {
+          //                       font-family: Arial, sans-serif;
+          //                       background-color: #f4f4f4;
+          //                       margin: 0;
+          //                       padding: 0;
+          //                   }
+
+          //                   .container {
+          //                       max-width: 600px;
+          //                       margin: 20px auto;
+          //                       padding: 20px;
+          //                       background-color: #fff;
+          //                       border-radius: 8px;
+          //                       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          //                   }
+
+          //                   h1 {
+          //                       text-align: center;
+          //                       color: #333;
+          //                       font-weight: 600;
+          //                   }
+
+          //                   .content {
+          //                       margin-top: 20px;
+          //                       line-height: 1.6;
+          //                       color: #000000;
+          //                   }
+
+          //                   .content p {
+          //                       margin-bottom: 15px;
+          //                   }
+
+          //                   .logo {
+          //                       width: 40%;
+          //                       margin: auto;
+          //                       text-align: center;
+          //                   }
+
+          //                   .logo img {
+          //                       width: 100%;
+          //                       max-width: 200px;
+          //                       height: auto;
+          //                       object-fit: contain;
+          //                   }
+
+          //                   .footer {
+          //                       margin-top: 20px;
+          //                       text-align: center;
+          //                       color: #777;
+          //                   }
+          //               </style>
+          //           </head>
+
+          //           <body>
+          //               <div class="container">
+          //                   <h1>International Women's Day</h1>
+
+          //                   <div class="content">
+          //                       <p>Dear <b>${womenemployee.NAME}</b>,</p>
+          //                       <p>Happy International Women's Day!</p>
+          //                       <p>
+          //                           On this special occasion, we would like to take a moment to honor and appreciate the incredible
+          //                           contributions of our female team members. Your hard work, dedication, and unique perspectives play
+          //                           a crucial role in making our organization successful and diverse.
+          //                       </p>
+          //                       <p>
+          //                           Thank you for being an integral part of our organization. Your commitment and dedication inspire us
+          //                           all. Happy International Women's Day!
+          //                       </p>
+          //                       <p style="font-weight: 600">
+          //                           Best regards,<br />Taypro Private Limited. <br />
+          //                           <span style="color: green">We make green energy greener!</span>
+          //                       </p>
+          //                   </div>
+
+          //                   <div class="logo">
+          //                       <img src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png" alt="logo" />
+          //                   </div>
+
+          //                   <div class="footer">
+          //                       <p>&copy;2024 | Taypro Private Limited | All rights reserved.</p>
+          //                   </div>
+          //               </div>
+          //           </body>
+
+          //           </html>
+
+          // `,
+
+          html: `<!DOCTYPE html>
+          <html lang="en">
+            <head>
+              <meta charset="UTF-8" />
+              <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>International Women's Day Celebration</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  margin: 0;
+                  padding: 0;
+                  box-shadow: #000000;
+                }
+          
+                .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+          
+                  border-radius: 8px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+          
+                h1 {
+                  text-align: center;
+                  color: #333;
+                  font-weight: 600;
+                }
+          
+                .content {
+                  margin-top: 20px;
+                  line-height: 1.6;
+                  color: #000000;
+                }
+          
+                .content p {
+                  margin-bottom: 15px;
+                }
+          
+                .logo {
+                  width: 40%;
+                  margin: auto;
+                  text-align: center;
+                }
+          
+                .logo img {
+                  /* width: 100%;
+                  max-width: 200px; */
+                  /* height: auto; */
+                  object-fit: contain;
+                }
+          
+                .footer {
+                  margin-top: 20px;
+                  text-align: center;
+                  color: #000000;
+                }
+              </style>
+            </head>
+          
+            <body>
+              <div class="container">
+                <h1>International Women's Day</h1>
+          
+                <div class="content">
+                  <p>Dear <b>${womenemployee.NAME}</b>,</p>
+                  <p>Happy International Women's Day!</p>
+                  <p>
+                    On this special occasion, we would like to take a moment to honor and
+                    appreciate the incredible contributions of our female team members.
+                    Your hard work, dedication, and unique perspectives play a crucial
+                    role in making our organization successful and diverse.
+                  </p>
+                  <p>
+                    Thank you for being an integral part of our organization. Your
+                    commitment and dedication inspire us all. Happy International Women's
+                    Day!
+                  </p>
+                  <p style="font-weight: 600">
+                    Best regards,<br />Taypro Private Limited. <br />
+                    <span style="color: green">We make green energy greener!</span>
+                  </p>
+                </div>
+          
+                <div class="logo">
+                  <img
+                    src="https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png"
+                    alt="logo"
+                    height="80"
+                    width="200"
+                  />
+                </div>
+          
+                <div class="footer">
+                  <p>&copy;2024 | Taypro Private Limited | All rights reserved.</p>
+                </div>
+              </div>
+            </body>
+          </html>
+          
+
+`,
+        })
+        .then((info) => {
+          if (info.envelope.to.includes(womenemployee.email)) {
+            console.log(
+              `Womens day Email sent to ${womenemployee.NAME} (${womenemployee.email})`
+            );
+          } else {
+            console.log(
+              `Failed to send Womens day Email to ${womenemployee.email}`
+            );
+          }
+        })
+        .catch((error) => {
+          console.error(
+            `Error sending email to ${womenemployee.email}:`,
+            error
+          );
+        });
+    }
+  } catch (error) {
+    console.error('Error sending Womens Day emails:', error);
+  }
+};
+
+// `}),
+// try {
+//   await transporter.sendMail(mailOptions);
+//   console.log(`Email sent to ${employee.NAME} (${employee.email})`);
+// } catch (error) {
+//   console.error(`Error sending email to ${employee.NAME} (${employee.email}): ${error}`);
+// }
+// };
+
 export {
   sendBirthdayEmails,
   checkAndCreateBirthdayRecords,
@@ -1401,4 +1730,5 @@ export {
   processLeavesAndCreateRefidChecks, // Call the HolidayGenerator function
   HolidayGenerator,
   calculateTotalHoursForToday,
+  sendWomensDayEmail,
 };

@@ -1163,7 +1163,7 @@ const UpdateEmployee = () => {
                     <label className="form-label">Profile Image:</label>
                     <input    disabled={accessStatus === 1}
                       className="form-control"
-                      type="file"
+                      type="file"   accept=".jpg, .jpeg, .png"
                       id="profile"
                       placeholder="Profile"
                       onChange={uploadFileHandler}
@@ -1200,7 +1200,9 @@ const UpdateEmployee = () => {
                   </td>
 
                   <td style={styles.label} className="ms-2">
-                    10th Marksheet:
+                    10th Marksheet: <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span>
                   </td>
                   <td className="d-flex">
                     {tenth_marksheet ? (
@@ -1223,7 +1225,7 @@ const UpdateEmployee = () => {
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
                         }}
-                        type="file"
+                        type="file"   accept=".jpg, .jpeg, .png"
                         id="profile"
                         placeholder="profile"
                         onChange={uploadtenththCertificate}
@@ -1294,7 +1296,7 @@ const UpdateEmployee = () => {
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
                         }}
-                        type="file"
+                        type="file"   accept=".jpg, .jpeg, .png"
                         id="profile"
                         placeholder="profile"
                         onChange={uploadtwelthordiplomaCertificate}
@@ -1345,7 +1347,9 @@ const UpdateEmployee = () => {
                       }
                     />
                   </td>
-                  <td style={styles.label}>UG/PG Marksheet:</td>
+                  <td style={styles.label}>UG/PG Marksheet: <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span></td>
 
                   <td className="d-flex">
                     {under_geaduate_or_post_graduate_marksheet ? (
@@ -1368,7 +1372,7 @@ const UpdateEmployee = () => {
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
                         }}
-                        type="file"
+                        type="file"   accept=".jpg, .jpeg, .png"
                         id="profile"
                         placeholder="profile"
                         onChange={uploaddegreeorPGCertificate}
@@ -1424,7 +1428,12 @@ const UpdateEmployee = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">10th Marksheet:</label>
+                    <label className="form-label">
+                      10th Marksheet:{' '}
+                      <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span>
+                    </label>
                     <div className="d-flex align-items-center">
                       {tenth_marksheet ? (
                         <Link
@@ -1451,7 +1460,9 @@ const UpdateEmployee = () => {
                           placeholder="Profile"
                           onChange={uploadtenththCertificate}
                           className="my-2 mx-2"
+                          accept=".jpg, .jpeg, .png"
                         />
+
                         {loadingDocumentUpload && <LoadingBox4 />}
                       </div>
 
@@ -1493,7 +1504,12 @@ const UpdateEmployee = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label">UG/PG Marksheet:</label>
+                    <label className="form-label">
+                      UG/PG Marksheet:{' '}
+                      <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span>{' '}
+                    </label>
                     <div className="d-flex align-items-center">
                       {under_geaduate_or_post_graduate_marksheet ? (
                         <Link
@@ -1516,6 +1532,7 @@ const UpdateEmployee = () => {
                             display: accessStatus === 1 ? 'none' : 'block',
                           }}
                           type="file"
+                          accept=".jpg, .jpeg, .png"
                           id="profile"
                           placeholder="Profile"
                           onChange={uploaddegreeorPGCertificate}
@@ -1553,7 +1570,10 @@ const UpdateEmployee = () => {
 
                   <div className="mb-3">
                     <label className="form-label">
-                      12th/Diploma Marksheet:
+                      12th/Diploma Marksheet:{' '}
+                      <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span>
                     </label>
                     <div className="d-flex align-items-center">
                       {twelth_or_diploma_marksheet ? (
@@ -1577,6 +1597,7 @@ const UpdateEmployee = () => {
                             display: accessStatus === 1 ? 'none' : 'block',
                           }}
                           type="file"
+                          accept=".jpg, .jpeg, .png"
                           id="profile"
                           placeholder="Profile"
                           onChange={uploadtwelthordiplomaCertificate}
@@ -1802,7 +1823,7 @@ const UpdateEmployee = () => {
                           width: '50%',
                           display: accessStatus === 0 ? 'block' : 'none',
                         }}
-                        type="file"
+                        type="file"   accept=".jpg, .jpeg, .png"
                         id="profile"
                         placeholder="profile"
                         onChange={uploadAddressProof}
@@ -1998,7 +2019,12 @@ const UpdateEmployee = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <label className="form-label">Address Proof:</label>
+                    <label className="form-label">
+                      Address Proof:{' '}
+                      <span className=" text-danger">
+                        (please upload jpg/png/jpg image only)
+                      </span>
+                    </label>
                     <div className="d-flex align-items-center">
                       {addressProof ? (
                         <Link
@@ -2021,6 +2047,7 @@ const UpdateEmployee = () => {
                             display: accessStatus === 1 ? 'none' : 'block',
                           }}
                           type="file"
+                          accept=".jpg, .jpeg, .png"
                           id="profile"
                           placeholder="profile"
                           onChange={uploadAddressProof}
@@ -2486,7 +2513,7 @@ const UpdateEmployee = () => {
                             width: '50%',
                             display: accessStatus === 1 ? 'none' : 'block',
                           }}
-                          type="file"
+                          type="file"   accept=".jpg, .jpeg, .png"
                           id="profile"
                           placeholder="profile"
                           onChange={uploadExperienceLetter}
@@ -2629,6 +2656,7 @@ const UpdateEmployee = () => {
                             <input
                               style={{ width: '50%' }}
                               type="file"
+                              accept=".jpg, .jpeg, .png"
                               id="profile"
                               placeholder="profile"
                               onChange={uploadExperienceLetter}
@@ -2835,7 +2863,7 @@ const UpdateEmployee = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label style={styles.label}>Upload Aadhar File</label>
+                    <label style={styles.label}> Aadhar File</label>
                     <div className="d-flex align-items-center">
                       {aadhar_card_file ? (
                         <Link
@@ -2875,7 +2903,7 @@ const UpdateEmployee = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label style={styles.label}>Upload Bank File</label>
+                    <label style={styles.label}> Bank File</label>
                     <div className="d-flex align-items-center">
                       {bank_account_file ? (
                         <Link
@@ -2917,7 +2945,7 @@ const UpdateEmployee = () => {
                   </div>
 
                   <div className="mb-3">
-                    <label style={styles.label}>Upload PAN File </label>
+                    <label style={styles.label}> PAN File </label>
                     <div className="d-flex align-items-center">
                       {pan_card_file ? (
                         <Link

@@ -168,20 +168,16 @@ const CompanyProfile = () => {
       <h3 className="my-3 text-center">Directors</h3>
 
       <div className="d-flex justify-content-center flex-wrap">
-        {loading ? (
-          <LoadingBox4 />
-        ) : (
-          directors.map((item, index) => (
-            <EmployeeCard
-              key={index}
-              NAME={item.NAME}
-              img={item.image}
-              designation={item.designation}
-              employee_id={item.employee_id}
-              email={item.email}
-            />
-          ))
-        )}
+        {directors.map((item, index) => (
+          <EmployeeCard
+            key={index}
+            NAME={item.NAME}
+            img={item.image}
+            designation={item.designation}
+            employee_id={item.employee_id}
+            email={item.email}
+          />
+        ))}
       </div>
 
       <h3 className="my-3 text-center">Team Tour</h3>

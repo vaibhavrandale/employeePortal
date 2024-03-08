@@ -24,6 +24,7 @@ import {
   HolidayGenerator,
   calculateTotalHoursForToday,
   sendWomensDayEmail,
+  sendWomensEmail,
 } from './cron.js';
 import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
@@ -79,6 +80,7 @@ cron.schedule('30 1 * * *', sendWomensDayEmail);
 // cron.schedule('* * * * *', sendBirthdayEmails);
 // cron.schedule('* * * * *', checkAndCreateBirthdayRecords);
 // cron.schedule('* * * * *', sendWomensDayEmail);
+// cron.schedule('* * * * *', sendWomensEmail);
 
 //Intern
 // cron.schedule('* * * * *', Intern);

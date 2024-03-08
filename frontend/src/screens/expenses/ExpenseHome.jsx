@@ -493,53 +493,15 @@ const ExpenseHome = () => {
                         </div>
                       </td>
                        */}
-
                   <td>
                     <div className="d-flex justify-content-center align-items-center">
-                      {userInfo.isDirector === 1 && item.status === 0 ? (
-                        <Link className={`btn btn-sm btn-warning m-1 disabled`}>
+                      {userInfo.isDirector === 1 && item.status === 0 && (
+                        <Link className="btn btn-sm btn-warning m-1 disabled">
                           Pending from HR
-                        </Link>
-                      ) : userInfo.isHr === 1 && item.status === 1 ? (
-                        <Link
-                          className={`btn btn-sm btn-success m-1 ${
-                            item.status >= 2 ? 'disabled' : ''
-                          }`}
-                          to={`/approve-expense/${item.id}`}
-                          disabled={item.status >= 2}
-                        >
-                          Approve
-                        </Link>
-                      ) : (userInfo.isDirector === 1 ||
-                          userInfo.isAccountant === 1) &&
-                        item.status === 1 ? (
-                        <Link
-                          className={`btn btn-sm btn-warning m-1
-                            disabled
-                          `}
-                          to={`/approve-expense/${item.id}`}
-                          disabled={item.status >= 2}
-                        >
-                          Pending
-                        </Link>
-                      ) : (
-                        <Link
-                          className={`btn btn-sm btn-success m-1 
-          disabled`}
-                          disabled={item.status >= 2}
-                        >
-                          HR Approved
                         </Link>
                       )}
-
-                      {userInfo.isHr === 1 && item.status === 0 ? (
-                        <Link
-                          className={`btn btn-sm btn-warning m-1`}
-                          to={`/pending-from-hr/${item.id}`}
-                        >
-                          Pending from HR
-                        </Link>
-                      ) : userInfo.isDirector === 1 && item.status === 0 ? (
+                      {(userInfo.isHr === 1 && item.status === 0) ||
+                      (userInfo.isDirector === 1 && item.status === 1) ? (
                         <Link
                           className={`btn btn-sm btn-success m-1 ${
                             item.status >= 2 ? 'disabled' : ''
@@ -549,12 +511,12 @@ const ExpenseHome = () => {
                         >
                           Approve
                         </Link>
+                      ) : userInfo.isHr === 1 && item.status === 1 ? (
+                        <Link className="btn btn-sm btn-success m-1 disabled">
+                          Director Pending
+                        </Link>
                       ) : (
-                        <Link
-                          className={`btn btn-sm btn-success m-1 
-          disabled`}
-                          disabled={item.status >= 2}
-                        >
+                        <Link className="btn btn-sm btn-success m-1 disabled">
                           Director Approved
                         </Link>
                       )}
@@ -564,24 +526,22 @@ const ExpenseHome = () => {
                   <td>
                     {userInfo.isAccountant === 1 && item.status === 2 ? (
                       <Link
-                        className={`btn btn-sm btn-success m-1`}
+                        className="btn btn-sm btn-success m-1"
                         to={`/settle-expense/${item.id}`}
                       >
                         Settle
                       </Link>
-                    ) : item.status <= 2 ? (
+                    ) : item.status === 0 ||
+                      item.status === 1 ||
+                      item.status === 2 ? (
                       <Link
-                        className={`btn btn-sm btn-warning m-1 disabled`}
+                        className="btn btn-sm btn-warning m-1 disabled"
                         to={`/settle-expense/${item.id}`}
                       >
                         Pending
                       </Link>
                     ) : (
-                      <Link
-                        className={`btn btn-sm btn-success m-1 
-                    disabled`}
-                        disabled={item.status >= 2}
-                      >
+                      <Link className="btn btn-sm btn-success m-1 disabled">
                         Settled
                       </Link>
                     )}

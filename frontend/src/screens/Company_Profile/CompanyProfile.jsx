@@ -86,13 +86,32 @@ const CompanyProfile = () => {
     return 'Unknown Department';
   };
 
+  // const filteredEmployees = selectedDepartment
+  //   ? employees.filter(
+  //       (employee) =>
+  //         getDepartmentName(employee) === selectedDepartment &&
+  //         employee.activate === 1
+  //     )
+  //   : employees.filter((employee) => employee.activate === 1);
   const filteredEmployees = selectedDepartment
-    ? employees.filter(
-        (employee) =>
-          getDepartmentName(employee) === selectedDepartment &&
-          employee.activate === 1
-      )
-    : employees.filter((employee) => employee.activate === 1);
+    ? employees
+        .filter(
+          (employee) =>
+            getDepartmentName(employee) === selectedDepartment &&
+            employee.activate === 1
+        )
+        .sort((a, b) =>
+          a.employeeId && b.employeeId
+            ? a.employeeId.localeCompare(b.employeeId)
+            : 0
+        )
+    : employees
+        .filter((employee) => employee.activate === 1)
+        .sort((a, b) =>
+          a.employeeId && b.employeeId
+            ? a.employeeId.localeCompare(b.employeeId)
+            : 0
+        );
 
   const directors = employees.filter(
     (employee) => employee.designation === 'Director'

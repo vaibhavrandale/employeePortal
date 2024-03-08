@@ -35,6 +35,12 @@ const policies = [
     name: 'Termination',
     link: '/termination',
   },
+  {
+    id: 7,
+    img: '/images/policy/travel.webp',
+    name: 'Travel',
+    link: '/travel-policy',
+  },
 ];
 
 export default policies;

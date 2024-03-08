@@ -85,6 +85,7 @@ import Manualjobs from './screens/ManualJobs/Manualjobs';
 import RfidCardUpdate from './screens/UpdateAll/RfidCardUpdate';
 import UpdateUID from './screens/UpdateAll/UpdateUID';
 import BirthdayHome from './screens/Birthday_calender/BirthdayHome';
+import TravelPolicy from './screens/policy_documents/TravelPolicy';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -670,6 +671,15 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <AddPolicy />
+            </ProtectedRoutes>
+          }
+        />
+
+        <Route
+          path="/travel-policy"
+          element={
+            <ProtectedRoutes>
+              <TravelPolicy />
             </ProtectedRoutes>
           }
         />

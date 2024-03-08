@@ -95,7 +95,7 @@ const Navbar = () => {
                           alt=""
                         />
                         <span
-                          className="fw-bolder text-dark d-flex justify-content-center align-items-center "
+                          className=" text-dark d-flex justify-content-center align-items-center "
                           style={{ fontSize: '13px' }}
                         >
                           {userInfo.email}
@@ -108,12 +108,12 @@ const Navbar = () => {
                         <BsFilePerson className="fs-5 pb-1 text-warning" />{' '}
                         Profile
                       </Link>
-                      <Link to="#" className=" dropdown-item1">
+                      {/* <Link to="#" className=" dropdown-item1">
                         <HiLink className="fs-5 pb-1 text-info" /> Link 1
                       </Link>
                       <Link to="#" className=" dropdown-item1">
                         <HiLink className="fs-5 pb-1 text-info" /> Link 2
-                      </Link>
+                      </Link> */}
                     </>
                   )}
                   <Link

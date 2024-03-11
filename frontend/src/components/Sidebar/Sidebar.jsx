@@ -90,6 +90,18 @@ const Sidebar = () => {
             </li>
           )}
 
+          {userInfo &&
+            userInfo.isHr === 1 &&
+            userInfo.isDirector === 0 &&
+            userInfo.isSuperAdmin && (
+              <li>
+                <Link to="/all-employee-leaves">
+                  <FcLeave className="icon me-2 text-succcess" />
+                  {hovered && <span>All Leaves</span>}
+                </Link>
+              </li>
+            )}
+
           {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
             <li>
               <Link to="/notice-home-page">

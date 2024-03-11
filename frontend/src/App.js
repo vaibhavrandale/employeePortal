@@ -86,6 +86,7 @@ import RfidCardUpdate from './screens/UpdateAll/RfidCardUpdate';
 import UpdateUID from './screens/UpdateAll/UpdateUID';
 import BirthdayHome from './screens/Birthday_calender/BirthdayHome';
 import TravelPolicy from './screens/policy_documents/TravelPolicy';
+import AllEmployeeLeaves from './screens/Leaves/AllEmployeeLeaves';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -217,6 +218,16 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
+
+        <Route
+          path="/all-employee-leaves"
+          element={
+            <SuperAdminRoutes>
+              <AllEmployeeLeaves />
+            </SuperAdminRoutes>
+          }
+        />
+
         {/* -------------------------update UID card------------------------ */}
         <Route
           path="/update-rfid"

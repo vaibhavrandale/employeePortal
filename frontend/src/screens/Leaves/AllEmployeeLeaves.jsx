@@ -93,15 +93,25 @@ function AllEmployeeLeaves() {
   }, []);
 
   const filteredData = employees
-    ? employees
-        .filter(
-          (item) =>
-            item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.employee_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.email.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .sort((a, b) => (a.activate === 1 ? -1 : 1))
-    : '';
+    .filter(
+      (item) =>
+        item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.employee_id.includes(searchTerm) ||
+        item.joiningDate.includes(searchTerm) ||
+        item.employee_id.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      // Sort by 'activate' property with 1s coming first
+      if (a.activate === 1 && b.activate === 0) {
+        return -1; // 'a' comes first
+      } else if (a.activate === 0 && b.activate === 1) {
+        return 1; // 'b' comes first
+      } else {
+        // If 'activate' values are the same, use employee_id for sorting
+        return a.employee_id.localeCompare(b.employee_id);
+      }
+    });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

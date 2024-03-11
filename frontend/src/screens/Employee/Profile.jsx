@@ -1551,7 +1551,7 @@ const UpdateEmployee = () => {
                     <input
                       disabled={accessStatus === 1}
                       className="form-control"
-                      type="number"
+                      type="text"
                       id="twelth_or_diploma_grade"
                       placeholder="12th/Diploma Grade"
                       value={twelth_or_diploma_grade}

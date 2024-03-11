@@ -1815,12 +1815,12 @@ emplyeeRouter.post('/', async (req, res) => {
     const bonus = ((basic * 8.33) / 100).toFixed(2);
 
     // Format birth_date and joiningDate using moment.js
-    const formattedBirthDate = moment(birth_date, 'DD-MM-YYYY').format(
-      'DD/MM/YYYY'
-    );
-    const formattedJoiningDate = moment(joiningDate, 'DD-MM-YYYY').format(
-      'DD/MM/YYYY'
-    );
+    // const formattedBirthDate = moment(birth_date, 'DD-MM-YYYY').format(
+    //   'DD/MM/YYYY'
+    // );
+    // const formattedJoiningDate = moment(joiningDate, 'DD-MM-YYYY').format(
+    //   'DD/MM/YYYY'
+    // );
 
     // Create a new employee instance
     const newEmployee = new Employee({
@@ -1832,8 +1832,8 @@ emplyeeRouter.post('/', async (req, res) => {
       lastName,
       father_husband_name,
       gender,
-      birth_date: formattedBirthDate,
-      joiningDate: formattedJoiningDate,
+      birth_date,
+      joiningDate,
       marital_status,
       address,
       addressProof,
@@ -2172,9 +2172,13 @@ emplyeeRouter.post('/', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: 'Failed to add employee' });
+    res.status(500).json({
+      success: false,
+      error: `Failed to add employee. Error details: ${error.message}`,
+    });
   }
 });
+
 // ------------------add employee new pf salary pt -------------------------------
 
 export default emplyeeRouter;

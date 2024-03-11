@@ -2744,9 +2744,7 @@ function AddEmployee() {
                   id="twelth_or_diploma_grade"
                   placeholder="12th/Diploma Grade"
                   value={twelth_or_diploma_grade}
-                  onChange={(e) =>
-                    setTwelth_or_diploma_marksheet(e.target.value)
-                  }
+                  onChange={(e) => setTwelth_or_diploma_grade(e.target.value)}
                 />
               </div>
 

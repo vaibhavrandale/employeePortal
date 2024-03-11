@@ -125,33 +125,33 @@ function AllEmployeeLeaves() {
 
   return (
     <div className="container ">
+      <h2 className="text-dark">All Employee Leave History</h2>
+      <div className="d-flex">
+        {/* <Link className="submitBtn2    " to={'/leave'}>
+              Apply{' '}
+            </Link> */}
+
+        {currentItems.length === 0 ? (
+          ''
+        ) : (
+          <div className="form-group    mb-2 search-input m-1">
+            <input
+              type="text"
+              className="form-control search"
+              placeholder="Search Leave.."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        )}
+      </div>
+
       {loading ? (
         <LoadingBox5 />
       ) : error ? (
         <MsgBox className="alert alert-danger">{error}</MsgBox>
       ) : (
         <>
-          <h2 className="text-dark">All Employee Leave History</h2>
-          <div className="d-flex">
-            {/* <Link className="submitBtn2    " to={'/leave'}>
-              Apply{' '}
-            </Link> */}
-
-            {currentItems.length === 0 ? (
-              ''
-            ) : (
-              <div className="form-group    mb-2 search-input m-1">
-                <input
-                  type="text"
-                  className="form-control search"
-                  placeholder="Search Leave.."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-            )}
-          </div>
-          {/* {console.log(currentItems.length)} */}
           {currentItems.length === 0 ? (
             <MsgBox className="alert alert-danger">No Leaves Found!</MsgBox>
           ) : (
@@ -159,16 +159,13 @@ function AllEmployeeLeaves() {
               <table className="table table-bordered ">
                 <thead>
                   <tr>
-                    <th className="col-md-1 text-center">Sr No </th>
+                    <th className="col-md-1 text-center">Employee ID </th>{' '}
                     <th className="col-md-1 text-center">Name </th>
                     <th className="col-md-1 text-center">Email</th>
-                    <th className="col-md-1 text-center">Employee ID </th>
-
                     <th className="col-md-1 text-center">Sick</th>
                     <th className="col-md-1 text-center">Casual</th>
                     <th className="col-md-1 text-center">Previlege</th>
                     <th className="col-md-1 text-center">Total</th>
-
                     <th className="col-md-1 text-center">View Leaves</th>
                     {/* <th className="col-md-1 text-center">Approve</th>
                   <th className="col-md-1 text-center">Decline</th> */}
@@ -182,14 +179,13 @@ function AllEmployeeLeaves() {
                         item.activate === 0 ? `table-danger` : ``
                       }`}
                     >
-                      {/* {(index = index + 1)} */}
-                      <td className="text-center fw-bold">{index + 1}</td>
-
-                      <td className="text-center fw-bold">{item.NAME}</td>
-                      <td className="text-center fw-bold">{item.email}</td>
                       <td className="text-center fw-bold">
                         {item.employee_id}
                       </td>
+
+                      <td className="text-center fw-bold">{item.NAME}</td>
+                      <td className="text-center fw-bold">{item.email}</td>
+
                       <td className="text-center fw-bold">{item.sick}</td>
                       <td className="text-center fw-bold">{item.casual}</td>
                       <td className="text-center fw-bold">{item.privilege}</td>

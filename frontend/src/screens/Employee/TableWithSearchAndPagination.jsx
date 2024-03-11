@@ -116,7 +116,17 @@ const TableWithSearchAndPagination = () => {
         item.joiningDate.includes(searchTerm) ||
         item.employee_id.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => a.employee_id.localeCompare(b.employee_id));
+    .sort((a, b) => {
+      // Sort by 'activate' property with 1s coming first
+      if (a.activate === 1 && b.activate === 0) {
+        return -1; // 'a' comes first
+      } else if (a.activate === 0 && b.activate === 1) {
+        return 1; // 'b' comes first
+      } else {
+        // If 'activate' values are the same, use employee_id for sorting
+        return a.employee_id.localeCompare(b.employee_id);
+      }
+    });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -157,41 +167,41 @@ const TableWithSearchAndPagination = () => {
     return 'Success'; // Return a success message or data
   };
 
-  const DeleteHandler = async (e, id) => {
-    console.log(id);
-    e.preventDefault();
-    popupDeleteHandle();
-    dispatch({
-      type: 'DELETE_REQUEST',
-    });
+  // const DeleteHandler = async (e, id) => {
+  //   console.log(id);
+  //   e.preventDefault();
+  //   popupDeleteHandle();
+  //   dispatch({
+  //     type: 'DELETE_REQUEST',
+  //   });
 
-    try {
-      const { data } = await axios.delete(
-        `/api/employees/${id}`,
+  //   try {
+  //     const { data } = await axios.delete(
+  //       `/api/employees/${id}`,
 
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      console.log(data);
-      dispatch({
-        type: 'DELETE_SUCCESS',
-        payload: data,
-      });
+  //       {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       }
+  //     );
+  //     console.log(data);
+  //     dispatch({
+  //       type: 'DELETE_SUCCESS',
+  //       payload: data,
+  //     });
 
-      toast.promise(saveSettings({ action: 'delete' }), {
-        position: 'top-right',
-        loading: 'Processing...',
-        success: <b>Employee Deleted Successfully!</b>,
-        error: <b>Could not Delete employee data.</b>,
-      });
+  //     toast.promise(saveSettings({ action: 'delete' }), {
+  //       position: 'top-right',
+  //       loading: 'Processing...',
+  //       success: <b>Employee Deleted Successfully!</b>,
+  //       error: <b>Could not Delete employee data.</b>,
+  //     });
 
-      // navigate('/leaves-history');
-    } catch (error) {
-      toast.error(getError(error));
-      dispatch({ type: 'DELETE_FAIL' });
-    }
-  };
+  //     // navigate('/leaves-history');
+  //   } catch (error) {
+  //     toast.error(getError(error));
+  //     dispatch({ type: 'DELETE_FAIL' });
+  //   }
+  // };
 
   return (
     <div className="table-container ">
@@ -260,18 +270,18 @@ const TableWithSearchAndPagination = () => {
                   <th className="col-md-2 text-center">Designation</th>
                   <th className="col-md-2 text-center">Email</th>
                   <th className="col-md-1 text-center">Joining Date</th>
-                  {userInfo.isSuperAdmin ? (
+                  {/* {userInfo.isSuperAdmin ? (
                     <th className="col-md-1 text-center">Remove</th>
                   ) : (
                     ''
-                  )}
+                  )} */}
                 </tr>
               </thead>
               <tbody>
                 {currentItems.map((item, index) => (
                   <tr
                     key={index}
-                    className={index === hoveredRow ? 'hovered-row' : ''}
+                    className={item.activate === 0 ? 'table-danger' : ''}
                     onMouseEnter={() => handleRowHover(index)}
                     onMouseLeave={() => handleRowHover(null)}
                   >
@@ -339,7 +349,7 @@ const TableWithSearchAndPagination = () => {
                       ''
                     )} */}
 
-                    {userInfo.isSuperAdmin ? (
+                    {/* {userInfo.isSuperAdmin ? (
                       <td className="text-center fs-5">
                         {loadingDelete ? (
                           <LoadingBox4 />
@@ -383,7 +393,7 @@ const TableWithSearchAndPagination = () => {
                       </td>
                     ) : (
                       ''
-                    )}
+                    )} */}
                   </tr>
                 ))}
               </tbody>

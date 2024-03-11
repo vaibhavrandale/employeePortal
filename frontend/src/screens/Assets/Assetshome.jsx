@@ -7,7 +7,6 @@
 // export default Assetshome;
 
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-// import assets from './holiday';
 import './assets.css';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
@@ -16,9 +15,9 @@ import { FaRegEye } from 'react-icons/fa6';
 import axios from 'axios';
 import { getError } from '../../utils';
 import toast from 'react-hot-toast';
-import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
 import { TiEdit } from 'react-icons/ti';
 import { AiTwotoneDelete } from 'react-icons/ai';
+import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -142,7 +141,7 @@ const Assetshome = () => {
       )}
       <div className="d-flex flex-wrap justify-content-center my-2">
         {loading ? (
-          <LoadingBox4 />
+          <LoadingBox5 />
         ) : (
           <>
             {assets.length === 0 ? (

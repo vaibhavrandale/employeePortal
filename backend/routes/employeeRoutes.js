@@ -238,9 +238,18 @@ emplyeeRouter.put('/updateemployee/:id', async (req, res) => {
     // Save the updated employee document
     await employee.save();
 
-    return res
-      .status(201)
-      .json({ message: `Employee updated successfully.`, employee });
+    // Update RfidRegs table
+
+    const updatedRfidReg = await RfidReg.update(
+      { Contact_No: mobile_no },
+      { where: { Reg_no: id } }
+    );
+
+    return res.status(201).json({
+      message: `Employee  updated successfully.`,
+      employee,
+      updatedRfidReg,
+    });
   } catch (error) {
     console.error('Error while updating address:', error);
     return res

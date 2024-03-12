@@ -16,7 +16,8 @@ const PolicyCard = () => {
             <img src={policy.img} alt="img" />
           </Link>
           <Link
-            className="text-decoration-none btn btn-sm btn-link m-1"
+            className="text-decoration-none btn btn-sm btn-link m-1 fw-bold"
+            style={{color:"crimson"}}
             type="button"
             to={policy.link}
           >

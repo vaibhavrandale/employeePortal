@@ -41,6 +41,18 @@ const policies = [
     name: 'Travel',
     link: '/travel-policy',
   },
+  {
+    id: 8,
+    img: '/images/policy/staff.jpg',
+    name: 'Staff',
+    link: '/staff-policy',
+  },
+  {
+    id: 9,
+    img: '/images/policy/factory.png',
+    name: 'Factory',
+    link: '/factory-policy-home',
+  },
 ];
 
 export default policies;

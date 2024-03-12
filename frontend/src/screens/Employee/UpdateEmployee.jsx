@@ -745,65 +745,6 @@ const UpdateEmployee = () => {
     });
   });
 
-  function extractFileIdFromGoogleDriveLink(link) {
-    // Check if link is defined and not null before using match
-    if (link && link.match) {
-      const match = link.match(/\/file\/d\/([^/]+)\//);
-      return match ? match[1] : null;
-    }
-    return null; // Return null if link is not defined
-  }
-
-  // Check if employees properties are defined before extracting file IDs
-  const googleAdharDriveLink = employees.aadhar_card_file;
-  const googlePanDriveLink = employees.pan_card_file;
-  const googleBankDriveLink = employees.bank_account_file;
-  const googleExperienceDriveLink = employees.experience_letter;
-
-  const AdharfileId = extractFileIdFromGoogleDriveLink(googleAdharDriveLink);
-  const PanfileId = extractFileIdFromGoogleDriveLink(googlePanDriveLink);
-  const BankfileId = extractFileIdFromGoogleDriveLink(googleBankDriveLink);
-  const ExperiencefileId = extractFileIdFromGoogleDriveLink(
-    googleExperienceDriveLink
-  );
-
-  // Create the file URLs with file IDs
-  // const AdharFile = AdharfileId
-  //   ? `https://drive.google.com/uc?id=${AdharfileId}`
-  //   : null;
-  // const PanFile = PanfileId
-  //   ? `https://drive.google.com/uc?id=${PanfileId}`
-  //   : null;
-  // const BankFile = BankfileId
-  //   ? `https://drive.google.com/uc?id=${BankfileId}`
-  //   : null;
-  // const ExperienceFile = ExperiencefileId
-  //   ? `https://drive.google.com/uc?id=${ExperiencefileId}`
-  //   : null;
-
-  const AdharFile = AdharfileId
-    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${AdharfileId}`
-    : null;
-  const PanFile = PanfileId
-    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${PanfileId}`
-    : null;
-  const BankFile = BankfileId
-    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${BankfileId}`
-    : null;
-  const ExperienceFile = ExperiencefileId
-    ? `https://drive.google.com/viewerng/viewer?embedded=true&url=https://drive.google.com/uc?id=${ExperiencefileId}`
-    : null;
-
-  console.log('adhar', AdharFile);
-  console.log('Pan', PanFile);
-  console.log('bank', BankFile);
-  console.log('experience', ExperienceFile);
-
-  const [isAdharModalOpen, setIsAdharModalOpen] = useState(false);
-  const [isPanModalOpen, setIsPanModalOpen] = useState(false);
-  const [isBankModalOpen, setIsBankModalOpen] = useState(false);
-  const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
-
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;

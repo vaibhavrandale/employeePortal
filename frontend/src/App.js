@@ -87,6 +87,8 @@ import UpdateUID from './screens/UpdateAll/UpdateUID';
 import BirthdayHome from './screens/Birthday_calender/BirthdayHome';
 import TravelPolicy from './screens/policy_documents/TravelPolicy';
 import AllEmployeeLeaves from './screens/Leaves/AllEmployeeLeaves';
+import FactoryPoliciesHome from './screens/policy_documents/FactoryPoliciesHome';
+import RecyclingOfLifepo4Battery from './screens/policy_documents/factory-policies/RecyclingOfLifepo4Battery';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -691,6 +693,24 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <TravelPolicy />
+            </ProtectedRoutes>
+          }
+        />
+
+        {/* -------------factory policy-------------- */}
+        <Route
+          path="/factory-policy-home"
+          element={
+            <ProtectedRoutes>
+              <FactoryPoliciesHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/recycling-of-lifepo4-battery"
+          element={
+            <ProtectedRoutes>
+              <RecyclingOfLifepo4Battery />
             </ProtectedRoutes>
           }
         />

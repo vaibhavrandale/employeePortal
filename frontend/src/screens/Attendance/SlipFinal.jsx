@@ -707,8 +707,17 @@ function SlipFinal() {
       doc.text(`House Rent Allowance`, 16.5, 111);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.hra}`, 85, 111);
-      doc.text(`.00`, 93, 111);
+      // doc.text(`${payslip.hra}`, 85, 111);
+      // doc.text(`.00`, 93, 111);
+
+      if (payslip.hra > 10000) {
+        doc.text(`${payslip.hra}`, 83, 111);
+        doc.text(`.00`, 93, 111);
+      } else {
+        doc.text(`${payslip.hra}`, 85, 111);
+        doc.text(`.00`, 93, 111);
+      }
+
       // doc.line(15, 121, 181, 121);
 
       doc.setFont('helvetica', 'bold');

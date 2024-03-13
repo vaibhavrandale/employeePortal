@@ -278,7 +278,6 @@ const UpdateEmployee = () => {
         setGender(result.data.employee.gender);
         setState(result.data.employee.state);
         setBirth_date(result.data.employee.birth_date);
-
         setIsAdmin(result.data.employee.isAdmin);
         setIsSuperAdmin(result.data.employee.isSuperAdmin);
         setIsSales(result.data.employee.isSales);
@@ -289,17 +288,13 @@ const UpdateEmployee = () => {
         setIsProduction(result.data.employee.isProduction);
         setIsAccountant(result.data.employee.isAccountant);
         setIsHr(result.data.employee.isHr);
-        // ifsc_code isSoftwareDevlopment isHardwareDevlopment
-
         setIfsc_code(result.data.employee.ifsc_code);
         setIsSoftwareDevlopment(result.data.employee.isSoftwareDevlopment);
         setIsHardwareDevlopment(result.data.employee.isHardwareDevlopment);
         setIsDirector(result.data.employee.isDirector);
-
         setTenth_grade(result.data.employee.tenth_grade);
         setTenth_marksheet(result.data.employee.tenth_marksheet);
         setTenth_schoolName(result.data.employee.tenth_schoolName);
-
         setTwelth_or_diploma_marksheet(
           result.data.employee.twelth_or_diploma_marksheet
         );
@@ -319,7 +314,6 @@ const UpdateEmployee = () => {
         setUnder_geaduate_or_post_graduate_grade(
           result.data.employee.under_geaduate_or_post_graduate_grade
         );
-
         setFather_husband_name(result.data.employee.father_husband_name);
         setMarital_status(result.data.employee.marital_status);
         setSub_locality(result.data.employee.sub_locality);

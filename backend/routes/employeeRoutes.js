@@ -1823,14 +1823,6 @@ emplyeeRouter.post('/', async (req, res) => {
     const employeresi = ((basic * 4.25) / 100).toFixed(2);
     const bonus = ((basic * 8.33) / 100).toFixed(2);
 
-    // Format birth_date and joiningDate using moment.js
-    // const formattedBirthDate = moment(birth_date, 'DD-MM-YYYY').format(
-    //   'DD/MM/YYYY'
-    // );
-    // const formattedJoiningDate = moment(joiningDate, 'DD-MM-YYYY').format(
-    //   'DD/MM/YYYY'
-    // );
-
     // Create a new employee instance
     const newEmployee = new Employee({
       employee_id,
@@ -1946,7 +1938,8 @@ emplyeeRouter.post('/', async (req, res) => {
     const newRfidReg = new RfidReg({
       UID,
       Reg_no: employee_id,
-      NAME,
+      // NAME,
+      NAME: `${firstName} ${lastName.charAt(0)}`,
       email,
       Contact_No: mobile_no,
     });

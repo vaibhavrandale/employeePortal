@@ -260,7 +260,7 @@ function AppRouter() {
         />
 
         <Route
-          path="/profile/:id"
+          path="/profile"
           element={
             <ProtectedRoutes>
               <Profile />
@@ -384,7 +384,7 @@ function AppRouter() {
         />
 
         <Route
-          path="/myattendance/:id"
+          path="/myattendance"
           element={
             <ProtectedRoutes>
               <IndividualAttedance />
@@ -791,7 +791,7 @@ function AppRouter() {
           }
         />
         <Route
-          path="/my-expenses-home/:id"
+          path="/my-expenses-home"
           element={
             <ProtectedRoutes>
               <MyExpenses />

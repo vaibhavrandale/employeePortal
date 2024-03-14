@@ -127,7 +127,7 @@ const Sidebar = () => {
 
           {userInfo && userInfo.isAdmin === 1 && (
             <li>
-              <Link to={`/myattendance/${userInfo.employee_id}`}>
+              <Link to={`/myattendance`}>
                 <img
                   src="/images/icons/slip.png"
                   alt="employee"
@@ -222,7 +222,7 @@ const Sidebar = () => {
 
           {userInfo && userInfo.isAdmin === 1 && (
             <li>
-              <Link to={`/my-expenses-home/${userInfo.employee_id}`}>
+              <Link to={`/my-expenses-home`}>
                 <img
                   src="/images/icons/survey1.png"
                   alt="employee"

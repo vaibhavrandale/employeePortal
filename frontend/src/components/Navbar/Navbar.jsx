@@ -101,10 +101,7 @@ const Navbar = () => {
                           {userInfo.email}
                         </span>
                       </Link>
-                      <Link
-                        to={`/profile/${userInfo.employee_id}`}
-                        className=" dropdown-item1"
-                      >
+                      <Link to={`/profile`} className=" dropdown-item1">
                         <BsFilePerson className="fs-5 pb-1 text-warning" />{' '}
                         Profile
                       </Link>

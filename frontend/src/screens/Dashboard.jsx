@@ -806,7 +806,7 @@ function Dashboard() {
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link
-                          to={`/myattendance/${userInfo.employee_id}`}
+                          to={`/myattendance`}
                           className="p-1 text-decoration-none"
                         >
                           <img
@@ -1048,7 +1048,7 @@ function Dashboard() {
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link
-                          to={`/my-expenses-home/${userInfo.employee_id}`}
+                          to={`/my-expenses-home`}
                           className="p-1 text-decoration-none"
                         >
                           <img

@@ -50,7 +50,7 @@ const reducer = (state, action) => {
 const MyExpenses = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const { id } = useParams();
+  // const { id } = useParams();
 
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -78,7 +78,9 @@ const MyExpenses = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/expenses/getall/${id}`);
+        const result = await axios.get(
+          `/api/expenses/getall/${userInfo.employee_id}`
+        );
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.expenses });
         console.log(result.data);
       } catch (err) {
@@ -92,7 +94,7 @@ const MyExpenses = () => {
       fetchData();
     }
     // fetchData();
-  }, [id, successDelete]);
+  }, [userInfo.employee_id, successDelete]);
 
   const deleteHandler = async (e, id) => {
     try {

@@ -231,7 +231,9 @@ const UpdateEmployee = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/employees/details/${id}`);
+        const result = await axios.get(
+          `/api/employees/details/${userInfo.employee_id}`
+        );
         console.log(result.data);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
         // console.log(result.data.employee.address);
@@ -326,7 +328,9 @@ const UpdateEmployee = () => {
     const SalaryData = async () => {
       dispatch({ type: 'FETCH_SALARY_REQUEST' });
       try {
-        const salaryResult = await axios.get(`/api/payslip/${id}`);
+        const salaryResult = await axios.get(
+          `/api/payslip/${userInfo.employee_id}`
+        );
         console.log(salaryResult.data);
         dispatch({
           type: 'FETCH_SALARY_SUCCESS',
@@ -366,7 +370,7 @@ const UpdateEmployee = () => {
 
     SalaryData();
     StatusData();
-  }, [id]);
+  }, [userInfo.employee_id]);
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -560,7 +564,7 @@ const UpdateEmployee = () => {
     });
     try {
       const { data } = await axios.put(
-        `/api/employees/updateemployee/${id}`,
+        `/api/employees/updateemployee/${userInfo.employee_id}`,
         {
           employee_id,
           UID,

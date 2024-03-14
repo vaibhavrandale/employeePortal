@@ -59,8 +59,8 @@ const NewAttendance = () => {
   const filteredData = attendanceData.filter((entry) => {
     if (searchTerm) {
       return (
-        entry.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        entry.employee_id.toString().includes(searchTerm)
+        entry.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        entry.employee_id.includes(searchTerm)
       );
     }
     return (
@@ -75,8 +75,11 @@ const NewAttendance = () => {
         <title> All Employee Timeline</title>
       </Helmet>
       <h2 className="text-center mt-3">All Employee Timeline</h2>
+
+      {/* Search input */}
+
       {/* Add filters for month and year */}
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between flex-wrap">
         <div className="d-flex">
           <div className="mb-3 mx-2">
             <label htmlFor="month" className="form-label">
@@ -159,6 +162,16 @@ const NewAttendance = () => {
               </Link>
             </div>
           )}
+        </div>
+        <div className="mb-3 mx-2 d-flex justify-content-end">
+          <input
+            type="text"
+            className="inputField search "
+            style={{ width: '250px' }}
+            placeholder="Search Employee.."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
       <div class="table-responsive">

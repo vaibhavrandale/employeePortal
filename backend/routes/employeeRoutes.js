@@ -6,7 +6,6 @@ import moment from 'moment';
 import { format } from 'date-fns'; // Import format from date-fns
 import BirthdayWish from '../models/BirthdayWish.js';
 import RfidCkeck from '../models/RfidCkeck.js';
-
 import { Sequelize, Op } from 'sequelize';
 
 // import bcrypt from 'bcryptjs';
@@ -33,14 +32,19 @@ import UIDCard from '../models/UIDCard.js';
 const emplyeeRouter = express.Router();
 
 dotenv.config();
-emplyeeRouter.get('/', async (req, res) => {
-  // Insert new employee data using insertMany()
-  const employees = await Employee.findAll();
+emplyeeRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    // Insert new employee data using insertMany()
+    const employees = await Employee.findAll();
 
-  // Send the created employees as the response
-  res.send({ employees });
-});
-
+    // Send the created employees as the response
+    res.send({ employees });
+  })
+);
+// http://localhost:5000/api/employees
 // emplyeeRouter.get('/details/:id', async (req, res) => {
 //   const id = req.params.id;
 //   const employee = await Employee.findByPk(id);
@@ -49,23 +53,28 @@ emplyeeRouter.get('/', async (req, res) => {
 //   res.send({ employee });
 // });
 
-emplyeeRouter.get('/details/:id', async (req, res) => {
-  try {
-    const employeeid = req.params.id;
-    const employee = await Employee.findOne({
-      where: { employee_id: employeeid },
-    });
+emplyeeRouter.get(
+  '/details/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    try {
+      const employeeid = req.params.id;
+      const employee = await Employee.findOne({
+        where: { employee_id: employeeid },
+      });
 
-    if (employee) {
-      res.send({ employee });
-    } else {
-      res.status(404).send({ message: 'Employee not found' });
+      if (employee) {
+        res.send({ employee });
+      } else {
+        res.status(404).send({ message: 'Employee not found' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Internal Server Error' });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Internal Server Error' });
-  }
-});
+  })
+);
 
 // --------update employee-------------------------
 emplyeeRouter.put('/updateemployee/:id', async (req, res) => {

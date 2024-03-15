@@ -63,7 +63,9 @@ function SlipFinal() {
       dispatch({ type: 'FETCH_REQUEST' });
       dispatch({ type: 'FETCH_PAYSLIP_REQUEST' });
       try {
-        const result = await axios.get(`/api/employees/details/${id}`);
+        const result = await axios.get(`/api/employees/details/${id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
         setName(result.data.employee.NAME);
         console.log(result.data);

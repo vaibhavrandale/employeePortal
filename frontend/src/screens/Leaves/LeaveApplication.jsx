@@ -106,7 +106,9 @@ function LeaveApplication() {
           payload: result.data.AllLeaves,
         });
 
-        const Employeeresult = await axios.get(`/api/employees/details/${id}`);
+        const Employeeresult = await axios.get(`/api/employees/details/${id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         // console.log(Employeeresult.data.employee);
         // Get the leave counts from the fetched data
         // const { leaves, sick, privilege, casual } = Employeeresult;

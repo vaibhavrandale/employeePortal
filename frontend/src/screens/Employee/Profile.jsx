@@ -373,7 +373,7 @@ const UpdateEmployee = () => {
 
     SalaryData();
     StatusData();
-  }, [userInfo.employee_id]);
+  }, [userInfo.employee_id, userInfo.token]);
 
   const [isHovered, setIsHovered] = useState(false);
 

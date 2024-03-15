@@ -89,10 +89,9 @@ function SlipFinal() {
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
         dispatch({ type: 'FETCH_PAYSLIP_FAIL', payload: err.message });
-      }
     };
     fetchData2();
-  }, [month, year, totaldays, id]);
+  }, [month, year, totaldays, id, userInfo.token]);
 
   const logo =
     'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';

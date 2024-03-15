@@ -259,7 +259,9 @@ const UpdateEmployee = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/employees/details/${id}`);
+        const result = await axios.get(`/api/employees/details/${id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         console.log(result.data);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });
         // console.log(result.data.employee.address);
@@ -379,7 +381,7 @@ const UpdateEmployee = () => {
       fetchData();
     }
     SalaryData();
-  }, [id, successDelete]);
+  }, [id, successDelete, userInfo.token]);
 
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];

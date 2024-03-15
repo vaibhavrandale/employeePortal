@@ -232,7 +232,10 @@ const UpdateEmployee = () => {
 
       try {
         const result = await axios.get(
-          `/api/employees/details/${userInfo.employee_id}`
+          `/api/employees/details/${userInfo.employee_id}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
         );
         console.log(result.data);
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employee });

@@ -56,7 +56,6 @@ emplyeeRouter.get(
 emplyeeRouter.get(
   '/details/:id',
   isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     try {
       const employeeid = req.params.id;

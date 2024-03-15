@@ -76,7 +76,9 @@ function AllEmployeeLeaves() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const Employeeresult = await axios.get(`/api/employees`);
+        const Employeeresult = await axios.get(`/api/employees`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
 
         dispatch({
           type: 'FETCH_SUCCESS',
@@ -90,7 +92,7 @@ function AllEmployeeLeaves() {
     };
 
     fetchData();
-  }, []);
+  }, [userInfo.token]);
 
   const filteredData = employees
     .filter(

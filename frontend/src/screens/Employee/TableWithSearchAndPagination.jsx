@@ -74,17 +74,14 @@ const TableWithSearchAndPagination = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/employees');
+        const result = await axios.get('/api/employees', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
         console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
-
-      setTimeout(() => {
-        // setEmployees(result.data);
-        // setLoading(false);
-      }, 2000); // Simulating a 2-second delay
     };
 
     if (successDelete) {

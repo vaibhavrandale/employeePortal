@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import './profile.css';
 import EmployeeCard from './EmployeeCard';
 // import employees from './employee.js';
@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import { Store } from '../../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,6 +31,10 @@ const CompanyProfile = () => {
     loading: true,
     error: '',
   });
+
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   // const [loading, setLoading] = useState(false);
   const logo =
@@ -54,7 +59,9 @@ const CompanyProfile = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/employees');
+        const result = await axios.get('/api/employees', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
         console.log(result.data);
       } catch (err) {
@@ -63,7 +70,7 @@ const CompanyProfile = () => {
     };
 
     fetchData();
-  }, [selectedDepartment]);
+  }, [selectedDepartment, userInfo.token]);
 
   const departmentMap = {
     isSales: 'Sales',

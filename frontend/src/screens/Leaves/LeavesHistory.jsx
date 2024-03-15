@@ -82,10 +82,10 @@ function LeavesHistory() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/leaves/${userInfo.employee_id}`);
-        // console.log('leave result' + result);
+        const result = await axios.get(`/api/leaves/${userInfo.employee_id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         if (result) {
-          // console.log(result.data.AllLeaves);
         } else {
           console.log('Leave data not found.');
           // Handle this scenario, maybe dispatch an action to indicate no employee data.
@@ -96,7 +96,10 @@ function LeavesHistory() {
         });
 
         const Employeeresult = await axios.get(
-          `/api/employees/details/${userInfo.employee_id}`
+          `/api/employees/details/${userInfo.employee_id}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
         );
         // console.log(Employeeresult.data.employee);
         // Get the leave counts from the fetched data
@@ -122,7 +125,7 @@ function LeavesHistory() {
     };
 
     fetchData();
-  }, [userInfo.employee_id]);
+  }, [userInfo.employee_id, userInfo.token]);
 
   const filteredData = leaves.filter(
     (item) =>

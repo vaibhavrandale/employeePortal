@@ -89,6 +89,7 @@ function SlipFinal() {
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
         dispatch({ type: 'FETCH_PAYSLIP_FAIL', payload: err.message });
+      }
     };
     fetchData2();
   }, [month, year, totaldays, id, userInfo.token]);

@@ -89,6 +89,8 @@ import TravelPolicy from './screens/policy_documents/TravelPolicy';
 import AllEmployeeLeaves from './screens/Leaves/AllEmployeeLeaves';
 import FactoryPoliciesHome from './screens/policy_documents/FactoryPoliciesHome';
 import RecyclingOfLifepo4Battery from './screens/policy_documents/factory-policies/RecyclingOfLifepo4Battery';
+import DetailedTimeline from './screens/ManualJobs/DetailedTimeline';
+import UpdateTimeline from './screens/ManualJobs/UpdateTimeline';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -840,6 +842,22 @@ function AppRouter() {
           element={
             <SuperAdminRoutes>
               <Manualjobs />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/detailed-timeline"
+          element={
+            <SuperAdminRoutes>
+              <DetailedTimeline />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/edit-timeline/:year/:month/:day/:employee_id/:id"
+          element={
+            <SuperAdminRoutes>
+              <UpdateTimeline />
             </SuperAdminRoutes>
           }
         />

@@ -15,6 +15,7 @@ import { FaPlaneDeparture } from 'react-icons/fa';
 import { GiTimeBomb } from 'react-icons/gi';
 import { FaRegAddressCard } from 'react-icons/fa';
 import { RiLoginBoxLine } from 'react-icons/ri';
+import { RiMapPinTimeLine } from 'react-icons/ri';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'CREATE_REQUEST':
@@ -616,6 +617,18 @@ const Manualjobs = () => {
                 )}
               </>
             )}
+          </Link>
+        </div>
+
+        <div className=" Manualcard m-1">
+          <div className="d-flex justify-content-center">
+            <RiMapPinTimeLine className=" text-danger  manualicon" />
+          </div>
+          <Link
+            to="/detailed-timeline"
+            className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+          >
+            Detailed Timeline
           </Link>
         </div>
       </div>

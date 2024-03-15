@@ -966,4 +966,137 @@ attendenceRouter.put(
   }
 );
 
+// get speccific day attendanace
+
+attendenceRouter.get('/:year/:month/:day/:employeeid/:id', async (req, res) => {
+  try {
+    const { year, month, day, employeeid, id } = req.params;
+
+    // Check if employee with the given UID and employee_id exists
+    const existingEmployee = await Employee.findOne({
+      where: {
+        employee_id: employeeid,
+      },
+    });
+
+    if (!existingEmployee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    // Check if entry for the given day exists
+    const attendance = await RfidCkeck.findOne({
+      where: {
+        employee_id: employeeid,
+        year: year,
+        month: month,
+        day: day,
+        id: id,
+      },
+    });
+
+    if (!attendance) {
+      return res.status(404).json({
+        message: `Attendance not found.`,
+      });
+    } else {
+      return res.status(200).json({
+        message: `Attendance found.`,
+        attendance,
+      });
+    }
+  } catch (error) {
+    console.error('Error Updating:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+//ROUTE FOR Entire day attendance updation
+attendenceRouter.put('/:year/:month/:day/:employeeid/:id', async (req, res) => {
+  try {
+    const { year, month, day, employeeid, id } = req.params;
+    const {
+      IN_LATTITUDE_1,
+      IN_LONGITUDE_1,
+      IN_TIME_1,
+      OUT_LATTITUDE_1,
+      OUT_LONGITUDE_1,
+      OUT_TIME_1,
+      IN_LATTITUDE_2,
+      IN_LONGITUDE_2,
+      IN_TIME_2,
+      OUT_LATTITUDE_2,
+      OUT_LONGITUDE_2,
+      OUT_TIME_2,
+      IN_LATTITUDE_3,
+      IN_LONGITUDE_3,
+      IN_TIME_3,
+      OUT_LATTITUDE_3,
+      OUT_LONGITUDE_3,
+      OUT_TIME_3,
+      totalHours,
+      isLeave,
+      LeaveType,
+    } = req.body;
+
+    // Check if employee with the given UID and employee_id exists
+    const existingEmployee = await Employee.findOne({
+      where: {
+        employee_id: employeeid,
+      },
+    });
+
+    if (!existingEmployee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    // Check if entry for the given day exists
+    const Attendance = await RfidCkeck.findOne({
+      where: {
+        employee_id: employeeid,
+        year: year,
+        month: month,
+        day: day,
+        id: id,
+      },
+    });
+
+    if (!Attendance) {
+      return res.status(404).json({
+        message: `Attendance not found.`,
+      });
+    } else {
+      Attendance.IN_LATTITUDE_1 = IN_LATTITUDE_1;
+      Attendance.IN_LONGITUDE_1 = IN_LONGITUDE_1;
+      Attendance.IN_TIME_1 = IN_TIME_1;
+      Attendance.OUT_LATTITUDE_1 = OUT_LATTITUDE_1;
+      Attendance.OUT_LONGITUDE_1 = OUT_LONGITUDE_1;
+      Attendance.OUT_TIME_1 = OUT_TIME_1;
+      Attendance.IN_LATTITUDE_2 = IN_LATTITUDE_2;
+      Attendance.IN_LONGITUDE_2 = IN_LONGITUDE_2;
+      Attendance.IN_TIME_2 = IN_TIME_2;
+      Attendance.OUT_LATTITUDE_2 = OUT_LATTITUDE_2;
+      Attendance.OUT_LONGITUDE_2 = OUT_LONGITUDE_2;
+      Attendance.OUT_TIME_2 = OUT_TIME_2;
+      Attendance.IN_LATTITUDE_3 = IN_LATTITUDE_3;
+      Attendance.IN_LONGITUDE_3 = IN_LONGITUDE_3;
+      Attendance.IN_TIME_3 = IN_TIME_3;
+      Attendance.OUT_LATTITUDE_3 = OUT_LATTITUDE_3;
+      Attendance.OUT_LONGITUDE_3 = OUT_LONGITUDE_3;
+      Attendance.OUT_TIME_3 = OUT_TIME_3;
+      Attendance.totalHours = totalHours;
+      Attendance.isLeave = isLeave;
+      Attendance.LeaveType = LeaveType;
+
+      const attendance = await Attendance.save();
+
+      res
+        .status(200)
+        .json({ message: 'Attendance updated successfully', attendance });
+    }
+  } catch (error) {
+    console.error('Error Updating:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 export default attendenceRouter;

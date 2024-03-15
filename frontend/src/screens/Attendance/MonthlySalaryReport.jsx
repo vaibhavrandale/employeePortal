@@ -137,7 +137,9 @@ const MonthlySalaryReport = () => {
       dispatch({ type: 'FETCH_EMPLOYEE_REQUEST' });
 
       try {
-        const result = await axios.get('/api/employees');
+        const result = await axios.get('/api/employees', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({
           type: 'FETCH_EMPLOYEE_SUCCESS',
           payload: result.data.employees,
@@ -152,7 +154,7 @@ const MonthlySalaryReport = () => {
     EmployeeData();
     fetchData();
     HolidayCount();
-  }, [month, totalSunday, year]);
+  }, [month, totalSunday, userInfo.token, year]);
 
   const applyStylesAndHeadingForExport = () => {
     const table = tableRef.current;
@@ -292,7 +294,7 @@ const MonthlySalaryReport = () => {
 
               <tbody>
                 {payslip.length === 0 ? (
-                  <tr>No data for forund for {month}</tr>
+                  <tr>data not found for month-{month}</tr>
                 ) : (
                   payslip.map((item, index) => {
                     ////console.log('item.employee_id:', item.employee_id);
@@ -300,52 +302,6 @@ const MonthlySalaryReport = () => {
                     const correspondingEmployee = employees.find(
                       (employee) => employee.employee_id === item.employee_id
                     );
-                    ////console.log('correspondingEmployee:', correspondingEmployee);
-
-                    // Add the logic for parsed values here
-                    // let parsedMonth = parseInt(month, 10);
-                    // let parsedYear = parseInt(year, 10);
-
-                    // let parsedTotalDays = parseInt(
-                    //   correspondingEmployee &&
-                    //     correspondingEmployee.isProbation === 1
-                    //     ? daysInMonth - totalSunday
-                    //     : daysInMonth -
-                    //         totalSunday -
-                    //         (18 -
-                    //           (correspondingEmployee &&
-                    //             correspondingEmployee.leaves)),
-                    //   10
-                    // );
-
-                    // let parsedCtc = parseInt(item.ctc, 10);
-
-                    // let averagedays = 31;
-
-                    // if (parsedMonth === 2) {
-                    //   if (
-                    //     (parsedYear % 4 === 0 && parsedYear % 100 !== 0) ||
-                    //     parsedYear % 400 === 0
-                    //   ) {
-                    //     averagedays = 29;
-                    //   } else {
-                    //     averagedays = 28;
-                    //   }
-                    // } else if ([4, 6, 9, 11].includes(parsedMonth)) {
-                    //   averagedays = 30;
-                    // }
-
-                    //console.log(`average days ${averagedays}`);
-
-                    // const netSalary = Math.floor(
-                    //   correspondingEmployee &&
-                    //     correspondingEmployee.isProbation === 1
-                    //     ? parsedCtc / 12 - item.total_deduction
-                    //     : [
-                    //         ([parsedTotalDays + totalSunday] * (parsedCtc / 12)) /
-                    //           averagedays,
-                    //       ] - item.total_deduction
-                    // );
 
                     return (
                       <tr key={index}>

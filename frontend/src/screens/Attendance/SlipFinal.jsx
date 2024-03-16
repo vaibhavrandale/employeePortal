@@ -131,88 +131,6 @@ function SlipFinal() {
 
     const cuMonth = monthNames[new Date().getMonth()];
 
-    // function numberToWords(number) {
-    //   const units = [
-    //     '',
-    //     'One',
-    //     'Two',
-    //     'Three',
-    //     'Four',
-    //     'Five',
-    //     'Six',
-    //     'Seven',
-    //     'Eight',
-    //     'Nine',
-    //   ];
-    //   const teens = [
-    //     '',
-    //     'Eleven',
-    //     'Twelve',
-    //     'Thirteen',
-    //     'Fourteen',
-    //     'Fifteen',
-    //     'Sixteen',
-    //     'Seventeen',
-    //     'Eighteen',
-    //     'Nineteen',
-    //   ];
-    //   const tens = [
-    //     '',
-    //     'Ten',
-    //     'Twenty',
-    //     'Thirty',
-    //     'Forty',
-    //     'Fifty',
-    //     'Sixty',
-    //     'Seventy',
-    //     'Eighty',
-    //     'Ninety',
-    //   ];
-
-    //   function convertChunk(chunk) {
-    //     const chunkArr = Array.from(String(chunk)).map(Number).reverse();
-    //     const [unit, ten, hundred] = chunkArr;
-
-    //     let result = '';
-    //     if (hundred) {
-    //       result += units[hundred] + ' Hundred ';
-    //     }
-
-    //     if (ten === 1) {
-    //       result += teens[unit] || '';
-    //     } else {
-    //       result += tens[ten] + (unit ? ' ' + units[unit] : '');
-    //     }
-
-    //     return result.trim();
-    //   }
-
-    //   if (number === 0) {
-    //     return 'Zero';
-    //   }
-
-    //   const billion = Math.floor(number / 1000000000);
-    //   const million = Math.floor((number % 1000000000) / 1000000);
-    //   const thousand = Math.floor((number % 1000000) / 1000);
-    //   const remainder = number % 1000;
-
-    //   let result = '';
-    //   if (billion) {
-    //     result += convertChunk(billion) + ' Billion ';
-    //   }
-    //   if (million) {
-    //     result += convertChunk(million) + ' Million ';
-    //   }
-    //   if (thousand) {
-    //     result += convertChunk(thousand) + ' Thousand ';
-    //   }
-    //   if (remainder) {
-    //     result += convertChunk(remainder);
-    //   }
-
-    //   return result.trim();
-    // }
-
     function numberToWords(number) {
       const units = [
         '',
@@ -556,153 +474,22 @@ function SlipFinal() {
       doc.text(`Base Pay`, 16, 105);
       doc.setFont('helvetica', 'normal');
 
-      // doc.text(`${payslip.basic}.00`, 79, 105);
-      // // doc.line(15, 114, 181, 114);
+      const AttendanceWiseBasic = (payslip.basic / daysInMonth) * totaldays;
+      const AttendanceWiseHRA = (payslip.hra / daysInMonth) * totaldays;
+      const AttendanceWiseConveyance =
+        (payslip.conveyance / daysInMonth) * totaldays;
+      const AttendanceWiseMedical = (payslip.medical / daysInMonth) * totaldays;
+      const AttendanceWiseSpecial = (payslip.special / daysInMonth) * totaldays;
+      const AttendanceWiseGross = (payslip.gross / daysInMonth) * totaldays;
+      const AttendanceWisePF = (payslip.pf / daysInMonth) * totaldays;
+      const AttendanceWiseTotal_deduction =
+        (payslip.total_deduction / daysInMonth) * totaldays;
 
-      // doc.setFont('helvetica', 'bold');
-      // doc.text(`House Rent Allowance`, 16, 111);
-      // doc.setFont('helvetica', 'normal');
+      const NETSALARY = AttendanceWiseGross - (AttendanceWisePF + 200);
 
-      // doc.text(`${payslip.hra}`, 87, 111);
-      // doc.text(`.00`, 88, 111);
-      // // doc.line(15, 121, 181, 121);
+      doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
 
-      // doc.setFont('helvetica', 'bold');
-      // doc.text(`Conveyance allowance`, 16, 117);
-      // doc.setFont('helvetica', 'normal');
-      // doc.text(`${payslip.conveyance}.00`, 81, 117);
-      // // doc.line(15, 128, 181, 128);
-
-      // doc.setFont('helvetica', 'bold');
-      // doc.text(`Medical allowance`, 16, 123);
-      // doc.setFont('helvetica', 'normal');
-
-      // doc.text(`${payslip.medical}.00`, 81, 123);
-      // // doc.line(15, 135, 181, 135);
-
-      // doc.setFont('helvetica', 'bold');
-      // doc.text(`Special allowance`, 16, 129);
-      // doc.setFont('helvetica', 'normal');
-
-      // doc.text(`${payslip.special}.00`, 81, 129);
-      // doc.line(15, 142, 181, 142);
-
-      // doc.setFont('helvetica', 'bold');
-      // doc.text(`Total Gross Salary`, 16, 147);
-      // doc.text(`${payslip.gross}.00`, 79, 147);
-
-      doc.text(`${payslip.basic}`, 83, 105);
-      doc.text(`.00`, 93, 105);
-      // doc.line(15, 114, 181, 114);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`House Rent Allowance`, 16.5, 111);
-      doc.setFont('helvetica', 'normal');
-
-      doc.text(`${payslip.hra}`, 85, 111);
-      doc.text(`.00`, 93, 111);
-      // doc.line(15, 121, 181, 121);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Conveyance allowance`, 16, 117);
-      doc.setFont('helvetica', 'normal');
-      doc.text(`${payslip.conveyance}`, 85, 117);
-      doc.text(`.00`, 93, 117);
-      // doc.line(15, 128, 181, 128);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Medical allowance`, 16, 123);
-      doc.setFont('helvetica', 'normal');
-
-      doc.text(`${payslip.medical}`, 85, 123);
-      doc.text(`.00`, 93, 123);
-      // doc.line(15, 135, 181, 135);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Special allowance`, 16, 129);
-      doc.setFont('helvetica', 'normal');
-
-      if (payslip.special > 100000) {
-        doc.text(`${payslip.special}`, 83, 129);
-        doc.text(`.00`, 93, 129);
-      } else {
-        doc.text(`${payslip.special}`, 85, 129);
-        doc.text(`.00`, 93, 129);
-      }
-      doc.line(15, 142, 181, 142);
-
-      doc.line(15, 142, 181, 142);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Total Gross Salary`, 16, 147);
-      doc.text(`${payslip.gross}`, 83, 147);
-      doc.text(`.00`, 93, 147);
-      doc.setFont('helvetica', 'normal');
-      doc.line(15, 150, 181, 150);
-
-      // bottom
-      doc.line(15, 160, 181, 160);
-
-      // doc.line(15, 107, 181, 107);
-      // ------------------------------3rd table end--------------------------------------------
-
-      // ------------------------------4th table start------------------------------------------
-
-      doc.setFont('helvetica', 'bold');
-
-      doc.text(`DEDUCTIONS`, 110, 97.5);
-
-      // doc.line(15, 107, 181, 107);
-
-      doc.text(`AMOUNT`, 157, 97.5);
-
-      //3rd  vertical line
-      doc.line(150, 92, 150, 150);
-
-      doc.setFont('helvetica', 'normal');
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9.8);
-      doc.text(`PF contribution by employee`, 101, 105);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.text(`${payslip.pf}.00`, 164, 105);
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9.8);
-      doc.text(`ESI contribution by employee`, 100.5, 111);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      if (payslip.esi === 0) {
-        doc.text(`${0}.00`, 169.7, 111);
-      } else {
-        doc.text(`${payslip.esi}.00`, 164, 111);
-      }
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9.8);
-      doc.text(`Professional Tax (PT)`, 101, 117);
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(10);
-      doc.text(`${payslip.pt}.00`, 166, 117);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Total Deductions`, 102, 147);
-      doc.text(`${payslip.total_deduction}.00`, 164, 147);
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Net Pay :`, 16, 155.7);
-      doc.text(`${netSalary}.00 INR  (${numberToWords(netSalary)})`, 33, 155.7);
-    } else {
-      const netSalary = Math.floor(payslip.ctc / 12 - payslip.total_deduction);
-      doc.setFont('helvetica', 'normal');
-
-      doc.setFont('helvetica', 'bold');
-      doc.text(`Base Pay`, 16, 105);
-      doc.setFont('helvetica', 'normal');
-
-      doc.text(`${payslip.basic}`, 83, 105);
-      doc.text(`.00`, 93, 105);
+      doc.text(``, 93, 105);
       // doc.line(15, 114, 181, 114);
 
       doc.setFont('helvetica', 'bold');
@@ -712,12 +499,12 @@ function SlipFinal() {
       // doc.text(`${payslip.hra}`, 85, 111);
       // doc.text(`.00`, 93, 111);
 
-      if (payslip.hra > 10000) {
-        doc.text(`${payslip.hra}`, 83, 111);
-        doc.text(`.00`, 93, 111);
+      if (AttendanceWiseHRA > 10000) {
+        doc.text(`${AttendanceWiseHRA.toFixed(2)}`, 83, 111);
+        doc.text(``, 93, 111);
       } else {
-        doc.text(`${payslip.hra}`, 85, 111);
-        doc.text(`.00`, 93, 111);
+        doc.text(`${AttendanceWiseHRA.toFixed(2)}`, 85, 111);
+        doc.text(``, 93, 111);
       }
 
       // doc.line(15, 121, 181, 121);
@@ -725,34 +512,38 @@ function SlipFinal() {
       doc.setFont('helvetica', 'bold');
       doc.text(`Conveyance allowance`, 16, 117);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${payslip.conveyance}`, 85, 117);
-      doc.text(`.00`, 93, 117);
+      doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+      doc.text(``, 93, 117);
       // doc.line(15, 128, 181, 128);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Medical allowance`, 16, 123);
       doc.setFont('helvetica', 'normal');
 
-      doc.text(`${payslip.medical}`, 85, 123);
-      doc.text(`.00`, 93, 123);
-      // doc.line(15, 135, 181, 135);
+      // doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 85, 123);
+
+      if (AttendanceWiseMedical < 1000) {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 87, 123);
+      } else {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 85, 123);
+      }
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Special allowance`, 16, 129);
       doc.setFont('helvetica', 'normal');
-      if (payslip.special > 10000) {
-        doc.text(`${payslip.special}`, 83, 129);
-        doc.text(`.00`, 93, 129);
+      if (AttendanceWiseSpecial > 10000) {
+        doc.text(`${AttendanceWiseSpecial.toFixed(2)}`, 83, 129);
+        doc.text(``, 93, 129);
       } else {
-        doc.text(`${payslip.special}`, 85, 129);
-        doc.text(`.00`, 93, 129);
+        doc.text(`${AttendanceWiseSpecial.toFixed(2)}`, 85, 129);
+        doc.text(``, 93, 129);
       }
       doc.line(15, 142, 181, 142);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Total Gross Salary`, 16, 147);
-      doc.text(`${payslip.gross}`, 83, 147);
-      doc.text(`.00`, 93, 147);
+      doc.text(`${AttendanceWiseGross.toFixed(2)}`, 83, 147);
+      doc.text(``, 93, 147);
       doc.setFont('helvetica', 'normal');
       doc.line(15, 150, 181, 150);
 
@@ -782,7 +573,7 @@ function SlipFinal() {
       doc.text(`PF contribution by employee`, 101, 105);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
-      doc.text(`${payslip.pf}.00`, 164, 105);
+      doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9.8);
@@ -804,11 +595,153 @@ function SlipFinal() {
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Total Deductions`, 102, 147);
-      doc.text(`${payslip.total_deduction}.00`, 164, 147);
+      doc.text(`${AttendanceWiseTotal_deduction.toFixed(2)}`, 164, 147);
 
       doc.setFont('helvetica', 'bold');
       doc.text(`Net Pay :`, 16, 155.7);
-      doc.text(`${netSalary}.00 INR  (${numberToWords(netSalary)})`, 33, 155.7);
+      doc.text(
+        `${NETSALARY.toFixed(0)} INR  (${numberToWords(NETSALARY.toFixed(0))})`,
+        33,
+        155.7
+      );
+    } else {
+      const netSalary = Math.floor(payslip.ctc / 12 - payslip.total_deduction);
+      doc.setFont('helvetica', 'normal');
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Base Pay`, 16, 105);
+      doc.setFont('helvetica', 'normal');
+
+      const AttendanceWiseBasic = (payslip.basic / daysInMonth) * totaldays;
+      const AttendanceWiseHRA = (payslip.hra / daysInMonth) * totaldays;
+      const AttendanceWiseConveyance =
+        (payslip.conveyance / daysInMonth) * totaldays;
+      const AttendanceWiseMedical = (payslip.medical / daysInMonth) * totaldays;
+      const AttendanceWiseSpecial = (payslip.special / daysInMonth) * totaldays;
+      const AttendanceWiseGross = (payslip.gross / daysInMonth) * totaldays;
+      const AttendanceWisePF = (payslip.pf / daysInMonth) * totaldays;
+      const AttendanceWiseTotal_deduction =
+        (payslip.total_deduction / daysInMonth) * totaldays;
+
+      const NETSALARY = AttendanceWiseGross - (AttendanceWisePF + 200);
+
+      doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+
+      doc.text(``, 93, 105);
+      // doc.line(15, 114, 181, 114);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`House Rent Allowance`, 16.5, 111);
+      doc.setFont('helvetica', 'normal');
+
+      // doc.text(`${payslip.hra}`, 85, 111);
+      // doc.text(`.00`, 93, 111);
+
+      if (AttendanceWiseHRA > 10000) {
+        doc.text(`${AttendanceWiseHRA.toFixed(2)}`, 83, 111);
+        doc.text(``, 93, 111);
+      } else {
+        doc.text(`${AttendanceWiseHRA.toFixed(2)}`, 85, 111);
+        doc.text(``, 93, 111);
+      }
+
+      // doc.line(15, 121, 181, 121);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Conveyance allowance`, 16, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+      doc.text(``, 93, 117);
+      // doc.line(15, 128, 181, 128);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Medical allowance`, 16, 123);
+      doc.setFont('helvetica', 'normal');
+
+      // doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 85, 123);
+
+      if (AttendanceWiseMedical < 1000) {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 87, 123);
+      } else {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 85, 123);
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Special allowance`, 16, 129);
+      doc.setFont('helvetica', 'normal');
+      if (AttendanceWiseSpecial > 10000) {
+        doc.text(`${AttendanceWiseSpecial.toFixed(2)}`, 83, 129);
+        doc.text(``, 93, 129);
+      } else {
+        doc.text(`${AttendanceWiseSpecial.toFixed(2)}`, 85, 129);
+        doc.text(``, 93, 129);
+      }
+      doc.line(15, 142, 181, 142);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Gross Salary`, 16, 147);
+      doc.text(`${AttendanceWiseGross.toFixed(2)}`, 83, 147);
+      doc.text(``, 93, 147);
+      doc.setFont('helvetica', 'normal');
+      doc.line(15, 150, 181, 150);
+
+      // bottom
+      doc.line(15, 160, 181, 160);
+
+      // doc.line(15, 107, 181, 107);
+      // ------------------------------3rd table end--------------------------------------------
+
+      // ------------------------------4th table start------------------------------------------
+
+      doc.setFont('helvetica', 'bold');
+
+      doc.text(`DEDUCTIONS`, 110, 97.5);
+
+      // doc.line(15, 107, 181, 107);
+
+      doc.text(`AMOUNT`, 157, 97.5);
+
+      //3rd  vertical line
+      doc.line(150, 92, 150, 150);
+
+      doc.setFont('helvetica', 'normal');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`PF contribution by employee`, 101, 105);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`ESI contribution by employee`, 100.5, 111);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      if (payslip.esi === 0) {
+        doc.text(`${0}.00`, 169.7, 111);
+      } else {
+        doc.text(`${payslip.esi}.00`, 164, 111);
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.8);
+      doc.text(`Professional Tax (PT)`, 101, 117);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.text(`${payslip.pt}.00`, 166, 117);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Total Deductions`, 102, 147);
+      doc.text(`${AttendanceWiseTotal_deduction.toFixed(2)}`, 164, 147);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(`Net Pay :`, 16, 155.7);
+      doc.text(
+        `${NETSALARY.toFixed(0)} INR  (${numberToWords(NETSALARY.toFixed(0))})`,
+        33,
+        155.7
+      );
     }
     // doc.line(15, 114, 181, 114);
 

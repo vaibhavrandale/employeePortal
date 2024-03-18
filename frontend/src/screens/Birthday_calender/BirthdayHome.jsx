@@ -6,12 +6,13 @@
 
 // export default BirthdayHome;
 
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useContext } from 'react';
 import './birthday.css';
 import EmployeeCard from './BirthdayCard';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
 import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
+import { Store } from '../../Store';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -36,6 +37,9 @@ const BirthdayHome = () => {
     error: '',
   });
 
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+
   //new
   useEffect(() => {
     // Simulate API call or data fetching
@@ -43,7 +47,9 @@ const BirthdayHome = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/employees');
+        const result = await axios.get('/api/employees', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
         console.log(result.data);
       } catch (err) {

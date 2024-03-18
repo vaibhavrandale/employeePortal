@@ -47,12 +47,12 @@ const policies = [
     name: 'Staff',
     link: '/staff-policy',
   },
-  {
-    id: 9,
-    img: '/images/policy/factory.png',
-    name: 'Factory',
-    link: '/factory-policy-home',
-  },
+  // {
+  //   id: 9,
+  //   img: '/images/policy/factory.png',
+  //   name: 'Factory',
+  //   link: '/factory-policy-home',
+  // },
 ];
 
 export default policies;

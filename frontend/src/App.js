@@ -91,6 +91,7 @@ import FactoryPoliciesHome from './screens/policy_documents/FactoryPoliciesHome'
 import RecyclingOfLifepo4Battery from './screens/policy_documents/factory-policies/RecyclingOfLifepo4Battery';
 import DetailedTimeline from './screens/ManualJobs/DetailedTimeline';
 import UpdateTimeline from './screens/ManualJobs/UpdateTimeline';
+import StaffPolicy from './screens/policy_documents/StaffPolicy';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -695,6 +696,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <TravelPolicy />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/staff-policy"
+          element={
+            <ProtectedRoutes>
+              <StaffPolicy />
             </ProtectedRoutes>
           }
         />

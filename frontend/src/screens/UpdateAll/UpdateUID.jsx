@@ -79,19 +79,17 @@ const UpdateUID = () => {
   // create
   const UpdateUIDHandler = async (e) => {
     e.preventDefault();
+
+    if (!updatedUID) {
+      // Display toast message when updated UID is not provided
+      toast.error('Please enter the updated UID.', {
+        position: 'top-right',
+      });
+      return;
+    }
     dispatch({
       type: 'UPDATE_REQUEST',
     });
-    const missingFields = [];
-
-    if (!updatedUID) {
-      return missingFields.push('Please Enter New UID  ');
-    }
-
-    if (missingFields.length > 0) {
-      toast.error(`Please fill : ${missingFields.join(', ')}`);
-      return;
-    }
 
     try {
       const { data } = await axios.put(
@@ -152,6 +150,7 @@ const UpdateUID = () => {
                     type="text"
                     className=""
                     id="updatedUID"
+                    required
                     value={updatedUID}
                     onChange={(e) => setUpdatedUID(e.target.value)}
                   />

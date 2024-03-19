@@ -487,7 +487,13 @@ function SlipFinal() {
 
       const NETSALARY = AttendanceWiseGross - (AttendanceWisePF + 200);
 
-      doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+      if (AttendanceWiseBasic < 1000) {
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 85, 105);
+      } else {
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+      }
+
+      // doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
 
       doc.text(``, 93, 105);
       // doc.line(15, 114, 181, 114);
@@ -512,7 +518,13 @@ function SlipFinal() {
       doc.setFont('helvetica', 'bold');
       doc.text(`Conveyance allowance`, 16, 117);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+      // doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+      if (AttendanceWiseMedical < 1000) {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 87, 123);
+      } else {
+        doc.text(`${AttendanceWiseMedical.toFixed(2)}`, 85, 123);
+      }
+
       doc.text(``, 93, 117);
       // doc.line(15, 128, 181, 128);
 
@@ -573,7 +585,13 @@ function SlipFinal() {
       doc.text(`PF contribution by employee`, 101, 105);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
-      doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+      // doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+
+      if (AttendanceWisePF < 1000) {
+        doc.text(`${AttendanceWisePF.toFixed(2)}`, 168, 105);
+      } else {
+        doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+      }
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9.8);
@@ -625,7 +643,12 @@ function SlipFinal() {
 
       const NETSALARY = AttendanceWiseGross - (AttendanceWisePF + 200);
 
-      doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+      // doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+      if (AttendanceWiseBasic < 1000) {
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 85, 105);
+      } else {
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+      }
 
       doc.text(``, 93, 105);
       // doc.line(15, 114, 181, 114);
@@ -650,7 +673,14 @@ function SlipFinal() {
       doc.setFont('helvetica', 'bold');
       doc.text(`Conveyance allowance`, 16, 117);
       doc.setFont('helvetica', 'normal');
-      doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+
+      if (AttendanceWiseConveyance < 1000) {
+        doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 87, 117);
+      } else {
+        doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
+      }
+
+      // doc.text(`${AttendanceWiseConveyance.toFixed(2)}`, 85, 117);
       doc.text(``, 93, 117);
       // doc.line(15, 128, 181, 128);
 
@@ -711,7 +741,13 @@ function SlipFinal() {
       doc.text(`PF contribution by employee`, 101, 105);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
-      doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+      // doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+
+      if (AttendanceWisePF < 1000) {
+        doc.text(`${AttendanceWisePF.toFixed(2)}`, 168, 105);
+      } else {
+        doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+      }
 
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(9.8);

@@ -77,6 +77,16 @@ const Payslip = sequelize.define(
     year: {
       type: DataTypes.INTEGER,
     },
+
+    taxableIncome: {
+      type: DataTypes.STRING,
+    },
+    taxRegime: {
+      type: DataTypes.STRING,
+    },
+    tds: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: false, // Disable sequelize's default timestamp fields

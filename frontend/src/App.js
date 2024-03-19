@@ -92,6 +92,11 @@ import RecyclingOfLifepo4Battery from './screens/policy_documents/factory-polici
 import DetailedTimeline from './screens/ManualJobs/DetailedTimeline';
 import UpdateTimeline from './screens/ManualJobs/UpdateTimeline';
 import StaffPolicy from './screens/policy_documents/StaffPolicy';
+import InvestDeclarationForm from './screens/Tax calculation/InvestDeclarationForm';
+import AllEmployeeInvestment from './screens/Tax calculation/AllEmployeeInvestment';
+import MyInvestment from './screens/Tax calculation/MyInvestment';
+import UpdateInvestment from './screens/Tax calculation/UpdateInvestment';
+import ViewInvestment from './screens/Tax calculation/ViewInvestment';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -882,6 +887,49 @@ function AppRouter() {
           }
         />
         {/* ----------------employee birthday calender------------- */}
+
+        {/* ----------------investment declaration form------------------- */}
+        <Route
+          path="/investment-declaration-form"
+          element={
+            <SuperAdminRoutes>
+              <InvestDeclarationForm />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/my-investment"
+          element={
+            <SuperAdminRoutes>
+              <MyInvestment />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/investment/:id"
+          element={
+            <SuperAdminRoutes>
+              <ViewInvestment />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/update-investment/:id"
+          element={
+            <SuperAdminRoutes>
+              <UpdateInvestment />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/all-employee-investment"
+          element={
+            <SuperAdminRoutes>
+              <AllEmployeeInvestment />
+            </SuperAdminRoutes>
+          }
+        />
+        {/* ----------------investment declaration form------------------- */}
       </Routes>
     </>
   );

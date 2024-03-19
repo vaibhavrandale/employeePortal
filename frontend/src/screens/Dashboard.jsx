@@ -1110,6 +1110,42 @@ function Dashboard() {
                   ) : (
                     ''
                   )}
+                  {userInfo && userInfo.isAdmin ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          // to={`/investment-declara`}
+                          to={
+                            userInfo.isSuperAdmin === 1
+                              ? `/all-employee-investment`
+                              : `/my-investment`
+                          }
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/income.jpg"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Invest. Declaration
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
 
                   {userInfo && userInfo.isAdmin && userInfo.isVisitor === 0 && (
                     <div className="col">

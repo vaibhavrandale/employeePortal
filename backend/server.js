@@ -67,7 +67,7 @@ cron.schedule('30 2 * * *', processLeavesAndCreateRefidChecks);
 
 cron.schedule('30 0 * * *', HolidayGenerator);
 
-cron.schedule('30 13 * * *', calculateTotalHoursForToday);
+cron.schedule('30 14 * * *', calculateTotalHoursForToday);
 
 // cron.schedule('30 1 * * *', sendWomensDayEmail);
 //

@@ -357,6 +357,7 @@ function LeavesHistory() {
                 </span>
               </div>
             </div>
+
             {currentItems.length === 0 ? (
               ''
             ) : (
@@ -371,6 +372,7 @@ function LeavesHistory() {
               </div>
             )}
           </div>
+
           {currentItems.length === 0 ? (
             <MsgBox className="alert alert-danger">No Leaves Found!</MsgBox>
           ) : (

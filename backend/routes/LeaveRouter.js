@@ -9,6 +9,7 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import Leaves from '../models/LeaveModel.js';
 import Employee from '../models/employeeModel.js';
+import LeaveLapse from '../models/LeaveLapse.js';
 
 // import emoji from '../welcome_image.jpg';
 
@@ -29,6 +30,57 @@ leaveRouter.get('/', async (req, res) => {
 });
 
 // get all leaves End
+
+// -----------leave lapse----------------
+leaveRouter.get('/leave-lapse', async (req, res) => {
+  const leavelapse = await LeaveLapse.findAll();
+  if (leavelapse) {
+    // Send the created employees as the response
+    return res.status(200).send({ leavelapse });
+  } else {
+    return res.status(400).send({ message: 'Leave Not found' });
+  }
+});
+leaveRouter.get('/leave-lapse/:id', async (req, res) => {
+  const id = req.params.id;
+  const leavelapse = await LeaveLapse.findOne({ where: { id: id } });
+  if (leavelapse) {
+    // Send the created employees as the response
+    return res.status(200).send({ leavelapse });
+  } else {
+    return res.status(400).send({ message: 'Leave Not found' });
+  }
+});
+
+leaveRouter.put('/leave-lapse/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const leavelapse = await LeaveLapse.findOne({ where: { id: id } });
+    if (!leavelapse) {
+      return res.status(404).json({ message: 'leave lapse not found' });
+    }
+
+    leavelapse.leaves = req.body.leaves;
+    leavelapse.sick = req.body.sick;
+    leavelapse.privilege = req.body.privilege;
+    leavelapse.casual = req.body.casual;
+    leavelapse.isLapsed = req.body.isLapsed;
+    leavelapse.LeavetypeLapsed = req.body.LeavetypeLapsed;
+    leavelapse.NoofleaveLapsed = req.body.NoofleaveLapsed;
+    leavelapse.year = req.body.year;
+
+    const LapsedLeave = await leavelapse.save();
+
+    return res
+      .status(201)
+      .json({ message: 'leave lapse updated successfully.', LapsedLeave });
+  } catch (error) {
+    console.error('Error updating leave lapse:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// -----------leave lapse----------------
 
 // ------------------apply for leave-------------------------------
 leaveRouter.post(

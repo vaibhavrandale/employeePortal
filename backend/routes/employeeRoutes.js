@@ -26,6 +26,7 @@ import Payslip from '../models/Payslip.js';
 import RfidReg from '../models/RfidReg.js';
 import Anniversary from '../models/Anniversary.js';
 import UIDCard from '../models/UIDCard.js';
+import LeaveLapse from '../models/LeaveLapse.js';
 // import Wish from '../models/Wish.js';
 // import emoji from '../welcome_image.jpg';
 
@@ -2004,6 +2005,22 @@ emplyeeRouter.post('/', async (req, res) => {
 
     const savednewUIDCard = await newUIDCard.save();
 
+    //leave lapse
+    const newLeaveLapse = new LeaveLapse({
+      Name: NAME,
+      employee_id: employee_id,
+      leaves: 18,
+      sick: 3,
+      privilege: 12,
+      casual: 3,
+      year: currentYear,
+      isLapsed: 0,
+      LeavetypeLapsed: '',
+      NoofleaveLapsed: 0,
+    });
+
+    const savedLeaveLapse = await newLeaveLapse.save();
+
     // ----------------email---------------------------------
 
     const transporter = nodemailer.createTransport({
@@ -2217,6 +2234,7 @@ emplyeeRouter.post('/', async (req, res) => {
       payslip: savedPayslip,
       RfidReg: savedRfidReg,
       UIDData: savednewUIDCard,
+      leavelapse: savedLeaveLapse,
     });
   } catch (error) {
     console.error(error);

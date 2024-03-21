@@ -97,6 +97,11 @@ import AllEmployeeInvestment from './screens/Tax calculation/AllEmployeeInvestme
 import MyInvestment from './screens/Tax calculation/MyInvestment';
 import UpdateInvestment from './screens/Tax calculation/UpdateInvestment';
 import ViewInvestment from './screens/Tax calculation/ViewInvestment';
+import LapasedLeaves from './screens/Leaves/LpasedLeaves';
+import EditLapsedLeaves from './screens/Leaves/EditLapsedLeaves';
+import ScopeofWorkHome from './screens/sales/ScopeofWorkHome';
+import ViewScopeofWork from './screens/sales/ViewScopeofWork';
+import NewScopeOfWork from './screens/sales/NewScopeOfWork';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -141,9 +146,7 @@ function AppRouter() {
       <ProgressBar />
       <Routes>
         <Route path="/forget-password" element={<ForgetPasswordScreen />} />
-
         <Route path="/reset-password/:token" element={<ResetPasswoed />} />
-
         <Route
           path="*"
           element={
@@ -160,7 +163,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/company-profile"
           element={
@@ -169,7 +171,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/dummypages"
           element={
@@ -194,7 +195,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/"
           element={
@@ -219,7 +219,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/updateSalary/:employeeid/:id"
           element={
@@ -228,7 +227,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/all-employee-leaves"
           element={
@@ -237,7 +235,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         {/* -------------------------update UID card------------------------ */}
         <Route
           path="/update-rfid"
@@ -247,7 +244,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         <Route
           path="/update-rfid/:id"
           element={
@@ -257,7 +253,6 @@ function AppRouter() {
           }
         />
         {/* -------------------------update UID card------------------------ */}
-
         <Route
           path="/addnewSalary/:employeeid"
           element={
@@ -266,7 +261,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/profile"
           element={
@@ -284,7 +278,6 @@ function AppRouter() {
           }
         />
         <Route path="/signin" element={<Signin />} />
-
         <Route
           path="/leave"
           element={
@@ -298,6 +291,22 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <LeavesHistory />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/lapsed-leaves"
+          element={
+            <ProtectedRoutes>
+              <LapasedLeaves />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/edit-lapsed-leaves/:id"
+          element={
+            <ProtectedRoutes>
+              <EditLapsedLeaves />
             </ProtectedRoutes>
           }
         />
@@ -317,7 +326,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         <Route
           path="/leave-status/:employeeId/:leaveId"
           element={
@@ -334,7 +342,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* -----------------------Notice----------------------------- */}
         <Route
           path="/notice-home-page"
@@ -369,9 +376,7 @@ function AppRouter() {
           }
         />
         {/* -----------------------Notice----------------------------- */}
-
         {/* -------------------------------Attendance--------------------------------- */}
-
         <Route
           path="/new-attendancde"
           element={
@@ -380,7 +385,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         <Route
           path="/Salary-Report/:month/:year"
           element={
@@ -390,7 +394,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         <Route
           path="/myattendance"
           element={
@@ -399,9 +402,7 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* -------------------------------Attendance--------------------------------- */}
-
         <Route
           path="/sitelist"
           element={
@@ -410,7 +411,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/location"
           element={
@@ -419,7 +419,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/pay-sleep"
           element={
@@ -428,7 +427,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* old */}
         {/* <Route
           path="/pay-slip/:id/:year/:month/:token/:totaldays/:token"
@@ -438,7 +436,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         /> */}
-
         {/* hr discussed */}
         <Route
           path="/pay-slip/:id/:year/:month/:token/:totaldays/:token"
@@ -456,7 +453,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* <Route
           path="/pay-slip/:id/:year/:month/:totaldays"
           element={
@@ -465,7 +461,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         /> */}
-
         <Route
           path="/salary-Entry"
           element={
@@ -482,7 +477,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/sitedetails/:projectCode"
           element={
@@ -491,7 +485,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/survey/:id"
           element={
@@ -500,7 +493,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/surveyImages/:id"
           element={
@@ -509,7 +501,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/editSite/:id"
           element={
@@ -526,7 +517,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* <Route
           path="/editSurvey/:projectCode/:id"
           element={
@@ -551,7 +541,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/newSurvey/:projectCode"
           element={
@@ -560,7 +549,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/plantlayout/:id"
           element={
@@ -569,9 +557,7 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* site Inventory */}
-
         <Route
           path="/available-inventory"
           element={
@@ -589,7 +575,6 @@ function AppRouter() {
           }
         />
         {/* site Inventory */}
-
         <Route
           path="/temp-salaryslip"
           element={
@@ -599,7 +584,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         {/* -------------------------holiday------------------------------ */}
         <Route
           path="/calender"
@@ -609,7 +593,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/new-holiday"
           element={
@@ -618,7 +601,6 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         <Route
           path="/edit-holiday/:id"
           element={
@@ -627,9 +609,7 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-
         {/* -------------------------holiday------------------------------ */}
-
         {/* -----------------policy documnets-------------------- */}
         <Route
           path="/policy-documents-home"
@@ -639,7 +619,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* 1 */}
         <Route
           path="/anti-harrasment"
@@ -667,7 +646,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* 5 */}
         <Route
           path="/paid-leaves"
@@ -686,7 +664,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/add-policy"
           element={
@@ -695,7 +672,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/travel-policy"
           element={
@@ -712,7 +688,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* -------------factory policy-------------- */}
         <Route
           path="/factory-policy-home"
@@ -730,9 +705,7 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         {/* -----------------policy documnets-------------------- */}
-
         {/* ------------assets-------------------- */}
         <Route
           path="/assets-home"
@@ -742,7 +715,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/add-asset"
           element={
@@ -751,7 +723,6 @@ function AppRouter() {
             </ProtectedRoutes>
           }
         />
-
         <Route
           path="/edit-asset/:id"
           element={
@@ -761,7 +732,6 @@ function AppRouter() {
           }
         />
         {/* ------------assets-------------------- */}
-
         {/* ----------------letter head------------ */}
         <Route
           path="/generate-doc"
@@ -780,7 +750,6 @@ function AppRouter() {
           }
         />
         {/* ----------------letter head------------ */}
-
         {/* ------------------expenses---------------- */}
         <Route
           path="/expenses-home"
@@ -849,7 +818,6 @@ function AppRouter() {
           }
         />
         {/* ------------------expenses---------------- */}
-
         {/* manual data update of cron job */}
         <Route
           path="/manual-jobs"
@@ -876,7 +844,6 @@ function AppRouter() {
           }
         />
         {/* manual data update of cron job */}
-
         {/* ----------------employee birthday calender------------- */}
         <Route
           path="/birthday-calender"
@@ -887,7 +854,6 @@ function AppRouter() {
           }
         />
         {/* ----------------employee birthday calender------------- */}
-
         {/* ----------------investment declaration form------------------- */}
         <Route
           path="/investment-declaration-form"
@@ -929,7 +895,33 @@ function AppRouter() {
             </SuperAdminRoutes>
           }
         />
-        {/* ----------------investment declaration form------------------- */}
+        {/* ----------------investment declaration form------------------- */}\
+        {/* -------------sales----------------- */}
+        <Route
+          path="/scope-of-work"
+          element={
+            <ProtectedRoutes>
+              <ScopeofWorkHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/scope-of-work/:id"
+          element={
+            <ProtectedRoutes>
+              <ViewScopeofWork />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/add-scope-of-work"
+          element={
+            <ProtectedRoutes>
+              <NewScopeOfWork />
+            </ProtectedRoutes>
+          }
+        />
+        {/* -------------sales----------------- */}
       </Routes>
     </>
   );

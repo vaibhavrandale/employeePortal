@@ -100,6 +100,20 @@
   box-sizing: border-box;
 }
 
+.inputField3 {
+  width: 100%;
+  height: 35px;
+  background-color: transparent;
+  border: 1px solid rgb(199, 114, 255);
+  outline: none;
+  padding-right: 30px;
+  margin: 10px 0;
+  color: black;
+  font-size: 0.8em;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
 .inputField2:focus {
   outline: none;
 

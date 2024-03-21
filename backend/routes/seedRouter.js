@@ -14,6 +14,7 @@ import EmployeeAssets from '../models/EmployeeAssets.js';
 import { DaywiseExpenses, EmployeeExpense } from '../models/expenseModels.js';
 import Access from '../models/AccessModel.js';
 import UIDCard from '../models/UIDCard.js';
+import ScopeofWork from '../models/ScopeofWork.js';
 
 const seedRouter = express.Router();
 
@@ -76,6 +77,10 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await UIDCard.destroy({ where: {}, truncate: true });
     await UIDCard.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    await ScopeofWork.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await ScopeofWork.destroy({ where: {}, truncate: true });
+    await ScopeofWork.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
     // Insert data into the Employee table
     const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
@@ -102,6 +107,8 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     const createdAccess = await Access.bulkCreate(data.Access);
     const createdUIDCard = await Access.bulkCreate(data.UIDCard);
 
+    const createdScopeofWork = await ScopeofWork.bulkCreate(data.ScopeofWork);
+
     res.send({
       createdEmployees,
       createdNotices,
@@ -116,6 +123,7 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       createdEmployeeExpense,
       createdDaywiseExpense,
       createdAccess,
+      createdScopeofWork,
       createdUIDCard,
     });
   } catch (error) {

@@ -134,7 +134,7 @@ function LeaveApplication() {
     };
 
     fetchData();
-  }, [id, userInfo.employee_id, userInfo.id]);
+  }, [id, userInfo.employee_id, userInfo.id, userInfo.token]);
 
   const filteredData = leaves.filter(
     (item) =>

@@ -19,6 +19,7 @@ const data = {
   Access: [],
   UIDCard: [],
   SiteSurvey: [],
+  ScopeofWork: [],
 };
 
 export default data;

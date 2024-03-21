@@ -38,6 +38,7 @@ import expenseRouter from './routes/ExpenseRoutes.js';
 import CronJobRouter from './routes/cronJobRoutes.js';
 import accessRouter from './routes/accessRoutes.js';
 import UIDCardRouter from './routes/UidCardRoutes.js';
+import scopeofworkRouter from './routes/salesRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -102,6 +103,8 @@ app.use('/api/assets', assetsRouter);
 app.use('/api/access', accessRouter);
 
 app.use('/api/uid-update', UIDCardRouter);
+
+app.use('/api/sales', scopeofworkRouter);
 
 app.use('/api/expenses', expenseRouter);
 app.use('/api/manual-trigger', CronJobRouter);

@@ -168,9 +168,7 @@ function AllEmployeeLeaves() {
                     <th className="col-md-1 text-center">Casual</th>
                     <th className="col-md-1 text-center">Previlege</th>
                     <th className="col-md-1 text-center">Total</th>
-                    <th className="col-md-1 text-center">View Leaves</th>
-                    {/* <th className="col-md-1 text-center">Approve</th>
-                  <th className="col-md-1 text-center">Decline</th> */}
+                    <th className="col-md-2 text-center">View Leaves</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -203,6 +201,13 @@ function AllEmployeeLeaves() {
                         >
                           {/* &nbsp;<i className="fas fa-edit"></i> */}
                           view
+                        </Link>
+
+                        <Link
+                          to="/lapsed-leaves"
+                          className="btn btn-success btn-sm  p-1 m-2 text-white"
+                        >
+                          Lapsed Leaves
                         </Link>
                       </td>
                     </tr>

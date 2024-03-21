@@ -1110,7 +1110,7 @@ function Dashboard() {
                   ) : (
                     ''
                   )}
-                  {userInfo && userInfo.isAdmin ? (
+                  {userInfo && userInfo.isSuperAdmin ? (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link
@@ -1138,6 +1138,39 @@ function Dashboard() {
                               }}
                             >
                               Invest. Declaration
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {userInfo && userInfo.isSales ? (
+                    <div className="col">
+                      <div className="card border border-0 quicklikCard">
+                        <Link
+                          // to={`/investment-declara`}
+                          to={`scope-of-work`}
+                          className="p-1 text-decoration-none"
+                        >
+                          <img
+                            src="/images/icons/income.jpg"
+                            height={50}
+                            style={{ objectFit: 'contain' }}
+                            className="card-img-top quicklikCardImg"
+                            alt="i"
+                          />
+                          <div className="card-body text-center">
+                            <span
+                              className="card-title"
+                              style={{
+                                color: '#2749f5',
+                                fontWeight: '500',
+                              }}
+                            >
+                              Sales
                             </span>
                           </div>
                         </Link>

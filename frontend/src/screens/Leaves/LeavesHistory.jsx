@@ -399,12 +399,18 @@ function LeavesHistory() {
                     onMouseLeave={() => handleRowHover(null)}
                   >
                     <td className="text-center fw-bold">
-                      <Link
-                        className="text-decoration-none"
-                        to={`/edit-leave/${item.id}`}
-                      >
-                        {index + 1}
-                      </Link>
+                      {item.approved === 1 ? (
+                        <Link disabled className="text-decoration-none ">
+                          {index + 1}
+                        </Link>
+                      ) : (
+                        <Link
+                          className="text-decoration-none"
+                          to={`/edit-leave/${item.id}`}
+                        >
+                          {index + 1}
+                        </Link>
+                      )}
                     </td>
                     <td className="text-center">
                       {new Date(item.createdAt).toLocaleDateString('en-GB', {

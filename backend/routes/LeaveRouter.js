@@ -312,10 +312,9 @@ leaveRouter.get('/:employeeid/:id', async (req, res) => {
 
 //--------------------------------update one leave of one emplyee-------------------------
 leaveRouter.put(
-  '/:employeeid/:id',
+  '/updateleave/:employeeid/:id',
   isAuth,
   isAdmin,
-  isSuperAdmin,
   expressAsyncHandler(async (req, res) => {
     const { employeeid, id } = req.params;
 
@@ -352,8 +351,7 @@ leaveRouter.put(
       leaveFound.reasonInDetail = req.body.reasonInDetail;
       leaveFound.mobileNo = req.body.mobileNo;
 
-      // Save the updated employee document
-      await employee.save();
+      await leaveFound.save();
 
       return res
         .status(201)
@@ -365,223 +363,6 @@ leaveRouter.put(
   })
 );
 
-// //new without sunday logic
-// leaveRouter.put(
-//   '/:employeeid/:leaveId/approve',
-//   isAuth,
-//   isAdmin,
-//   isSuperAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const { employeeid, leaveId } = req.params;
-
-//     try {
-//       // Validate that `employeeid` is provided and not empty
-//       if (!employeeid) {
-//         return res.status(400).json({ message: 'Employee ID is required.' });
-//       }
-
-//       // Find the employee by ID
-//       const allLeave = await Leaves.findOne({
-//         where: { employee_id: employeeid }, // Ensure employee_id is defined
-//         id: leaveId,
-//       });
-
-//       const employee = await Employee.findOne({
-//         where: { employee_id: employeeid }, // Ensure employee_id is defined
-//       });
-
-//       if (!allLeave) {
-//         return res.status(404).json({ message: 'Leave not found.' });
-//       }
-
-//       // Find the leave entry within the employee's allLeaves array by leave ID
-//       const leaveEntry = await Leaves.findByPk(leaveId);
-
-//       if (!leaveEntry) {
-//         return res
-//           .status(404)
-//           .json({ message: 'Leave not found for the employee.' });
-//       }
-
-//       const numberOfDays =
-//         Math.floor(
-//           (new Date(leaveEntry.expectedDateOfreturn) -
-//             new Date(leaveEntry.expectedDateOfLeave)) /
-//             (1000 * 60 * 60 * 24)
-//         ) + 1;
-
-//       // Return the deducted leaves to the employee
-//       // allLeave[leaveEntry.type] -= numberOfDays; // Return leaves of the specific type
-
-//       // Return the deducted leaves to the employee based on leave type
-//       switch (leaveEntry.type) {
-//         case 'casual':
-//           employee.casual -= numberOfDays;
-//           break;
-//         case 'privilege':
-//           employee.privilege -= numberOfDays;
-//           break;
-//         case 'sick':
-//           employee.sick -= numberOfDays;
-//           break;
-//         // Add more cases if you have additional leave types
-//         default:
-//           // Handle the default case or log an error if an unknown leave type is encountered
-//           console.error(`Unknown leave type: ${leaveEntry.type}`);
-//       }
-
-//       employee.leaves -= numberOfDays;
-
-//       // Update the leave entry with approval details
-//       leaveEntry.approved = '1';
-//       leaveEntry.approvedBy = req.body.approvedBy;
-//       leaveEntry.remark = req.body.remark;
-//       leaveEntry.approvedAt = req.body.approvedAt;
-//       leaveEntry.remarkBy = req.body.remarkBy;
-
-//       // Save the updated employee document
-//       const Leave = await leaveEntry.save();
-//       const updatedEmployee = await employee.save();
-
-// const transporter = nodemailer.createTransport({
-//   host: 'smtp.hostinger.com', // Use the  service
-//   port: 465,
-//   auth: {
-//     user: process.env.MAIL_USER, // Your Yandex email address
-//     pass: process.env.MAIL_PASS, // Your Yandex email password
-//   },
-// });
-// transporter.sendMail(
-//   {
-//     from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-//     to: `<${leaveEntry.email}>`,
-//     subject: `${allLeave.name} - Leave Request`,
-//     html: `
-//                 <head>
-//                 <meta charset="UTF-8">
-//                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//                 <title>Email Content</title>
-//                 <style>
-//                 body {
-//                   font-family: Arial, sans-serif;
-//                   margin: 0;
-//                   padding: 20px;
-//                   background-color: #f5f5f5;
-//                 }
-//                 .container {
-//                   background-color: #ffffff;
-//                   padding-left: 70px;
-//                   padding-right: 70px;
-//                   border-radius: 10px;
-//                   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-//                 }
-//                 .header {
-//                   text-align: center;
-//                 }
-//                 .image-content {
-//                   text-align: center;
-//                 }
-//                 img {
-//                   width: 100px;
-//                   height: 100px;
-//                   object-fit: contain;
-//                   display: flex;
-//                   justify-content: start;
-//                 }
-//                 .main-content {
-//                   margin: 20px 0px;
-//                 }
-
-//                 .main-content a {
-//                   display: flex;
-//                   justify-content: center;
-//                   padding: 10px;
-//                   text-decoration: none;
-//                   background: rgb(94, 223, 94);
-//                   width: 130px;
-//                   color: #f5f5f5;
-//                   border-radius: 3px;
-
-//                   /* margin: auto; */
-
-//                 }
-
-//                 .main-content a:hover {
-//                   background: rgb(76, 214, 71);
-//                 }
-//                 .footer {
-//                   font-size: 12px;
-//                   text-align: center;
-//                 }
-
-//                 </style>
-//             </head>
-//             <body>
-//             <div class="container">
-//             <div class="header">
-//               <h2>
-//                 <img src=${logo} alt="Embedded Image" />
-//               </h2>
-//             </div>
-//             <div class="image-content"></div>
-//             <div class="main-content">
-//             <p>Dear ${allLeave.name},</p>
-//             <p>
-//               We are pleased to inform you that your leave request has been <b>approved</b>.
-//             </p>
-//             <p>
-//               <b>Leave Details:</b>
-//               <ul>
-//                 <li><b>Start Date:</b> ${new Date(
-//                   leaveEntry.expectedDateOfLeave
-//                 ).toLocaleDateString('en-GB', {
-//                   day: '2-digit',
-//                   month: '2-digit',
-//                   year: 'numeric',
-//                 })}</li>
-//                 <li><b>End Date:</b> ${new Date(
-//                   leaveEntry.expectedDateOfreturn
-//                 ).toLocaleDateString('en-GB', {
-//                   day: '2-digit',
-//                   month: '2-digit',
-//                   year: 'numeric',
-//                 })}</li>
-//                 <li><b>Reason:</b> ${leaveEntry.reasonInDetail}</li>
-//                 <li><b>Approved By:</b> ${leaveEntry.approvedBy}</li>
-//                 <li><b>Remark:</b> ${leaveEntry.remark}</li>
-//               </ul>
-//             </p>
-//             <p>
-//               Please ensure to handover your responsibilities to a colleague or make arrangements during your absence.
-//             </p>
-//             <div class="footer">
-//               <p>This is an auto-generated email. Please do not reply.</p>
-//             </div>
-//           </div>
-//             </body>
-//             `,
-//   },
-//   (error, info) => {
-//     if (error) {
-//       console.error('Error sending email:', error);
-//     } else {
-//       console.log('Email sent:', leaveEntry.email, info.response);
-//     }
-//   }
-// );
-// return res.status(201).json({
-//   // message: 'Leave Approved successfully.',
-//   Leave,
-//   // updatedEmployee,
-// });
-//     } catch (error) {
-//       console.error('Error while approving leave:', error);
-//       return res.status(500).json({ message: 'Internal server error.' });
-//     }
-//   })
-// );
-
-//new
 leaveRouter.put(
   '/:employeeid/:leaveId/approve',
   isAuth,

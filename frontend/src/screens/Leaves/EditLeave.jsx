@@ -128,7 +128,7 @@ function EditLeave() {
 
     try {
       const { data } = await axios.put(
-        `/api/leaves/${userInfo.employee_id}/${id}`,
+        `/api/leaves/updateleave/${userInfo.employee_id}/${id}`,
         {
           employee_id,
           name,
@@ -146,6 +146,7 @@ function EditLeave() {
 
       dispatch({
         type: 'UPDATE_SUCCESS',
+        payload: data.leave,
       });
       //   toast.success('Leave Updated successfully');
 

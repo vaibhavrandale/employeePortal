@@ -216,7 +216,7 @@ function ExpenseExport() {
     doc.setFont('Helvetica', 'normal');
 
     if (expense.status === 1 || expense.status === 2 || expense.status === 3) {
-      doc.text('Director Approved', 20, doc.autoTable.previous.finalY + 40);
+      doc.text('HR Approved ', 20, doc.autoTable.previous.finalY + 40);
     } else if (expense.status === 0) {
       doc.text('Pending', 27, doc.autoTable.previous.finalY + 40);
     }
@@ -226,7 +226,7 @@ function ExpenseExport() {
     doc.setFont('Helvetica', 'normal');
 
     if (expense.status === 1 || expense.status >= 2) {
-      doc.text('HR Approved', 84, doc.autoTable.previous.finalY + 40);
+      doc.text('Director Approved', 84, doc.autoTable.previous.finalY + 40);
     } else {
       doc.text('Pending', 87, doc.autoTable.previous.finalY + 40);
     }

@@ -13,7 +13,6 @@ import Dashboard from './screens/Dashboard';
 import AddEmployee from './screens/Employee/AddEmployee';
 import Signin from './screens/Signin/Signin';
 import { Toaster } from 'react-hot-toast';
-import Leaves from './screens/Leaves/Leaves';
 import LeavesHistory from './screens/Leaves/LeavesHistory';
 import SiteList from './screens/SiteSurvey/SiteList';
 import SiteDetails from './screens/SiteSurvey/SiteDetails';
@@ -102,6 +101,8 @@ import EditLapsedLeaves from './screens/Leaves/EditLapsedLeaves';
 import ScopeofWorkHome from './screens/sales/ScopeofWorkHome';
 import ViewScopeofWork from './screens/sales/ViewScopeofWork';
 import NewScopeOfWork from './screens/sales/NewScopeOfWork';
+import Leaves from './screens/Leaves/NewLeave';
+import NewLeave from './screens/Leaves/NewLeave';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -282,7 +283,7 @@ function AppRouter() {
           path="/leave"
           element={
             <ProtectedRoutes>
-              <Leaves />
+              <NewLeave />
             </ProtectedRoutes>
           }
         />

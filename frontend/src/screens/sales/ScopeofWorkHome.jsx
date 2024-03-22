@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 import { Store } from '../../Store.js';
 import axios from 'axios';
 import { FaRegEdit } from 'react-icons/fa';
-
+import { IoEyeOutline } from 'react-icons/io5';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -103,7 +103,7 @@ const ScopeofWorkHome = () => {
               <th className="text-center">Plant capacity</th>
               <th className="text-center">PO No.</th>
               <th className="text-center">PO Date</th>
-              <th className="text-center">Edit</th>
+              <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +116,13 @@ const ScopeofWorkHome = () => {
                 <td className="text-center">{item.purchase_order_date}</td>
                 <td className="text-center">
                   <Link
-                    className="btn btn-warning btn-sm"
+                    className="btn btn-success btn-sm m-1"
+                    to={`/scope-of-work/${item.id}`}
+                  >
+                    <IoEyeOutline />
+                  </Link>
+                  <Link
+                    className="btn btn-warning btn-sm m-1"
                     to={`/scope-of-work/${item.id}`}
                   >
                     <FaRegEdit />

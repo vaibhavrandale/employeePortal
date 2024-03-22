@@ -73,7 +73,7 @@ const NewScopeOfWork = () => {
   const [transportation_scope, setTransportationScope] = useState('');
   const [loading_unloading_atsite, setLoadingUnloadingAtSite] = useState(false);
   const [movement_within_site, setMovementWithinSite] = useState('');
-  const [submittedBy, setSubmittedBy] = useState('');
+  const [submittedBy, setSubmittedBy] = useState(userInfo.NAME);
   const [purlin_extension_scope, setPurlin_Extension_Scope] = useState('');
   const [installation_scope, setInstallation_scope] = useState('');
 

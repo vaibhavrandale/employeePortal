@@ -23,7 +23,7 @@ const reducer = (state, action) => {
   }
 };
 
-function Leaves() {
+function NewLeave() {
   const [{ loadingCreate }, dispatch] = useReducer(reducer, {
     loadingCreate: false,
     error: '',
@@ -240,4 +240,4 @@ function Leaves() {
   );
 }
 
-export default Leaves;
+export default NewLeave;

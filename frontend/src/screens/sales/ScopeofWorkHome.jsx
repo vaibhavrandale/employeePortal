@@ -129,7 +129,7 @@ const ScopeofWorkHome = () => {
                   </Link>
                   <Link
                     className="btn btn-warning btn-sm m-1"
-                    to={`/scope-of-work/${item.id}`}
+                    to={`/update-scope-of-work/${item.id}`}
                   >
                     <FaRegEdit />
                   </Link>

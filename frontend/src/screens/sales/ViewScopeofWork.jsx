@@ -62,34 +62,6 @@ const Viewscopeofwork = () => {
     // fetchData();
   }, [id, userInfo.token]);
 
-  // const deleteHandler = async (e) => {
-
-  //   e.preventDefault();
-  //   dispatch({
-  //     type: 'DELETE_REQUEST',
-  //   });
-
-  //   try {
-  //     const { data } = await axios.delete(
-  //       `/api/sales/scopeofwork/${id}`,
-
-  //       {
-  //         headers: { Authorization: `Bearer ${userInfo.token}` },
-  //       }
-  //     );
-  //     console.log(data);
-  //     dispatch({
-  //       type: 'DELETE_SUCCESS',
-  //       payload: data,
-  //     });
-
-  //     toast.success('Scope of work Deleted Successfully!');      // navigate('/leaves-history');
-  //   } catch (error) {
-  //     toast.error(getError(error));
-  //     dispatch({ type: 'DELETE_FAIL' });
-  //   }
-  // };
-
   const deleteHandler = async (e) => {
     e.preventDefault();
     if (window.confirm('Are you sure to delete?')) {

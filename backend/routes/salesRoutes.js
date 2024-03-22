@@ -92,6 +92,74 @@ scopeofworkRouter.post(
   })
 );
 
+scopeofworkRouter.put(
+  '/scopeofwork/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const scopeofwork = await ScopeofWork.findByPk(id);
+
+    if (!scopeofwork) {
+      return res.status(404).send({ message: 'Scope of work not found' });
+    }
+
+    const {
+      client_name,
+      plant_capacity,
+      purchase_order_no,
+      purchase_order_date,
+      docking_station_frame,
+      solar_module_capacity,
+      module_mounting_structure,
+      docking_station_piling,
+      gateway_type,
+      internet_connectivity,
+      mounting_pole,
+      power_supply_for_pole,
+      bridge_type,
+      bridge_installation,
+      reversing_station_type,
+      is_docking_station_returnable,
+      docking_station_layers,
+      transportation_scope,
+      loading_unloading_atsite,
+      movement_within_site,
+      installation_scope,
+      purlin_extension_scope,
+      submittedBy,
+    } = req.body;
+
+    scopeofwork.client_name = client_name;
+    scopeofwork.plant_capacity = plant_capacity;
+    scopeofwork.purchase_order_no = purchase_order_no;
+    scopeofwork.purchase_order_date = purchase_order_date;
+    scopeofwork.docking_station_frame = docking_station_frame;
+    scopeofwork.solar_module_capacity = solar_module_capacity;
+    scopeofwork.module_mounting_structure = module_mounting_structure;
+    scopeofwork.docking_station_piling = docking_station_piling;
+    scopeofwork.gateway_type = gateway_type;
+    scopeofwork.internet_connectivity = internet_connectivity;
+    scopeofwork.mounting_pole = mounting_pole;
+    scopeofwork.power_supply_for_pole = power_supply_for_pole;
+    scopeofwork.bridge_type = bridge_type;
+    scopeofwork.bridge_installation = bridge_installation;
+    scopeofwork.reversing_station_type = reversing_station_type;
+    scopeofwork.is_docking_station_returnable = is_docking_station_returnable;
+    scopeofwork.docking_station_layers = docking_station_layers;
+    scopeofwork.transportation_scope = transportation_scope;
+    scopeofwork.loading_unloading_atsite = loading_unloading_atsite;
+    scopeofwork.movement_within_site = movement_within_site;
+    scopeofwork.installation_scope = installation_scope;
+    scopeofwork.purlin_extension_scope = purlin_extension_scope;
+    scopeofwork.submittedBy = submittedBy;
+
+    const updatedScopeOfWork = await scopeofwork.save();
+
+    res.send({ message: 'Scope of work updated', updatedScopeOfWork });
+  })
+);
+
 scopeofworkRouter.delete(
   '/scopeofwork/:id',
   isAuth,

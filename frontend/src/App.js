@@ -103,6 +103,7 @@ import ViewScopeofWork from './screens/sales/ViewScopeofWork';
 import NewScopeOfWork from './screens/sales/NewScopeOfWork';
 import Leaves from './screens/Leaves/NewLeave';
 import NewLeave from './screens/Leaves/NewLeave';
+import UpdateScopeOfWork from './screens/sales/UpdateScopeOfWork';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -919,6 +920,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <NewScopeOfWork />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/update-scope-of-work/:id"
+          element={
+            <ProtectedRoutes>
+              <UpdateScopeOfWork />
             </ProtectedRoutes>
           }
         />

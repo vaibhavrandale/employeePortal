@@ -41,9 +41,11 @@ leaveRouter.get('/leave-lapse', async (req, res) => {
     return res.status(400).send({ message: 'Leave Not found' });
   }
 });
-leaveRouter.get('/leave-lapse/:id', async (req, res) => {
-  const id = req.params.id;
-  const leavelapse = await LeaveLapse.findOne({ where: { id: id } });
+leaveRouter.get('/leave-lapse/:employeeid', async (req, res) => {
+  const employeeid = req.params.employeeid;
+  const leavelapse = await LeaveLapse.findOne({
+    where: { employee_id: employeeid },
+  });
   if (leavelapse) {
     // Send the created employees as the response
     return res.status(200).send({ leavelapse });
@@ -52,10 +54,12 @@ leaveRouter.get('/leave-lapse/:id', async (req, res) => {
   }
 });
 
-leaveRouter.put('/leave-lapse/:id', async (req, res) => {
+leaveRouter.put('/leave-lapse/:employeeid', async (req, res) => {
   try {
-    const id = req.params.id;
-    const leavelapse = await LeaveLapse.findOne({ where: { id: id } });
+    const employeeid = req.params.employeeid;
+    const leavelapse = await LeaveLapse.findOne({
+      where: { employee_id: employeeid },
+    });
     if (!leavelapse) {
       return res.status(404).json({ message: 'leave lapse not found' });
     }

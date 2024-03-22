@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 // import leaves from './leaves.js';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Store } from '../../Store.js';
 import axios from 'axios';
 
@@ -15,23 +15,46 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'FETCH_EMPLOYEE_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_EMPLOYEE_SUCCESS':
+      return { ...state, employee: action.payload, loading: false };
+
+    case 'FETCH_EMPLOYEE_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
     default:
       return state;
   }
 };
 
 const LapasedLeaves = () => {
-  const [{ loading, loadingUpdate, leavelapse }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, loadingUpdate, leavelapse, employee }, dispatch] =
+    useReducer(reducer, {
       leavelapse: [],
+      employee: {},
       loading: true,
       error: '',
-    }
-  );
-
+    });
+  const { employeeid } = useParams();
   const { state } = useContext(Store);
   const { userInfo } = state;
+
+  const [employee_id, setEmployee_id] = useState();
+  const [year, setYear] = useState();
+  const [Name, setname] = useState();
+  const [leaves, setleaves] = useState();
+  const [sick, setSick] = useState();
+  const [privilege, setPrivilege] = useState();
+  const [casual, setCasual] = useState();
+  const [isLapsed, setisLapsed] = useState();
+  const [LeavetypeLapsed, setLeaveTypeLapsed] = useState();
+  const [NoofleaveLapsed, setNoofleaveLapsed] = useState();
+
+  const [TotalLeaves, setTotalLeaves] = useState(0);
+  const [TotalSick, setTotalSick] = useState(0);
+  const [TotalPrivilege, setTotalPrivilege] = useState(0);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -39,24 +62,58 @@ const LapasedLeaves = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/leaves/leave-lapse`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const result = await axios.get(
+          `/api/leaves/leave-lapse/${employeeid}`,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.leavelapse });
         console.log(result.data);
+        setEmployee_id(result.data.leavelapse.employee_id);
+        setname(result.data.leavelapse.Name);
+        setleaves(result.data.leavelapse.leaves);
+        setSick(result.data.leavelapse.sick);
+        setPrivilege(result.data.leavelapse.privilege);
+        setCasual(result.data.leavelapse.casual);
+        setisLapsed(result.data.leavelapse.isLapsed);
+        setLeaveTypeLapsed(result.data.leavelapse.LeavetypeLapsed);
+        setNoofleaveLapsed(result.data.leavelapse.NoofleaveLapsed);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
 
-    fetchData();
+    // Simulate API call or data fetching
+    const fetchEmployeeData = async () => {
+      dispatch({ type: 'FETCH_EMPLOYEE_REQUEST' });
 
+      try {
+        const result = await axios.get(`/api/employees/details/${employeeid}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({
+          type: 'FETCH_EMPLOYEE_SUCCESS',
+          payload: result.data.employee,
+        });
+        console.log(result.data);
+
+        setTotalLeaves(result.data.employee.leaves);
+        setTotalSick(result.data.employee.sick);
+        setTotalPrivilege(result.data.employee.privilege);
+      } catch (err) {
+        dispatch({ type: 'FETCH_EMPLOYEE_FAIL', payload: err.message });
+      }
+    };
+
+    fetchData();
+    fetchEmployeeData();
     // fetchData();
-  }, [userInfo.token]);
+  }, [employeeid, userInfo.token]);
 
   return (
     <div className="container">
-      <h3 className="text-center fw-bold">Lapsed Leaves</h3>
+      <h3 className="text-center fw-bold">Lapsed Leaves {employeeid}</h3>
 
       <div className="table-responsive">
         <table className="table table-bordered">
@@ -75,33 +132,25 @@ const LapasedLeaves = () => {
             </tr>
           </thead>
           <tbody>
-            {leavelapse.map((item, index) => (
-              <tr key={index}>
-                <td className="text-center">{item.employee_id}</td>
-                <td className="text-center">{item.Name}</td>
-                <td className="text-center">{item.leaves}</td>
-                <td className="text-center">{item.sick}</td>
-                <td className="text-center">{item.privilege}</td>
-                <td className="text-center">{item.casual}</td>
-                <td className="text-center">{item.isLapsed}</td>
-                <td className="text-center">
-                  {item.LeavetypeLapsed === '' ? (
-                    <span className="badge bg-warning">NO</span>
-                  ) : (
-                    <span className="badge bg-success">Casual</span>
-                  )}
-                </td>
-                <td className="text-center">{item.NoofleaveLapsed}</td>
-                <td className="text-center">
-                  <Link
-                    className="btn btn-warning btn-sm"
-                    to={`/edit-lapsed-leaves/${item.id}`}
-                  >
-                    Update
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            <tr>
+              <td className="text-center">{employee_id}</td>
+              <td className="text-center">{Name}</td>
+              <td className="text-center">{TotalLeaves}</td>
+              <td className="text-center">{sick}</td>
+              <td className="text-center">{privilege}</td>
+              <td className="text-center">{casual}</td>
+              <td className="text-center">{isLapsed}</td>
+              <td className="text-center">{LeavetypeLapsed}</td>
+              <td className="text-center">{NoofleaveLapsed}</td>
+              <td className="text-center">
+                <Link
+                  className="btn btn-warning btn-sm"
+                  to={`/edit-lapsed-leaves/${employeeid}`}
+                >
+                  Update
+                </Link>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

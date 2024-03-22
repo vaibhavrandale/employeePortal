@@ -203,12 +203,12 @@ function AllEmployeeLeaves() {
                           view
                         </Link>
 
-                        <Link
-                          to="/lapsed-leaves"
+                        {/* <Link
+                          to={`/lapsed-leaves/${item.employee_id}`}
                           className="btn btn-success btn-sm  p-1 m-2 text-white"
                         >
                           Lapsed Leaves
-                        </Link>
+                        </Link> */}
                       </td>
                     </tr>
                   ))}

@@ -136,7 +136,7 @@ const EditLapsedLeaves = () => {
       //   position: 'bottom-right',
       // });
       toast.success('lapse updated successfullt');
-      navigate(`/lapsed-leaves`);
+      navigate(`/lapsed-leaves/${id}`);
     } catch (error) {
       toast.error(getError(error), {
         position: 'top-right',

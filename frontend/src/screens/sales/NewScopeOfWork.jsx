@@ -227,7 +227,7 @@ const NewScopeOfWork = () => {
         <title>Scope of Work Questionnaire </title>
       </Helmet>
       <h3 className="text-center fw-bold">Scope of Work Questionnaire </h3>
-      <div className="card p-2" style={{ width: '650px', margin: 'auto' }}>
+      <div className=" p-2" style={{ maxWidth: '450px', margin: 'auto' }}>
         <form>
           <div className="mb-3">
             <label htmlFor="client_name" className="form-label">

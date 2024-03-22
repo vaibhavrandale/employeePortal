@@ -297,7 +297,7 @@ function AppRouter() {
           }
         />
         <Route
-          path="/lapsed-leaves"
+          path="/lapsed-leaves/:employeeid"
           element={
             <ProtectedRoutes>
               <LapasedLeaves />

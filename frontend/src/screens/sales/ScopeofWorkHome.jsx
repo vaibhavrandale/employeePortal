@@ -65,12 +65,16 @@ const ScopeofWorkHome = () => {
 
   const [searchTerm, setSearchTerm] = useState();
   const filteredData = scopeofwork.filter((entry) => {
+    // Check if searchTerm exists and if it matches any property of the entry
     if (searchTerm) {
       return (
-        entry.searchTerm.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        entry.searchTerm.includes(searchTerm)
+        entry.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        entry.plant_capacity.includes(searchTerm)
+        // Add additional conditions for other properties if needed
       );
     }
+    // If searchTerm is not provided, keep all entries
+    return true;
   });
 
   return (
@@ -81,7 +85,7 @@ const ScopeofWorkHome = () => {
           <input
             type="text"
             className="inputField search m-1"
-            style={{ width: '250px', height: '10px' }}
+            style={{ width: '250px' }}
             placeholder="Search.."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -95,7 +99,7 @@ const ScopeofWorkHome = () => {
         </div>{' '}
       </div>
       <div className="table-responsive">
-        <table className="table table-bordered">
+        <table className="table table-striped table-hover">
           <thead>
             <tr>
               <th className="text-center">Serial</th>
@@ -103,17 +107,19 @@ const ScopeofWorkHome = () => {
               <th className="text-center">Plant capacity</th>
               <th className="text-center">PO No.</th>
               <th className="text-center">PO Date</th>
+              <th className="text-center">Last Update</th>
               <th className="text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-            {scopeofwork.map((item, index) => (
+            {filteredData.map((item, index) => (
               <tr key={index}>
                 <td className="text-center">{item.id}</td>
                 <td className="text-center">{item.client_name}</td>
                 <td className="text-center">{item.plant_capacity}</td>
                 <td className="text-center">{item.purchase_order_no}</td>
                 <td className="text-center">{item.purchase_order_date}</td>
+                <td className="text-center">{item.submittedBy}</td>
                 <td className="text-center">
                   <Link
                     className="btn btn-success btn-sm m-1"

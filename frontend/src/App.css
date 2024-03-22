@@ -20,6 +20,7 @@
   font-family: 'Recursive', sans-serif;
 }
 body {
+  min-height: 80vh;
 }
 
 .app {

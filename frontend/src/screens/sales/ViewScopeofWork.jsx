@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../../Store';
 import axios from 'axios';
-import LoadingBox5 from '../../components/LoadingBox/LoadingBox5';
-
+import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
+import toast from 'react-hot-toast';
+import { getError } from '../../utils';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -15,24 +16,31 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+
+    case 'DELETE_SUCCESS':
+      return { ...state, loadingDelete: false, successDelete: true };
+
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false };
+
     default:
       return state;
   }
 };
 
 const Viewscopeofwork = () => {
-  const [{ loading, loadingUpdate, scopeofwork }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, loadingUpdate, scopeofwork, loadingDelete }, dispatch] =
+    useReducer(reducer, {
       scopeofwork: {},
       loading: true,
       error: '',
-    }
-  );
+    });
   const { id } = useParams();
   const { state } = useContext(Store);
   const { userInfo } = state;
-
+  const navigate = useNavigate();
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
@@ -53,6 +61,55 @@ const Viewscopeofwork = () => {
 
     // fetchData();
   }, [id, userInfo.token]);
+
+  // const deleteHandler = async (e) => {
+
+  //   e.preventDefault();
+  //   dispatch({
+  //     type: 'DELETE_REQUEST',
+  //   });
+
+  //   try {
+  //     const { data } = await axios.delete(
+  //       `/api/sales/scopeofwork/${id}`,
+
+  //       {
+  //         headers: { Authorization: `Bearer ${userInfo.token}` },
+  //       }
+  //     );
+  //     console.log(data);
+  //     dispatch({
+  //       type: 'DELETE_SUCCESS',
+  //       payload: data,
+  //     });
+
+  //     toast.success('Scope of work Deleted Successfully!');      // navigate('/leaves-history');
+  //   } catch (error) {
+  //     toast.error(getError(error));
+  //     dispatch({ type: 'DELETE_FAIL' });
+  //   }
+  // };
+
+  const deleteHandler = async (e) => {
+    e.preventDefault();
+    if (window.confirm('Are you sure to delete?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(`/api/sales/scopeofwork/${id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success('Scope of work Deleted Successfully!');
+
+        dispatch({ type: 'DELETE_SUCCESS' });
+        navigate('/scope-of-work');
+      } catch (error) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
+    }
+  };
   return (
     <div className="container">
       {' '}
@@ -67,7 +124,9 @@ const Viewscopeofwork = () => {
         </div>
 
         {loading ? (
-          <LoadingBox5 />
+          <div className="d-flex justify-content-center p-4">
+            <LoadingBox4 />
+          </div>
         ) : (
           <div className="card-body">
             <div className="row">
@@ -167,6 +226,18 @@ const Viewscopeofwork = () => {
                   <strong>Submitted By:</strong> {scopeofwork.submittedBy}
                 </p>
               </div>
+            </div>
+            <div className="d-flex justify-content-end">
+              <Link className="btn btn-sm btn-danger" onClick={deleteHandler}>
+                {loadingDelete ? (
+                  <>
+                    Deleting..
+                    <LoadingBox4 />
+                  </>
+                ) : (
+                  'Delete'
+                )}
+              </Link>
             </div>
           </div>
         )}

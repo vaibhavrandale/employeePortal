@@ -61,17 +61,17 @@ const NewScopeOfWork = () => {
   const [module_mounting_structure, setModuleMountingStructure] = useState('');
   const [docking_station_piling, setDockingStationPiling] = useState('');
   const [gateway_type, setGatewayType] = useState('');
-  const [internet_connectivity, setInternetConnectivity] = useState(false);
+  const [internet_connectivity, setInternetConnectivity] = useState('');
   const [mounting_pole, setMountingPole] = useState('');
   const [power_supply_for_pole, setPowerSupplyForPole] = useState('');
   const [bridge_type, setBridgeType] = useState('');
   const [bridge_installation, setBridgeInstallation] = useState('');
   const [reversing_station_type, setReversingStationType] = useState('');
   const [is_docking_station_returnable, setIsDockingStationReturnable] =
-    useState(false);
+    useState('');
   const [docking_station_layers, setDockingStationLayers] = useState(0);
   const [transportation_scope, setTransportationScope] = useState('');
-  const [loading_unloading_atsite, setLoadingUnloadingAtSite] = useState(false);
+  const [loading_unloading_atsite, setLoadingUnloadingAtSite] = useState('');
   const [movement_within_site, setMovementWithinSite] = useState('');
   const [submittedBy, setSubmittedBy] = useState(userInfo.NAME);
   const [purlin_extension_scope, setPurlin_Extension_Scope] = useState('');
@@ -84,12 +84,87 @@ const NewScopeOfWork = () => {
     if (!client_name) {
       missingFields.push('Please enter client Name');
     }
+    if (!plant_capacity) {
+      missingFields.push('Please enter plant capacity');
+    }
     if (!purchase_order_no) {
       missingFields.push('Please enter PO number');
     }
+    if (!purchase_order_date) {
+      missingFields.push('Please enter purchase order date');
+    }
+    if (!purchase_order_date) {
+      missingFields.push('Please enter purchase order date');
+    }
+    if (!docking_station_frame) {
+      missingFields.push('Please select docking station Frame Type');
+    }
+    if (!solar_module_capacity) {
+      missingFields.push('Please Enter solar module capacity');
+    }
+    if (!module_mounting_structure) {
+      missingFields.push('Please Enter module mounting structure');
+    }
+    if (!docking_station_piling) {
+      missingFields.push('Please Enter docking station piling');
+    }
+    if (!gateway_type) {
+      missingFields.push('Please select gateway type');
+    }
+    if (!internet_connectivity) {
+      missingFields.push('Please select internet connectivity');
+    }
+
+    if (!mounting_pole) {
+      missingFields.push('Please select mounting pole');
+    }
+    if (!power_supply_for_pole) {
+      missingFields.push('Please select power supply for pole');
+    }
+    if (!power_supply_for_pole) {
+      missingFields.push('Please select power supply for pole');
+    }
+
+    if (!bridge_type) {
+      missingFields.push('Please select bridge type');
+    }
+
+    if (!bridge_installation) {
+      missingFields.push('Please select bridge installation');
+    }
+    if (!reversing_station_type) {
+      missingFields.push('Please select reversing station type');
+    }
+    if (!is_docking_station_returnable) {
+      missingFields.push('Please select docking station returnable or not');
+    }
+
+    if (!docking_station_layers) {
+      missingFields.push('Please select docking station layers');
+    }
+
+    if (!docking_station_layers) {
+      missingFields.push('Please select docking station layers');
+    }
+
+    if (!transportation_scope) {
+      missingFields.push('Please select transportation scope');
+    }
+    if (!loading_unloading_atsite) {
+      missingFields.push('Please select loading unloading atsite');
+    }
+    if (!movement_within_site) {
+      missingFields.push('Please select movement within site');
+    }
+    if (!purlin_extension_scope) {
+      missingFields.push('Please select purlin extension scope');
+    }
+    if (!installation_scope) {
+      missingFields.push('Please select installation scope');
+    }
 
     if (missingFields.length > 0) {
-      toast.error(`${missingFields.join(', ')}`);
+      toast.error(`${missingFields.join(',\n ')}`);
 
       return;
     }
@@ -241,7 +316,7 @@ const NewScopeOfWork = () => {
             </label>
             {/* <input
               type="text"
-             className="inputField3 "
+             className="inputField3 " required
               id="module_mounting_structure"
               name="module_mounting_structure"
               value={module_mounting_structure}
@@ -300,7 +375,7 @@ const NewScopeOfWork = () => {
               id="leave"
               className="inputField3 "
               checked={internet_connectivity}
-              onChange={(e) => setInternetConnectivity(e.target.checked)}
+              onChange={(e) => setInternetConnectivity(e.target.value)}
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
@@ -380,8 +455,8 @@ const NewScopeOfWork = () => {
             <select
               id="leave"
               className="inputField3 "
-              value={bridge_installation}
-              onChange={(e) => setBridgeInstallation(e.target.value)}
+              value={reversing_station_type}
+              onChange={(e) => setReversingStationType(e.target.value)}
             >
               <option value="">Select</option>
               <option value="End Extensions">End Extensions</option>
@@ -400,11 +475,11 @@ const NewScopeOfWork = () => {
               id="leave"
               className="inputField3 "
               checked={is_docking_station_returnable}
-              onChange={(e) => setIsDockingStationReturnable(e.target.checked)}
+              onChange={(e) => setIsDockingStationReturnable(e.target.value)}
             >
               <option value="">Select</option>
-              <option value="Taypro">Taypro</option>
-              <option value="client">Client</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
           </div>
           <div className="mb-3">
@@ -437,6 +512,7 @@ const NewScopeOfWork = () => {
               <select
                 id="leave"
                 className="inputField3 "
+                required
                 value={installation_scope}
                 onChange={(e) => setInstallation_scope(e.target.value)}
               >
@@ -454,6 +530,7 @@ const NewScopeOfWork = () => {
               <select
                 id="leave"
                 className="inputField3 "
+                required
                 value={purlin_extension_scope}
                 onChange={(e) => setPurlin_Extension_Scope(e.target.value)}
               >

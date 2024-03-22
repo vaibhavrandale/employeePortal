@@ -201,7 +201,7 @@ scopeofworkRouter.delete(
         // Send email notification to super sales admins
         const info = await transporter.sendMail({
           from: `TAYPRO INTERNAL SALES <${process.env.MAIL_USER}>`,
-          to: superSalesAdminEmails.join(', '),
+          to: 'sales@taypro.in',
           subject: `Scope of Work deleted PO -${scopeofwork.purchase_order_no}`,
           html: `
         <!DOCTYPE html>

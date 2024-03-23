@@ -1,0 +1,110 @@
+.SalesCard {
+  width: 180px;
+  min-height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 5px;
+  border: none;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+
+  transition: 1s all;
+  -webkit-transition: 1s all;
+  -moz-transition: 1s all;
+  -ms-transition: 1s all;
+  -o-transition: 1s all;
+}
+
+.SalesCard:hover {
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+}
+
+.SalesCard img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+}
+
+.SalesCard > span {
+  font-size: 13px;
+  padding-top: 10px;
+}
+
+.sales-container {
+  margin-top: 55px;
+  margin-left: 58px;
+  margin-right: 5px;
+  min-height: 70vh;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 1px 2px 0 rgba(0, 0, 0, 0.11);
+}
+
+.sales-heading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.sales-heading {
+  margin-top: 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgb(246, 32, 75);
+}
+
+.sales-logo {
+  height: 70px;
+  width: 190px;
+
+  object-fit: contain;
+}
+.sales-section1 > .sales-section1-heading {
+  padding: 10px;
+  font-weight: 700;
+}
+.sales-section1 > .first-para-container > .first-para {
+  text-align: justify;
+  padding: 10px 15px 0px 15px;
+  font-size: 16px;
+}
+.sales-section1 > .first-para-container > .second-para {
+  text-align: justify;
+  padding: 5px 15px 0px 15px;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .sales-section1 > .sales-section1-heading {
+    font-size: 18px;
+  }
+
+  .sales-section1 > .first-para-container > .first-para,
+  .sales-section1 > .first-para-container > .second-para {
+    font-size: 14px;
+  }
+
+  .sales-logo {
+    height: 70px;
+    width: 130px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .sales-section1 > .sales-section1-heading {
+    font-size: 16px;
+  }
+
+  .sales-section1 > .first-para-container > .first-para,
+  .sales-section1 > .first-para-container > .second-para {
+    font-size: 12px;
+  }
+
+  .sales-logo {
+    height: 70px;
+    width: 110px;
+  }
+}
+
+.inputFieldWithError {
+  border: 1px solid red !important;
+}

@@ -73,6 +73,10 @@ const UpdateScopeOfWork = () => {
   const [frame_for_bridges, setFrame_for_bridges] = useState('');
   const [purlin_extension_for_bridges, setPurlin_extension_for_bridges] =
     useState('');
+  const [PO_value, setPO_value] = useState();
+  const [committed_dispatch_date, setCommitted_dispatch_date] = useState();
+  const [expected_commisioning_date, setexpected_commisioning_date] =
+    useState();
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -121,6 +125,14 @@ const UpdateScopeOfWork = () => {
           result.data.scopeofwork.purlin_extension_for_bridges
         );
         setFrame_for_bridges(result.data.scopeofwork.frame_for_bridges);
+
+        setPO_value(result.data.scopeofwork.PO_value);
+        setCommitted_dispatch_date(
+          result.data.scopeofwork.committed_dispatch_date
+        );
+        setexpected_commisioning_date(
+          result.data.scopeofwork.expected_commisioning_date
+        );
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -147,8 +159,16 @@ const UpdateScopeOfWork = () => {
     if (!purchase_order_date) {
       missingFields.push('Please enter purchase order date');
     }
-    if (!purchase_order_date) {
-      missingFields.push('Please enter purchase order date');
+
+    if (!PO_value) {
+      missingFields.push('Please Enter Po Value');
+    }
+
+    if (!committed_dispatch_date) {
+      missingFields.push('Please Enter Committed Dispatch Date');
+    }
+    if (!expected_commisioning_date) {
+      missingFields.push('Please Enter Expected Commisioning Date');
     }
     if (!docking_station_frame) {
       missingFields.push('Please select docking station Frame Type');
@@ -259,6 +279,9 @@ const UpdateScopeOfWork = () => {
           installation_scope,
           purlin_extension_for_bridges,
           frame_for_bridges,
+          PO_value,
+          committed_dispatch_date,
+          expected_commisioning_date,
           submittedBy,
         },
         {
@@ -289,7 +312,7 @@ const UpdateScopeOfWork = () => {
         <title>Scope of Work Questionnaire </title>
       </Helmet>
       <h3 className="text-center fw-bold">Scope of Work Questionnaire </h3>
-      <div className="card p-2" style={{ width: '650px', margin: 'auto' }}>
+      <div className=" p-2" style={{ maxWidth: '550px', margin: 'auto' }}>
         <form>
           <div className="mb-3">
             <label htmlFor="client_name" className="form-label">
@@ -343,9 +366,52 @@ const UpdateScopeOfWork = () => {
               onChange={(e) => setPurchaseOrderDate(e.target.value)}
             />
           </div>
+          {/* PO_value,
+      committed_dispatch_date,
+      expected_commisioning_date, */}
+          <div className="mb-3">
+            <label htmlFor="purchase_order_date" className="form-label">
+              5. Purchase Value{' '}
+              <span className="text-danger">(Without GST)</span>
+            </label>
+            <input
+              type="text"
+              className="inputField3 "
+              id="PO_value"
+              name="PO_value"
+              value={PO_value}
+              onChange={(e) => setPO_value(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="committed_dispatch_date" className="form-label">
+              6. Committed Dispatch Date
+            </label>
+            <input
+              type="date"
+              className="inputField3 "
+              id="committed_dispatch_date"
+              name="committed_dispatch_date"
+              value={committed_dispatch_date}
+              onChange={(e) => setCommitted_dispatch_date(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="expected_commisioning_date" className="form-label">
+              7. Expected Commisioning Date
+            </label>
+            <input
+              type="date"
+              className="inputField3 "
+              id="expected_commisioning_date"
+              name="expected_commisioning_date"
+              value={expected_commisioning_date}
+              onChange={(e) => setexpected_commisioning_date(e.target.value)}
+            />
+          </div>
           <div className="mb-3">
             <label htmlFor="docking_station_frame" className="form-label">
-              5. Docking Station Frame
+              8. Docking Station Frame
             </label>
 
             <select
@@ -361,7 +427,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="solar_module_capacity" className="form-label">
-              6. Solar Module Capacity
+              9. Solar Module Capacity
             </label>
             <input
               type="text"
@@ -374,7 +440,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="module_mounting_structure" className="form-label">
-              7. Module Mounting Structure
+              10. Module Mounting Structure
             </label>
             {/* <input
               type="text"
@@ -398,7 +464,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="docking_station_piling" className="form-label">
-              8. Docking Station Piling
+              11. Docking Station Piling
             </label>
 
             <select
@@ -414,7 +480,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="gateway_type" className="form-label">
-              9. Gateway Type
+              12. Gateway Type
             </label>
 
             <select
@@ -430,7 +496,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="internet_connectivity" className="form-label">
-              10. Internet Connectivity
+              13. Internet Connectivity
             </label>
 
             <select
@@ -446,7 +512,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="mounting_pole" className="form-label">
-              11. Mounting Pole
+              14. Mounting Pole
             </label>
 
             <select
@@ -462,7 +528,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="power_supply_for_pole" className="form-label">
-              12. Power Supply For Pole
+              15. Power Supply For Pole
             </label>
 
             <select
@@ -478,7 +544,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="bridge_type" className="form-label">
-              13. Bridge Type
+              16. Bridge Type
             </label>
 
             <select
@@ -495,7 +561,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="bridge_installation" className="form-label">
-              14. Bridge Installation
+              17. Bridge Installation
             </label>
 
             <select
@@ -511,7 +577,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="reversing_station_type" className="form-label">
-              15. Reversing Station Type
+              18. Reversing Station Type
             </label>
 
             <select
@@ -530,7 +596,7 @@ const UpdateScopeOfWork = () => {
               htmlFor="is_docking_station_returnable"
               className="form-label"
             >
-              16. Is Docking Station Returnable
+              19. Is Docking Station Returnable
             </label>
 
             <select
@@ -546,7 +612,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="docking_station_layers" className="form-label">
-              17. Docking Station Layers
+              20. Docking Station Layers
             </label>
 
             <select
@@ -568,7 +634,7 @@ const UpdateScopeOfWork = () => {
           <div className="mb-3">
             <div className="mb-3">
               <label htmlFor="power_supply_for_pole" className="form-label">
-                18. Installations Scope
+                21. Installations Scope
               </label>
 
               <select
@@ -586,7 +652,7 @@ const UpdateScopeOfWork = () => {
 
             <div className="mb-3">
               <label htmlFor="power_supply_for_pole" className="form-label">
-                19. purlin Extension Scope
+                22. purlin Extension Scope
               </label>
 
               <select
@@ -603,7 +669,7 @@ const UpdateScopeOfWork = () => {
             </div>
 
             <label htmlFor="transportation_scope" className="form-label">
-              20. Transportation Scope
+              23. Transportation Scope
             </label>
 
             <select
@@ -623,7 +689,7 @@ const UpdateScopeOfWork = () => {
           {/* submittedBy, */}
           <div className="mb-3">
             <label htmlFor="transportation_scope" className="form-label">
-              21. loading/Unloading At site
+              24. loading/Unloading At site
             </label>
 
             <select
@@ -640,7 +706,7 @@ const UpdateScopeOfWork = () => {
 
           <div className="mb-3">
             <label htmlFor="movement_within_site" className="form-label">
-              22. Movement within Site
+              25. Movement within Site
             </label>
 
             <select
@@ -654,13 +720,14 @@ const UpdateScopeOfWork = () => {
               <option value="client">Client</option>
             </select>
           </div>
-
+          {/* purlin_extension_for_bridges,
+          frame_for_bridges, */}
           <div className="mb-3">
             <label
               htmlFor="purlin_extension_for_bridges"
               className="form-label"
             >
-              23. Purlin Extension for bridges
+              26. Purlin Extension for bridges
             </label>
 
             <select
@@ -679,7 +746,7 @@ const UpdateScopeOfWork = () => {
               htmlFor="purlin_extension_for_bridges"
               className="form-label"
             >
-              24. Frame For Bridges
+              27. Frame For Bridges
             </label>
 
             <select

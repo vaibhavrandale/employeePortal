@@ -17,6 +17,7 @@ const ScopeofWork = sequelize.define('ScopeofWork', {
   },
   purchase_order_no: {
     type: DataTypes.STRING,
+    unique: true, // Enforce uniqueness
   },
 
   purchase_order_date: {
@@ -85,6 +86,16 @@ const ScopeofWork = sequelize.define('ScopeofWork', {
     type: DataTypes.STRING,
   },
   purlin_extension_for_bridges: {
+    type: DataTypes.STRING,
+  },
+
+  PO_value: {
+    type: DataTypes.STRING,
+  },
+  committed_dispatch_date: {
+    type: DataTypes.STRING,
+  },
+  expected_commisioning_date: {
     type: DataTypes.STRING,
   },
   submittedBy: {

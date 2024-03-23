@@ -165,9 +165,9 @@ const PaidLeaves = () => {
           <span className="second-para px-4">
             <ul>
               <li style={{ listStyleType: 'square' }} className="py-2">
-                Every Employee who has worked from April to March in a calendar
-                year shall be allowed during the subsequent year Privilege Leave
-                with salary for 12 days.{' '}
+                Every Employee who has worked from January to December in a
+                calendar year shall be allowed during the subsequent year
+                Privilege Leave with salary for 12 days.{' '}
               </li>
               <li style={{ listStyleType: 'square' }} className="py-2">
                 An Employee who joins during calendar year and works less than

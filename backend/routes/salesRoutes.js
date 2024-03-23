@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import ScopeofWork from '../models/ScopeofWork.js';
 import Employee from '../models/employeeModel.js';
 import nodemailer from 'nodemailer';
+import RaiseInvoice from '../models/RaiseInvoice.js';
 const scopeofworkRouter = express.Router();
 
 dotenv.config();
@@ -62,6 +63,9 @@ scopeofworkRouter.post(
       purlin_extension_scope,
       frame_for_bridges,
       purlin_extension_for_bridges,
+      PO_value,
+      committed_dispatch_date,
+      expected_commisioning_date,
       submittedBy,
     } = req.body;
     const newScopeofWork = new ScopeofWork({
@@ -89,6 +93,9 @@ scopeofworkRouter.post(
       purlin_extension_scope,
       frame_for_bridges,
       purlin_extension_for_bridges,
+      PO_value,
+      committed_dispatch_date,
+      expected_commisioning_date,
       submittedBy,
     });
     const scopeopfwork = await newScopeofWork.save();
@@ -133,6 +140,9 @@ scopeofworkRouter.put(
       purlin_extension_scope,
       frame_for_bridges,
       purlin_extension_for_bridges,
+      PO_value,
+      committed_dispatch_date,
+      expected_commisioning_date,
       submittedBy,
     } = req.body;
 
@@ -160,6 +170,9 @@ scopeofworkRouter.put(
     scopeofwork.purlin_extension_scope = purlin_extension_scope;
     scopeofwork.frame_for_bridges = frame_for_bridges;
     scopeofwork.purlin_extension_for_bridges = purlin_extension_for_bridges;
+    scopeofwork.PO_value = PO_value;
+    scopeofwork.committed_dispatch_date = committed_dispatch_date;
+    scopeofwork.expected_commisioning_date = expected_commisioning_date;
     scopeofwork.submittedBy = submittedBy;
 
     const updatedScopeOfWork = await scopeofwork.save();
@@ -585,6 +598,46 @@ scopeofworkRouter.delete(
     </tr>
 
 
+
+    <tr>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+      <strong>PO Value</strong>
+    </td>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+    ${scopeofwork.PO_value}
+    </td>
+  </tr>
+
+    <tr>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+      <strong>committed Dispatch Date</strong>
+    </td>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+    ${scopeofwork.committed_dispatch_date}
+    </td>
+  </tr>
+
+    <tr>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+      <strong>Expected Commisioning Date</strong>
+    </td>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+    ${scopeofwork.expected_commisioning_date}
+    </td>
+  </tr>
+
     <tr>
     <td
       style="border: 1px solid #dddddd; text-align: left; padding: 8px"
@@ -629,5 +682,180 @@ scopeofworkRouter.delete(
     }
   })
 );
+
+// ---------------raise invoice section------------------------
+scopeofworkRouter.get('/raise-invoice', async (req, res) => {
+  const raiseinvoice = await RaiseInvoice.findAll();
+  if (raiseinvoice) {
+    // Send the created employees as the response
+    return res.status(200).send({ raiseinvoice });
+  } else {
+    return res.status(400).send({ message: 'invoices Not found' });
+  }
+});
+
+scopeofworkRouter.get(
+  '/raise-invoice-all/:purchase_order_no',
+  async (req, res) => {
+    const purchase_order_no = req.params.purchase_order_no; // Get purchase_order_no from params
+
+    try {
+      const raisinvoice = await RaiseInvoice.findAll({
+        where: { purchase_order_no: purchase_order_no },
+      });
+
+      if (raisinvoice.length > 0) {
+        // Send the found invoices as the response
+        return res.status(200).send({ raisinvoice });
+      } else {
+        // Send a 404 response if no invoices were found
+        return res.status(404).send({
+          message: `No invoices associated with this PO - ${purchase_order_no}`,
+        });
+      }
+    } catch (error) {
+      // Handle internal server error
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  }
+);
+
+scopeofworkRouter.post(
+  '/raise-invoice/:purchase_order_no', // Include PO number as a parameter
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const { purchase_order_no } = req.params; // Retrieve PO number from request parameters
+
+    // Find the corresponding PO data from scope of work
+    const poData = await ScopeofWork.findOne({
+      where: { purchase_order_no: purchase_order_no },
+    });
+
+    if (!poData) {
+      // If PO data is not found, return an error response
+      return res
+        .status(404)
+        .send({ message: `PO ${purchase_order_no} not found` });
+    }
+
+    // Extract required data from the scope of work
+    const { client_name, purchase_order_date, PO_value } = poData;
+
+    // Extract other fields from the request body
+    const {
+      invoice_number,
+      invoice_value,
+      invoice_date,
+      committed_dispatch_date,
+      expected_commisioning_date,
+      submittedBy,
+    } = req.body;
+
+    // Create a new raise invoice object with extracted data
+    const newRaiseInvoice = new RaiseInvoice({
+      client_name,
+      purchase_order_no,
+      purchase_order_date,
+      PO_value,
+      invoice_number,
+      invoice_value,
+      invoice_date,
+      committed_dispatch_date,
+      expected_commisioning_date,
+      submittedBy,
+    });
+
+    // Save the new raise invoice object
+    const raiseinvoice = await newRaiseInvoice.save();
+
+    // Send success response with the raised invoice data
+    res.send({
+      message: `Invoice raised successfully for PO ${purchase_order_no}!`,
+      raiseinvoice,
+    });
+  })
+);
+
+scopeofworkRouter.get('/raise-invoice/:invoice_number', async (req, res) => {
+  // const purchase_order_no = req.params.purchase_order_no; // Get purchase_order_no from params
+  const invoicenumber = req.params.invoice_number; // Get purchase_order_no from params
+
+  try {
+    const raisinvoice = await RaiseInvoice.findOne({
+      where: {
+        invoice_number: invoicenumber,
+      },
+    });
+
+    if (raisinvoice) {
+      // Send the found invoices as the response
+      return res.status(200).send({ raisinvoice });
+    } else {
+      // Send a 404 response if no invoices were found
+      return res.status(404).send({
+        message: `No invoices associated with this PO - ${purchase_order_no} and invoice number ${invoicenumber}`,
+      });
+    }
+  } catch (error) {
+    // Handle internal server error
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+});
+
+scopeofworkRouter.put(
+  '/raise-invoice/:invoicenumber',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    // const purchase_order_no = req.params.purchase_order_no; // Get purchase_order_no from params
+    const invoicenumber = req.params.invoicenumber; // Get purchase_order_no from params
+
+    const {
+      invoice_number,
+      invoice_value,
+      invoice_date,
+      committed_dispatch_date,
+      expected_commisioning_date,
+      submittedBy,
+    } = req.body;
+
+    try {
+      // Find the existing invoice with the provided purchase_order_no
+      const existingInvoice = await RaiseInvoice.findOne({
+        where: {
+          invoice_number: invoicenumber,
+        },
+      });
+
+      // If no invoice found, return an error
+      if (!existingInvoice) {
+        return res.status(404).send({
+          message: `Invoice not found - ${invoice_number}`,
+        });
+      }
+
+      existingInvoice.invoice_number = invoice_number;
+      existingInvoice.invoice_value = invoice_value;
+      existingInvoice.invoice_date = invoice_date;
+      existingInvoice.committed_dispatch_date = committed_dispatch_date;
+      existingInvoice.expected_commisioning_date = expected_commisioning_date;
+      existingInvoice.submittedBy = submittedBy;
+
+      // Save the updated invoice
+      const raiseinvoice = await existingInvoice.save();
+
+      // Send response
+      res.send({
+        message: `Invoice updated successfully for PO- ${existingInvoice.purchase_order_no}!`,
+        raiseinvoice,
+      });
+    } catch (error) {
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  })
+);
+
+// ---------------raise invoice section------------------------
 
 export default scopeofworkRouter;

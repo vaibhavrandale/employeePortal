@@ -1152,7 +1152,7 @@ function Dashboard() {
                       <div className="card border border-0 quicklikCard">
                         <Link
                           // to={`/investment-declara`}
-                          to={`scope-of-work`}
+                          to={`sales-home`}
                           className="p-1 text-decoration-none"
                         >
                           <img

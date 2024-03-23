@@ -20,6 +20,7 @@ const data = {
   UIDCard: [],
   SiteSurvey: [],
   ScopeofWork: [],
+  RaiseInvoice: [],
 };
 
 export default data;

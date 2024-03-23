@@ -104,6 +104,10 @@ import NewScopeOfWork from './screens/sales/NewScopeOfWork';
 import Leaves from './screens/Leaves/NewLeave';
 import NewLeave from './screens/Leaves/NewLeave';
 import UpdateScopeOfWork from './screens/sales/UpdateScopeOfWork';
+import SalasHome from './screens/sales/SalasHome';
+import PoStatus from './screens/sales/PoStatus';
+import RaiseInvoice from './screens/sales/RaiseInvoice';
+import UpdateRaisedInvoice from './screens/sales/UpdateRaisedInvoice';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -900,10 +904,42 @@ function AppRouter() {
         {/* ----------------investment declaration form------------------- */}\
         {/* -------------sales----------------- */}
         <Route
+          path="/sales-home"
+          element={
+            <ProtectedRoutes>
+              <SalasHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
           path="/scope-of-work"
           element={
             <ProtectedRoutes>
               <ScopeofWorkHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/po-status"
+          element={
+            <ProtectedRoutes>
+              <PoStatus />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/raise-invoice/:po_number"
+          element={
+            <ProtectedRoutes>
+              <RaiseInvoice />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/update-invoice/:invoicenumber"
+          element={
+            <ProtectedRoutes>
+              <UpdateRaisedInvoice />
             </ProtectedRoutes>
           }
         />

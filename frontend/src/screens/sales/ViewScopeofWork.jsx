@@ -117,6 +117,19 @@ const Viewscopeofwork = () => {
                   <strong>Purchase Order Date:</strong>{' '}
                   {scopeofwork.purchase_order_date}
                 </p>
+
+                <p>
+                  <strong>PO Value:</strong> {scopeofwork.PO_value}
+                </p>
+                <p>
+                  <strong>Committed Dispatch Date:</strong>{' '}
+                  {scopeofwork.committed_dispatch_date}
+                </p>
+                <p>
+                  <strong>Expected Commisioning Date:</strong>{' '}
+                  {scopeofwork.expected_commisioning_date}
+                </p>
+
                 <p>
                   <strong>Docking Station Frame:</strong>{' '}
                   {scopeofwork.docking_station_frame}
@@ -164,6 +177,18 @@ const Viewscopeofwork = () => {
                   <strong>Is Docking Station Returnable:</strong>{' '}
                   {scopeofwork.is_docking_station_returnable}
                 </p>
+                <p>
+                  <strong>Purlin Extension Scope:</strong>{' '}
+                  {scopeofwork.purlin_extension_scope}
+                </p>
+                <p>
+                  <strong>Installation Scope:</strong>{' '}
+                  {scopeofwork.installation_scope}
+                </p>
+                <p>
+                  <strong>Frame for bridges:</strong>{' '}
+                  {scopeofwork.frame_for_bridges}
+                </p>
               </div>
             </div>
             <div className="row">
@@ -186,18 +211,6 @@ const Viewscopeofwork = () => {
                 </p>
               </div>
               <div className="col-md-6">
-                <p>
-                  <strong>Purlin Extension Scope:</strong>{' '}
-                  {scopeofwork.purlin_extension_scope}
-                </p>
-                <p>
-                  <strong>Installation Scope:</strong>{' '}
-                  {scopeofwork.installation_scope}
-                </p>
-                <p>
-                  <strong>Frame for bridges:</strong>{' '}
-                  {scopeofwork.frame_for_bridges}
-                </p>
                 <p>
                   <strong>Purlin Extension for bridges:</strong>{' '}
                   {scopeofwork.purlin_extension_for_bridges}

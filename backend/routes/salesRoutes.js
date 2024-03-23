@@ -60,6 +60,8 @@ scopeofworkRouter.post(
       movement_within_site,
       installation_scope,
       purlin_extension_scope,
+      frame_for_bridges,
+      purlin_extension_for_bridges,
       submittedBy,
     } = req.body;
     const newScopeofWork = new ScopeofWork({
@@ -85,6 +87,8 @@ scopeofworkRouter.post(
       movement_within_site,
       installation_scope,
       purlin_extension_scope,
+      frame_for_bridges,
+      purlin_extension_for_bridges,
       submittedBy,
     });
     const scopeopfwork = await newScopeofWork.save();
@@ -127,6 +131,8 @@ scopeofworkRouter.put(
       movement_within_site,
       installation_scope,
       purlin_extension_scope,
+      frame_for_bridges,
+      purlin_extension_for_bridges,
       submittedBy,
     } = req.body;
 
@@ -152,6 +158,8 @@ scopeofworkRouter.put(
     scopeofwork.movement_within_site = movement_within_site;
     scopeofwork.installation_scope = installation_scope;
     scopeofwork.purlin_extension_scope = purlin_extension_scope;
+    scopeofwork.frame_for_bridges = frame_for_bridges;
+    scopeofwork.purlin_extension_for_bridges = purlin_extension_for_bridges;
     scopeofwork.submittedBy = submittedBy;
 
     const updatedScopeOfWork = await scopeofwork.save();
@@ -182,28 +190,28 @@ scopeofworkRouter.delete(
         deletedScopeOfWork: scopeofwork,
       });
 
-      // Retrieve email addresses of super sales admins
-      const superAdmins = await Employee.findAll({ where: { isSales: '1' } });
-      const superSalesAdminEmails = superAdmins.map((admin) => admin.email);
+      // // Retrieve email addresses of super sales admins
+      // const superAdmins = await Employee.findAll({ where: { isSales: '1' } });
+      // const superSalesAdminEmails = superAdmins.map((admin) => admin.email);
 
-      // Check if there are super sales admins with email addresses
-      if (superSalesAdminEmails.length > 0) {
-        // Create nodemailer transporter
-        const transporter = nodemailer.createTransport({
-          host: 'smtp.hostinger.com',
-          port: 465,
-          auth: {
-            user: process.env.MAIL_USER,
-            pass: process.env.MAIL_PASS,
-          },
-        });
+      // // Check if there are super sales admins with email addresses
+      // if (superSalesAdminEmails.length > 0) {
+      // Create nodemailer transporter
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.hostinger.com',
+        port: 465,
+        auth: {
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
+        },
+      });
 
-        // Send email notification to super sales admins
-        const info = await transporter.sendMail({
-          from: `TAYPRO INTERNAL SALES <${process.env.MAIL_USER}>`,
-          to: 'sales@taypro.in',
-          subject: `Scope of Work deleted PO -${scopeofwork.purchase_order_no}`,
-          html: `
+      // Send email notification to super sales admins
+      const info = await transporter.sendMail({
+        from: `TAYPRO INTERNAL SALES <${process.env.MAIL_USER}>`,
+        to: 'sales@taypro.in',
+        subject: `Scope of Work deleted PO -${scopeofwork.purchase_order_no}`,
+        html: `
         <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -547,19 +555,48 @@ scopeofworkRouter.delete(
       ${scopeofwork.installation_scope}
       </td>
     </tr>
+
+
     
       <tr>
       <td
         style="border: 1px solid #dddddd; text-align: left; padding: 8px"
       >
-        <strong>Last Update</strong>
+        <strong>Frame for Bidges</strong>
       </td>
       <td
         style="border: 1px solid #dddddd; text-align: left; padding: 8px"
       >
-      ${scopeofwork.submittedBy}
+      ${scopeofwork.frame_for_bridges}
       </td>
     </tr>
+
+      <tr>
+      <td
+        style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+      >
+        <strong>purlin Extension For Bridges</strong>
+      </td>
+      <td
+        style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+      >
+      ${scopeofwork.purlin_extension_for_bridges}
+      </td>
+    </tr>
+
+
+    <tr>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+      <strong>Last Update</strong>
+    </td>
+    <td
+      style="border: 1px solid #dddddd; text-align: left; padding: 8px"
+    >
+    ${scopeofwork.submittedBy}
+    </td>
+  </tr>
     
 
       <tr bgcolor="#ffffff">
@@ -576,15 +613,13 @@ scopeofworkRouter.delete(
 </html>
 
 `,
-        });
+      });
 
-        // Log successful email delivery
-        console.log(
-          `Email successfully sent to: ${superSalesAdminEmails.join(', ')}`
-        );
-      } else {
-        console.log('No super sales admins found with valid email addresses.');
-      }
+      // Log successful email delivery
+      console.log(`Email successfully sent to: sales@taypro.in`);
+      // } else {
+      //   console.log('No super sales admins found with valid email addresses.');
+      // }
     } catch (error) {
       // Handle errors during deletion or email sending process
       console.error('Error deleting scope of work or sending email:', error);

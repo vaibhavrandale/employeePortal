@@ -70,6 +70,9 @@ const UpdateScopeOfWork = () => {
   const [submittedBy, setSubmittedBy] = useState(userInfo.NAME);
   const [purlin_extension_scope, setPurlin_Extension_Scope] = useState('');
   const [installation_scope, setInstallation_scope] = useState('');
+  const [frame_for_bridges, setFrame_for_bridges] = useState('');
+  const [purlin_extension_for_bridges, setPurlin_extension_for_bridges] =
+    useState('');
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -114,6 +117,10 @@ const UpdateScopeOfWork = () => {
         );
         setMovementWithinSite(result.data.scopeofwork.movement_within_site);
         setInstallation_scope(result.data.scopeofwork.installation_scope);
+        setPurlin_extension_for_bridges(
+          result.data.scopeofwork.purlin_extension_for_bridges
+        );
+        setFrame_for_bridges(result.data.scopeofwork.frame_for_bridges);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -209,6 +216,12 @@ const UpdateScopeOfWork = () => {
     if (!installation_scope) {
       missingFields.push('Please select installation scope');
     }
+    if (!frame_for_bridges) {
+      missingFields.push('Please select frame for bridgese');
+    }
+    if (!purlin_extension_for_bridges) {
+      missingFields.push('Please select purlin extension for bridges');
+    }
 
     if (missingFields.length > 0) {
       toast.error(`${missingFields.join(',\n ')}`);
@@ -244,6 +257,8 @@ const UpdateScopeOfWork = () => {
           movement_within_site,
           purlin_extension_scope,
           installation_scope,
+          purlin_extension_for_bridges,
+          frame_for_bridges,
           submittedBy,
         },
         {
@@ -278,7 +293,7 @@ const UpdateScopeOfWork = () => {
         <form>
           <div className="mb-3">
             <label htmlFor="client_name" className="form-label">
-              Client Name
+              1. Client Name
             </label>
             <input
               type="text"
@@ -291,7 +306,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="plant_capacity" className="form-label">
-              Plant Capacity
+              2. Plant Capacity
             </label>
             <input
               type="text"
@@ -304,7 +319,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="purchase_order_no" className="form-label">
-              Purchase Order Number
+              3. Purchase Order Number
             </label>
             <input
               type="text"
@@ -317,7 +332,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="purchase_order_date" className="form-label">
-              Purchase Order Date
+              4. Purchase Order Date
             </label>
             <input
               type="date"
@@ -330,7 +345,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="docking_station_frame" className="form-label">
-              Docking Station Frame
+              5. Docking Station Frame
             </label>
 
             <select
@@ -341,12 +356,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="solar_module_capacity" className="form-label">
-              Solar Module Capacity
+              6. Solar Module Capacity
             </label>
             <input
               type="text"
@@ -359,7 +374,7 @@ const UpdateScopeOfWork = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="module_mounting_structure" className="form-label">
-              Module Mounting Structure
+              7. Module Mounting Structure
             </label>
             {/* <input
               type="text"
@@ -378,12 +393,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="docking_station_piling" className="form-label">
-              Docking Station Piling
+              8. Docking Station Piling
             </label>
 
             <select
@@ -394,12 +409,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="gateway_type" className="form-label">
-              Gateway Type
+              9. Gateway Type
             </label>
 
             <select
@@ -410,28 +425,28 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Indoor Gateway">Indoor Gateway</option>
-              <option value="Outdoor Gateway">Outdoor Gateway</option>
+              <option value="outdoor Gateway">outdoor Gateway</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="internet_connectivity" className="form-label">
-              Internet Connectivity
+              10. Internet Connectivity
             </label>
 
             <select
               id="leave"
               className="inputField3 "
-              value={internet_connectivity}
+              checked={internet_connectivity}
               onChange={(e) => setInternetConnectivity(e.target.value)}
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="mounting_pole" className="form-label">
-              Mounting Pole
+              11. Mounting Pole
             </label>
 
             <select
@@ -442,12 +457,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="power_supply_for_pole" className="form-label">
-              Power Supply For Pole
+              12. Power Supply For Pole
             </label>
 
             <select
@@ -458,12 +473,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="bridge_type" className="form-label">
-              Bridge Type
+              13. Bridge Type
             </label>
 
             <select
@@ -473,16 +488,14 @@ const UpdateScopeOfWork = () => {
               onChange={(e) => setBridgeType(e.target.value)}
             >
               <option value="">Select</option>
-              <option value="Fixed Type (End Extensions)">
-                Fixed Type (End Extensions)
-              </option>
+              <option value="fixed">Fixed Type (End Extensions)</option>
               <option value="hinge">Hinge Type</option>
               <option value="frame">Frame Type</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="bridge_installation" className="form-label">
-              Bridge Installation
+              14. Bridge Installation
             </label>
 
             <select
@@ -493,12 +506,12 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="reversing_station_type" className="form-label">
-              Reversing Station Type
+              15. Reversing Station Type
             </label>
 
             <select
@@ -517,23 +530,23 @@ const UpdateScopeOfWork = () => {
               htmlFor="is_docking_station_returnable"
               className="form-label"
             >
-              Is Docking Station Returnable
+              16. Is Docking Station Returnable
             </label>
 
             <select
               id="leave"
               className="inputField3 "
-              value={is_docking_station_returnable}
+              checked={is_docking_station_returnable}
               onChange={(e) => setIsDockingStationReturnable(e.target.value)}
             >
               <option value="">Select</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
           </div>
           <div className="mb-3">
             <label htmlFor="docking_station_layers" className="form-label">
-              Docking Station Layers
+              17. Docking Station Layers
             </label>
 
             <select
@@ -555,7 +568,7 @@ const UpdateScopeOfWork = () => {
           <div className="mb-3">
             <div className="mb-3">
               <label htmlFor="power_supply_for_pole" className="form-label">
-                Installations Scope
+                18. Installations Scope
               </label>
 
               <select
@@ -567,13 +580,13 @@ const UpdateScopeOfWork = () => {
               >
                 <option value="">Select</option>
                 <option value="Taypro">Taypro</option>
-                <option value="Client">Client</option>
+                <option value="client">Client</option>
               </select>
             </div>
 
             <div className="mb-3">
               <label htmlFor="power_supply_for_pole" className="form-label">
-                purlin Extension Scope
+                19. purlin Extension Scope
               </label>
 
               <select
@@ -585,12 +598,12 @@ const UpdateScopeOfWork = () => {
               >
                 <option value="">Select</option>
                 <option value="Taypro">Taypro</option>
-                <option value="Client">Client</option>
+                <option value="client">Client</option>
               </select>
             </div>
 
             <label htmlFor="transportation_scope" className="form-label">
-              Transportation Scope
+              20. Transportation Scope
             </label>
 
             <select
@@ -601,7 +614,7 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
 
@@ -610,7 +623,7 @@ const UpdateScopeOfWork = () => {
           {/* submittedBy, */}
           <div className="mb-3">
             <label htmlFor="transportation_scope" className="form-label">
-              loading/Unloading At site
+              21. loading/Unloading At site
             </label>
 
             <select
@@ -621,13 +634,13 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
             </select>
           </div>
 
           <div className="mb-3">
             <label htmlFor="movement_within_site" className="form-label">
-              Movement within Site
+              22. Movement within Site
             </label>
 
             <select
@@ -638,7 +651,46 @@ const UpdateScopeOfWork = () => {
             >
               <option value="">Select</option>
               <option value="Taypro">Taypro</option>
-              <option value="Client">Client</option>
+              <option value="client">Client</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label
+              htmlFor="purlin_extension_for_bridges"
+              className="form-label"
+            >
+              23. Purlin Extension for bridges
+            </label>
+
+            <select
+              id="leave"
+              className="inputField3 "
+              value={purlin_extension_for_bridges}
+              onChange={(e) => setPurlin_extension_for_bridges(e.target.value)}
+            >
+              <option value="">Select</option>
+              <option value="Taypro">Taypro</option>
+              <option value="client">Client</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label
+              htmlFor="purlin_extension_for_bridges"
+              className="form-label"
+            >
+              24. Frame For Bridges
+            </label>
+
+            <select
+              id="leave"
+              className="inputField3 "
+              value={frame_for_bridges}
+              onChange={(e) => setFrame_for_bridges(e.target.value)}
+            >
+              <option value="">Select</option>
+              <option value="Taypro">Taypro</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div className="mb-3">

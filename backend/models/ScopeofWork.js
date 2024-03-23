@@ -81,6 +81,12 @@ const ScopeofWork = sequelize.define('ScopeofWork', {
   installation_scope: {
     type: DataTypes.STRING,
   },
+  frame_for_bridges: {
+    type: DataTypes.STRING,
+  },
+  purlin_extension_for_bridges: {
+    type: DataTypes.STRING,
+  },
   submittedBy: {
     type: DataTypes.STRING,
   },

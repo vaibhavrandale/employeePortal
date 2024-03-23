@@ -21,9 +21,9 @@ const seedRouter = express.Router();
 seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
   try {
     // Remove all existing records from the Employee table
-    await Employee.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await Employee.destroy({ where: {}, truncate: true });
-    await Employee.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await Employee.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await Employee.destroy({ where: {}, truncate: true });
+    // await Employee.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     await Notice.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
     await Notice.destroy({ where: {}, truncate: true });
@@ -37,17 +37,17 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await AttendanceRecord.destroy({ where: {}, truncate: true });
     await AttendanceRecord.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await RfidReg.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await RfidReg.destroy({ where: {}, truncate: true });
-    await RfidReg.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await RfidReg.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await RfidReg.destroy({ where: {}, truncate: true });
+    // await RfidReg.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await RfidCkeck.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await RfidCkeck.destroy({ where: {}, truncate: true });
-    await RfidCkeck.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await RfidCkeck.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await RfidCkeck.destroy({ where: {}, truncate: true });
+    // await RfidCkeck.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await Payslip.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await Payslip.destroy({ where: {}, truncate: true });
-    await Payslip.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await Payslip.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await Payslip.destroy({ where: {}, truncate: true });
+    // await Payslip.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     await Anniversary.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
     await Anniversary.destroy({ where: {}, truncate: true });
@@ -69,28 +69,28 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await DaywiseExpenses.destroy({ where: {}, truncate: true });
     await DaywiseExpenses.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await Access.destroy({ where: {}, truncate: true });
-    await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await Access.destroy({ where: {}, truncate: true });
+    // await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
-    await UIDCard.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-    await UIDCard.destroy({ where: {}, truncate: true });
-    await UIDCard.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    // await UIDCard.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // await UIDCard.destroy({ where: {}, truncate: true });
+    // await UIDCard.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     await ScopeofWork.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
     await ScopeofWork.destroy({ where: {}, truncate: true });
     await ScopeofWork.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     // Insert data into the Employee table
-    const createdEmployees = await Employee.bulkCreate(data.employees);
+    // const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
     const createdLeaves = await Leaves.bulkCreate(data.Leaves);
     const createdAttendanceRecord = await AttendanceRecord.bulkCreate(
       data.AttendanceRecord
     );
-    const createdRfidReg = await RfidReg.bulkCreate(data.RfidReg);
-    const createdRfidCkeck = await RfidCkeck.bulkCreate(data.RfidCkeck);
-    const createdPayslip = await Payslip.bulkCreate(data.Payslip);
+    // const createdRfidReg = await RfidReg.bulkCreate(data.RfidReg);
+    // const createdRfidCkeck = await RfidCkeck.bulkCreate(data.RfidCkeck);
+    // const createdPayslip = await Payslip.bulkCreate(data.Payslip);
     const createdAnniversary = await Anniversary.bulkCreate(data.Anniversary);
     const createdHolidays = await Holidays.bulkCreate(data.holidays);
     const createdEmployeeAssets = await EmployeeAssets.bulkCreate(
@@ -104,27 +104,27 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       data.DaywiseExpenses
     );
 
-    const createdAccess = await Access.bulkCreate(data.Access);
-    const createdUIDCard = await Access.bulkCreate(data.UIDCard);
+    // const createdAccess = await Access.bulkCreate(data.Access);
+    // const createdUIDCard = await Access.bulkCreate(data.UIDCard);
 
     const createdScopeofWork = await ScopeofWork.bulkCreate(data.ScopeofWork);
 
     res.send({
-      createdEmployees,
+      // createdEmployees,
       createdNotices,
       createdLeaves,
       createdAttendanceRecord,
-      createdRfidReg,
-      createdRfidCkeck,
-      createdPayslip,
+      // createdRfidReg,
+      // createdRfidCkeck,
+      // createdPayslip,
       createdAnniversary,
       createdHolidays,
       createdEmployeeAssets,
       createdEmployeeExpense,
       createdDaywiseExpense,
-      createdAccess,
+      // createdAccess,
       createdScopeofWork,
-      createdUIDCard,
+      // createdUIDCard,
     });
   } catch (error) {
     console.error(error);

@@ -195,6 +195,14 @@ const Viewscopeofwork = () => {
                   {scopeofwork.installation_scope}
                 </p>
                 <p>
+                  <strong>Frame for bridges:</strong>{' '}
+                  {scopeofwork.frame_for_bridges}
+                </p>
+                <p>
+                  <strong>Purlin Extension for bridges:</strong>{' '}
+                  {scopeofwork.purlin_extension_for_bridges}
+                </p>
+                <p>
                   <strong>Submitted By:</strong> {scopeofwork.submittedBy}
                 </p>
               </div>

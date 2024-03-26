@@ -1147,7 +1147,7 @@ function Dashboard() {
                     ''
                   )}
 
-                  {userInfo && userInfo.isSales ? (
+                  {(userInfo && userInfo.isSales) || userInfo.isAccountant ? (
                     <div className="col">
                       <div className="card border border-0 quicklikCard">
                         <Link

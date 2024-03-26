@@ -11,7 +11,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, scopeofwork: action.payload, loading: false };
+      return { ...state, projectapproval: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -21,11 +21,11 @@ const reducer = (state, action) => {
   }
 };
 
-const ScopeofWorkHome = () => {
-  const [{ loading, loadingUpdate, scopeofwork }, dispatch] = useReducer(
+const ProjectApprovalHome = () => {
+  const [{ loading, loadingUpdate, projectapproval }, dispatch] = useReducer(
     reducer,
     {
-      scopeofwork: [],
+      projectapproval: [],
       loading: true,
       error: '',
     }
@@ -40,10 +40,13 @@ const ScopeofWorkHome = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/sales/scopeofwork`, {
+        const result = await axios.get(`/api/sales/project-approval`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.scopeofwork });
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: result.data.projectapproval,
+        });
         console.log(result.data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
@@ -56,12 +59,12 @@ const ScopeofWorkHome = () => {
   }, [userInfo.token]);
 
   const [searchTerm, setSearchTerm] = useState();
-  const filteredData = scopeofwork.filter((entry) => {
+  const filteredData = projectapproval.filter((entry) => {
     // Check if searchTerm exists and if it matches any property of the entry
     if (searchTerm) {
       return (
-        entry.client_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        entry.plant_capacity.includes(searchTerm)
+        entry.customer.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        entry.BU.includes(searchTerm)
         // Add additional conditions for other properties if needed
       );
     }
@@ -71,7 +74,7 @@ const ScopeofWorkHome = () => {
 
   return (
     <div className="container">
-      <h3 className="text-center fw-bold">Scope of Work</h3>
+      <h3 className="text-center fw-bold">Project Approval</h3>
       <div className="d-flex justify-content-end m-1">
         <div className=" d-flex align-items-center justify-content-end">
           <input
@@ -82,16 +85,12 @@ const ScopeofWorkHome = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />{' '}
-          {userInfo.isAccountant === 1 ? (
-            ''
-          ) : (
-            <Link
-              to="/add-scope-of-work"
-              className="btn btn-sm btn-warning fw-bold m-1"
-            >
-              ADD
-            </Link>
-          )}
+          <Link
+            to="/new-project-approval"
+            className="btn btn-sm btn-warning fw-bold m-1"
+          >
+            ADD
+          </Link>
         </div>{' '}
       </div>
       <div className="table-responsive">
@@ -99,10 +98,10 @@ const ScopeofWorkHome = () => {
           <thead>
             <tr>
               <th className="text-center">Serial</th>
-              <th className="text-center">Client Name</th>
-              <th className="text-center">Plant capacity</th>
-              <th className="text-center">PO No.</th>
-              <th className="text-center">PO Date</th>
+              <th className="text-center">BU</th>
+              <th className="text-center">customer</th>
+              <th className="text-center">Project Capacity</th>
+              <th className="text-center">Project Approval Status</th>
               <th className="text-center">Last Update</th>
               <th className="text-center">Action</th>
             </tr>
@@ -111,28 +110,25 @@ const ScopeofWorkHome = () => {
             {filteredData.map((item, index) => (
               <tr key={index}>
                 <td className="text-center">{item.id}</td>
-                <td className="text-center">{item.client_name}</td>
-                <td className="text-center">{item.plant_capacity}</td>
-                <td className="text-center">{item.purchase_order_no}</td>
-                <td className="text-center">{item.purchase_order_date}</td>
-                <td className="text-center">{item.submittedBy}</td>
+                <td className="text-center">{item.BU}</td>
+                <td className="text-center">{item.customer}</td>
+                <td className="text-center">{item.project_capacity}</td>
+                <td className="text-center">{item.project_approval_status}</td>
+                <td className="text-center">{item.created_by}</td>
                 <td className="text-center">
                   <Link
                     className="btn btn-success btn-sm m-1"
-                    to={`/scope-of-work/${item.id}`}
+                    to={`/view-project/${item.id}`}
                   >
                     <IoEyeOutline />
                   </Link>
-                  {userInfo.isAccountant === 1 ? (
-                    ''
-                  ) : (
-                    <Link
-                      className="btn btn-warning btn-sm m-1"
-                      to={`/update-scope-of-work/${item.id}`}
-                    >
-                      <FaRegEdit />
-                    </Link>
-                  )}
+
+                  <Link
+                    className="btn btn-warning btn-sm m-1"
+                    to={`/update-project-approval/${item.id}`}
+                  >
+                    <FaRegEdit />
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -143,4 +139,4 @@ const ScopeofWorkHome = () => {
   );
 };
 
-export default ScopeofWorkHome;
+export default ProjectApprovalHome;

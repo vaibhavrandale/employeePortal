@@ -7,6 +7,7 @@ import ScopeofWork from '../models/ScopeofWork.js';
 import Employee from '../models/employeeModel.js';
 import nodemailer from 'nodemailer';
 import RaiseInvoice from '../models/RaiseInvoice.js';
+import ProjectApproval from '../models/ProjectApproval.js';
 const scopeofworkRouter = express.Router();
 
 dotenv.config();
@@ -857,5 +858,184 @@ scopeofworkRouter.put(
 );
 
 // ---------------raise invoice section------------------------
+
+// ----------project approval-----------------------
+scopeofworkRouter.get('/project-approval', async (req, res) => {
+  const projectapproval = await ProjectApproval.findAll();
+  if (projectapproval) {
+    // Send the created employees as the response
+    return res.status(200).send({ projectapproval });
+  } else {
+    return res.status(400).send({ message: 'Project Approval Not found' });
+  }
+});
+
+scopeofworkRouter.get('/project-approval/:id', async (req, res) => {
+  const id = req.params.id;
+  const projectapproval = await ProjectApproval.findOne({
+    where: { id: id },
+  });
+  if (projectapproval) {
+    // Send the created employees as the response
+    return res.status(200).send({ projectapproval });
+  } else {
+    return res.status(400).send({ message: 'project Not found' });
+  }
+});
+
+scopeofworkRouter.post(
+  '/project-approval',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const {
+      BU,
+      customer,
+      contact_person,
+      project_capacity,
+      mms_type,
+      distance_to_nearest_city,
+      is_feasible_at_cost,
+      final_quote,
+      final_quote_date,
+      project_state,
+      project_approval_status,
+      created_by,
+      sales_director,
+      signature,
+      remark,
+      date_of_approval,
+      date_of_project_closure,
+      site_location,
+    } = req.body;
+    const newProjectApproval = new ProjectApproval({
+      BU,
+      customer,
+      contact_person,
+      project_capacity,
+      mms_type,
+      distance_to_nearest_city,
+      is_feasible_at_cost,
+      final_quote,
+      final_quote_date,
+      project_state,
+      project_approval_status,
+      created_by,
+      sales_director,
+      signature,
+      remark,
+      date_of_approval,
+      date_of_project_closure,
+      site_location,
+    });
+    const projectapproval = await newProjectApproval.save();
+    res.send({ message: 'project approval Created', projectapproval });
+  })
+);
+
+scopeofworkRouter.put(
+  '/project-approval/:id', // Use a dynamic parameter to specify the ID of the project approval record to update
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const projectId = req.params.id; // Get the project ID from the request parameters
+    const {
+      BU,
+      customer,
+      contact_person,
+      project_capacity,
+      mms_type,
+      distance_to_nearest_city,
+      is_feasible_at_cost,
+      final_quote,
+      final_quote_date,
+      project_state,
+      project_approval_status,
+      created_by,
+      sales_director,
+      signature,
+      remark,
+      date_of_approval,
+      date_of_project_closure,
+      site_location,
+    } = req.body;
+
+    // Find the project approval record by ID and update its fields
+    const projectapproval = await ProjectApproval.findByPk(projectId);
+
+    if (projectapproval) {
+      projectapproval.BU = BU || projectapproval.BU;
+      projectapproval.customer = customer || projectapproval.customer;
+      projectapproval.contact_person =
+        contact_person || projectapproval.contact_person;
+      projectapproval.project_capacity =
+        project_capacity || projectapproval.project_capacity;
+      projectapproval.mms_type = mms_type || projectapproval.mms_type;
+      projectapproval.distance_to_nearest_city =
+        distance_to_nearest_city || projectapproval.distance_to_nearest_city;
+      projectapproval.is_feasible_at_cost =
+        is_feasible_at_cost || projectapproval.is_feasible_at_cost;
+      projectapproval.final_quote = final_quote || projectapproval.final_quote;
+      projectapproval.final_quote_date =
+        final_quote_date || projectapproval.final_quote_date;
+      projectapproval.project_state =
+        project_state || projectapproval.project_state;
+      projectapproval.project_approval_status =
+        project_approval_status || projectapproval.project_approval_status;
+      projectapproval.created_by = created_by || projectapproval.created_by;
+      projectapproval.sales_director =
+        sales_director || projectapproval.sales_director;
+      projectapproval.signature = signature || projectapproval.signature;
+      projectapproval.remark = remark || projectapproval.remark;
+      projectapproval.date_of_approval =
+        date_of_approval || projectapproval.date_of_approval;
+      projectapproval.date_of_project_closure =
+        date_of_project_closure || projectapproval.date_of_project_closure;
+
+      projectapproval.site_location =
+        site_location || projectapproval.site_location;
+
+      // Save the updated project approval record
+      const updatedProjectApproval = await projectapproval.save();
+      res.send({
+        message: 'Project approval updated',
+        projectapproval: updatedProjectApproval,
+      });
+    } else {
+      res.status(404).send({ message: 'Project approval not found' });
+    }
+  })
+);
+
+scopeofworkRouter.delete(
+  '/project-approval/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const id = req.params.id;
+    const projectapproval = await ProjectApproval.findByPk(id);
+
+    if (!projectapproval) {
+      return res.status(404).send({ message: 'project-approval not found' });
+    }
+
+    try {
+      // Delete the scope of work
+      await projectapproval.destroy();
+
+      // Send response indicating successful deletion
+      res.status(200).send({
+        message: 'project-approval Deleted',
+        deletedprojectapproval: projectapproval,
+      });
+    } catch (error) {
+      // Handle errors during deletion or email sending process
+      console.error('Error deleting Project details', error);
+      res.status(500).send({ message: 'Error deleting roject details' });
+    }
+  })
+);
+
+// ----------project approval-----------------------
 
 export default scopeofworkRouter;

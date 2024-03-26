@@ -108,6 +108,11 @@ import SalasHome from './screens/sales/SalasHome';
 import PoStatus from './screens/sales/PoStatus';
 import RaiseInvoice from './screens/sales/RaiseInvoice';
 import UpdateRaisedInvoice from './screens/sales/UpdateRaisedInvoice';
+import ProjectApprovalHome from './screens/sales/ProjectApprovalHome';
+import UpdateProjectApproval from './screens/sales/UpdateProjectApproval';
+import NewProjectApproval from './screens/sales/NewProjectApproval';
+import ViewProjectApproval from './screens/sales/ViewProjectApproval';
+import ExportProject from './screens/sales/ExportProject';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -964,6 +969,46 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <UpdateScopeOfWork />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/project-approval"
+          element={
+            <ProtectedRoutes>
+              <ProjectApprovalHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/view-project/:id"
+          element={
+            <ProtectedRoutes>
+              <ViewProjectApproval />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/export-project/:id"
+          element={
+            <ProtectedRoutes>
+              <ExportProject />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/new-project-approval"
+          element={
+            <ProtectedRoutes>
+              <NewProjectApproval />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/update-project-approval/:id"
+          element={
+            <ProtectedRoutes>
+              <UpdateProjectApproval />
             </ProtectedRoutes>
           }
         />

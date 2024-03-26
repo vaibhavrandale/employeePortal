@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Store } from '../../Store.js';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4.js';
 import { Link } from 'react-router-dom';
+import { FaEdit } from 'react-icons/fa';
+import { MdDeleteOutline } from 'react-icons/md';
+import { Helmet } from 'react-helmet';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -112,6 +115,9 @@ const PoStatus = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>PO-Status</title>
+      </Helmet>
       <h3 className="text-center fw-bold">PO status</h3>
       <div className="row">
         <div className="col-md-4">
@@ -201,12 +207,16 @@ const PoStatus = () => {
           </div>
 
           <div className="d-flex justify-content-end">
-            <Link
-              className="btn btn-sm btn-warning m-1"
-              to={`/raise-invoice/${selectedPO}`}
-            >
-              Raise Invoice
-            </Link>
+            {userInfo.isAccountant === 1 ? (
+              ''
+            ) : (
+              <Link
+                className="btn btn-sm btn-warning m-1"
+                to={`/raise-invoice/${selectedPO}`}
+              >
+                Raise Invoice
+              </Link>
+            )}
           </div>
 
           <div className="table-responsive">
@@ -226,7 +236,11 @@ const PoStatus = () => {
                     expected commisioning date
                   </th>
                   <th className="col-md-1 text-center">last Update</th>
-                  <th className="col-md-2 text-center">Action</th>
+                  {userInfo.isAccountant === 1 ? (
+                    ''
+                  ) : (
+                    <th className="col-md-1 text-center">Action</th>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -245,15 +259,21 @@ const PoStatus = () => {
                     <td>{invoice.committed_dispatch_date}</td>
                     <td>{invoice.expected_commisioning_date}</td>
                     <td>{invoice.submittedBy}</td>
-                    <td>
-                      <Link
-                        className="btn btn-sm btn-warning m-1"
-                        to={`/update-invoice/${invoice.invoice_number}`}
-                      >
-                        Update
-                      </Link>
-                      <Link className="btn btn-sm btn-danger m-1">Delete</Link>
-                    </td>
+                    {userInfo.isAccountant === 1 ? (
+                      ''
+                    ) : (
+                      <td>
+                        <Link
+                          className="btn btn-sm btn-warning m-1"
+                          to={`/update-invoice/${invoice.invoice_number}`}
+                        >
+                          <FaEdit />
+                        </Link>
+                        {/* <Link className="btn btn-sm btn-danger m-1">
+                        <MdDeleteOutline />
+                      </Link> */}
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>

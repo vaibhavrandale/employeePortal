@@ -11,6 +11,12 @@ const sales = [
     name: 'PO Status',
     link: '/po-status',
   },
+  {
+    id: 3,
+    img: '/images/icons/project-approval.png',
+    name: 'Project Approval',
+    link: '/project-approval',
+  },
 ];
 
 export default sales;

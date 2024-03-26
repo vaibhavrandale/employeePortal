@@ -220,18 +220,22 @@ const Viewscopeofwork = () => {
                 </p>
               </div>
             </div>
-            <div className="d-flex justify-content-end">
-              <Link className="btn btn-sm btn-danger" onClick={deleteHandler}>
-                {loadingDelete ? (
-                  <>
-                    Deleting..
-                    <LoadingBox4 />
-                  </>
-                ) : (
-                  'Delete'
-                )}
-              </Link>
-            </div>
+            {userInfo.isAccountant === 1 ? (
+              ''
+            ) : (
+              <div className="d-flex justify-content-end">
+                <Link className="btn btn-sm btn-danger" onClick={deleteHandler}>
+                  {loadingDelete ? (
+                    <>
+                      Deleting..
+                      <LoadingBox4 />
+                    </>
+                  ) : (
+                    'Delete'
+                  )}
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>

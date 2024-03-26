@@ -21,6 +21,7 @@ const data = {
   SiteSurvey: [],
   ScopeofWork: [],
   RaiseInvoice: [],
+  ProjectApproval: [],
 };
 
 export default data;

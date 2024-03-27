@@ -85,6 +85,8 @@ const NewProjectApproval = () => {
   const [remark, setremark] = useState('');
   const [date_of_approval, setdate_of_approval] = useState('');
   const [date_of_project_closure, setdate_of_project_closure] = useState('');
+  const [robot_quantity, setrobot_quantity] = useState('');
+  const [site_location, setsite_location] = useState('');
 
   useEffect(() => {
     const checkPoExistence = async () => {
@@ -121,6 +123,8 @@ const NewProjectApproval = () => {
         setdate_of_project_closure(
           result.data.projectapproval.date_of_project_closure
         );
+        setrobot_quantity(result.data.projectapproval.robot_quantity);
+        setsite_location(result.data.projectapproval.site_location);
       } catch (error) {
         console.error('Error checking PO existence:', error);
         dispatch({ type: 'FETCH_FAIL', payload: error.message });
@@ -209,6 +213,12 @@ const NewProjectApproval = () => {
     if (!signature) {
       missingFields.push('Please Enter signature');
     }
+    if (!robot_quantity) {
+      missingFields.push('Please Enter Robot Quantity');
+    }
+    if (!site_location) {
+      missingFields.push('Please Enter site location');
+    }
 
     if (missingFields.length > 0) {
       toast.error(`${missingFields.join(',\n ')}`);
@@ -239,6 +249,8 @@ const NewProjectApproval = () => {
           remark,
           date_of_approval,
           date_of_project_closure,
+          robot_quantity,
+          site_location,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -405,6 +417,35 @@ const NewProjectApproval = () => {
               onChange={(e) => setfinal_quote_date(e.target.value)}
             />
           </div>
+
+          <div className="mb-3">
+            <label htmlFor="site_location" className="form-label">
+              site Location
+            </label>
+            <input
+              type="date"
+              className="inputField3 "
+              id="site_location"
+              name="site_location"
+              value={site_location}
+              onChange={(e) => setsite_location(e.target.value)}
+            />
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="robot_quantity" className="form-label">
+              robot_quantity
+            </label>
+            <input
+              type="date"
+              className="inputField3 "
+              id="robot_quantity"
+              name="robot_quantity"
+              value={robot_quantity}
+              onChange={(e) => setrobot_quantity(e.target.value)}
+            />
+          </div>
+
           <div className="mb-3">
             <label htmlFor="project_state" className="form-label">
               Project State

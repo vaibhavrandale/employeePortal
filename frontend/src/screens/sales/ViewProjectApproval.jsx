@@ -130,6 +130,10 @@ const ViewProjectApproval = () => {
                   {projectapproval.site_location}
                 </p>
                 <p>
+                  <strong> site location:</strong>{' '}
+                  {projectapproval.robot_quantity}
+                </p>
+                <p>
                   <strong>Module Mounting Type:</strong>{' '}
                   {projectapproval.mms_type}
                 </p>

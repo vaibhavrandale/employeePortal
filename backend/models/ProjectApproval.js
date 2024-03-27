@@ -67,6 +67,9 @@ const ProjectApproval = sequelize.define('ProjectApproval', {
   site_location: {
     type: DataTypes.STRING,
   },
+  robot_quantity: {
+    type: DataTypes.STRING,
+  },
 });
 
 export default ProjectApproval;

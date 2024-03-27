@@ -70,12 +70,13 @@ const NewProjectApproval = () => {
   const [project_state, setproject_state] = useState('');
   const [project_approval_status, setproject_approval_status] = useState('');
   const [created_by, setcreated_by] = useState(userInfo.NAME);
-  const [sales_director, setsales_director] = useState('');
+  const [sales_director, setsales_director] = useState('yogesh@taypro.in');
   const [signature, setsignature] = useState('Signature');
   const [remark, setremark] = useState('');
   const [date_of_approval, setdate_of_approval] = useState('');
   const [date_of_project_closure, setdate_of_project_closure] = useState('');
   const [site_location, setsite_location] = useState('');
+  const [robot_quantity, setrobot_quantity] = useState('');
 
   useEffect(() => {
     const checkPoExistence = async () => {
@@ -179,6 +180,9 @@ const NewProjectApproval = () => {
     if (!site_location) {
       missingFields.push('Please Enter site location');
     }
+    if (!robot_quantity) {
+      missingFields.push('Please Enter robot quantity');
+    }
 
     if (missingFields.length > 0) {
       toast.error(`${missingFields.join(',\n ')}`);
@@ -210,6 +214,7 @@ const NewProjectApproval = () => {
           date_of_approval,
           date_of_project_closure,
           site_location,
+          robot_quantity,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -290,7 +295,7 @@ const NewProjectApproval = () => {
               Project Capacity
             </label>
             <input
-              type="date"
+              type="text"
               className="inputField3 "
               id="project_capacity"
               name="project_capacity"
@@ -309,6 +314,19 @@ const NewProjectApproval = () => {
               name="site_location"
               value={site_location}
               onChange={(e) => setsite_location(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="robot_quantity" className="form-label">
+              robot quantity
+            </label>
+            <input
+              type="text"
+              className="inputField3 "
+              id="robot_quantity"
+              name="robot_quantity"
+              value={robot_quantity}
+              onChange={(e) => setrobot_quantity(e.target.value)}
             />
           </div>
 
@@ -339,7 +357,7 @@ const NewProjectApproval = () => {
               Distance to nearest city
             </label>
             <input
-              type="date"
+              type="text"
               className="inputField3 "
               id="distance_to_nearest_city"
               name="distance_to_nearest_city"
@@ -440,22 +458,15 @@ const NewProjectApproval = () => {
           </div>
           <div className="mb-3">
             <label htmlFor="sales_director" className="form-label">
-              sales_director
+              Sales Director
             </label>
-
-            <select
-              id="sales_director"
-              className="inputField3"
-              value={sales_director} // Use value instead of checked for select elements
+            <input
+              type="text"
+              id="leave"
+              className="inputField3 "
+              value={sales_director}
               onChange={(e) => setsales_director(e.target.value)}
-            >
-              <option value="">select</option>
-              {directors.map((item, index) => (
-                <option value={item.NAME} key={index}>
-                  {item.NAME}
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div className="mb-3">

@@ -165,67 +165,73 @@ function ExportProject() {
     doc.text(`Module Mounting Type `, 20, 70);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.project_capacity}`, 74, 70);
+    doc.text(`: ${projectapproval.mms_type}`, 74, 70);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Distance to nearest city`, 20, 80);
+    doc.text(`Robot Quantity `, 20, 80);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.distance_to_nearest_city}`, 74, 80);
+    doc.text(`: ${projectapproval.robot_quantity}`, 74, 80);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Is Project Feasible at Cost`, 20, 90);
+    doc.text(`Distance to nearest city`, 20, 90);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.is_feasible_at_cost}`, 74, 90);
+    doc.text(`: ${projectapproval.distance_to_nearest_city}`, 74, 90);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Final Quote Date`, 20, 100);
+    doc.text(`Is Project Feasible at Cost`, 20, 100);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.final_quote_date}`, 74, 100);
+    doc.text(`: ${projectapproval.is_feasible_at_cost}`, 74, 100);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Final Quote Cost`, 20, 110);
+    doc.text(`Final Quote Date`, 20, 110);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.final_quote}`, 74, 110);
+    doc.text(`: ${projectapproval.final_quote_date}`, 74, 110);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Project State`, 20, 120);
+    doc.text(`Final Quote Cost`, 20, 120);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.project_state}`, 74, 120);
+    doc.text(`: ${projectapproval.final_quote}`, 74, 120);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Project Approval Status`, 20, 130);
+    doc.text(`Project State`, 20, 130);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.project_approval_status}`, 74, 130);
+    doc.text(`: ${projectapproval.project_state}`, 74, 130);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Created By`, 20, 140);
+    doc.text(`Project Approval Status`, 20, 140);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.created_by}`, 74, 140);
+    doc.text(`: ${projectapproval.project_approval_status}`, 74, 140);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Sales Director`, 20, 150);
+    doc.text(`Created By`, 20, 150);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.sales_director}`, 74, 150);
+    doc.text(`: ${projectapproval.created_by}`, 74, 150);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Signature`, 20, 165);
+    doc.text(`Sales Director`, 20, 160);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.signature}`, 74, 165);
+    doc.text(`: ${projectapproval.sales_director}`, 74, 160);
 
     doc.setFont('Helvetica', 'normal');
-    doc.text(`Remark`, 20, 185);
+    doc.text(`Signature`, 20, 175);
     // Add a row after the table
     doc.setFont('Helvetica', 'bold');
-    doc.text(`: ${projectapproval.remark}`, 74, 185);
+    doc.text(`: ${projectapproval.signature}`, 74, 175);
+
+    doc.setFont('Helvetica', 'normal');
+    doc.text(`Remark`, 20, 190);
+    // Add a row after the table
+    doc.setFont('Helvetica', 'bold');
+    doc.text(`: ${projectapproval.remark}`, 74, 190);
 
     return doc;
   };

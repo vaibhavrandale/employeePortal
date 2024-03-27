@@ -907,6 +907,7 @@ scopeofworkRouter.post(
       date_of_approval,
       date_of_project_closure,
       site_location,
+      robot_quantity,
     } = req.body;
     const newProjectApproval = new ProjectApproval({
       BU,
@@ -927,6 +928,7 @@ scopeofworkRouter.post(
       date_of_approval,
       date_of_project_closure,
       site_location,
+      robot_quantity,
     });
     const projectapproval = await newProjectApproval.save();
     res.send({ message: 'project approval Created', projectapproval });
@@ -958,6 +960,7 @@ scopeofworkRouter.put(
       date_of_approval,
       date_of_project_closure,
       site_location,
+      robot_quantity,
     } = req.body;
 
     // Find the project approval record by ID and update its fields
@@ -994,6 +997,8 @@ scopeofworkRouter.put(
 
       projectapproval.site_location =
         site_location || projectapproval.site_location;
+      projectapproval.robot_quantity =
+        site_location || projectapproval.robot_quantity;
 
       // Save the updated project approval record
       const updatedProjectApproval = await projectapproval.save();

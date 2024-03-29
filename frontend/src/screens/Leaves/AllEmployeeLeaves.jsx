@@ -36,7 +36,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, employees: action.payload, loading: false };
+      return { ...state, lapaseleave: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -56,8 +56,8 @@ const reducer = (state, action) => {
 };
 
 function AllEmployeeLeaves() {
-  const [{ loading, error, employees }, dispatch] = useReducer(reducer, {
-    employees: [],
+  const [{ loading, error, lapaseleave }, dispatch] = useReducer(reducer, {
+    lapaseleave: [],
     loading: true,
     error: '',
   });
@@ -76,13 +76,15 @@ function AllEmployeeLeaves() {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const Employeeresult = await axios.get(`/api/employees`, {
+        const Employeeresult = await axios.get(`/api/lapaseleave`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
 
+        console.log(Employeeresult);
+
         dispatch({
           type: 'FETCH_SUCCESS',
-          payload: Employeeresult.data.employees,
+          payload: Employeeresult.data.lapaseleave,
         });
 
         // Calculate remaining leaves based on fetched leave counts
@@ -94,26 +96,13 @@ function AllEmployeeLeaves() {
     fetchData();
   }, [userInfo.token]);
 
-  const filteredData = employees
-    .filter(
-      (item) =>
-        item.NAME.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.employee_id.includes(searchTerm) ||
-        item.joiningDate.includes(searchTerm) ||
-        item.employee_id.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      // Sort by 'activate' property with 1s coming first
-      if (a.activate === 1 && b.activate === 0) {
-        return -1; // 'a' comes first
-      } else if (a.activate === 0 && b.activate === 1) {
-        return 1; // 'b' comes first
-      } else {
-        // If 'activate' values are the same, use employee_id for sorting
-        return a.employee_id.localeCompare(b.employee_id);
-      }
-    });
+  const filteredData = lapaseleave
+    ? lapaseleave.filter(
+        (item) =>
+          item.Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.employee_id.includes(searchTerm)
+      )
+    : '';
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -183,8 +172,10 @@ function AllEmployeeLeaves() {
                         {item.employee_id}
                       </td>
 
-                      <td className="text-center fw-bold">{item.NAME}</td>
-                      <td className="text-center fw-bold">{item.email}</td>
+                      <td className="text-center fw-bold">{item.Name}</td>
+                      <td className="text-center fw-bold">
+                        {item.employee_id}
+                      </td>
 
                       <td className="text-center fw-bold">{item.sick}</td>
                       <td className="text-center fw-bold">{item.casual}</td>
@@ -203,12 +194,12 @@ function AllEmployeeLeaves() {
                           view
                         </Link>
 
-                        {/* <Link
+                        <Link
                           to={`/lapsed-leaves/${item.employee_id}`}
                           className="btn btn-success btn-sm  p-1 m-2 text-white"
                         >
                           Lapsed Leaves
-                        </Link> */}
+                        </Link>
                       </td>
                     </tr>
                   ))}

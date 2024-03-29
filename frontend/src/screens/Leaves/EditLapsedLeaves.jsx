@@ -11,7 +11,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, leavelapse: action.payload, loading: false };
+      return { ...state, lapaseleave: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -20,7 +20,7 @@ const reducer = (state, action) => {
       return { ...state, loadingUpdate: true };
 
     case 'UPDATE_SUCCESS':
-      return { ...state, leavelapse: action.payload, loadingUpdate: false };
+      return { ...state, lapaseleave: action.payload, loadingUpdate: false };
 
     case 'UPDATE_FAIL':
       return { ...state, loadingUpdate: false, error: action.payload };
@@ -32,10 +32,10 @@ const reducer = (state, action) => {
 
 const EditLapsedLeaves = () => {
   const { id } = useParams();
-  const [{ loading, loadingUpdate, leavelapse }, dispatch] = useReducer(
+  const [{ loading, loadingUpdate, lapaseleave }, dispatch] = useReducer(
     reducer,
     {
-      leavelapse: {},
+      lapaseleave: {},
       loading: true,
       error: '',
     }
@@ -44,7 +44,7 @@ const EditLapsedLeaves = () => {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const [NoOfLeaveLapsed, setNoOfleaveLapsed] = useState(0);
+  const [NoofleaveLapsed, setNoOfleaveLapsed] = useState(0);
   const [LeavetypeLapsed, setLeavetypeLapsed] = useState('');
   const [leaves, setLeaves] = useState(0);
   const [casual, setCasual] = useState(0);
@@ -52,6 +52,7 @@ const EditLapsedLeaves = () => {
   const [privilege, setPrivilege] = useState(0);
   const [sick, setsick] = useState(0);
   const [year, setYear] = useState(0);
+  const [LeaveId, setLeaveId] = useState('');
 
   const navigate = useNavigate();
 
@@ -61,21 +62,21 @@ const EditLapsedLeaves = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/leaves/leave-lapse/${id}`, {
+        const result = await axios.get(`/api/lapaseleave/${id}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.leavelapse });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.lapaseleave });
         console.log(result.data);
 
-        setNoOfleaveLapsed(result.data.leavelapse.NoofleaveLapsed);
-        setLeavetypeLapsed(result.data.leavelapse.LeavetypeLapsed);
-        setLeaves(result.data.leavelapse.leaves);
-        setCasual(result.data.leavelapse.casual);
-        setIsLapsed(result.data.leavelapse.isLapsed);
-        setNoOfleaveLapsed(result.data.leavelapse.NoofleaveLapsed);
-        setPrivilege(result.data.leavelapse.privilege);
-        setsick(result.data.leavelapse.sick);
-        setYear(result.data.leavelapse.year);
+        setLeavetypeLapsed(result.data.lapaseleave.LeavetypeLapsed);
+        setLeaves(result.data.lapaseleave.leaves);
+        setCasual(result.data.lapaseleave.casual);
+        setIsLapsed(result.data.lapaseleave.isLapsed);
+        setNoOfleaveLapsed(result.data.lapaseleave.NoofleaveLapsed);
+        setPrivilege(result.data.lapaseleave.privilege);
+        setsick(result.data.lapaseleave.sick);
+        setYear(result.data.lapaseleave.year);
+        setLeaveId(result.data.lapaseleave.id);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
@@ -95,7 +96,7 @@ const EditLapsedLeaves = () => {
     e.preventDefault();
     const missingFields = [];
 
-    if (!NoOfLeaveLapsed) {
+    if (!NoofleaveLapsed) {
       missingFields.push('Please Leave type Lapsed');
     }
     if (!LeavetypeLapsed) {
@@ -112,9 +113,9 @@ const EditLapsedLeaves = () => {
     });
     try {
       const { data } = await axios.put(
-        `/api/leaves/leave-lapse/${id}`,
+        `/api/lapaseleave/${id}/${LeaveId}`,
         {
-          NoOfLeaveLapsed,
+          NoofleaveLapsed,
           LeavetypeLapsed,
           leaves,
           casual,
@@ -145,7 +146,7 @@ const EditLapsedLeaves = () => {
     }
   };
 
-  if (!leavelapse) {
+  if (!lapaseleave) {
     <div className="badge bg-danger">Leave lapse for this id is not found</div>;
   }
 
@@ -160,7 +161,7 @@ const EditLapsedLeaves = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="leaves"
               value={leaves}
               onChange={(e) => setLeaves(e.target.value)}
@@ -172,7 +173,7 @@ const EditLapsedLeaves = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="sick"
               value={sick}
               onChange={(e) => setsick(e.target.value)}
@@ -184,7 +185,7 @@ const EditLapsedLeaves = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="privilege"
               value={privilege}
               onChange={(e) => setPrivilege(e.target.value)}
@@ -196,7 +197,7 @@ const EditLapsedLeaves = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="casual"
               value={casual}
               onChange={(e) => setCasual(e.target.value)}
@@ -207,13 +208,25 @@ const EditLapsedLeaves = () => {
             <label htmlFor="casual" className="form-label">
               Leave type Lapsed
             </label>
-            <input
+            {/* <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="casual"
               value={LeavetypeLapsed}
               onChange={(e) => setLeavetypeLapsed(e.target.value)}
-            />
+            /> */}
+
+            <select
+              id="leave"
+              className="inputField3"
+              value={LeavetypeLapsed}
+              onChange={(e) => setLeavetypeLapsed(e.target.value)}
+            >
+              <option value="">Select</option>
+              <option value="sick">Sick</option>
+              <option value="privilege">Privilege</option>
+              <option value="casual">Casual</option>
+            </select>
           </div>
 
           <div className="mb-3">
@@ -221,10 +234,10 @@ const EditLapsedLeaves = () => {
               No of leave Lapsed
             </label>
             <input
-              type="number"
-              className="form-control"
+              type="text"
+              className="inputField3"
               id="casual"
-              value={NoOfLeaveLapsed}
+              value={NoofleaveLapsed}
               onChange={(e) => setNoOfleaveLapsed(e.target.value)}
             />
           </div>
@@ -233,13 +246,17 @@ const EditLapsedLeaves = () => {
             <label htmlFor="casual" className="form-label">
               isLapsed
             </label>
-            <input
-              type="text"
-              className="form-control"
-              id="casual"
+
+            <select
+              id="leave"
+              className="inputField3"
               value={isLapsed}
               onChange={(e) => setIsLapsed(e.target.value)}
-            />
+            >
+              <option value="">Select</option>
+              <option value="YES">YES</option>
+              <option value="NO">NO</option>
+            </select>
           </div>
 
           <div className="mb-3">
@@ -248,7 +265,7 @@ const EditLapsedLeaves = () => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className="inputField3"
               id="year"
               value={year}
               onChange={(e) => setYear(e.target.value)}

@@ -33,6 +33,24 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
+    case 'FETCH_EMPLOYEE_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_EMPLOYEE_SUCCESS':
+      return { ...state, employees: action.payload, loading: false };
+
+    case 'FETCH_EMPLOYEE_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    case 'FETCH_BALANCE_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_BALANCE_SUCCESS':
+      return { ...state, lapaseleave: action.payload, loading: false };
+
+    case 'FETCH_BALANCE_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
     case 'LEAVE_STATUS_REQUEST':
       return { ...state, loadingLeaveStatus: true };
 
@@ -48,21 +66,21 @@ const reducer = (state, action) => {
 };
 
 function LeaveApplication() {
-  const [{ loading, error, leaves, loadingLeaveStatus }, dispatch] = useReducer(
-    reducer,
-    {
+  const [{ loading, error, leaves, loadingLeaveStatus, employees }, dispatch] =
+    useReducer(reducer, {
       leaves: [],
+      employees: {},
       loading: true,
       error: '',
-    }
-  );
+    });
 
   const { state } = useContext(Store);
   const { userInfo } = state;
   const { id } = useParams();
   // const [leaves, setLeaves] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [name, setName] = useState('');
+  const [Name, setName] = useState('');
+  // const [Name, setName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpenApprove, setIsPopupOpenApprove] = useState(false);
@@ -92,7 +110,7 @@ function LeaveApplication() {
 
       try {
         const result = await axios.get(`/api/leaves/${id}`);
-        console.log(result.data.AllLeaves);
+        console.log(result.data.leaves);
 
         // console.log(result.data.employee.Leave);
         if (result) {
@@ -103,23 +121,7 @@ function LeaveApplication() {
         }
         dispatch({
           type: 'FETCH_SUCCESS',
-          payload: result.data.AllLeaves,
-        });
-
-        const Employeeresult = await axios.get(`/api/employees/details/${id}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-        // console.log(Employeeresult.data.employee);
-        // Get the leave counts from the fetched data
-        // const { leaves, sick, privilege, casual } = Employeeresult;
-        setName(Employeeresult.data.employee.NAME);
-        const { leaves, sick, privilege, casual } =
-          Employeeresult.data.employee;
-        setRemainingLeaves({
-          totalleaves: leaves,
-          sick: sick,
-          privilege: privilege,
-          casual: casual,
+          payload: result.data.leaves,
         });
 
         // Calculate remaining leaves based on fetched leave counts
@@ -133,7 +135,56 @@ function LeaveApplication() {
       }, 2000); // Simulating a 2-second delay
     };
 
+    const LeavBalance = async () => {
+      dispatch({ type: 'FETCH_BALANCE_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/lapaseleave/${id}`);
+        // console.log(result.data);
+        dispatch({
+          type: 'FETCH_BALANCE_SUCCESS',
+          payload: result.data.lapaseleave,
+        });
+
+        const leaves = result.data.lapaseleave.leaves;
+        const sick = result.data.lapaseleave.sick;
+        const privilege = result.data.lapaseleave.privilege;
+        const casual = result.data.lapaseleave.casual;
+        setRemainingLeaves({
+          totalleaves: leaves,
+          sick: sick,
+          privilege: privilege,
+          casual: casual,
+        });
+
+        // Calculate remaining leaves based on fetched leave counts
+      } catch (err) {
+        dispatch({ type: 'FETCH_BALANCE_FAIL', payload: err.message });
+      }
+    };
+
+    const empData = async () => {
+      dispatch({ type: 'FETCH_EMPLOYEE_REQUEST' });
+
+      try {
+        const result = await axios.get(`/api/employees/details/${id}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        // console.log(result.data);
+        dispatch({
+          type: 'FETCH_EMPLOYEE_SUCCESS',
+          payload: result.data.employee,
+        });
+        // console.log(result.data.employee.address);
+        setName(result.data.employee.NAME);
+      } catch (err) {
+        dispatch({ type: 'FETCH_EMPLOYEE_FAIL', payload: err.message });
+      }
+    };
+
     fetchData();
+    LeavBalance();
+    empData();
   }, [id, userInfo.employee_id, userInfo.id, userInfo.token]);
 
   const filteredData = leaves.filter(
@@ -343,7 +394,7 @@ function LeaveApplication() {
       ) : (
         <>
           <h2 className="text-dark">
-            <b>{name}</b>- Leave History
+            <b>{Name}</b>- Leave History
           </h2>
           <div className="d-flex">
             {/* <Link className="submitBtn2    " to={'/leave'}>

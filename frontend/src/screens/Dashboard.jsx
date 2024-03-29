@@ -775,32 +775,37 @@ function Dashboard() {
                     ''
                   )}
 
-                  {userInfo && userInfo.isVisitor === 0 && (
-                    <div className="col">
-                      <div className="card border border-0 quicklikCard">
-                        <Link
-                          to="leaves-history"
-                          className="p-1 text-decoration-none"
-                        >
-                          <img
-                            src="/images/icons/leaves.png"
-                            height={50}
-                            style={{ objectFit: 'contain' }}
-                            className="card-img-top quicklikCardImg"
-                            alt="i"
-                          />
-                          <div className="card-body text-center">
-                            <span
-                              className="card-title"
-                              style={{ color: '#2749f5', fontWeight: '500' }}
-                            >
-                              leaves
-                            </span>
-                          </div>
-                        </Link>
+                  {userInfo &&
+                    userInfo.isVisitor === 0 &&
+                    userInfo.isProbation === 1 && (
+                      <div className="col">
+                        <div className="card border border-0 quicklikCard">
+                          <Link
+                            to="leaves-history"
+                            className="p-1 text-decoration-none"
+                          >
+                            <img
+                              src="/images/icons/leaves.png"
+                              height={50}
+                              style={{ objectFit: 'contain' }}
+                              className="card-img-top quicklikCardImg"
+                              alt="i"
+                            />
+                            <div className="card-body text-center">
+                              <span
+                                className="card-title"
+                                style={{
+                                  color: '#2749f5',
+                                  fontWeight: '500',
+                                }}
+                              >
+                                leaves
+                              </span>
+                            </div>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   {userInfo && userInfo.isVisitor === 0 && (
                     <div className="col">

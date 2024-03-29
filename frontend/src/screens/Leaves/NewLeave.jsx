@@ -66,7 +66,7 @@ function NewLeave() {
 
     try {
       const { data } = await axios.post(
-        `/api/leaves/apply-leave/${userInfo.employee_id}`,
+        `/api/lapaseleave/apply-leave/${userInfo.employee_id}`,
         {
           employee_id,
           name,

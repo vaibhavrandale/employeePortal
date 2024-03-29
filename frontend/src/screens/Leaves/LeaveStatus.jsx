@@ -59,7 +59,7 @@ const LeaveStatus = () => {
     { loading, Leave, loadingUpdateApprove, loadingUpdateReject },
     dispatch,
   ] = useReducer(reducer, {
-    Leave: [],
+    Leave: {},
     loading: true,
     error: '',
   });
@@ -91,7 +91,7 @@ const LeaveStatus = () => {
 
       try {
         const result = await axios.get(`/api/leaves/${employeeId}/${leaveId}`);
-        // console.log(result);
+        console.log(result.data.Leave);
 
         // setRemark(result.data.leave.remark);
 
@@ -107,7 +107,7 @@ const LeaveStatus = () => {
         // setRemarkBy(result.data.leave.remarkBy);
         // setCreatedAt(result.data.leave.createdAt);
 
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.leave });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.Leave });
         // console.log(result.data.leave);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
@@ -137,7 +137,7 @@ const LeaveStatus = () => {
     });
     try {
       const { data } = await axios.put(
-        `/api/leaves/${employeeId}/${leaveid}/approve`,
+        `/api/lapaseleave/${employeeId}/${leaveid}/approve`,
         {
           approved: '1',
           remark,
@@ -184,7 +184,7 @@ const LeaveStatus = () => {
     });
     try {
       const { data } = await axios.put(
-        `/api/leaves/${employeeId}/${leaveid}/reject`,
+        `/api/lapaseleave/${employeeId}/${leaveid}/reject`,
         {
           remark: remark,
           approved: '0',

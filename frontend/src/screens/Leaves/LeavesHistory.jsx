@@ -27,14 +27,23 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
-    case 'LEAVE_STATUS_REQUEST':
-      return { ...state, loadingLeaveStatus: true };
+    case 'FETCH_EMPLOYEE_REQUEST':
+      return { ...state, loading: true };
 
-    case 'LEAVE_STATUS_SUCCESS':
-      return { ...state, leave: action.payload, loadingLeaveStatus: false };
+    case 'FETCH_EMPLOYEE_SUCCESS':
+      return { ...state, employees: action.payload, loading: false };
 
-    case 'LEAVE_STATUS_FAIL':
-      return { ...state, loadingLeaveStatus: false, error: action.payload };
+    case 'FETCH_EMPLOYEE_FAIL':
+      return { ...state, loading: false, error: action.payload };
+
+    case 'FETCH_BALANCE_REQUEST':
+      return { ...state, loading: true };
+
+    case 'FETCH_BALANCE_SUCCESS':
+      return { ...state, lapaseleave: action.payload, loading: false };
+
+    case 'FETCH_BALANCE_FAIL':
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return state;
@@ -55,6 +64,7 @@ function LeavesHistory() {
   const { userInfo } = state;
   // const [leaves, setLeaves] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [Name, setName] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredRow, setHoveredRow] = useState(null);
   const [isPopupOpenApprove, setIsPopupOpenApprove] = useState(false);
@@ -62,6 +72,9 @@ function LeavesHistory() {
 
   const [approved, setApproved] = useState(false);
   const [remark, setRemark] = useState('');
+  const [LapsedLeaves, setLapsedleaves] = useState(0);
+  const [LeavetypeLapsed, setLeavetypeLapsed] = useState(0);
+  const [isLapsed, setisLapsed] = useState('');
   const [remainingLeaves, setRemainingLeaves] = useState({
     totalleaves: 0,
     sick: 0,
@@ -76,43 +89,80 @@ function LeavesHistory() {
     return 'Success'; // Return a success message or data
   };
 
+  // useEffect(() => {
+  //   // Simulate API call or data fetching
+  //   const fetchData = async () => {
+  //     dispatch({ type: 'FETCH_REQUEST' });
+
+  //     try {
+  //       const result = await axios.get(`/api/leaves/${userInfo.employee_id}`, {
+  //         headers: { authorization: `Bearer ${userInfo.token}` },
+  //       });
+  //       if (result) {
+  //       } else {
+  //         console.log('Leave data not found.');
+  //         // Handle this scenario, maybe dispatch an action to indicate no employee data.
+  //       }
+  //       dispatch({
+  //         type: 'FETCH_SUCCESS',
+  //         payload: result.data.leaves,
+  //       });
+
+  //       console.log(result);
+
+  //       const Employeeresult = await axios.get(
+  //         `/api/employees/details/${userInfo.employee_id}`,
+  //         {
+  //           headers: { authorization: `Bearer ${userInfo.token}` },
+  //         }
+  //       );
+  //       // console.log(Employeeresult.data.employee);
+  //       // Get the leave counts from the fetched data
+  //       // const { leaves, sick, privilege, casual } = Employeeresult;
+
+  //       const { leaves, sick, privilege, casual } =
+  //         Employeeresult.data.employee;
+  //       setRemainingLeaves({
+  //         totalleaves: leaves,
+  //         sick: sick,
+  //         privilege: privilege,
+  //         casual: casual,
+  //       });
+  //       // Calculate remaining leaves based on fetched leave counts
+  //     } catch (err) {
+  //       dispatch({ type: 'FETCH_FAIL', payload: err.message });
+  //     }
+
+  //     setTimeout(() => {
+  //       // setEmployees(result.data);
+  //       // setLoading(false);
+  //     }, 2000); // Simulating a 2-second delay
+  //   };
+
+  //   fetchData();
+  // }, [userInfo.employee_id, userInfo.token]);
+
   useEffect(() => {
     // Simulate API call or data fetching
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(`/api/leaves/${userInfo.employee_id}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const result = await axios.get(`/api/leaves/${userInfo.employee_id}`);
+        // console.log(result.data.leaves);
+
+        // console.log(result.data.employee.Leave);
         if (result) {
+          // Your current logic here
         } else {
-          console.log('Leave data not found.');
+          console.warn('Employee data not found.');
           // Handle this scenario, maybe dispatch an action to indicate no employee data.
         }
         dispatch({
           type: 'FETCH_SUCCESS',
-          payload: result.data.AllLeaves,
+          payload: result.data.leaves,
         });
 
-        const Employeeresult = await axios.get(
-          `/api/employees/details/${userInfo.employee_id}`,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        // console.log(Employeeresult.data.employee);
-        // Get the leave counts from the fetched data
-        // const { leaves, sick, privilege, casual } = Employeeresult;
-
-        const { leaves, sick, privilege, casual } =
-          Employeeresult.data.employee;
-        setRemainingLeaves({
-          totalleaves: leaves,
-          sick: sick,
-          privilege: privilege,
-          casual: casual,
-        });
         // Calculate remaining leaves based on fetched leave counts
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
@@ -124,15 +174,52 @@ function LeavesHistory() {
       }, 2000); // Simulating a 2-second delay
     };
 
-    fetchData();
-  }, [userInfo.employee_id, userInfo.token]);
+    const LeavBalance = async () => {
+      dispatch({ type: 'FETCH_BALANCE_REQUEST' });
 
-  const filteredData = leaves.filter(
-    (item) =>
-      item.NAME ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.approvedBy.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+      try {
+        const result = await axios.get(
+          `/api/lapaseleave/${userInfo.employee_id}`
+        );
+        // console.log(result.data);
+        dispatch({
+          type: 'FETCH_BALANCE_SUCCESS',
+          payload: result.data.lapaseleave,
+        });
+
+        const leaves = result.data.lapaseleave.leaves;
+        setLapsedleaves(result.data.lapaseleave.NoofleaveLapsed);
+        setLeavetypeLapsed(result.data.lapaseleave.LeavetypeLapsed);
+        setisLapsed(result.data.lapaseleave.isLapsed);
+        const sick = result.data.lapaseleave.sick;
+        const privilege = result.data.lapaseleave.privilege;
+        const casual = result.data.lapaseleave.casual;
+        setRemainingLeaves({
+          totalleaves: leaves,
+          sick: sick,
+          privilege: privilege,
+          casual: casual,
+        });
+
+        // Calculate remaining leaves based on fetched leave counts
+      } catch (err) {
+        dispatch({ type: 'FETCH_BALANCE_FAIL', payload: err.message });
+      }
+    };
+
+    fetchData();
+    LeavBalance();
+    // empData();
+  }, [userInfo.employee_id, userInfo.id, userInfo.token]);
+
+  const filteredData = leaves
+    ? leaves.filter(
+        (item) =>
+          item.name ||
+          item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.approvedBy.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : '';
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -250,7 +337,7 @@ function LeavesHistory() {
       // console.log(data);
       dispatch({
         type: 'LEAVE_STATUS_SUCCESS',
-        payload: data.employee.AllLeaves,
+        payload: data.employee.leaves,
       });
       // toast.success('Leave Rejected Successfully', {
       //   position: 'top-right',
@@ -314,7 +401,8 @@ function LeavesHistory() {
           <li className="breadcrumb-item">
             <Link to="/" className="text-decoration-none">
               Home
-            </Link>{' '}
+            </Link>
+            {}
           </li>
 
           <li className="breadcrumb-item active" aria-current="page">
@@ -335,19 +423,44 @@ function LeavesHistory() {
             </Link>
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-danger mx-1 pt-2 pb-2">
-                Total Leaves : {remainingLeaves.totalleaves}
+                Total Leaves :{' '}
+                {parseInt(remainingLeaves.totalleaves) + parseInt(LapsedLeaves)}
               </div>
               <div className="badge bg-primary mx-1 pt-2 pb-2">
-                Sick :{remainingLeaves.sick}
+                Sick :
+                {remainingLeaves.LeavetypeLapsed === 'sick'
+                  ? parseInt(remainingLeaves.sick) +
+                    parseInt(remainingLeaves.LeavetypeLapsed)
+                  : remainingLeaves.sick}
               </div>
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-warning text-dark mx-1 pt-2 pb-2">
-                Previlege :{remainingLeaves.privilege}
+                Previlege :
+                {remainingLeaves.LeavetypeLapsed === 'privilege'
+                  ? parseInt(remainingLeaves.privilege) +
+                    parseInt(remainingLeaves.LeavetypeLapsed)
+                  : remainingLeaves.privilege}
               </div>
               <div className="badge bg-info text-dark mx-1 pt-2 pb-2">
-                Casual : {remainingLeaves.casual}
+                Casual :{' '}
+                {remainingLeaves.LeavetypeLapsed === 'casual'
+                  ? parseInt(remainingLeaves.casual) +
+                    parseInt(remainingLeaves.LeavetypeLapsed)
+                  : remainingLeaves.casual}
               </div>
+              {isLapsed === 'YES' ? (
+                <>
+                  <div className="badge bg-success  mx-1 pt-2 pb-2">
+                    No of Leave Lapsed : {LapsedLeaves}
+                  </div>
+                  <div className="badge bg-secondary  mx-1 pt-2 pb-2">
+                    Leave Type Lapsed : {LeavetypeLapsed}
+                  </div>
+                </>
+              ) : (
+                ''
+              )}
               <div
                 className="mx-1 d-flex justify-content-center align-items-center "
                 style={{ cursor: 'pointer' }}
@@ -448,7 +561,7 @@ function LeavesHistory() {
                           Approved
                         </span>
                       ) : item.approved === 0 && item.remark !== '' ? (
-                        <span className="badge text-bg-danger">Rejected</span>
+                        <span className="badge bg-danger">Rejected</span>
                       ) : (
                         <span className="badge text-dark bg-warning">
                           Pending
@@ -469,9 +582,7 @@ function LeavesHistory() {
                           )}
                         </span>
                       ) : item.approvedAt === '' && item.remark !== '' ? (
-                        <span className="badge text-success bg-danger">
-                          Rejected
-                        </span>
+                        <span className="badge  bg-danger">Rejected</span>
                       ) : (
                         <span className="badge text-dark bg-warning">
                           Pending
@@ -484,7 +595,7 @@ function LeavesHistory() {
                           {item.approvedBy}
                         </span>
                       ) : item.approvedBy === '' && item.remark !== '' ? (
-                        <span className="badge text-bg-danger">Rejected</span>
+                        <span className="badge bg-danger">Rejected</span>
                       ) : (
                         <span className="badge text-dark bg-warning">
                           pending

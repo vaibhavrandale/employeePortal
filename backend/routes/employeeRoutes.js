@@ -376,6 +376,7 @@ emplyeeRouter.post('/signin', async (req, res) => {
         casual: employee.casual,
         profileImage: employee.image,
         joiningDate: employee.joiningDate,
+        isProbation: employee.isProbation,
         token: generateToken(employee),
         message: 'Sign in successful!',
       });

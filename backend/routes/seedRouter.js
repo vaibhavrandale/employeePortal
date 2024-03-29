@@ -18,6 +18,7 @@ import ScopeofWork from '../models/ScopeofWork.js';
 import RaiseInvoice from '../models/RaiseInvoice.js';
 import ProjectApproval from '../models/ProjectApproval.js';
 import Investment from '../models/Investment.js';
+import LeaveLapse from '../models/LeaveLapse.js';
 
 const seedRouter = express.Router();
 
@@ -96,6 +97,10 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await ProjectApproval.destroy({ where: {}, truncate: true });
     await ProjectApproval.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    await LeaveLapse.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await LeaveLapse.destroy({ where: {}, truncate: true });
+    await LeaveLapse.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
     // Insert data into the Employee table
     // const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
@@ -131,6 +136,7 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     );
 
     const createdInvestment = await Investment.bulkCreate(data.Investment);
+    const createdLeaveLapse = await LeaveLapse.bulkCreate(data.LeaveLapse);
 
     res.send({
       // createdEmployees,
@@ -151,6 +157,7 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       createdRaiseInvoice,
       createdProjectApproval,
       createdInvestment,
+      createdLeaveLapse,
     });
   } catch (error) {
     console.error(error);

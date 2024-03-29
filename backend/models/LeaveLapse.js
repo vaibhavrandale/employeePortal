@@ -34,7 +34,7 @@ const LeaveLapse = sequelize.define('LeaveLapse', {
   },
 
   isLapsed: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.STRING,
   },
   LeavetypeLapsed: {
     type: DataTypes.STRING,

@@ -21,70 +21,58 @@ const logo =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709106310/bhyfvfixfscmawtlhg1s.png';
 
 // get all leaves Start
-
 leaveRouter.get('/', async (req, res) => {
-  const AllLeaves = await Leaves.findAll();
+  const leaves = await Leaves.findAll();
 
   // Send the created employees as the response
-  res.send({ AllLeaves });
+  res.send({ leaves });
+});
+
+// ------------------------------get all leaves of one employee-----------------------
+leaveRouter.get('/:id', async (req, res) => {
+  const employee_id = req.params.id;
+
+  try {
+    // Find the employee by ID and retrieve their leaves
+    // const AllLeaves = await Leaves.findById(employee_id);
+
+    const leaves = await Leaves.findAll({
+      where: { employee_id: employee_id },
+    });
+    if (!leaves) {
+      return res.status(404).send({ message: 'Leaves Not Found' });
+    }
+
+    res.status(200).send({ leaves });
+  } catch (error) {
+    console.error('Error while retrieving leaves:', error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
+});
+
+leaveRouter.get('/:employeeid/:id', async (req, res) => {
+  const employee_id = req.params.employeeid;
+  const id = req.params.id;
+
+  try {
+    // Find the employee by ID and retrieve their leaves
+    // const AllLeaves = await Leaves.findById(employee_id);
+
+    const Leave = await Leaves.findOne({
+      where: { employee_id: employee_id, id: id },
+    });
+    if (!Leave) {
+      return res.status(404).send({ message: 'Leaves Not Found' });
+    }
+
+    res.status(200).send({ Leave });
+  } catch (error) {
+    console.error('Error while retrieving leaves:', error);
+    res.status(500).send({ message: 'Internal server error' });
+  }
 });
 
 // get all leaves End
-
-// -----------leave lapse----------------
-leaveRouter.get('/leave-lapse', async (req, res) => {
-  const leavelapse = await LeaveLapse.findAll();
-  if (leavelapse) {
-    // Send the created employees as the response
-    return res.status(200).send({ leavelapse });
-  } else {
-    return res.status(400).send({ message: 'Leave Not found' });
-  }
-});
-leaveRouter.get('/leave-lapse/:employeeid', async (req, res) => {
-  const employeeid = req.params.employeeid;
-  const leavelapse = await LeaveLapse.findOne({
-    where: { employee_id: employeeid },
-  });
-  if (leavelapse) {
-    // Send the created employees as the response
-    return res.status(200).send({ leavelapse });
-  } else {
-    return res.status(400).send({ message: 'Leave Not found' });
-  }
-});
-
-leaveRouter.put('/leave-lapse/:employeeid', async (req, res) => {
-  try {
-    const employeeid = req.params.employeeid;
-    const leavelapse = await LeaveLapse.findOne({
-      where: { employee_id: employeeid },
-    });
-    if (!leavelapse) {
-      return res.status(404).json({ message: 'leave lapse not found' });
-    }
-
-    leavelapse.leaves = req.body.leaves;
-    leavelapse.sick = req.body.sick;
-    leavelapse.privilege = req.body.privilege;
-    leavelapse.casual = req.body.casual;
-    leavelapse.isLapsed = req.body.isLapsed;
-    leavelapse.LeavetypeLapsed = req.body.LeavetypeLapsed;
-    leavelapse.NoofleaveLapsed = req.body.NoofleaveLapsed;
-    leavelapse.year = req.body.year;
-
-    const LapsedLeave = await leavelapse.save();
-
-    return res
-      .status(201)
-      .json({ message: 'leave lapse updated successfully.', LapsedLeave });
-  } catch (error) {
-    console.error('Error updating leave lapse:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
-// -----------leave lapse----------------
 
 // ------------------apply for leave-------------------------------
 leaveRouter.post(

@@ -81,14 +81,17 @@ const Sidebar = () => {
             ''
           )}
 
-          {userInfo && userInfo.isAdmin === 1 && userInfo.isVisitor === 0 && (
-            <li>
-              <Link to="/leaves-history">
-                <FcLeave className="icon me-2" />
-                {hovered && <span>Leaves</span>}
-              </Link>
-            </li>
-          )}
+          {userInfo &&
+            userInfo.isAdmin === 1 &&
+            userInfo.isVisitor === 0 &&
+            userInfo.isProbation === 1 && (
+              <li>
+                <Link to="/leaves-history">
+                  <FcLeave className="icon me-2" />
+                  {hovered && <span>Leaves</span>}
+                </Link>
+              </li>
+            )}
 
           {userInfo &&
             userInfo.isHr === 1 &&

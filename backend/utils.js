@@ -18,7 +18,7 @@ export const generateToken = (employee) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '90d',
+      expiresIn: '10d',
     }
   );
 };

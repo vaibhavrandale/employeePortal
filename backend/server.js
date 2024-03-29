@@ -40,6 +40,7 @@ import accessRouter from './routes/accessRoutes.js';
 import UIDCardRouter from './routes/UidCardRoutes.js';
 import scopeofworkRouter from './routes/salesRoutes.js';
 import investmentRouter from './routes/investmentRoutes.js';
+import lapseleaveRouter from './routes/LapseLeaves.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -96,6 +97,8 @@ app.use('/api/survey', surveyRouter);
 app.use('/api/upload', uploadRouter);
 app.use('/api/notice', NoticeRouter);
 app.use('/api/leaves', leaveRouter);
+app.use('/api/lapaseleave', lapseleaveRouter);
+
 app.use('/api/payslip', payslipRouter);
 app.use('/api/holidays', holidayRouter);
 app.use('/api/policy', PolicyRouter);

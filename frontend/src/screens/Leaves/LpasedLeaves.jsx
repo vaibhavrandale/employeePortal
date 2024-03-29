@@ -10,7 +10,7 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
 
     case 'FETCH_SUCCESS':
-      return { ...state, leavelapse: action.payload, loading: false };
+      return { ...state, lapaseleave: action.payload, loading: false };
 
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
@@ -30,9 +30,9 @@ const reducer = (state, action) => {
 };
 
 const LapasedLeaves = () => {
-  const [{ loading, loadingUpdate, leavelapse, employee }, dispatch] =
+  const [{ loading, loadingUpdate, lapaseleave, employee }, dispatch] =
     useReducer(reducer, {
-      leavelapse: [],
+      lapaseleave: [],
       employee: {},
       loading: true,
       error: '',
@@ -62,23 +62,20 @@ const LapasedLeaves = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get(
-          `/api/leaves/leave-lapse/${employeeid}`,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.leavelapse });
+        const result = await axios.get(`/api/lapaseleave/${employeeid}`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data.lapaseleave });
         console.log(result.data);
-        setEmployee_id(result.data.leavelapse.employee_id);
-        setname(result.data.leavelapse.Name);
-        setleaves(result.data.leavelapse.leaves);
-        setSick(result.data.leavelapse.sick);
-        setPrivilege(result.data.leavelapse.privilege);
-        setCasual(result.data.leavelapse.casual);
-        setisLapsed(result.data.leavelapse.isLapsed);
-        setLeaveTypeLapsed(result.data.leavelapse.LeavetypeLapsed);
-        setNoofleaveLapsed(result.data.leavelapse.NoofleaveLapsed);
+        setEmployee_id(result.data.lapaseleave.employee_id);
+        setname(result.data.lapaseleave.Name);
+        setleaves(result.data.lapaseleave.leaves);
+        setSick(result.data.lapaseleave.sick);
+        setPrivilege(result.data.lapaseleave.privilege);
+        setCasual(result.data.lapaseleave.casual);
+        setisLapsed(result.data.lapaseleave.isLapsed);
+        setLeaveTypeLapsed(result.data.lapaseleave.LeavetypeLapsed);
+        setNoofleaveLapsed(result.data.lapaseleave.NoofleaveLapsed);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }

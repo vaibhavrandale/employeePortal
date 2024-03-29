@@ -1866,7 +1866,6 @@ emplyeeRouter.post('/', async (req, res) => {
     tds = incomeTax + incomeTax * HealthEduCess;
 
     console.log(`tds : ${tds}`);
-
     // Create a new employee instance
     const newEmployee = new Employee({
       employee_id,

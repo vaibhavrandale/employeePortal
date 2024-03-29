@@ -47,6 +47,12 @@ const policies = [
     name: 'Staff',
     link: '/staff-policy',
   },
+  {
+    id: 8,
+    img: '/images/policy/refral.webp',
+    name: 'Referal Bonus Policy',
+    link: '/referral-bonus-policy',
+  },
   // {
   //   id: 9,
   //   img: '/images/policy/factory.png',

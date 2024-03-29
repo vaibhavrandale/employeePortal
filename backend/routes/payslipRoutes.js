@@ -22,6 +22,7 @@ import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import AttendanceRecord from '../models/AttendanceRecord.js';
 import Payslip from '../models/Payslip.js';
+import Investment from '../models/Investment.js';
 // import emoji from '../welcome_image.jpg';
 
 const payslipRouter = express.Router();
@@ -82,7 +83,7 @@ payslipRouter.get('/:employeeid/:id', async (req, res) => {
 // --------update employee-------------------------
 payslipRouter.put('/updatepayslip/:employeeid/:id', async (req, res) => {
   const { employeeid, id } = req.params;
-  const { ctc, salarygroup } = req.body;
+  const { ctc, salarygroup, taxRegime } = req.body;
 
   const basic = ((ctc / 12) * (45 / 100)).toFixed(2);
   const hra = ((basic * 40) / 100).toFixed(2);
@@ -109,6 +110,41 @@ payslipRouter.put('/updatepayslip/:employeeid/:id', async (req, res) => {
   const employeresi = ((basic * 4.25) / 100).toFixed(2);
   const bonus = ((basic * 8.33) / 100).toFixed(2);
 
+  const standardDeduction = 50000;
+  const taxableIncome = ctc - standardDeduction;
+  let tds = 0;
+  let incomeTax = 0;
+  const HealthEduCess = 4 / 100;
+
+  //tds calculatiion
+
+  if (taxRegime === 'old') {
+    if (taxableIncome > 1000000) {
+      incomeTax = ((taxableIncome - 1000000) * 30) / 100 + 112500;
+    } else if (taxableIncome > 500000) {
+      incomeTax = ((taxableIncome - 500000) * 20) / 100 + 12500;
+    } else if (taxableIncome < 500000) {
+      incomeTax = 0;
+    }
+  }
+
+  if (taxRegime === 'new') {
+    if (taxableIncome > 1500000) {
+      incomeTax = ((taxableIncome - 1500000) * 30) / 100 + 150000;
+    } else if (taxableIncome > 1200000) {
+      incomeTax = ((taxableIncome - 1200000) * 20) / 100 + 90000;
+    } else if (taxableIncome > 900000) {
+      incomeTax = ((taxableIncome - 900000) * 15) / 100 + 45000;
+    } else if (taxableIncome > 600000) {
+      incomeTax = ((taxableIncome - 600000) * 10) / 100 + 15000;
+    } else if (taxableIncome < 600000) {
+      incomeTax = 0;
+    }
+  }
+  tds = incomeTax + incomeTax * HealthEduCess;
+
+  console.log(`tds : ${tds}`);
+
   try {
     // Find the employee by ID
     const payslip = await Payslip.findOne({
@@ -134,7 +170,9 @@ payslipRouter.put('/updatepayslip/:employeeid/:id', async (req, res) => {
     payslip.employer_pf = employerpf;
     payslip.employer_esi = employeresi;
     payslip.bonus = bonus;
-
+    payslip.taxableIncome = taxableIncome;
+    payslip.tds = tds;
+    payslip.taxRegime = taxRegime;
     // Save the updated employee document
     await payslip.save();
 

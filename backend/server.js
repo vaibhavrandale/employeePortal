@@ -39,6 +39,7 @@ import CronJobRouter from './routes/cronJobRoutes.js';
 import accessRouter from './routes/accessRoutes.js';
 import UIDCardRouter from './routes/UidCardRoutes.js';
 import scopeofworkRouter from './routes/salesRoutes.js';
+import investmentRouter from './routes/investmentRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -99,6 +100,7 @@ app.use('/api/payslip', payslipRouter);
 app.use('/api/holidays', holidayRouter);
 app.use('/api/policy', PolicyRouter);
 app.use('/api/assets', assetsRouter);
+app.use('/api/investment', investmentRouter);
 
 app.use('/api/access', accessRouter);
 

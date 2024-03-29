@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useReducer } from 'react';
 
 import investmentData from './investment.js';
 import { Store } from '../../Store.js';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -26,29 +27,27 @@ const MyInvestment = () => {
   });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  useEffect(() => {
-    const fetchData = () => {
-      dispatch({ type: 'FETCH_REQUEST' });
 
+  useEffect(() => {
+    const SalaryData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        // Simulate fetching data from investment data based on the provided id
-        const investmentFound = investmentData.find(
-          (item) => item.employee_id === userInfo.employee_id
+        const result = await axios.get(
+          `/api/investment/${userInfo.employee_id}`
         );
-        if (investmentFound) {
-          dispatch({ type: 'FETCH_SUCCESS', payload: investmentFound });
-        } else {
-          // throw new Error('Investment not found');
-          alert('not found');
-        }
+        console.log(result);
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: result.data.investment,
+        });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
 
-    fetchData();
-  }, [investment, userInfo.employee_id]);
-  console.log(investment);
+    SalaryData();
+  }, [userInfo.employee_id]);
+
   return (
     <div className="container">
       <h3 className="text-center mt-4">

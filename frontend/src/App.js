@@ -113,6 +113,7 @@ import UpdateProjectApproval from './screens/sales/UpdateProjectApproval';
 import NewProjectApproval from './screens/sales/NewProjectApproval';
 import ViewProjectApproval from './screens/sales/ViewProjectApproval';
 import ExportProject from './screens/sales/ExportProject';
+import RefralBonusPolicy from './screens/policy_documents/RefralBonusPolicy';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -696,6 +697,14 @@ function AppRouter() {
           element={
             <ProtectedRoutes>
               <StaffPolicy />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/referral-bonus-policy"
+          element={
+            <ProtectedRoutes>
+              <RefralBonusPolicy />
             </ProtectedRoutes>
           }
         />

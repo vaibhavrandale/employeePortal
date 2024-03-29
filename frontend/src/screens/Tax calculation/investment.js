@@ -4,6 +4,7 @@ const investment = [
     Name: 'Vaibhav randale',
     employee_id: '21321321332',
     email: 'vaibhav.randale@taypro.in',
+    A_80C: 12321,
     A_80CC: 12323,
 
     B_80CCC: 12323,

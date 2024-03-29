@@ -22,6 +22,7 @@ const data = {
   ScopeofWork: [],
   RaiseInvoice: [],
   ProjectApproval: [],
+  Investment: [],
 };
 
 export default data;

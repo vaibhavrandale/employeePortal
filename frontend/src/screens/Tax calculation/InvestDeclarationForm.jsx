@@ -131,7 +131,7 @@ const InvestDeclarationForm = () => {
             <br />
             <select
               id="inputState"
-              className="form-select"
+              className="inputField2"
               style={{ width: '400px' }}
             >
               <option selected>Choose...</option>

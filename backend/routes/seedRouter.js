@@ -17,6 +17,7 @@ import UIDCard from '../models/UIDCard.js';
 import ScopeofWork from '../models/ScopeofWork.js';
 import RaiseInvoice from '../models/RaiseInvoice.js';
 import ProjectApproval from '../models/ProjectApproval.js';
+import Investment from '../models/Investment.js';
 
 const seedRouter = express.Router();
 
@@ -70,6 +71,10 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await DaywiseExpenses.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
     await DaywiseExpenses.destroy({ where: {}, truncate: true });
     await DaywiseExpenses.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
+    await Investment.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await Investment.destroy({ where: {}, truncate: true });
+    await Investment.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
     // await Access.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
     // await Access.destroy({ where: {}, truncate: true });
@@ -125,6 +130,8 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       data.ProjectApproval
     );
 
+    const createdInvestment = await Investment.bulkCreate(data.Investment);
+
     res.send({
       // createdEmployees,
       createdNotices,
@@ -143,6 +150,7 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       // createdUIDCard,
       createdRaiseInvoice,
       createdProjectApproval,
+      createdInvestment,
     });
   } catch (error) {
     console.error(error);

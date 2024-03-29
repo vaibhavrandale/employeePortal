@@ -44,6 +44,8 @@ const UpdateSalary = () => {
 
   const [ctc, setCtc] = useState('');
   const [salarygroup, setSalarygroup] = useState('');
+  const [taxRegime, setTaxRegime] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const UpdateSalary = () => {
         // console.log(result.data.employee.address);
         setCtc(result.data.ctc);
         setSalarygroup(result.data.salarygroup);
+        setTaxRegime(result.data.taxRegime);
       } catch (err) {
         dispatch({ type: 'FETCH_SALARY_FAIL', payload: err.message });
       }
@@ -78,6 +81,7 @@ const UpdateSalary = () => {
         {
           ctc,
           salarygroup,
+          taxRegime,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -119,7 +123,7 @@ const UpdateSalary = () => {
                 <td>
                   <input
                     type="text"
-                    className="form-control"
+                    className="inputField3"
                     id="ctc"
                     name="ctc"
                     value={ctc}
@@ -128,18 +132,37 @@ const UpdateSalary = () => {
                   />
                 </td>
               </tr>
+
               <tr>
                 <td>Salary Group</td>
                 <td>
                   <input
                     type="text"
-                    className="form-control "
+                    className="inputField3 "
                     id="salarygroup"
                     name="salarygroup"
                     value={salarygroup}
                     onChange={(e) => setSalarygroup(e.target.value)}
                     required
                   />
+                </td>
+              </tr>
+
+              <tr>
+                <td>Tax Regime</td>
+                <td>
+                  <select
+                    className="inputField3"
+                    value={taxRegime}
+                    onChange={(e) => setTaxRegime(e.target.value)}
+                    required
+                  >
+                    <option value="" selected>
+                      Select
+                    </option>
+                    <option value="new">NEW</option>
+                    <option value="old">OLD</option>
+                  </select>
                 </td>
               </tr>
             </tbody>
@@ -149,16 +172,9 @@ const UpdateSalary = () => {
               // onClick={(e) => DeclineHandler(leaveId)
               onClick={UpdateSalaryHandler}
               className="btn btn-sm btn-success m-1"
-              style={{ width: '170px' }}
+              style={{ width: '150px' }}
             >
-              {loadingSalary ? (
-                <>
-                  updating Salary Details
-                  {/* LoadingBox4 component */}
-                </>
-              ) : (
-                'Update Salary Details'
-              )}
+              {loadingSalary ? 'Updating..' : 'Update'}
             </button>
           </div>
         </div>

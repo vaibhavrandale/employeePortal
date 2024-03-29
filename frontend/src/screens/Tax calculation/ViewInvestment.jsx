@@ -1,8 +1,9 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import investmentData from './investment.js';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import TaxFile from './TaxFile.jsx';
+import { Store } from '../../Store.js';
 
 // import pdf from 'https://drive.google.com/file/d/1sxdUCwjVu0J22k0qWc_uF7l39OvN248s/view';
 
@@ -25,32 +26,32 @@ const reducer = (state, action) => {
 const ViewInvestment = () => {
   const { id } = useParams();
   const [{ loading, error, investment }, dispatch] = useReducer(reducer, {
-    investment: [],
+    investment: {},
     loading: true,
     error: '',
   });
-  useEffect(() => {
-    const fetchData = () => {
-      dispatch({ type: 'FETCH_REQUEST' });
 
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { userInfo } = state;
+  useEffect(() => {
+    const SalaryData = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        // Simulate fetching data from investment data based on the provided id
-        const investmentFound = investmentData.find(
-          (item) => item.id === parseInt(id)
+        const result = await axios.get(
+          `/api/investment/${userInfo.employee_id}`
         );
-        if (investmentFound) {
-          dispatch({ type: 'FETCH_SUCCESS', payload: investmentFound });
-        } else {
-          throw new Error('Investment not found');
-        }
+        console.log(result);
+        dispatch({
+          type: 'FETCH_SUCCESS',
+          payload: result.data.investment,
+        });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
 
-    fetchData();
-  }, [id, investment]);
-  console.log(investment);
+    SalaryData();
+  }, [userInfo.employee_id]);
   return (
     <div>
       {' '}
@@ -69,6 +70,7 @@ const ViewInvestment = () => {
             <hr />
             <h6>Investment Details:</h6>
             <ul className="list-group">
+              <li className="list-group-item">A_80C: {investment.A_80C}</li>
               <li className="list-group-item">A_80CC: {investment.A_80CC}</li>
 
               <li className="list-group-item">B_80CCC: {investment.B_80CCC}</li>
@@ -76,9 +78,7 @@ const ViewInvestment = () => {
                 C_80CCD_1: {investment.C_80CCD_1}
               </li>
               <li className="list-group-item">D_80CCE: {investment.D_80CCE}</li>
-              <li className="list-group-item">
-                E_80CCD_1B: {investment.E_80CCD_1B}
-              </li>
+
               <li className="list-group-item">
                 F_80CCD_2: {investment.F_80CCD_2}
               </li>

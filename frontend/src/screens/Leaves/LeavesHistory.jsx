@@ -424,7 +424,10 @@ function LeavesHistory() {
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-danger mx-1 pt-2 pb-2">
                 Total Leaves :{' '}
-                {parseInt(remainingLeaves.totalleaves) + parseInt(LapsedLeaves)}
+                {LapsedLeaves
+                  ? parseInt(remainingLeaves.totalleaves) +
+                    parseInt(LapsedLeaves)
+                  : parseInt(remainingLeaves.totalleaves)}
               </div>
               <div className="badge bg-primary mx-1 pt-2 pb-2">
                 Sick :

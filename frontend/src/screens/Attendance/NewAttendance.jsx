@@ -26,6 +26,7 @@ const NewAttendance = () => {
   const [loading, setLoading] = useState(true);
   const [exportData, setExportData] = useState(true);
   const tableRef = useRef(null);
+  const [SundaysInMonth, setSunDaysInMonth] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,6 +47,16 @@ const NewAttendance = () => {
         const daysData = daysResponse.data.daysInMonth;
         console.log(`day in month ${daysData}`);
         setDaysInMonth(daysData);
+
+        // Update the number of days in the month
+        const SundaysResponse = await axios.get(
+          `/api/attendence/getSundaysInMonth/${selectedMonth || month}/${
+            year || selectedYear
+          }`
+        );
+        console.log(SundaysResponse);
+        const SundaysData = SundaysResponse.data.totalSundays;
+        setSunDaysInMonth(SundaysData);
       } catch (error) {
         console.error('Error fetching attendance data', error);
       } finally {
@@ -246,7 +257,6 @@ const NewAttendance = () => {
                         <td className="text-center">{employee.UID}</td>
                         <td className="text-center">{employee.Name}</td>
                         <td className="text-center">{employee.employee_id}</td>
-
                         {employee.days.map((attendance, dayIndex) => {
                           const day = dayIndex + 1;
 
@@ -548,21 +558,21 @@ const NewAttendance = () => {
                             return <td key={day}></td>;
                           }
                         })}
-
-                        <td className="text-center">{employee.totalPCount}</td>
+                        <td className="text-center">{employee.totalPCount}</td>{' '}
+                        <td className="text-center">{SundaysInMonth}</td>
                         <td className="text-center">{employee.totalHCount}</td>
                         <td className="text-center">{employee.totalPHCount}</td>
-
                         <td className="text-center">
                           <Link
-                            // pay-slip/:id/:year/:month/:totaldays
                             to={`/pay-slip/${
                               employee.employee_id
                             }/${year}/${month}/${userInfo.token}/${
-                              employee.totalPCount + employee.totalHCount / 2
+                              employee.totalPCount +
+                              SundaysInMonth +
+                              employee.totalHCount / 2
                             }/${userInfo.token}`}
                             target="_blank"
-                            className="btn btn-success"
+                            className="btn btn-success btn-sm"
                           >
                             Slip
                           </Link>

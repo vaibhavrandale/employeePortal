@@ -54,6 +54,7 @@ const NewAttendance = () => {
             year || selectedYear
           }`
         );
+        console.log(SundaysResponse);
         const SundaysData = SundaysResponse.data.totalSundays;
         setSunDaysInMonth(SundaysData);
       } catch (error) {

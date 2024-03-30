@@ -56,6 +56,44 @@ attendenceRouter.get('/getDaysInMonth/:month/:year', (req, res) => {
   res.json({ daysInMonth });
 });
 
+attendenceRouter.get('/getSundaysInMonth/:month/:year', (req, res) => {
+  try {
+    // Extract month and year from request parameters
+    const { month, year } = req.params;
+
+    // Parse month and year into integers
+    const monthNumber = parseInt(month);
+    const yearNumber = parseInt(year);
+
+    // Check if month and year are valid
+    if (isNaN(monthNumber) || isNaN(yearNumber)) {
+      return res.status(400).json({ error: 'Invalid month or year' });
+    }
+
+    // Calculate total Sundays in the month
+    const firstDay = new Date(yearNumber, monthNumber - 1, 1);
+    const lastDay = new Date(yearNumber, monthNumber, 0);
+    let count = 0;
+
+    for (
+      let date = firstDay;
+      date <= lastDay;
+      date.setDate(date.getDate() + 1)
+    ) {
+      if (date.getDay() === 0) {
+        count++;
+      }
+    }
+
+    // Send the response with total Sundays count
+    res.json({ totalSundays: count });
+  } catch (error) {
+    // Handle any errors
+    console.error('Error calculating total Sundays:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 attendenceRouter.get('/:id/:day/:month/:year', async (req, res) => {
   try {
     const { id, day, month, year } = req.params;

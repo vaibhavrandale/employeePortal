@@ -29,39 +29,6 @@ assetsRouter.get('/:id', async (req, res) => {
   }
 });
 
-// assetsRouter.post(
-//   '/create',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const {
-//       name,
-//       employee_id,
-//       email,
-//       imageA,
-//       imageB,
-//       status,
-//       given_date,
-//       return_date,
-//       remark,
-//       // description
-//     } = req.body;
-//     const newasset = new EmployeeAssets({
-//       name,
-//       employee_id,
-//       email,
-//       imageA,
-//       imageB,
-//       status,
-//       given_date,
-//       return_date,
-//       remark,
-//     });
-//     const asset = await newasset.save();
-//     res.send({ message: 'asset Created', asset });
-//   })
-// );
-
 assetsRouter.post(
   '/create',
   isAuth,

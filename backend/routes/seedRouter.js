@@ -19,6 +19,8 @@ import RaiseInvoice from '../models/RaiseInvoice.js';
 import ProjectApproval from '../models/ProjectApproval.js';
 import Investment from '../models/Investment.js';
 import LeaveLapse from '../models/LeaveLapse.js';
+import JobReferal from '../models/JobReferal.js';
+import JobOpening from '../models/JobOpening.js';
 
 const seedRouter = express.Router();
 
@@ -101,6 +103,14 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     await LeaveLapse.destroy({ where: {}, truncate: true });
     await LeaveLapse.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
 
+    await JobReferal.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await JobReferal.destroy({ where: {}, truncate: true });
+    await JobReferal.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
+    await JobOpening.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    await JobOpening.destroy({ where: {}, truncate: true });
+    await JobOpening.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+
     // Insert data into the Employee table
     // const createdEmployees = await Employee.bulkCreate(data.employees);
     const createdNotices = await Notice.bulkCreate(data.notices);
@@ -138,6 +148,9 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
     const createdInvestment = await Investment.bulkCreate(data.Investment);
     const createdLeaveLapse = await LeaveLapse.bulkCreate(data.LeaveLapse);
 
+    const createdJobReferal = await JobReferal.bulkCreate(data.JobReferal);
+    const createdJobOpening = await JobOpening.bulkCreate(data.JobOpening);
+
     res.send({
       // createdEmployees,
       createdNotices,
@@ -158,6 +171,8 @@ seedRouter.get('/abcdefgh/0987654321', async (req, res) => {
       createdProjectApproval,
       createdInvestment,
       createdLeaveLapse,
+      createdJobReferal,
+      createdJobOpening,
     });
   } catch (error) {
     console.error(error);

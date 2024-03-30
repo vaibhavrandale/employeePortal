@@ -24,6 +24,8 @@ const data = {
   ProjectApproval: [],
   Investment: [],
   LeaveLapse: [],
+  JobOpening: [],
+  JobReferal: [],
 };
 
 export default data;

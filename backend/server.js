@@ -25,6 +25,7 @@ import {
   calculateTotalHoursForToday,
   sendWomensDayEmail,
   sendWomensEmail,
+  createSundayAttendance,
 } from './cron.js';
 import cron from 'node-cron';
 import leaveRouter from './routes/LeaveRouter.js';
@@ -41,6 +42,7 @@ import UIDCardRouter from './routes/UidCardRoutes.js';
 import scopeofworkRouter from './routes/salesRoutes.js';
 import investmentRouter from './routes/investmentRoutes.js';
 import lapseleaveRouter from './routes/LapseLeaves.js';
+import jobRouter from './routes/jobRoutes.js';
 
 dotenv.config();
 // Sync the Sequelize model with the database
@@ -72,6 +74,8 @@ cron.schedule('30 0 * * *', HolidayGenerator);
 
 cron.schedule('30 14 * * *', calculateTotalHoursForToday);
 
+cron.schedule('0 0 * * 0', createSundayAttendance);
+
 // cron.schedule('30 1 * * *', sendWomensDayEmail);
 //
 // cron.schedule('* * * * *', calculateTotalHoursForToday);
@@ -84,6 +88,7 @@ cron.schedule('30 14 * * *', calculateTotalHoursForToday);
 // cron.schedule('* * * * *', checkAndCreateBirthdayRecords);
 // cron.schedule('* * * * *', sendWomensDayEmail);
 // cron.schedule('* * * * *', sendWomensEmail);
+// cron.schedule('* * * * *', createSundayAttendance);
 
 //Intern
 // cron.schedule('* * * * *', Intern);
@@ -110,6 +115,8 @@ app.use('/api/access', accessRouter);
 app.use('/api/uid-update', UIDCardRouter);
 
 app.use('/api/sales', scopeofworkRouter);
+
+app.use('/api/jobs', jobRouter);
 
 app.use('/api/expenses', expenseRouter);
 app.use('/api/manual-trigger', CronJobRouter);

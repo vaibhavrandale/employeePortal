@@ -1134,7 +1134,7 @@ const ProbationChecker = async () => {
 //         currentDate <= expectedDateOfreturn
 //       ) {
 //         // Create a record in RefidChecks table
-//         const rfidCheck = await RfidCkeck.create({
+//         const RfidCkeck = await RfidCkeck.create({
 // IN_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${InTime}`,
 // OUT_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${OutTime}`,
 // totalHours: 8,
@@ -1152,13 +1152,13 @@ const ProbationChecker = async () => {
 // day: currentDay,
 //         });
 
-//         // console.log('Creating RefidCheck:', rfidCheck);
+//         // console.log('Creating RefidCheck:', RfidCkeck);
 
-//         const leaveRecord = await rfidCheck.save();
+//         const leaveRecord = await RfidCkeck.save();
 //         if (!leaveRecord) {
 //           console.error(
 //             'Failed to create RefidCheck. Validation errors:',
-//             rfidCheck.errors
+//             RfidCkeck.errors
 //           );
 //         } else {
 //           console.log('Leave record created successfully:');
@@ -1857,6 +1857,71 @@ const sendWomensEmail = async () => {
   // }
 };
 
+const createSundayAttendance = async (startDate, endDate) => {
+  try {
+    // Fetch all active employees
+    const activeEmployees = await Employee.findAll({
+      where: {
+        activate: 1, // Assuming isActive field denotes active employees
+      },
+    });
+
+    // Iterate through each active employee
+    for (const employee of activeEmployees) {
+      const employeeData = employee.get(); // Convert Sequelize instance to plain JavaScript object
+
+      // Get all Sundays between start and end dates
+      const sundays = [];
+      const currentDate = new Date(startDate);
+      const end = new Date(endDate);
+      while (currentDate <= end) {
+        if (currentDate.getDay() === 0) {
+          sundays.push(new Date(currentDate));
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      // Process each Sunday
+      for (const sunday of sundays) {
+        const currentYear = sunday.getFullYear();
+        const currentMonth = sunday.getMonth() + 1;
+        const currentDay = sunday.getDate();
+        const InTime = '09:00:00';
+        const OutTime = '18:00:00';
+
+        // Create a record in RefidChecks table
+        const rfidCheck = await RfidCkeck.create({
+          IN_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${InTime}`,
+          OUT_TIME_1: `${currentYear}-${currentMonth}-${currentDay} ${OutTime}`,
+          totalHours: 8,
+          isLeave: 0, // Not a leave day
+          employee_id: employeeData.employee_id,
+          UID: employeeData.UID,
+          IN_LATTITUDE_1: employeeData.IN_LATTITUDE_1,
+          IN_LONGITUDE_1: employeeData.IN_LONGITUDE_1,
+          OUT_LATTITUDE_1: employeeData.OUT_LATTITUDE_1,
+          OUT_LONGITUDE_1: employeeData.OUT_LONGITUDE_1,
+          year: currentYear,
+          month: currentMonth,
+          day: currentDay,
+        });
+
+        const attendanceRecord = await rfidCheck.save();
+        if (!attendanceRecord) {
+          console.error(
+            'Failed to create attendance record for Sunday. Validation errors:',
+            RfidCkeck.errors
+          );
+        } else {
+          console.log('Attendance record for Sunday created successfully.');
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error creating Sunday attendance:', error);
+  }
+};
+
 export {
   sendBirthdayEmails,
   checkAndCreateBirthdayRecords,
@@ -1869,4 +1934,5 @@ export {
   calculateTotalHoursForToday,
   sendWomensDayEmail,
   sendWomensEmail,
+  createSundayAttendance,
 };

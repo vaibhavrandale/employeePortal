@@ -23,6 +23,7 @@ const NewAttendance = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
   const [daysInMonth, setDaysInMonth] = useState(0);
+  const [SundaysInMonth, setSunDaysInMonth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [exportData, setExportData] = useState(true);
 
@@ -46,6 +47,15 @@ const NewAttendance = () => {
         );
         const daysData = daysResponse.data.daysInMonth;
         setDaysInMonth(daysData);
+
+        // Update the number of days in the month
+        const SundaysResponse = await axios.get(
+          `/api/attendence/getSundaysInMonth/${selectedMonth || month}/${
+            year || selectedYear
+          }`
+        );
+        const SundaysData = SundaysResponse.data.totalSundays;
+        setSunDaysInMonth(SundaysData);
       } catch (error) {
         console.error('Error fetching attendance data', error);
       } finally {
@@ -487,6 +497,7 @@ const NewAttendance = () => {
                         })}
 
                         <td className="text-center">{employee.totalPCount}</td>
+                        <td className="text-center">{SundaysInMonth}</td>
                         <td className="text-center">{employee.totalHCount}</td>
                         <td className="text-center">{employee.totalPHCount}</td>
 
@@ -496,7 +507,9 @@ const NewAttendance = () => {
                               to={`/pay-slip/${
                                 employee.employee_id
                               }/${year}/${month}/${userInfo.token}/${
-                                employee.totalPCount + employee.totalHCount / 2
+                                employee.totalPCount +
+                                SundaysInMonth +
+                                employee.totalHCount / 2
                               }/${userInfo.token}`}
                               target="_blank"
                               className="btn btn-success btn-sm"

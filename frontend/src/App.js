@@ -114,6 +114,12 @@ import NewProjectApproval from './screens/sales/NewProjectApproval';
 import ViewProjectApproval from './screens/sales/ViewProjectApproval';
 import ExportProject from './screens/sales/ExportProject';
 import RefralBonusPolicy from './screens/policy_documents/RefralBonusPolicy';
+import JobOpeningsHome from './screens/JobsSection/JobOpeningsHome';
+import AddReferal from './screens/JobsSection/AddReferal';
+import NewOpening from './screens/JobsSection/NewOpening';
+import ViewAllReferrals from './screens/JobsSection/ViewAllReferrals';
+import YourReferalHistory from './screens/JobsSection/YourReferalHistory';
+import UpdateJobOpening from './screens/JobsSection/UpdateJobOpening';
 // import PdfViewer from './screens/PdfViewer';
 function App() {
   return (
@@ -1022,6 +1028,56 @@ function AppRouter() {
           }
         />
         {/* -------------sales----------------- */}
+        {/* ---------------jobs--------------- */}
+        <Route
+          path="/jobopenings"
+          element={
+            <ProtectedRoutes>
+              <JobOpeningsHome />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/new-referal/:jobid"
+          element={
+            <ProtectedRoutes>
+              <AddReferal />
+            </ProtectedRoutes>
+          }
+        />
+        <Route
+          path="/new-opening"
+          element={
+            <SuperAdminRoutes>
+              <NewOpening />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/update-jobopening/:jobid"
+          element={
+            <SuperAdminRoutes>
+              <UpdateJobOpening />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/all-referrals"
+          element={
+            <SuperAdminRoutes>
+              <ViewAllReferrals />
+            </SuperAdminRoutes>
+          }
+        />
+        <Route
+          path="/your-referal-history"
+          element={
+            <ProtectedRoutes>
+              <YourReferalHistory />
+            </ProtectedRoutes>
+          }
+        />
+        {/* ---------------jobs--------------- */}
       </Routes>
     </>
   );

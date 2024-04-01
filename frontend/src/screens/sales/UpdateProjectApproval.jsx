@@ -423,7 +423,7 @@ const NewProjectApproval = () => {
               site Location
             </label>
             <input
-              type="date"
+              type="text"
               className="inputField3 "
               id="site_location"
               name="site_location"
@@ -437,7 +437,7 @@ const NewProjectApproval = () => {
               robot_quantity
             </label>
             <input
-              type="date"
+              type="text"
               className="inputField3 "
               id="robot_quantity"
               name="robot_quantity"

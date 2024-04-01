@@ -423,34 +423,18 @@ function LeavesHistory() {
             </Link>
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-danger mx-1 pt-2 pb-2">
-                Total Leaves :{' '}
-                {LapsedLeaves
-                  ? parseInt(remainingLeaves.totalleaves) +
-                    parseInt(LapsedLeaves)
-                  : parseInt(remainingLeaves.totalleaves)}
+                Total Leaves : {remainingLeaves.totalleaves}
               </div>
               <div className="badge bg-primary mx-1 pt-2 pb-2">
-                Sick :
-                {remainingLeaves.LeavetypeLapsed === 'sick'
-                  ? parseInt(remainingLeaves.sick) +
-                    parseInt(remainingLeaves.LeavetypeLapsed)
-                  : remainingLeaves.sick}
+                Sick : {remainingLeaves.sick}
               </div>
             </div>
             <div className="d-flex justify-content-center align-items-center">
               <div className="badge bg-warning text-dark mx-1 pt-2 pb-2">
-                Previlege :
-                {remainingLeaves.LeavetypeLapsed === 'privilege'
-                  ? parseInt(remainingLeaves.privilege) +
-                    parseInt(remainingLeaves.LeavetypeLapsed)
-                  : remainingLeaves.privilege}
+                Previlege :{remainingLeaves.privilege}
               </div>
               <div className="badge bg-info text-dark mx-1 pt-2 pb-2">
-                Casual :{' '}
-                {remainingLeaves.LeavetypeLapsed === 'casual'
-                  ? parseInt(remainingLeaves.casual) +
-                    parseInt(remainingLeaves.LeavetypeLapsed)
-                  : remainingLeaves.casual}
+                Casual : {remainingLeaves.casual}
               </div>
               {isLapsed === 'YES' ? (
                 <>

@@ -61,6 +61,37 @@ lapseleaveRouter.get('/:employeeid', async (req, res) => {
 });
 
 // update single leave
+// lapseleaveRouter.put('/:employeeid/:id', async (req, res) => {
+//   try {
+//     const employeeid = req.params.employeeid;
+//     const id = req.params.id;
+//     const lapaseleave = await LeaveLapse.findOne({
+//       where: { employee_id: employeeid, id: id },
+//     });
+//     if (!lapaseleave) {
+//       return res.status(404).json({ message: 'leave lapse not found' });
+//     }
+
+//     lapaseleave.leaves = req.body.leaves;
+//     lapaseleave.sick = req.body.sick;
+//     lapaseleave.privilege = req.body.privilege;
+//     lapaseleave.casual = req.body.casual;
+//     lapaseleave.isLapsed = req.body.isLapsed;
+//     lapaseleave.LeavetypeLapsed = req.body.LeavetypeLapsed;
+//     lapaseleave.NoofleaveLapsed = req.body.NoofleaveLapsed;
+//     lapaseleave.year = req.body.year;
+
+//     const LapsedLeave = await lapaseleave.save();
+
+//     return res
+//       .status(201)
+//       .json({ message: 'leave lapse updated successfully.', LapsedLeave });
+//   } catch (error) {
+//     console.error('Error updating leave lapse:', error);
+//     return res.status(500).json({ message: 'Internal server error' });
+//   }
+// });
+
 lapseleaveRouter.put('/:employeeid/:id', async (req, res) => {
   try {
     const employeeid = req.params.employeeid;
@@ -72,20 +103,45 @@ lapseleaveRouter.put('/:employeeid/:id', async (req, res) => {
       return res.status(404).json({ message: 'leave lapse not found' });
     }
 
-    lapaseleave.leaves = req.body.leaves;
-    lapaseleave.sick = req.body.sick;
-    lapaseleave.privilege = req.body.privilege;
-    lapaseleave.casual = req.body.casual;
+    // Determine the type of leave being lapsed
+    const leaveTypeLapsed = req.body.LeavetypeLapsed;
+
+    // Convert leave, sick, privilege, casual properties to numbers
+    lapaseleave.leaves = parseInt(lapaseleave.leaves);
+    lapaseleave.sick = parseInt(lapaseleave.sick);
+    lapaseleave.privilege = parseInt(lapaseleave.privilege);
+    lapaseleave.casual = parseInt(lapaseleave.casual);
+
+    // Update the corresponding leave type and total leave count
+    switch (leaveTypeLapsed) {
+      case 'sick':
+        lapaseleave.sick += parseInt(req.body.NoofleaveLapsed);
+        break;
+      case 'privilege':
+        lapaseleave.privilege += parseInt(req.body.NoofleaveLapsed);
+        break;
+      case 'casual':
+        lapaseleave.casual += parseInt(req.body.NoofleaveLapsed);
+        break;
+      default:
+        return res.status(400).json({ message: 'Invalid leave type' });
+    }
+
+    // Add the number of lapsed leaves to total leaves
+    lapaseleave.leaves += parseInt(req.body.NoofleaveLapsed);
+
+    // Update other properties
+    lapaseleave.NoofleaveLapsed = req.body.NoofleaveLapsed;
     lapaseleave.isLapsed = req.body.isLapsed;
     lapaseleave.LeavetypeLapsed = req.body.LeavetypeLapsed;
-    lapaseleave.NoofleaveLapsed = req.body.NoofleaveLapsed;
     lapaseleave.year = req.body.year;
 
-    const LapsedLeave = await lapaseleave.save();
+    const updatedLeaveLapse = await lapaseleave.save();
 
-    return res
-      .status(201)
-      .json({ message: 'leave lapse updated successfully.', LapsedLeave });
+    return res.status(201).json({
+      message: 'Leave lapse updated successfully.',
+      updatedLeaveLapse,
+    });
   } catch (error) {
     console.error('Error updating leave lapse:', error);
     return res.status(500).json({ message: 'Internal server error' });

@@ -49,8 +49,8 @@ const LapasedLeaves = () => {
   const [privilege, setPrivilege] = useState();
   const [casual, setCasual] = useState();
   const [isLapsed, setisLapsed] = useState();
-  const [LeavetypeLapsed, setLeaveTypeLapsed] = useState();
-  const [NoofleaveLapsed, setNoofleaveLapsed] = useState();
+  const [LeavetypeLapsed, setLeaveTypeLapsed] = useState('');
+  const [NoofleaveLapsed, setNoofleaveLapsed] = useState(0);
 
   const [TotalLeaves, setTotalLeaves] = useState(0);
   const [TotalSick, setTotalSick] = useState(0);
@@ -132,7 +132,7 @@ const LapasedLeaves = () => {
             <tr>
               <td className="text-center">{employee_id}</td>
               <td className="text-center">{Name}</td>
-              <td className="text-center">{TotalLeaves}</td>
+              <td className="text-center">{leaves}</td>
               <td className="text-center">{sick}</td>
               <td className="text-center">{privilege}</td>
               <td className="text-center">{casual}</td>

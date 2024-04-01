@@ -185,7 +185,12 @@ function NoticeHome() {
                           className="card-title text-primary fw-bold   "
                           style={{ fontSize: '15px' }}
                         >
-                          {item.title}
+                          <Link
+                            to={`/notice/${item.id}`}
+                            className="viewBtn text-decoration-none"
+                          >
+                            {item.title}
+                          </Link>
                         </h5>
                       </div>
 

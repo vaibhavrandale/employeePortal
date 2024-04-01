@@ -10,7 +10,7 @@ import { LiaBirthdayCakeSolid } from 'react-icons/lia';
 import { GiGlassCelebration } from 'react-icons/gi';
 import { FaAmazonPay, FaUsers } from 'react-icons/fa6';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
-import { FcLeave } from 'react-icons/fc';
+import { FcLeave, FcMoneyTransfer } from 'react-icons/fc';
 import { FaPlaneDeparture } from 'react-icons/fa';
 import { GiTimeBomb } from 'react-icons/gi';
 import { FaRegAddressCard } from 'react-icons/fa';
@@ -83,6 +83,7 @@ const Manualjobs = () => {
   const { userInfo } = state;
   const [accessStatus, setAccessStatus] = useState(0);
   const [LoginAccessStatus, setLoginAccessStatus] = useState(0);
+  const [SalarySlipStatus, setSalarySlipStatus] = useState(0);
 
   useEffect(() => {
     // Simulate API call or data fetching
@@ -116,6 +117,21 @@ const Manualjobs = () => {
       }
     };
 
+    const SalarySliptatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/3`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+        });
+
+        setSalarySlipStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
+
     //
 
     if (successAccess) {
@@ -123,6 +139,7 @@ const Manualjobs = () => {
     } else {
       StatusData();
       LoginStatusData();
+      SalarySliptatusData();
     }
   }, [successAccess]);
 
@@ -396,6 +413,61 @@ const Manualjobs = () => {
     }
   };
 
+  const SalarySlipActivatelHandler = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'ACCESS_REQUEST_SUCCESS',
+    });
+
+    try {
+      const { data } = await axios.put(`/api/access/slip-view/3`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      console.log(data);
+      dispatch({
+        type: 'ACCESS_UPDATE_SUCCESS',
+      });
+
+      toast.success(data.message, {
+        position: 'top-right',
+      });
+
+      // window.location.reload();
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'ACCESS_UPDATE_FAIL' });
+    }
+  };
+  const SalarySlipDeActivatelHandler = async (e) => {
+    e.preventDefault();
+    dispatch({
+      type: 'ACCESS_REQUEST_SUCCESS',
+    });
+
+    try {
+      const { data } = await axios.put(`/api/access/slip-disable/3`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      console.log(data);
+      dispatch({
+        type: 'ACCESS_UPDATE_SUCCESS',
+      });
+
+      toast.error(data.message, {
+        position: 'top-right',
+      });
+
+      // window.location.reload();
+    } catch (error) {
+      toast.error(getError(error), {
+        position: 'top-right',
+      });
+      dispatch({ type: 'ACCESS_UPDATE_FAIL' });
+    }
+  };
+
   return (
     <div className="container">
       <h2 className="text-center">Manual Jobs</h2>
@@ -630,6 +702,41 @@ const Manualjobs = () => {
           >
             Detailed Timeline
           </Link>
+        </div>
+
+        <div className="Manualcard m-1">
+          <div className="d-flex justify-content-center">
+            <FcMoneyTransfer className="text-danger manualicon" />
+          </div>
+          {SalarySlipStatus === 0 ? (
+            <Link
+              className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+              onClick={SalarySlipActivatelHandler}
+            >
+              {loadingAccess ? (
+                <>
+                  Salary Slip Enable
+                  <LoadingBox4 />
+                </>
+              ) : (
+                `  Salary Slip Enable `
+              )}
+            </Link>
+          ) : (
+            <Link
+              className="btn btn-sm btn-warning m-1 manualBtn fw-bold fs-6"
+              onClick={SalarySlipDeActivatelHandler}
+            >
+              {loadingAccess ? (
+                <>
+                  Salary Slip disable
+                  <LoadingBox4 />
+                </>
+              ) : (
+                `Salary Slip disable `
+              )}
+            </Link>
+          )}
         </div>
       </div>
     </div>

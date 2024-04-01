@@ -154,4 +154,60 @@ accessRouter.put('/deactivate-login/:id', async (req, res) => {
 });
 // ------------------login button --------------------
 
+// -----------------spip button-------------
+accessRouter.put('/slip-view/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const access = await Access.findByPk(id);
+
+    if (!access) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'access not found' });
+    }
+
+    access.status = 1;
+
+    // Save the updated holiday to the database
+    const updatedaccess = await access.save();
+
+    res.send({
+      message: `${access.name}:salary slip  access  activated `,
+      updatedaccess,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+
+accessRouter.put('/slip-disable/:id', async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const access = await Access.findByPk(id);
+
+    if (!access) {
+      return res
+        .status(404)
+        .json({ success: false, error: 'access not found' });
+    }
+
+    access.status = 0;
+
+    // Save the updated holiday to the database
+    const updatedaccess = await access.save();
+
+    res.send({
+      message: `${access.name}:salary slip  access  deactivated `,
+      updatedaccess,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Internal Server Error' });
+  }
+});
+// -----------------spip button-------------
+
 export default accessRouter;

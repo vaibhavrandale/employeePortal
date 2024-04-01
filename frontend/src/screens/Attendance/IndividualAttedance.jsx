@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderDays from './HeaderDays';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
@@ -7,7 +7,39 @@ import { CSVLink } from 'react-csv';
 import { Helmet } from 'react-helmet';
 import { Store } from '../../Store';
 
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'ACCESS_UPDATE_REQUEST':
+      return { ...state, loadingAccess: true, successAccess: false };
+
+    case 'ACCESS_UPDATE_SUCCESS':
+      return {
+        ...state,
+        access: action.payload,
+        loadingAccess: false,
+        successAccess: true,
+      };
+
+    case 'ACCESS_UPDATE_FAIL':
+      return {
+        ...state,
+        loadingAccess: false,
+        error: action.payload,
+        successAccess: false,
+      };
+
+    default:
+      return state;
+  }
+};
+
 const NewAttendance = () => {
+  const [{ loadingCreate, access, loadingAccess, successAccess }, dispatch] =
+    useReducer(reducer, {
+      access: [],
+      loadingCreate: false,
+      error: '',
+    });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [selectedYear, setSelectedYear] = useState(null);
@@ -26,6 +58,7 @@ const NewAttendance = () => {
   const [SundaysInMonth, setSunDaysInMonth] = useState(0);
   const [loading, setLoading] = useState(true);
   const [exportData, setExportData] = useState(true);
+  const [SalarySlipStatus, setSalarySlipStatus] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +97,23 @@ const NewAttendance = () => {
       }
     };
 
+    const SalarySliptatusData = async () => {
+      dispatch({ type: 'ACCESS_REQUEST' });
+      try {
+        const accessresult = await axios.get(`/api/access/3`);
+        console.log(accessresult.data);
+        dispatch({
+          type: 'ACCESS_SUCCESS',
+        });
+
+        setSalarySlipStatus(accessresult.data.access.status);
+      } catch (err) {
+        dispatch({ type: 'ACCESS_FAIL', payload: err.message });
+      }
+    };
+
     fetchData();
+    SalarySliptatusData();
   }, [month, selectedMonth, selectedYear, userInfo.employee_id, year]);
 
   const filteredData = attendanceData.filter((entry) => {
@@ -503,7 +552,7 @@ const NewAttendance = () => {
                         <td className="text-center">{employee.totalPHCount}</td>
 
                         <td className="text-center">
-                          {new Date().getDate() >= 28 ? (
+                          {SalarySlipStatus === 1 ? (
                             <Link
                               to={`/pay-slip/${
                                 employee.employee_id

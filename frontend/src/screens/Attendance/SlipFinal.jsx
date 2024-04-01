@@ -588,9 +588,9 @@ function SlipFinal() {
       // doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
 
       if (AttendanceWisePF < 1000) {
-        doc.text(`${AttendanceWisePF.toFixed(2)}`, 168, 105);
+        doc.text(`${Math.min(AttendanceWisePF, 1800).toFixed(2)}`, 168, 105);
       } else {
-        doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+        doc.text(`${Math.min(AttendanceWisePF, 1800).toFixed(2)}`, 164, 105);
       }
 
       doc.setFont('helvetica', 'bold');
@@ -643,11 +643,12 @@ function SlipFinal() {
 
       const NETSALARY = AttendanceWiseGross - (AttendanceWisePF + 200);
 
-      // doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
       if (AttendanceWiseBasic < 1000) {
         doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 85, 105);
+      } else if (AttendanceWiseBasic < 10000) {
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 85, 105);
       } else {
-        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105);
+        doc.text(`${AttendanceWiseBasic.toFixed(2)}`, 83, 105); // or any other position you prefer
       }
 
       doc.text(``, 93, 105);
@@ -742,11 +743,10 @@ function SlipFinal() {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(10);
       // doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
-
       if (AttendanceWisePF < 1000) {
-        doc.text(`${AttendanceWisePF.toFixed(2)}`, 168, 105);
+        doc.text(`${Math.min(AttendanceWisePF, 1800).toFixed(2)}`, 166, 105);
       } else {
-        doc.text(`${AttendanceWisePF.toFixed(2)}`, 164, 105);
+        doc.text(`${Math.min(AttendanceWisePF, 1800).toFixed(2)}`, 164, 105);
       }
 
       doc.setFont('helvetica', 'bold');

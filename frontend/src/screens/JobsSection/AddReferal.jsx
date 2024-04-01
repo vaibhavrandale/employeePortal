@@ -275,7 +275,10 @@ const AddReferal = () => {
               htmlFor="refer_employee_resume"
               className="form-label text-dark fw-bold"
             >
-              Refer Employee Resume
+              Refer Employee Resume <br />
+              <span className="text-muted">
+                (Please upload resume to G-drive and paste the link here)
+              </span>
             </label>
             <input
               type="text"

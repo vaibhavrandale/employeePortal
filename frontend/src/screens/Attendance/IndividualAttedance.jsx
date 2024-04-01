@@ -503,7 +503,7 @@ const NewAttendance = () => {
                         <td className="text-center">{employee.totalPHCount}</td>
 
                         <td className="text-center">
-                          {new Date().getDate() >= 28 ? (
+                          {selectedMonth || month >= 28 ? (
                             <Link
                               to={`/pay-slip/${
                                 employee.employee_id

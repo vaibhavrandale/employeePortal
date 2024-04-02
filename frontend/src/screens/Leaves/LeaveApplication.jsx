@@ -520,7 +520,7 @@ function LeaveApplication() {
                       </td>{' '}
                       <td className="text-center">
                         {item.approvedAt !== '' ? (
-                          <span className="badge p-2  bg-success ">
+                          <span className="badge   bg-success ">
                             {}
                             {new Date(item.createdAt).toLocaleDateString(
                               'en-GB',
@@ -577,14 +577,18 @@ function LeaveApplication() {
                         )}
                       </td>
                       <td className="text-center">
-                        <Link
-                          style={{ width: '86px' }}
-                          className="text-decoration-none btn btn-sm btn-light"
-                          to={`/leave-status/${item.employee_id}/${item.id}`}
-                          target="blank"
-                        >
-                          &nbsp;<i className="fas fa-edit"></i>
-                        </Link>
+                        {item.approved === 1 ? (
+                          <span className="badge bg-success">Approvved</span>
+                        ) : (
+                          <Link
+                            style={{ width: '86px' }}
+                            className="text-decoration-none btn btn-sm btn-light"
+                            to={`/leave-status/${item.employee_id}/${item.id}`}
+                            target="blank"
+                          >
+                            &nbsp;<i className="fas fa-edit"></i>
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   ))}

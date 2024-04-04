@@ -42,10 +42,11 @@ const NewAttendance = () => {
     });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth() + 1;
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const currentDay = new Date().getDate();
 
   const SlipMonth = new Date().getMonth;

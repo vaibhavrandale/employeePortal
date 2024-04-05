@@ -1,8 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AiOutlineDashboard } from 'react-icons/ai';
-import { FcMoneyTransfer } from 'react-icons/fc';
-import { MdNotAccessible } from 'react-icons/md';
+
 import { FaChalkboardUser } from 'react-icons/fa6';
 import { FcDataSheet } from 'react-icons/fc';
 

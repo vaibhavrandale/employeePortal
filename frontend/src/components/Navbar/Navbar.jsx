@@ -12,7 +12,7 @@ const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isPopupOpen, setPopupOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const navigate = useNavigate();
+
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };

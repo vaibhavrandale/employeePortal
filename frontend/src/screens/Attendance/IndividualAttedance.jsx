@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import HeaderDays from './HeaderDays';
 import LoadingBox4 from '../../components/LoadingBox/LoadingBox4';
-import { CSVLink } from 'react-csv';
 import { Helmet } from 'react-helmet';
 import { Store } from '../../Store';
 
@@ -34,12 +33,11 @@ const reducer = (state, action) => {
 };
 
 const NewAttendance = () => {
-  const [{ loadingCreate, access, loadingAccess, successAccess }, dispatch] =
-    useReducer(reducer, {
-      access: [],
-      loadingCreate: false,
-      error: '',
-    });
+  const [{}, dispatch] = useReducer(reducer, {
+    access: [],
+    loadingCreate: false,
+    error: '',
+  });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
 
@@ -72,6 +70,9 @@ const NewAttendance = () => {
         const data = response.data.attendance;
         console.log(`Attendance:${response}`);
         setAttendanceData(data);
+
+        setYear(year);
+        setMonth(month);
 
         // Update the number of days in the month
         const daysResponse = await axios.get(

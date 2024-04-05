@@ -31,7 +31,24 @@ const InvestDeclarationForm = () => {
           </div>
           <div className="col-md-6">
             <div className="d-flex">
-              <label for="80C" className="form-label">
+              <label for="80CC" className="form-label">
+                80CC
+              </label>
+              &nbsp;
+              <div class="tooltip-container d-flex justify-content-center align-items-center  p-2">
+                {' '}
+                <i className="fas fa-question"></i>
+                <span class="tooltip">Payment made towards pension funds</span>
+                <span class="text"></span>
+              </div>
+            </div>
+            <br />
+            <input type="text" className="inputField2 " id="inputPassword4" />
+          </div>
+
+          <div className="col-md-6">
+            <div className="d-flex">
+              <label for="80CCC" className="form-label">
                 80CCC
               </label>
               &nbsp;

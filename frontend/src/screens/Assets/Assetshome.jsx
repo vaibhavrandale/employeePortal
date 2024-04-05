@@ -1,11 +1,3 @@
-// import React from 'react';
-
-// const Assetshome = () => {
-//   return <div className="container">Assetshome</div>;
-// };
-
-// export default Assetshome;
-
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import './assets.css';
 import { Helmet } from 'react-helmet';
@@ -100,7 +92,7 @@ const Assetshome = () => {
     // fetchData();
   }, [successDelete]);
 
-  const [deleteModalId, setDeleteModalId] = useState(null);
+  const [setDeleteModalId] = useState(null);
 
   const deleteHandler = async (id) => {
     setDeleteModalId(id);

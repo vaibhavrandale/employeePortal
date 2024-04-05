@@ -31,14 +31,11 @@ const reducer = (state, action) => {
 };
 
 const UpdateInvestment = () => {
-  const [{ loading, error, investment, loadingUpdate }, dispatch] = useReducer(
-    reducer,
-    {
-      investment: {},
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
+    investment: {},
+    loading: true,
+    error: '',
+  });
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const { id } = useParams();
@@ -69,7 +66,7 @@ const UpdateInvestment = () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         const result = await axios.get(`/api/investment/${id}`);
-        console.log(result.data.investment);
+        //console.log(result.data.investment);
         dispatch({
           type: 'FETCH_SUCCESS',
           payload: result.data.investment,
@@ -79,7 +76,6 @@ const UpdateInvestment = () => {
         setemail(result.data.investment.email);
         setemployee_id(result.data.investment.employee_id);
         setA_80C(result.data.investment.A_80C);
-        setA_80CC(result.data.investment.A_80CC);
         setA_80CC(result.data.investment.A_80CC);
         setB_80CCC(result.data.investment.B_80CCC);
         setB_80CCC(result.data.investment.B_80CCC);

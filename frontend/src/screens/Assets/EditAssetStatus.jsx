@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Store } from '../../Store';
-import { FaRegEdit } from 'react-icons/fa';
-import { RiDeleteBinLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
 import axios from 'axios';
 import { getError } from '../../utils';
@@ -54,10 +52,7 @@ const reducer = (state, action) => {
 const EditAssetStatus = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
-  const [
-    { loading, loadingUpload, asset, employees, createloading, successDelete },
-    dispatch,
-  ] = useReducer(reducer, {
+  const [{ loadingUpload, createloading }, dispatch] = useReducer(reducer, {
     asset: {},
     employees: [],
     loading: true,
@@ -68,7 +63,6 @@ const EditAssetStatus = () => {
 
   const [imageA, setImageA] = useState('');
   const [imageB, setImageB] = useState('');
-  const [given_date, setGiven_date] = useState('');
   const [return_date, setReturn_date] = useState('');
   const [remark, setRemark] = useState('');
   // const [description, setDescription] = useState('');
@@ -97,9 +91,7 @@ const EditAssetStatus = () => {
   // create
   const createAsset = async (e) => {
     e.preventDefault();
-    dispatch({
-      type: 'UPDATE_REQUEST',
-    });
+
     const missingFields = [];
 
     if (!imageB) {
@@ -120,6 +112,9 @@ const EditAssetStatus = () => {
       toast.error(`Please fill : ${missingFields.join(', ')}`);
       return;
     }
+    dispatch({
+      type: 'UPDATE_REQUEST',
+    });
 
     try {
       const { data } = await axios.put(
@@ -188,6 +183,9 @@ const EditAssetStatus = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>Edit Asset-{id}</title>
+      </Helmet>
       <div
         className="card p-2"
         style={{ minHeight: '500px', width: '500px', margin: 'Auto' }}
@@ -227,12 +225,24 @@ const EditAssetStatus = () => {
 
           <div className="d-flex my-2">
             {imageA ? (
-              <img src={imageA} height={100} width={100} alt="profileA" />
+              <img
+                src={imageA}
+                height={100}
+                width={100}
+                alt="profileA"
+                className="mx-1"
+              />
             ) : (
               ''
             )}
             {imageB ? (
-              <img src={imageB} height={100} width={100} alt="profileB" />
+              <img
+                src={imageB}
+                height={100}
+                width={100}
+                alt="profileB"
+                className="mx-1"
+              />
             ) : (
               ''
             )}

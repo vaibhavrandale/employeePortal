@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 
 import { Helmet } from 'react-helmet';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Store } from '../../Store';
-import { FaRegEdit } from 'react-icons/fa';
-import { RiDeleteBinLine } from 'react-icons/ri';
 import LoadingBox1 from '../../components/LoadingBox1';
 import axios from 'axios';
 import { getError } from '../../utils';
@@ -65,24 +63,10 @@ const Addasset = () => {
   });
   const navigate = useNavigate();
 
-  // name,
-  //     employee_id,
-  //     email,
-  //     imageA,
-  //     imageB,
-  //     status,
-  //     given_date,
-  //     return_date,
-  //     remark,
-
   const [imageA, setImageA] = useState('');
-  const [imageB, setImageB] = useState('');
   // const [name, setName] = useState('');
   const [employeeId, setEmployeeId] = useState('');
-  // const [email, setEmail] = useState('');
-  const [status, setStatus] = useState(0);
   const [given_date, setGiven_date] = useState('');
-  const [return_date, seReturn_date] = useState('');
   const [remark, setRemark] = useState('');
 
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -106,7 +90,9 @@ const Addasset = () => {
       dispatch({ type: 'FETCH_REQUEST' });
 
       try {
-        const result = await axios.get('/api/employees');
+        const result = await axios.get('/api/employees', {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data.employees });
         console.log(result.data);
       } catch (err) {
@@ -116,7 +102,7 @@ const Addasset = () => {
 
     fetchData();
     EmployeeData();
-  }, []);
+  }, [userInfo.token]);
 
   // create
   const createAsset = async (e) => {
@@ -126,22 +112,12 @@ const Addasset = () => {
     });
     const missingFields = [];
 
-    // if (!name) {
-    //   missingFields.push('Please select Name Of Asset');
-    // }
-    // if (!email) {
-    //   missingFields.push('Please select Email Of Asset');
-    // }
     if (!imageA) {
       missingFields.push('Please upload Image for Asset');
     }
     if (!given_date) {
       missingFields.push('Please select Date Of Asset');
     }
-
-    // if (!description) {
-    //   missingFields.push('Please Enter Description Of Asset');
-    // }
 
     if (missingFields.length > 0) {
       toast.error(`Please fill : ${missingFields.join(', ')}`);
@@ -152,8 +128,6 @@ const Addasset = () => {
       const { data } = await axios.post(
         `/api/assets/create`,
         {
-          // name,
-          // email,
           employee_id: employeeId,
           given_date,
           return_date: '',
@@ -161,7 +135,6 @@ const Addasset = () => {
           imageB: '',
           status: 0,
           remark,
-          // description,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -221,6 +194,9 @@ const Addasset = () => {
 
   return (
     <div className="container">
+      <Helmet>
+        <title>Add New Asset to Employee</title>
+      </Helmet>
       <div
         className="card p-2"
         style={{ minHeight: '500px', width: '500px', margin: 'Auto' }}
@@ -263,19 +239,6 @@ const Addasset = () => {
               value={selectedEmployee ? selectedEmployee.NAME : ''}
               readOnly
             />
-            {/* <select
-              className="form-select"
-              id="employeeSelect"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            >
-              <option value="">Select an employee</option>
-              {employees.map((employee) => (
-                <option key={employee.id} value={employee.NAME}>
-                  {employee.NAME}
-                </option>
-              ))}
-            </select> */}
           </div>
 
           <div className="mb-3">
@@ -290,19 +253,6 @@ const Addasset = () => {
               value={selectedEmployee ? selectedEmployee.email : ''}
               readOnly
             />
-            {/* <select
-              className="form-select"
-              id="employeeSelect"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            >
-              <option value="">Select an employee</option>
-              {employees.map((employee) => (
-                <option key={employee.email} value={employee.email}>
-                  {employee.email}
-                </option>
-              ))}
-            </select> */}
           </div>
 
           <div className="mb-3">

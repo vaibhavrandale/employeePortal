@@ -555,10 +555,26 @@ const NewAttendance = () => {
 
                         <td className="text-center">
                           {SalarySlipStatus === 1 ? (
+                            // <Link
+                            //   to={`/pay-slip/${
+                            //     employee.employee_id
+                            //   }/${year}/${month}/${userInfo.token}/${
+                            //     employee.totalPCount +
+                            //     SundaysInMonth +
+                            //     employee.totalHCount / 2
+                            //   }/${userInfo.token}`}
+                            //   target="_blank"
+                            //   className="btn btn-success btn-sm"
+                            // >
+                            //   Slip
+                            // </Link>
+
                             <Link
                               to={`/pay-slip/${
                                 employee.employee_id
-                              }/${year}/${month}/${userInfo.token}/${
+                              }/${selectedYear}/${selectedMonth}/${
+                                userInfo.token
+                              }/${
                                 employee.totalPCount +
                                 SundaysInMonth +
                                 employee.totalHCount / 2

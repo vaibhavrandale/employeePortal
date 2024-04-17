@@ -566,7 +566,9 @@ const NewAttendance = () => {
                           <Link
                             to={`/pay-slip/${
                               employee.employee_id
-                            }/${year}/${month}/${userInfo.token}/${
+                            }/${selectedYear}/${selectedMonth}/${
+                              userInfo.token
+                            }/${
                               employee.totalPCount +
                               SundaysInMonth +
                               employee.totalHCount / 2

@@ -117,7 +117,13 @@ const ExpenseHome = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const handleRowHover = (index) => {
+    setHoveredRow(index);
+  };
   return (
     <div className="container">
       <h3 className="text-center my-3">All Employee Site Expenses</h3>
@@ -551,6 +557,30 @@ const ExpenseHome = () => {
             </tbody>
           </table>
         )}
+        {<LoadingBox4/> && (
+         <nav className="pagination-container">
+          <ul className="pagination">
+            {Array(Math.ceil(filteredData.length / itemsPerPage))
+              .fill()
+              .map((_, index) => (
+                <li
+                  key={index}
+                  className={`page-item  ${
+                    currentPage === index + 1 ? 'active ' : ''
+                  }`}
+                >
+                  <button
+                    className="page-link bg-dark border border-white"
+                    onClick={() => handlePageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </nav> 
+    )}
+        
       </div>
     </div>
   );

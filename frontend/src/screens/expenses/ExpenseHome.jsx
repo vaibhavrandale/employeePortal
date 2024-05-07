@@ -121,9 +121,7 @@ const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const handleRowHover = (index) => {
-    setHoveredRow(index);
-  };
+ 
   return (
     <div className="container">
       <h3 className="text-center my-3">All Employee Site Expenses</h3>

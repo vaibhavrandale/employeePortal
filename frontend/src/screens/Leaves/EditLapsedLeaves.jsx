@@ -94,20 +94,20 @@ const EditLapsedLeaves = () => {
 
   const UpdateLapsedLeaveHandler = async (e) => {
     e.preventDefault();
-    const missingFields = [];
+    // const missingFields = [];
 
-    if (!NoofleaveLapsed) {
-      missingFields.push('Please Leave type Lapsed');
-    }
-    if (!LeavetypeLapsed) {
-      missingFields.push('Please Leave type Lapsed');
-    }
+    // if (!NoofleaveLapsed) {
+    //   missingFields.push('Please Leave type Lapsed');
+    // }
+    // if (!LeavetypeLapsed) {
+    //   missingFields.push('Please Leave type Lapsed');
+    // }
 
-    if (missingFields.length > 0) {
-      toast.error(`${missingFields.join(', ')}`);
+    // if (missingFields.length > 0) {
+    //   toast.error(`${missingFields.join(', ')}`);
 
-      return;
-    }
+    //   return;
+    // }
     dispatch({
       type: 'UPDATE_REQUEST',
     });

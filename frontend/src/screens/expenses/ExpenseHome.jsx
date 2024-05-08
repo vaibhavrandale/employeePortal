@@ -112,7 +112,7 @@ const ExpenseHome = () => {
       item.employee_id.includes(searchTerm) ||
       item.employeeName.includes(searchTerm)
   );
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   // Calculate the indexes for pagination
   const indexOfLastItem = currentPage * itemsPerPage;

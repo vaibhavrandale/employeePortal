@@ -112,11 +112,17 @@ const ExpenseHome = () => {
       item.employee_id.includes(searchTerm) ||
       item.employeeName.includes(searchTerm)
   );
-  const itemsPerPage = 10;
+  const itemsPerPage = 3;
 
+  // Calculate the indexes for pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Reverse the order of filteredData and then slice it for pagination
+  const currentItems = filteredData
+    .slice() // Create a shallow copy to avoid mutating original data
+    .reverse() // Reverse the order
+    .slice(indexOfFirstItem, indexOfLastItem); // Slice the reversed array for pagination
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -199,133 +205,129 @@ const ExpenseHome = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems
-                .map((item, index) => (
-                  <tr key={index}>
-                    <td className="text-center">
-                      {' '}
-                      <Link to={`/view-expense/${item.id}`}>{item.id}</Link>
-                    </td>
-                    <td className="text-center">{item.employeeName}</td>
-                    <td className="text-center">{item.employee_id}</td>
-                    <td className="text-center">{item.sitename}</td>
-                    <td className="text-center">{item.siteLocation}</td>
-                    <td className="text-center">
-                      {item.startDate && (
-                        <>
-                          {new Date(item.startDate).toLocaleDateString(
-                            'en-GB',
-                            {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                            }
-                          )}
-                        </>
-                      )}
-                    </td>
-                    <td className="text-center">
-                      {item.status === 0 ? (
-                        <span className="badge bg-warning text-dark p-2">
-                          Pending
-                        </span>
-                      ) : item.status === 1 ? (
-                        <span className="badge bg-success p-2">Approved-1</span>
-                      ) : item.status === 2 ? (
-                        <span className="badge bg-success p-2">Approved-2</span>
-                      ) : item.status === 3 ? (
-                        <span className="badge bg-success p-2">Approved</span>
-                      ) : (
-                        <span className="badge bg-info p-2">No View</span>
-                      )}
-                    </td>
+              {currentItems.map((item, index) => (
+                <tr key={index}>
+                  <td className="text-center">
+                    {' '}
+                    <Link to={`/view-expense/${item.id}`}>{item.id}</Link>
+                  </td>
+                  <td className="text-center">{item.employeeName}</td>
+                  <td className="text-center">{item.employee_id}</td>
+                  <td className="text-center">{item.sitename}</td>
+                  <td className="text-center">{item.siteLocation}</td>
+                  <td className="text-center">
+                    {item.startDate && (
+                      <>
+                        {new Date(item.startDate).toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                      </>
+                    )}
+                  </td>
+                  <td className="text-center">
+                    {item.status === 0 ? (
+                      <span className="badge bg-warning text-dark p-2">
+                        Pending
+                      </span>
+                    ) : item.status === 1 ? (
+                      <span className="badge bg-success p-2">Approved-1</span>
+                    ) : item.status === 2 ? (
+                      <span className="badge bg-success p-2">Approved-2</span>
+                    ) : item.status === 3 ? (
+                      <span className="badge bg-success p-2">Approved</span>
+                    ) : (
+                      <span className="badge bg-info p-2">No View</span>
+                    )}
+                  </td>
 
-                    <td className="text-center">
-                      {item.status === 1 ||
-                      item.status === 2 ||
-                      item.status === 3 ? (
-                        <div className="dropdown">
-                          <span
-                            className={`badge bg-info text-dark p-2  ${
-                              item.status === 2 || item.status === 3
-                                ? `dropdown-toggle`
-                                : `disabled`
-                            }`}
-                            type="button"
-                            id="dropdownMenuButton1"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
+                  <td className="text-center">
+                    {item.status === 1 ||
+                    item.status === 2 ||
+                    item.status === 3 ? (
+                      <div className="dropdown">
+                        <span
+                          className={`badge bg-info text-dark p-2  ${
+                            item.status === 2 || item.status === 3
+                              ? `dropdown-toggle`
+                              : `disabled`
+                          }`}
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          {item.ApprovedBy}
+                        </span>
+                        {item.ApprovedBy2 ? (
+                          <ul
+                            style={{ maxWidth: '10px', minHeight: '50px' }}
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
                           >
-                            {item.ApprovedBy}
-                          </span>
-                          {item.ApprovedBy2 ? (
-                            <ul
-                              style={{ maxWidth: '10px', minHeight: '50px' }}
-                              className="dropdown-menu"
-                              aria-labelledby="dropdownMenuButton1"
-                            >
-                              <li>
-                                <span className="dropdown-item " href="#">
-                                  {item.ApprovedBy2}
-                                </span>
-                              </li>
-                            </ul>
-                          ) : (
-                            ''
-                          )}
-                        </div>
-                      ) : (
-                        <span className="badge bg-info p-2">No View</span>
-                      )}
-                    </td>
+                            <li>
+                              <span className="dropdown-item " href="#">
+                                {item.ApprovedBy2}
+                              </span>
+                            </li>
+                          </ul>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    ) : (
+                      <span className="badge bg-info p-2">No View</span>
+                    )}
+                  </td>
 
-                    <td className="text-center ">
-                      {item.Settled === 1 ? (
-                        <span className="badge bg-success p-2">Settled</span>
-                      ) : (
-                        <span className="badge bg-warning text-dark p-2">
-                          Pending
-                        </span>
-                      )}
-                    </td>
+                  <td className="text-center ">
+                    {item.Settled === 1 ? (
+                      <span className="badge bg-success p-2">Settled</span>
+                    ) : (
+                      <span className="badge bg-warning text-dark p-2">
+                        Pending
+                      </span>
+                    )}
+                  </td>
 
-                    <td className="text-center ">
-                      {item.SettledBy !== '' ? (
-                        <span className="badge bg-success p-2">
-                          {item.SettledBy}
-                        </span>
-                      ) : (
-                        <span className="badge bg-warning text-dark p-2">
-                          Pending
-                        </span>
-                      )}
-                    </td>
-                    <td className="text-center d-flex">
-                      <Link
-                        className="btn btn-sm text-decoration-none btn-success mx-1 py-0 d-flex justify-content-center align-items-center"
-                        to={`/view-expense/${item.id}`}
-                      >
-                        <IoEyeOutline />
-                      </Link>
-                      <Link
-                        className="btn btn-sm text-decoration-none btn-warning text-light mx-1 py-0 d-flex justify-content-center align-items-center"
-                        to={`/update-expense/${item.id}`}
-                      >
-                        <FaRegEdit />
-                      </Link>
+                  <td className="text-center ">
+                    {item.SettledBy !== '' ? (
+                      <span className="badge bg-success p-2">
+                        {item.SettledBy}
+                      </span>
+                    ) : (
+                      <span className="badge bg-warning text-dark p-2">
+                        Pending
+                      </span>
+                    )}
+                  </td>
+                  <td className="text-center d-flex">
+                    <Link
+                      className="btn btn-sm text-decoration-none btn-success mx-1 py-0 d-flex justify-content-center align-items-center"
+                      to={`/view-expense/${item.id}`}
+                    >
+                      <IoEyeOutline />
+                    </Link>
+                    <Link
+                      className="btn btn-sm text-decoration-none btn-warning text-light mx-1 py-0 d-flex justify-content-center align-items-center"
+                      to={`/update-expense/${item.id}`}
+                    >
+                      <FaRegEdit />
+                    </Link>
 
-                      <Link
-                        type="button"
-                        className="btn btn-danger btn-sm py-0 d-flex justify-content-center align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-backdrop="false"
-                        onClick={openModal}
-                        data-bs-target={`#exampleModal_${item.id}`}
-                      >
-                        <MdDeleteOutline />
-                      </Link>
+                    <Link
+                      type="button"
+                      className="btn btn-danger btn-sm py-0 d-flex justify-content-center align-items-center"
+                      data-bs-toggle="modal"
+                      data-bs-backdrop="false"
+                      onClick={openModal}
+                      data-bs-target={`#exampleModal_${item.id}`}
+                    >
+                      <MdDeleteOutline />
+                    </Link>
 
-                      {/* <Link
+                    {/* <Link
                       className="btn btn-sm btn-success m-1  text-decoration-none   d-flex justify-content-center align-items-center"
                       target="_blank"
                       to={`/export-expense/${item.id}`}
@@ -333,65 +335,65 @@ const ExpenseHome = () => {
                       <FaFileExport />
                     </Link> */}
 
-                      <Link
-                        className="btn btn-sm text-decoration-none btn-success text-light mx-1 py-2 d-flex justify-content-center align-items-center"
-                        target="_blank"
-                        to={`/export-expense/${item.id}`}
-                      >
-                        <FaFileExport />
-                      </Link>
-                      <div
-                        className={`modal fade${showModal ? ' show' : ''}`}
-                        id={`exampleModal_${item.id}`}
-                        tabIndex="-1"
-                        aria-labelledby={`exampleModalLabel_${item.id}`}
-                        aria-hidden="true"
-                      >
-                        <div className="modal-dialog modal-dialog-centered modal-sm">
-                          <div className="modal-content">
-                            <div className="modal-header">
-                              <h5
-                                className="modal-title"
-                                id={`exampleModalLabel_${item.id}`}
-                              >
-                                Confirmation
-                              </h5>
-                              <button
-                                type="button"
-                                className="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"
-                              ></button>
-                            </div>
-                            <div className="modal-body">
-                              Are you sure to delete Expense-
-                              <span className="text-success fw-bold">
-                                {item.sitename}
-                              </span>
-                              ?
-                            </div>
-                            <div className="modal-footer">
-                              <button
-                                type="button"
-                                className="btn btn-secondary btn-sm"
-                                data-bs-dismiss="modal"
-                                onClick={closeModal}
-                              >
-                                Cancel
-                              </button>
-                              <button
-                                type="button"
-                                className="btn btn-danger btn-sm"
-                                onClick={(e) => deleteHandler(e, item.id)}
-                              >
-                                Delete
-                              </button>
-                            </div>
+                    <Link
+                      className="btn btn-sm text-decoration-none btn-success text-light mx-1 py-2 d-flex justify-content-center align-items-center"
+                      target="_blank"
+                      to={`/export-expense/${item.id}`}
+                    >
+                      <FaFileExport />
+                    </Link>
+                    <div
+                      className={`modal fade${showModal ? ' show' : ''}`}
+                      id={`exampleModal_${item.id}`}
+                      tabIndex="-1"
+                      aria-labelledby={`exampleModalLabel_${item.id}`}
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-dialog-centered modal-sm">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5
+                              className="modal-title"
+                              id={`exampleModalLabel_${item.id}`}
+                            >
+                              Confirmation
+                            </h5>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div className="modal-body">
+                            Are you sure to delete Expense-
+                            <span className="text-success fw-bold">
+                              {item.sitename}
+                            </span>
+                            ?
+                          </div>
+                          <div className="modal-footer">
+                            <button
+                              type="button"
+                              className="btn btn-secondary btn-sm"
+                              data-bs-dismiss="modal"
+                              onClick={closeModal}
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-danger btn-sm"
+                              onClick={(e) => deleteHandler(e, item.id)}
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
                       </div>
-                    </td>
-                    {/* { userInfo.isHr || userInfo.isHr ? (
+                    </div>
+                  </td>
+                  {/* { userInfo.isHr || userInfo.isHr ? (
                     <td>
                       <Link
                         className={`btn btn-sm btn-success m-1  ${
@@ -406,7 +408,7 @@ const ExpenseHome = () => {
                   ) : (
                     ''
                   )} */}
-                    {/* <td>
+                  {/* <td>
                     <div className="d-flex">
                       {userInfo.isHr === 1 && item.status === 1 ? (
                         <Link
@@ -473,7 +475,7 @@ const ExpenseHome = () => {
                     )}
                   </td> */}
 
-                    {/* <td>
+                  {/* <td>
                     <div className="d-flex justify-content-center align-items-center">
                       <td>
                         <div className="d-flex">
@@ -501,62 +503,61 @@ const ExpenseHome = () => {
                         </div>
                       </td>
                        */}
-                    <td>
-                      <div className="d-flex justify-content-center align-items-center">
-                        {userInfo.isDirector === 1 && item.status === 0 && (
-                          <Link className="btn btn-sm btn-warning m-1 disabled">
-                            Pending from HR
-                          </Link>
-                        )}
-                        {(userInfo.isHr === 1 && item.status === 0) ||
-                        (userInfo.isDirector === 1 && item.status === 1) ? (
-                          <Link
-                            className={`btn btn-sm btn-success m-1 ${
-                              item.status >= 2 ? 'disabled' : ''
-                            }`}
-                            to={`/approve-expense/${item.id}`}
-                            disabled={item.status >= 2}
-                          >
-                            Approve
-                          </Link>
-                        ) : userInfo.isHr === 1 && item.status === 1 ? (
-                          <Link className="btn btn-sm btn-success m-1 disabled">
-                            Director Pending
-                          </Link>
-                        ) : (
-                          <Link className="btn btn-sm btn-success m-1 disabled">
-                            Director Approved
-                          </Link>
-                        )}
-                      </div>
-                    </td>
-
-                    <td>
-                      {userInfo.isAccountant === 1 && item.status === 2 ? (
-                        <Link
-                          className="btn btn-sm btn-success m-1"
-                          to={`/settle-expense/${item.id}`}
-                        >
-                          Settle
+                  <td>
+                    <div className="d-flex justify-content-center align-items-center">
+                      {userInfo.isDirector === 1 && item.status === 0 && (
+                        <Link className="btn btn-sm btn-warning m-1 disabled">
+                          Pending from HR
                         </Link>
-                      ) : item.status === 0 ||
-                        item.status === 1 ||
-                        item.status === 2 ? (
+                      )}
+                      {(userInfo.isHr === 1 && item.status === 0) ||
+                      (userInfo.isDirector === 1 && item.status === 1) ? (
                         <Link
-                          className="btn btn-sm btn-warning m-1 disabled"
-                          to={`/settle-expense/${item.id}`}
+                          className={`btn btn-sm btn-success m-1 ${
+                            item.status >= 2 ? 'disabled' : ''
+                          }`}
+                          to={`/approve-expense/${item.id}`}
+                          disabled={item.status >= 2}
                         >
-                          Pending
+                          Approve
+                        </Link>
+                      ) : userInfo.isHr === 1 && item.status === 1 ? (
+                        <Link className="btn btn-sm btn-success m-1 disabled">
+                          Director Pending
                         </Link>
                       ) : (
                         <Link className="btn btn-sm btn-success m-1 disabled">
-                          Settled
+                          Director Approved
                         </Link>
                       )}
-                    </td>
-                  </tr>
-                ))
-                .reverse()}
+                    </div>
+                  </td>
+
+                  <td>
+                    {userInfo.isAccountant === 1 && item.status === 2 ? (
+                      <Link
+                        className="btn btn-sm btn-success m-1"
+                        to={`/settle-expense/${item.id}`}
+                      >
+                        Settle
+                      </Link>
+                    ) : item.status === 0 ||
+                      item.status === 1 ||
+                      item.status === 2 ? (
+                      <Link
+                        className="btn btn-sm btn-warning m-1 disabled"
+                        to={`/settle-expense/${item.id}`}
+                      >
+                        Pending
+                      </Link>
+                    ) : (
+                      <Link className="btn btn-sm btn-success m-1 disabled">
+                        Settled
+                      </Link>
+                    )}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

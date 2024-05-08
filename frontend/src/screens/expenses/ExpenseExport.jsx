@@ -5,16 +5,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { format } from 'date-fns';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
-// Import your company logo as a data URI or URL
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import { Store } from '../../Store';
 
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
@@ -30,7 +27,7 @@ const reducer = (state, action) => {
   }
 };
 
-function ExpenseExport() {
+export function ExpenseExport() {
   const { id } = useParams();
 
   const [{ loading, error, expense, payslip }, dispatch] = useReducer(reducer, {
@@ -107,7 +104,6 @@ function ExpenseExport() {
     doc.setFont('Helvetica', 'bold');
     doc.text(`: ${expense.employeeName}`, 55, 40);
     // Add a row after the table
-
     doc.setFont('Helvetica', 'normal');
     doc.text(`Employee ID`, 20, 52);
 
@@ -152,24 +148,17 @@ function ExpenseExport() {
 
     // Daywise Expenses
     // doc.text('Daywise Expenses:', 20, 110);
-    const tableColumns = ['id', 'Date', 'Expense', 'Amount', 'Bill id'];
+    const tableColumns = ['id', 'Date', 'Type', 'Expense', 'Amount', 'Bill id'];
     const tableData = expense.DaywiseExpenses
       ? expense.DaywiseExpenses.map((e) => [
           e.id,
           formatDate(e.date),
+          e.type,
           e.expense,
           `${e.price.toFixed(2)}`,
           e.img ? `${e.id}` : 'no',
         ])
       : [];
-
-    // Calculate total
-    const total = expense.DaywiseExpenses
-      ? expense.DaywiseExpenses.reduce((acc, e) => acc + e.price, 0).toFixed(2)
-      : '0.00';
-
-    // Add total row to tableData
-    tableData.push(['', '', 'Total', `${total}`, '']);
 
     // Render the table
     doc.autoTable({
@@ -185,10 +174,78 @@ function ExpenseExport() {
       },
       columnStyles: {
         0: { cellWidth: 10 },
-        1: { cellWidth: 40 },
-        2: { cellWidth: 79 },
-        3: { cellWidth: 30 },
-        4: { cellWidth: 20 },
+        1: { cellWidth: 23 },
+        2: { cellWidth: 17 },
+        3: { cellWidth: 69 },
+        4: { cellWidth: 30 },
+        5: { cellWidth: 20 },
+      },
+      styles: {
+        fontSize: 10,
+        lineWidth: 0.2, // Set the border width
+        fontStyle: 'bold', // Make the text bold
+        lineColor: [0, 0, 0], // Set the border color to dark (black)
+      },
+    });
+
+    // Total Count Table
+    const startYSecondTable = doc.autoTableEndPosY() + 10;
+
+    // Calculate the total sum of expenses for each category
+    let totalFoodExpense = 0;
+    let totalTravelExpense = 0;
+    let totalStayExpense = 0;
+    let totalOtherExpense = 0;
+
+    if (expense.DaywiseExpenses) {
+      expense.DaywiseExpenses.forEach((daywiseExpense) => {
+        switch (daywiseExpense.type) {
+          case 'Food':
+            totalFoodExpense += daywiseExpense.price;
+            break;
+          case 'Travel':
+            totalTravelExpense += daywiseExpense.price;
+            break;
+          case 'Stay':
+            totalStayExpense += daywiseExpense.price;
+            break;
+          default:
+            totalOtherExpense += daywiseExpense.price;
+        }
+      });
+    }
+
+    const total = expense.DaywiseExpenses
+      ? expense.DaywiseExpenses.reduce((acc, e) => acc + e.price, 0).toFixed(2)
+      : '0.00';
+
+    const totaltableColumns = ['Type', 'Total'];
+    const totaltableData = [
+      ['Food Expenses', `${totalFoodExpense}.00`],
+      ['Travel Expenses', `${totalTravelExpense}.00`],
+      ['Stay Expenses', `${totalStayExpense}.00`],
+      ['Other Expenses', `${totalOtherExpense}.00`],
+      // 'Grand Total' row is added to the end of the array
+    ];
+
+    // Push 'Grand Total' row to totaltableData array
+    totaltableData.push(['Grand Total', `${total}`]);
+
+    // Render the table
+    doc.autoTable({
+      startY: startYSecondTable,
+      head: [totaltableColumns],
+      body: totaltableData,
+      theme: 'plain',
+      headStyles: {
+        halign: 'center', // Center align the thead
+      },
+      bodyStyles: {
+        halign: 'center', // Center align the tbody
+      },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 23, halign: 'right' }, // Align the cells in the second column to the right
       },
       styles: {
         fontSize: 10,
@@ -206,12 +263,11 @@ function ExpenseExport() {
           ? `TFC - ${total - expense.AdvanceAmount}`
           : `RTC - ${expense.AdvanceAmount - total}`
       }`,
-      170,
-      doc.autoTable.previous.finalY + 8
+      140,
+      148
     );
 
     // const settledStatus = expense.Settled === 3;
-
     doc.text(`${expense.ApprovedBy}`, 20, doc.autoTable.previous.finalY + 30);
     doc.setFont('Helvetica', 'normal');
 
@@ -275,7 +331,6 @@ function ExpenseExport() {
       doc.setFontSize(12);
 
       // doc.text(`Bill ID: ${image.billId}`, 10, 10);
-
       // Display the image below the Bill ID
       doc.addImage(image.src, 'PNG', 50, 40, image.width, image.height);
     });
@@ -358,5 +413,3 @@ function ExpenseExport() {
     </div>
   );
 }
-
-export default ExpenseExport;

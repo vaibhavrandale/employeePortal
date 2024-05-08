@@ -78,6 +78,10 @@ const DaywiseExpenses = sequelize.define(
       type: DataTypes.STRING, // Change to DATE if you prefer storing dates
       allowNull: false,
     },
+    type: {
+      type: DataTypes.STRING, // Change to DATE if you prefer storing dates
+      allowNull: false,
+    },
     expense: {
       type: DataTypes.STRING,
       allowNull: false,

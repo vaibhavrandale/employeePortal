@@ -187,6 +187,7 @@ const ViewExpense = () => {
                       <tr>
                         <th className="text-center">Serial</th>
                         <th className="text-center">Date</th>
+                        <th className="text-center">Type</th>
                         <th className="text-center">Expense</th>
                         <th className="text-center">Price</th>
                         <th className="text-center">Bill</th>
@@ -211,6 +212,7 @@ const ViewExpense = () => {
                                 </>
                               )}
                             </td>
+                            <td className="text-center">{dayExpense.type}</td>
                             <td className="text-center">
                               {dayExpense.expense}
                             </td>

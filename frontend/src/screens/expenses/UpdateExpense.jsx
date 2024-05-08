@@ -118,6 +118,7 @@ const UpdateExpense = () => {
   const [daywiseExpenses, setDaywiseExpenses] = useState([
     {
       date: '',
+      type: '',
       expense: '',
       price: 0,
       img: '',
@@ -139,6 +140,7 @@ const UpdateExpense = () => {
       ...daywiseExpenses,
       {
         date: '',
+        type: '',
         expense: '',
         price: 0,
         img: '',
@@ -387,6 +389,7 @@ const UpdateExpense = () => {
                 <thead>
                   <tr>
                     <th className="text-center">Date</th>
+                    <th className="text-center">Type</th>
                     <th className="text-center">Expense</th>
                     <th className="text-center">Price</th>
                     <th className="text-center">Upload Bill image</th>
@@ -407,6 +410,23 @@ const UpdateExpense = () => {
                         />
                       </td>
                       <td>
+                        <select
+                          id="type"
+                          className="form-control"
+                          name="type"
+                          value={dayExpense.type}
+                          onChange={(e) => handleInputChange(e, index)}
+                          required
+                        >
+                          <option value="">Select</option>
+                          <option value="Food">Food</option>
+                          <option value="Travel">Travel</option>
+                          <option value="Stay">Stay</option>
+                          <option value="other">other</option>
+                        </select>
+                      </td>
+
+                      <td>
                         <textarea
                           type="text"
                           name="expense"
@@ -419,9 +439,9 @@ const UpdateExpense = () => {
                       </td>
                       <td>
                         <input
-                          type="number"
+                          type="text"
                           name="price"
-                          style={{ margin: 'auto', minWidth: '100px' }}
+                          style={{ margin: 'auto', width: '60px' }}
                           className="form-control"
                           value={dayExpense.price}
                           onChange={(e) => handleInputChange(e, index)}

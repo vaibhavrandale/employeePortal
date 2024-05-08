@@ -560,29 +560,6 @@ const ExpenseHome = () => {
             </tbody>
           </table>
         )}
-        {<LoadingBox4 /> && (
-          <nav className="pagination-container">
-            <ul className="pagination">
-              {Array(Math.ceil(filteredData.length / itemsPerPage))
-                .fill()
-                .map((_, index) => (
-                  <li
-                    key={index}
-                    className={`page-item  ${
-                      currentPage === index + 1 ? 'active ' : ''
-                    }`}
-                  >
-                    <button
-                      className="page-link bg-dark border border-white"
-                      onClick={() => handlePageChange(index + 1)}
-                    >
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-            </ul>
-          </nav>
-        )}
 
         {<LoadingBox4 /> && (
           <nav className="pagination-container">

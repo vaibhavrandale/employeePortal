@@ -16,6 +16,8 @@ const birthday =
 const logo =
   'https://res.cloudinary.com/di0iwc8ql/image/upload/v1709110699/gsqahyovjyqommmfi10z.png';
 
+const defaultmail = 'vaibhav.randale@taypro.in';
+
 const sendBirthdayEmails = async () => {
   try {
     const currentDate = new Date();
@@ -47,7 +49,7 @@ const sendBirthdayEmails = async () => {
       transporter
         .sendMail({
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-          to: `${employee.email},${employee.personal_email}`,
+          to: `${employee.email},${employee.personal_email},${defaultmail}`,
           subject: 'Happy Birthday🥂🎂',
           html: `<!DOCTYPE html>
           <html lang="en">
@@ -233,7 +235,7 @@ const sendEmail = (employee) => {
   transporter
     .sendMail({
       from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-      to: employee.email,
+      to: `${employee.email},${defaultmail}`,
       subject: 'Happy Birthday🥂🎂',
       html: `
       <!DOCTYPE html>
@@ -430,7 +432,7 @@ const AnniversaryEmails = async () => {
         .sendMail({
           from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
 
-          to: `${employee.email},${employee.personal_email}`,
+          to: `${employee.email},${employee.personal_email},${defaultmail}`,
           subject: 'Happy Anniversary🎉🎉',
           html: `<!DOCTYPE html>
                     <html lang="en">
@@ -977,7 +979,7 @@ const ProbationChecker = async () => {
         transporter
           .sendMail({
             from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-            to: employee.email,
+            to: `${employee.email},${defaultmail}`,
             subject: 'Congrats! on Your New Achievement🚀',
             html: `
 <!DOCTYPE html>
@@ -1734,7 +1736,7 @@ const sendWomensEmail = async () => {
   transporter
     .sendMail({
       from: `TAYPRO INTERNAL <${process.env.MAIL_USER}>`,
-      to: email,
+      to: `${email},${defaultmail}`,
       subject: 'Happy International Womens Day!',
 
       html: `<!DOCTYPE html>
